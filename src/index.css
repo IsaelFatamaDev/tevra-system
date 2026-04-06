@@ -1,0 +1,216 @@
+@import "tailwindcss";
+
+@theme {
+     --color-primary: #0a2540;
+     --color-primary-dark: #000f22;
+     --color-secondary: #ff6b6b;
+     --color-mint: #00d68f;
+     --color-accent-gold: #ffb347;
+
+     --color-background: #fff8f0;
+     --color-background-cream: #fff8f0;
+     --color-surface: #ffffff;
+     --color-surface-dim: #dfd9d1;
+     --color-surface-container-lowest: #ffffff;
+     --color-surface-container-low: #f9f3eb;
+     --color-surface-container: #f4ede5;
+     --color-surface-container-high: #eee7df;
+     --color-surface-container-highest: #e8e1da;
+
+     --color-on-background: #1e1b17;
+     --color-on-surface: #1e1b17;
+     --color-text-muted: #43474d;
+     --color-outline: #74777e;
+     --color-outline-variant: #c4c6ce;
+
+     --font-headline: "Plus Jakarta Sans", sans-serif;
+     --font-body: "Inter", sans-serif;
+
+     --radius-xl: 12px;
+     --radius-2xl: 16px;
+     --radius-3xl: 24px;
+
+     --shadow-soft: 0 10px 40px -10px rgba(0, 0, 0, 0.08);
+     --shadow-premium: 0 20px 60px -15px rgba(10, 37, 64, 0.15);
+     --shadow-ambient: 0 20px 40px rgba(10, 37, 64, 0.05);
+}
+
+.material-symbols-outlined {
+     font-variation-settings:
+          "FILL" 0,
+          "wght" 400,
+          "GRAD" 0,
+          "opsz" 24;
+}
+
+.fill-icon {
+     font-variation-settings:
+          "FILL" 1,
+          "wght" 400,
+          "GRAD" 0,
+          "opsz" 24;
+}
+
+.hero-gradient {
+     background: radial-gradient(circle at top right, #1a3a5a, #0a2540);
+}
+
+.bg-grid-pattern {
+     background-image: radial-gradient(#ffffff1a 1px, transparent 1px);
+     background-size: 30px 30px;
+}
+
+.glass-card {
+     background: rgba(255, 255, 255, 0.03);
+     backdrop-filter: blur(10px);
+     border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+body {
+     font-family: var(--font-body);
+     color: var(--color-on-background);
+     background-color: var(--color-background-cream);
+}
+
+::selection {
+     background-color: rgba(255, 107, 107, 0.2);
+}
+
+@keyframes loading {
+     0% {
+          width: 0%;
+     }
+     100% {
+          width: 100%;
+     }
+}
+
+@keyframes marquee {
+     0% {
+          transform: translateX(0);
+     }
+     100% {
+          transform: translateX(-50%);
+     }
+}
+
+@keyframes fade-up {
+     from {
+          opacity: 0;
+          transform: translateY(30px);
+     }
+     to {
+          opacity: 1;
+          transform: translateY(0);
+     }
+}
+
+@keyframes fade-in {
+     from {
+          opacity: 0;
+     }
+     to {
+          opacity: 1;
+     }
+}
+
+@keyframes scale-in {
+     from {
+          opacity: 0;
+          transform: scale(0.9);
+     }
+     to {
+          opacity: 1;
+          transform: scale(1);
+     }
+}
+
+@keyframes slide-left {
+     from {
+          opacity: 0;
+          transform: translateX(-40px);
+     }
+     to {
+          opacity: 1;
+          transform: translateX(0);
+     }
+}
+
+@keyframes slide-right {
+     from {
+          opacity: 0;
+          transform: translateX(40px);
+     }
+     to {
+          opacity: 1;
+          transform: translateX(0);
+     }
+}
+
+.reveal {
+     opacity: 0;
+     transform: translateY(30px);
+     transition:
+          opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+          transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal.visible {
+     opacity: 1;
+     transform: translateY(0);
+}
+
+.reveal-left {
+     opacity: 0;
+     transform: translateX(-40px);
+     transition:
+          opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+          transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-left.visible {
+     opacity: 1;
+     transform: translateX(0);
+}
+
+.reveal-right {
+     opacity: 0;
+     transform: translateX(40px);
+     transition:
+          opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+          transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-right.visible {
+     opacity: 1;
+     transform: translateX(0);
+}
+
+.reveal-scale {
+     opacity: 0;
+     transform: scale(0.9);
+     transition:
+          opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+          transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-scale.visible {
+     opacity: 1;
+     transform: scale(1);
+}
+
+.stagger-1 {
+     transition-delay: 0.1s;
+}
+.stagger-2 {
+     transition-delay: 0.2s;
+}
+.stagger-3 {
+     transition-delay: 0.3s;
+}
+.stagger-4 {
+     transition-delay: 0.4s;
+}
+.stagger-5 {
+     transition-delay: 0.5s;
+}
