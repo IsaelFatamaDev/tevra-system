@@ -7,6 +7,7 @@ import SplashScreen from './components/layout/SplashScreen'
 import ScrollToTop from './components/layout/ScrollToTop'
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
+import AgentesPage from './pages/AgentesPage'
 
 function AppLayout() {
   const location = useLocation()
@@ -19,6 +20,7 @@ function AppLayout() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/agentes" element={<AgentesPage />} />
       </Routes>
       {!isAuthPage && <Footer />}
       {!isAuthPage && <WhatsAppButton />}

@@ -30,7 +30,9 @@ export default function Navbar() {
       <nav className="fixed top-0 w-full z-50 bg-surface-container-lowest/80 backdrop-blur-md border-b border-outline-variant/20">
         <div className="flex justify-between items-center px-8 py-3 max-w-7xl mx-auto w-full">
           <Link to="/" className="flex items-center gap-2">
-            <img src="/LogoTevra.png" alt="TeVra" className="h-9 w-auto object-contain" />
+            <span className="font-headline font-extrabold text-2xl tracking-tight text-primary select-none">
+              Te<span className="text-secondary">Vra</span>
+            </span>
           </Link>
 
           <div className="hidden md:flex gap-10 items-center font-headline text-[13px] font-bold uppercase tracking-widest">
