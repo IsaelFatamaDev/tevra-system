@@ -114,7 +114,7 @@ export default function AdminDashboard() {
     : 100
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 platform-enter">
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
         <div>
@@ -136,12 +136,12 @@ export default function AdminDashboard() {
       {/* Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
         {statCards.map((s) => (
-          <div key={s.title} className="bg-white rounded-2xl p-6 shadow-sm border border-outline-variant/10 hover:shadow-md transition-all group">
+          <div key={s.title} className="bg-white rounded-2xl p-6 border border-outline-variant/15 shadow-[0_1px_3px_rgba(0,0,0,0.04)] stat-card group">
             <div className="flex items-start justify-between mb-4">
-              <div className={`w-12 h-12 rounded-xl ${s.bg} flex items-center justify-center`}>
-                <span className={`material-symbols-outlined text-[22px] ${s.iconColor}`}>{s.icon}</span>
+              <div className={`w-12 h-12 rounded-2xl ${s.bg} flex items-center justify-center`}>
+                <span className={`material-symbols-outlined text-[24px] ${s.iconColor}`} style={{ fontVariationSettings: "'FILL' 1" }}>{s.icon}</span>
               </div>
-              <span className="material-symbols-outlined text-text-muted/20 text-lg group-hover:text-emerald-400 transition-colors">trending_up</span>
+              <span className="material-symbols-outlined text-emerald-400/40 text-lg group-hover:text-emerald-500 transition-colors">trending_up</span>
             </div>
             <p className="text-3xl font-extrabold text-on-background font-headline tracking-tight">{s.value}</p>
             <p className="text-sm text-text-muted mt-1 font-medium">{s.title}</p>
@@ -164,7 +164,7 @@ export default function AdminDashboard() {
       {/* Charts + Top Agents */}
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
         {/* Revenue Chart */}
-        <div className="xl:col-span-2 bg-white rounded-2xl shadow-sm border border-outline-variant/10 overflow-hidden">
+        <div className="xl:col-span-2 bg-white rounded-2xl border border-outline-variant/15 shadow-[0_1px_3px_rgba(0,0,0,0.04)] overflow-hidden">
           <div className="flex items-center justify-between px-6 py-5 border-b border-outline-variant/10">
             <div>
               <h3 className="font-headline font-bold text-on-background text-lg">Rendimiento de Ventas</h3>
@@ -206,7 +206,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* Top Agents */}
-        <div className="bg-white rounded-2xl shadow-sm border border-outline-variant/10">
+        <div className="bg-white rounded-2xl border border-outline-variant/15 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
           <div className="px-6 py-5 border-b border-outline-variant/10">
             <h3 className="font-headline font-bold text-on-background text-lg">Top Agentes</h3>
             <p className="text-xs text-text-muted mt-0.5">Por ingresos generados</p>
@@ -240,7 +240,7 @@ export default function AdminDashboard() {
       {/* Recent Orders + Pending Agents */}
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
         {/* Recent Orders */}
-        <div className="xl:col-span-2 bg-white rounded-2xl shadow-sm border border-outline-variant/10 overflow-hidden">
+        <div className="xl:col-span-2 bg-white rounded-2xl border border-outline-variant/15 shadow-[0_1px_3px_rgba(0,0,0,0.04)] overflow-hidden">
           <div className="flex items-center justify-between px-6 py-5 border-b border-outline-variant/10">
             <div>
               <h3 className="font-headline font-bold text-on-background text-lg">Pedidos Recientes</h3>
@@ -295,7 +295,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* Pending Agent Applications */}
-        <div className="bg-white rounded-2xl shadow-sm border border-outline-variant/10">
+        <div className="bg-white rounded-2xl border border-outline-variant/15 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
           <div className="px-6 py-5 border-b border-outline-variant/10">
             <div className="flex items-center justify-between">
               <div>

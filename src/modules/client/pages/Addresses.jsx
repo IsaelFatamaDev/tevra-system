@@ -82,10 +82,10 @@ export default function ClientAddresses() {
   )
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 platform-enter">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="font-headline text-2xl font-bold text-primary">Mis Direcciones</h2>
+          <h2 className="font-headline text-2xl font-bold text-on-background">Mis Direcciones</h2>
           <p className="text-sm text-text-muted mt-1">Gestiona tus direcciones de envío.</p>
         </div>
         <button onClick={openCreate}

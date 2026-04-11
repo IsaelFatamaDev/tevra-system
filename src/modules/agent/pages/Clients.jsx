@@ -31,26 +31,26 @@ export default function AgentClients() {
   const clients = Array.from(clientsMap.values())
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 platform-enter">
       <div>
         <h1 className="font-headline text-2xl font-bold text-on-background">Mis Clientes</h1>
         <p className="text-sm text-text-muted mt-1">Clientes que han comprado a través de ti</p>
       </div>
 
       <div className="grid grid-cols-2 gap-4">
-        <div className="bg-white rounded-xl p-4 border border-outline-variant/30 shadow-sm">
-          <div className="flex items-center gap-2 mb-1">
-            <span className="material-symbols-outlined text-text-muted text-lg">group</span>
-            <span className="text-xs text-text-muted font-medium">Total Clientes</span>
+        <div className="bg-white rounded-2xl p-5 border border-outline-variant/15 shadow-[0_1px_3px_rgba(0,0,0,0.04)] stat-card">
+          <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-3">
+            <span className="material-symbols-outlined text-[20px]">group</span>
           </div>
           <p className="text-xl font-bold text-on-background">{clients.length}</p>
+          <p className="text-xs text-text-muted mt-0.5">Total Clientes</p>
         </div>
-        <div className="bg-white rounded-xl p-4 border border-outline-variant/30 shadow-sm">
-          <div className="flex items-center gap-2 mb-1">
-            <span className="material-symbols-outlined text-text-muted text-lg">payments</span>
-            <span className="text-xs text-text-muted font-medium">Total Vendido</span>
+        <div className="bg-white rounded-2xl p-5 border border-outline-variant/15 shadow-[0_1px_3px_rgba(0,0,0,0.04)] stat-card">
+          <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-3">
+            <span className="material-symbols-outlined text-[20px]">payments</span>
           </div>
           <p className="text-xl font-bold text-on-background">${clients.reduce((s, c) => s + c.totalSpent, 0).toLocaleString()}</p>
+          <p className="text-xs text-text-muted mt-0.5">Total Vendido</p>
         </div>
       </div>
 

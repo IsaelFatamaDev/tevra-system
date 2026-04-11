@@ -65,7 +65,7 @@ export default function AgentOrders() {
   const totalRevenue = orders.reduce((sum, o) => sum + parseFloat(o.total || 0), 0)
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 platform-enter">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="font-headline text-2xl font-bold text-on-background">Mis Pedidos</h1>

@@ -90,14 +90,14 @@ export default function AdminOrders() {
   ]
 
   return (
-    <div className="p-4 sm:p-6 max-w-7xl mx-auto space-y-6">
+    <div className="max-w-7xl mx-auto space-y-6 platform-enter">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4">
         <div>
           <h2 className="text-2xl sm:text-3xl font-black text-on-background font-headline tracking-tight">Gestión de Pedidos</h2>
           <p className="text-sm text-text-muted mt-1">Monitorea el ciclo de vida de los envíos.</p>
         </div>
-        <button onClick={handleExportCSV} className="bg-primary hover:bg-primary text-white px-5 py-2.5 rounded-xl font-bold flex items-center gap-2 shadow-lg transition-all active:scale-95 text-sm">
+        <button onClick={handleExportCSV} className="bg-primary hover:bg-primary-dark text-white px-5 py-2.5 rounded-xl font-bold flex items-center gap-2 shadow-lg transition-all active:scale-95 text-sm">
           <span className="material-symbols-outlined text-[18px]">download</span> Exportar
         </button>
       </div>
@@ -105,21 +105,21 @@ export default function AdminOrders() {
       {/* Metrics */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {metrics.map((m, i) => (
-          <div key={i} className="bg-white p-4 rounded-xl border border-outline-variant flex items-center gap-3">
-            <div className={`w-10 h-10 rounded-lg ${m.bg} ${m.color} flex items-center justify-center`}>
-              <span className="material-symbols-outlined text-[20px]">{m.icon}</span>
+          <div key={i} className="bg-white p-5 rounded-2xl border border-outline-variant/15 shadow-[0_1px_3px_rgba(0,0,0,0.04)] flex items-center gap-4 stat-card">
+            <div className={`w-11 h-11 rounded-xl ${m.bg} ${m.color} flex items-center justify-center flex-shrink-0`}>
+              <span className="material-symbols-outlined text-[22px]">{m.icon}</span>
             </div>
             <div>
               <p className="text-[10px] font-semibold text-text-muted uppercase tracking-wider">{m.label}</p>
-              <p className="text-lg font-black text-on-background font-headline">{m.value}</p>
+              <p className="text-xl font-black text-on-background font-headline">{m.value}</p>
             </div>
           </div>
         ))}
       </div>
 
       {/* Table Card */}
-      <div className="bg-white rounded-xl border border-outline-variant overflow-hidden">
-        <div className="p-4 border-b border-outline-variant/30 flex flex-col sm:flex-row gap-3">
+      <div className="bg-white rounded-2xl border border-outline-variant/15 shadow-[0_1px_3px_rgba(0,0,0,0.04)] overflow-hidden">
+        <div className="p-4 border-b border-outline-variant/10 flex flex-col sm:flex-row gap-3">
           <div className="relative flex-1">
             <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-muted text-[18px]">search</span>
             <input type="text" value={search} onChange={e => setSearch(e.target.value)} placeholder="Buscar por # pedido o cliente..."
@@ -150,7 +150,7 @@ export default function AdminOrders() {
           <div className="overflow-x-auto">
             <table className="w-full text-left min-w-[700px]">
               <thead>
-                <tr className="bg-surface-container-low text-[11px] font-bold text-text-muted uppercase tracking-wider">
+                <tr className="bg-[#f8fafc] text-[11px] font-bold text-text-muted uppercase tracking-wider border-b border-outline-variant/10">
                   <th className="px-5 py-3">Pedido</th>
                   <th className="px-5 py-3">Cliente</th>
                   <th className="px-5 py-3">Fecha</th>
@@ -159,7 +159,7 @@ export default function AdminOrders() {
                   <th className="px-5 py-3 text-right">Acciones</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-outline-variant/30">
+              <tbody className="divide-y divide-outline-variant/8">
                 {paginated.map(ord => {
                   const st = STATUS_CONFIG[ord.status] || STATUS_CONFIG.pending
                   const customerName = ord.customer ? `${ord.customer.firstName} ${ord.customer.lastName}` : '—'
@@ -198,7 +198,7 @@ export default function AdminOrders() {
           </div>
         )}
 
-        <div className="px-5 py-3 border-t border-outline-variant/30 flex flex-col sm:flex-row justify-between items-center gap-3">
+        <div className="px-5 py-3 border-t border-outline-variant/10 bg-[#fafafa] flex flex-col sm:flex-row justify-between items-center gap-3">
           <span className="text-xs text-text-muted">
             Mostrando <span className="font-bold text-text-muted">{Math.min((page - 1) * ITEMS_PER_PAGE + 1, total)}-{Math.min(page * ITEMS_PER_PAGE, total)}</span> de <span className="font-bold text-text-muted">{total}</span> pedidos
           </span>

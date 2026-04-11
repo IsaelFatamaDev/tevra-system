@@ -1,4 +1,4 @@
-import { NavLink, useNavigate, useLocation } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../../core/contexts/AuthContext'
 
 const navSections = [
@@ -38,7 +38,6 @@ const navSections = [
 export default function AdminSidebar({ open, onClose }) {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
-  const location = useLocation()
 
   const handleLogout = () => {
     logout()
@@ -51,23 +50,35 @@ export default function AdminSidebar({ open, onClose }) {
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden" onClick={onClose} />
       )}
 
-      <aside className={`fixed top-0 left-0 z-50 h-screen w-65 bg-[#111318] flex flex-col transition-transform duration-300 lg:translate-x-0 ${open ? 'translate-x-0' : '-translate-x-full'}`}>
+      <aside className={`fixed top-0 left-0 z-50 h-screen w-65 flex flex-col transition-transform duration-300 lg:translate-x-0 ${open ? 'translate-x-0' : '-translate-x-full'}`}
+        style={{ background: 'linear-gradient(180deg, #0d1520 0%, #111318 40%, #0f1218 100%)' }}>
+
+        {/* Top accent line */}
+        <div className="h-[2px] w-full bg-gradient-to-r from-secondary/60 via-secondary to-transparent flex-shrink-0" />
+
         {/* Brand */}
-        <div className="flex items-center gap-3 px-5 h-17 border-b border-white/6">
-          <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center">
-            <span className="text-white font-black text-sm">TV</span>
+        <div className="flex items-center gap-3 px-5 h-16 border-b border-white/[0.06] flex-shrink-0">
+          <div className="w-9 h-9 rounded-xl flex items-center justify-center shadow-lg"
+            style={{ background: 'linear-gradient(135deg, #ff6b6b 0%, #ff4757 100%)' }}>
+            <span className="text-white font-black text-sm tracking-tight">TV</span>
           </div>
           <div>
             <p className="font-headline text-[15px] font-extrabold text-white tracking-tight">TeVra</p>
-            <p className="text-[10px] text-white/30 font-medium tracking-wide">Admin Panel</p>
+            <p className="text-[10px] text-white/30 font-medium tracking-widest uppercase">Admin Panel</p>
           </div>
+          <button
+            onClick={onClose}
+            className="ml-auto lg:hidden p-1.5 rounded-lg text-white/20 hover:text-white/60 hover:bg-white/5 transition-all"
+          >
+            <span className="material-symbols-outlined text-[18px]">close</span>
+          </button>
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 py-4 px-3 overflow-y-auto scrollbar-thin">
+        <nav className="flex-1 py-4 px-3 overflow-y-auto sidebar-scroll">
           {navSections.map((section, idx) => (
-            <div key={section.title} className={idx > 0 ? 'mt-5' : ''}>
-              <p className="px-3 mb-2 text-[10px] font-bold uppercase tracking-[0.12em] text-white/25">{section.title}</p>
+            <div key={section.title} className={idx > 0 ? 'mt-6' : ''}>
+              <p className="px-3 mb-1.5 text-[9px] font-bold uppercase tracking-[0.16em] text-white/20">{section.title}</p>
               <div className="space-y-0.5">
                 {section.items.map((item) => (
                   <NavLink
@@ -76,22 +87,27 @@ export default function AdminSidebar({ open, onClose }) {
                     end={item.end}
                     onClick={onClose}
                     className={({ isActive }) =>
-                      `group flex items-center gap-3 px-3 py-2 rounded-lg text-[13px] font-medium transition-all duration-150 ${isActive
-                        ? 'bg-white/10 text-white'
-                        : 'text-white/45 hover:text-white/80 hover:bg-white/4'
+                      `group flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-medium transition-all duration-150 relative overflow-hidden ${isActive
+                        ? 'text-white'
+                        : 'text-white/40 hover:text-white/75 hover:bg-white/[0.04]'
                       }`
                     }
+                    style={({ isActive }) => isActive ? {
+                      background: 'linear-gradient(90deg, rgba(255,107,107,0.12) 0%, rgba(255,107,107,0.04) 60%, transparent 100%)',
+                    } : {}}
                   >
                     {({ isActive }) => (
                       <>
+                        {isActive && (
+                          <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-r-full bg-secondary" />
+                        )}
                         <span
-                          className={`material-symbols-outlined text-[20px] transition-colors ${isActive ? 'text-white' : 'text-white/30 group-hover:text-white/60'}`}
+                          className={`material-symbols-outlined text-[20px] transition-colors ${isActive ? 'text-secondary' : 'text-white/25 group-hover:text-white/50'}`}
                           style={isActive ? { fontVariationSettings: "'FILL' 1" } : {}}
                         >
                           {item.icon}
                         </span>
-                        {item.label}
-                        {isActive && <span className="ml-auto w-1 h-4 rounded-full bg-white" />}
+                        <span className={isActive ? 'font-semibold' : ''}>{item.label}</span>
                       </>
                     )}
                   </NavLink>
@@ -102,16 +118,21 @@ export default function AdminSidebar({ open, onClose }) {
         </nav>
 
         {/* User Section */}
-        <div className="border-t border-white/6 p-3">
-          <div className="flex items-center gap-3 p-2 rounded-xl hover:bg-white/4 transition-colors">
-            <div className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-white font-bold text-xs">
+        <div className="border-t border-white/[0.06] p-3 flex-shrink-0">
+          <div className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/[0.04] transition-colors group">
+            <div className="w-9 h-9 rounded-full flex items-center justify-center text-white font-bold text-xs flex-shrink-0"
+              style={{ background: 'linear-gradient(135deg, rgba(255,107,107,0.3) 0%, rgba(255,107,107,0.15) 100%)', border: '1px solid rgba(255,107,107,0.2)' }}>
               {user?.firstName?.[0]}{user?.lastName?.[0]}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-[13px] font-semibold text-white truncate">{user?.firstName} {user?.lastName}</p>
-              <p className="text-[10px] text-white/25 capitalize truncate">{user?.role?.replace('_', ' ')}</p>
+              <p className="text-[13px] font-semibold text-white truncate leading-tight">{user?.firstName} {user?.lastName}</p>
+              <p className="text-[10px] text-white/25 capitalize truncate leading-tight">{user?.role?.replace('_', ' ')}</p>
             </div>
-            <button onClick={handleLogout} className="p-1.5 rounded-lg text-white/20 hover:text-red-400 hover:bg-red-500/10 transition-all" title="Cerrar sesión">
+            <button
+              onClick={handleLogout}
+              className="p-1.5 rounded-lg text-white/20 hover:text-red-400 hover:bg-red-500/10 transition-all opacity-0 group-hover:opacity-100"
+              title="Cerrar sesión"
+            >
               <span className="material-symbols-outlined text-[18px]">logout</span>
             </button>
           </div>

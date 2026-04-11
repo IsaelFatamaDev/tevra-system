@@ -51,27 +51,27 @@ export default function AdminCategories() {
   }
 
   return (
-    <div className="p-4 sm:p-6 max-w-5xl mx-auto space-y-6">
+    <div className="max-w-5xl mx-auto space-y-6 platform-enter">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4">
         <div>
           <h2 className="text-2xl sm:text-3xl font-black text-on-background font-headline tracking-tight">Categorías</h2>
           <p className="text-sm text-text-muted mt-1">Organiza tu catálogo de productos.</p>
         </div>
-        <button onClick={openCreate} className="bg-primary hover:bg-primary text-white px-5 py-2.5 rounded-xl font-bold flex items-center gap-2 shadow-lg transition-all active:scale-95 text-sm">
+        <button onClick={openCreate} className="bg-primary hover:bg-primary-dark text-white px-5 py-2.5 rounded-xl font-bold flex items-center gap-2 shadow-lg transition-all active:scale-95 text-sm">
           <span className="material-symbols-outlined text-[18px]">add_circle</span> Nueva Categoría
         </button>
       </div>
 
       {/* Metric */}
       <div className="flex gap-4">
-        <div className="bg-white p-4 rounded-xl border border-outline-variant flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
-            <span className="material-symbols-outlined text-[20px]">category</span>
+        <div className="bg-white p-5 rounded-2xl border border-outline-variant/15 shadow-[0_1px_3px_rgba(0,0,0,0.04)] flex items-center gap-4 stat-card">
+          <div className="w-11 h-11 rounded-xl bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
+            <span className="material-symbols-outlined text-[22px]">category</span>
           </div>
           <div>
-            <p className="text-[10px] font-semibold text-text-muted uppercase tracking-wider">Total</p>
-            <p className="text-lg font-black text-on-background font-headline">{categories.length}</p>
+            <p className="text-[10px] font-semibold text-text-muted uppercase tracking-wider">Total Categorías</p>
+            <p className="text-xl font-black text-on-background font-headline">{categories.length}</p>
           </div>
         </div>
       </div>

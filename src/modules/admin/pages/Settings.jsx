@@ -89,7 +89,7 @@ export default function AdminSettings() {
   }
 
   return (
-    <div className="p-4 sm:p-6 max-w-3xl mx-auto space-y-6">
+    <div className="max-w-3xl mx-auto space-y-6 platform-enter">
       <div>
         <h2 className="text-2xl sm:text-3xl font-black text-on-background font-headline tracking-tight">Configuración</h2>
         <p className="text-sm text-text-muted mt-1">Ajustes generales de la plataforma.</p>

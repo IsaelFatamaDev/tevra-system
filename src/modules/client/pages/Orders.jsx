@@ -49,7 +49,7 @@ export default function ClientOrders() {
   })
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 platform-enter">
       <div>
         <h1 className="font-headline text-2xl font-bold text-on-background">Mis Pedidos</h1>
         <p className="text-sm text-text-muted mt-1">Historial completo de tus importaciones</p>

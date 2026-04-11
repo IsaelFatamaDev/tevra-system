@@ -3,7 +3,7 @@ import ClientHeader from '../../client/layout/ClientHeader'
 
 export default function AgentLayout() {
   return (
-    <div className="min-h-screen bg-surface-container-low">
+    <div className="min-h-screen" style={{ backgroundColor: '#f4f6f9' }}>
       <ClientHeader />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
         <Outlet />

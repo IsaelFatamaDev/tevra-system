@@ -69,7 +69,7 @@ export default function AdminReports() {
   const cityColors = ['bg-primary', 'bg-secondary', 'bg-primary', 'bg-amber-500', 'bg-emerald-500']
 
   return (
-    <div className="p-4 sm:p-6 max-w-7xl mx-auto w-full space-y-6 sm:space-y-8">
+    <div className="max-w-7xl mx-auto w-full space-y-6 sm:space-y-8 platform-enter">
       {/* Header & Filters */}
       <section className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div className="space-y-1">
@@ -93,21 +93,20 @@ export default function AdminReports() {
       </section>
 
       {/* Metric Cards Grid */}
-      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
         {metricCards.map((card, i) => (
-          <div key={i} className="bg-white p-5 sm:p-6 rounded-xl border border-outline-variant/10 shadow-sm hover:shadow-md transition-shadow">
+          <div key={i} className="bg-white p-5 sm:p-6 rounded-2xl border border-outline-variant/15 shadow-[0_1px_3px_rgba(0,0,0,0.04)] stat-card">
             <div className="flex justify-between items-start mb-4">
-              <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center ${card.iconColor}`}>
-                <span className="material-symbols-outlined">{card.icon}</span>
+              <div className={`w-11 h-11 rounded-xl flex items-center justify-center ${card.iconColor}`}>
+                <span className="material-symbols-outlined text-[22px]">{card.icon}</span>
               </div>
-              <span className={`${card.trendBg} px-2 py-0.5 rounded-lg text-xs font-bold flex items-center gap-1`}>
-                <span className="material-symbols-outlined text-[14px]">
+              <span className={`${card.trendBg} px-2 py-1 rounded-lg text-[10px] font-bold flex items-center gap-1`}>
+                <span className="material-symbols-outlined text-[13px]">
                   {card.type === 'up' ? 'trending_up' : 'trending_down'}
                 </span>
-                {card.trend}
               </span>
             </div>
-            <p className="text-text-muted text-[10px] sm:text-xs font-medium uppercase tracking-wider mb-1">{card.title}</p>
+            <p className="text-text-muted text-[10px] font-semibold uppercase tracking-wider mb-1">{card.title}</p>
             <h3 className="text-2xl sm:text-3xl font-headline font-extrabold text-primary">{card.value}</h3>
             <p className="text-[10px] text-text-muted/70 mt-2">{card.subtitle}</p>
           </div>

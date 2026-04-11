@@ -29,7 +29,7 @@ export default function AgentCommissions() {
   const paginated = filtered.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE)
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 platform-enter">
       <div>
         <h1 className="font-headline text-2xl font-bold text-on-background">Mis Comisiones</h1>
         <p className="text-sm text-text-muted mt-1">Resumen y detalle de tus ganancias</p>
@@ -41,11 +41,11 @@ export default function AgentCommissions() {
           { label: 'Total Ganado', value: `$${Number(summary.totalEarned || 0).toLocaleString()}`, icon: 'account_balance_wallet', color: 'text-emerald-600 bg-emerald-50' },
           { label: 'Pagado', value: `$${Number(summary.totalPaid || 0).toLocaleString()}`, icon: 'check_circle', color: 'text-blue-600 bg-blue-50' },
           { label: 'Pendiente', value: `$${Number(summary.totalPending || 0).toLocaleString()}`, icon: 'pending', color: 'text-amber-600 bg-amber-50' },
-          { label: 'Total Movimientos', value: summary.count || commissions.length, icon: 'receipt', color: 'text-text-muted bg-surface-container-high' },
+          { label: 'Movimientos', value: summary.count || commissions.length, icon: 'receipt', color: 'text-primary bg-primary/10' },
         ].map(s => (
-          <div key={s.label} className="bg-white rounded-xl p-4 border border-outline-variant/30 shadow-sm">
-            <div className={`w-9 h-9 rounded-lg ${s.color} flex items-center justify-center mb-2`}>
-              <span className="material-symbols-outlined text-[18px]">{s.icon}</span>
+          <div key={s.label} className="bg-white rounded-2xl p-5 border border-outline-variant/15 shadow-[0_1px_3px_rgba(0,0,0,0.04)] stat-card">
+            <div className={`w-10 h-10 rounded-xl ${s.color} flex items-center justify-center mb-3`}>
+              <span className="material-symbols-outlined text-[20px]">{s.icon}</span>
             </div>
             <p className="text-xl font-bold text-on-background">{s.value}</p>
             <p className="text-xs text-text-muted mt-0.5">{s.label}</p>

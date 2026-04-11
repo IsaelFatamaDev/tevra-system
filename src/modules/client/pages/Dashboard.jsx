@@ -60,7 +60,7 @@ export default function ClientDashboard() {
   const mainActiveOrder = activeOrders[0] || null
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 platform-enter">
       {/* Hero Welcome + Agent Card */}
       <section className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         <div className="lg:col-span-8 flex flex-col justify-center">
@@ -115,7 +115,7 @@ export default function ClientDashboard() {
               { title: 'Total Pedidos', value: orders.length, icon: 'package_2', color: 'text-secondary', bg: 'bg-secondary/5' },
               { title: 'Completados', value: completedCount, icon: 'check_circle', color: 'text-emerald-600', bg: 'bg-emerald-50' },
             ].map((s) => (
-              <div key={s.title} className="bg-white rounded-2xl p-6 shadow-sm border border-outline-variant/10 flex items-center gap-4 hover:shadow-md transition-shadow">
+              <div key={s.title} className="bg-white rounded-2xl p-6 border border-outline-variant/15 shadow-[0_1px_3px_rgba(0,0,0,0.04)] flex items-center gap-4 stat-card">
                 <div className={`w-12 h-12 ${s.bg} rounded-full flex items-center justify-center`}>
                   <span className={`material-symbols-outlined ${s.color}`}>{s.icon}</span>
                 </div>
@@ -232,7 +232,7 @@ export default function ClientDashboard() {
 
           {/* Empty State */}
           {activeOrders.length === 0 && (
-            <div className="bg-white rounded-2xl shadow-sm border border-outline-variant/10 p-12 text-center">
+            <div className="bg-white rounded-2xl border border-outline-variant/15 shadow-[0_1px_3px_rgba(0,0,0,0.04)] p-12 text-center">
               <span className="material-symbols-outlined text-5xl text-text-muted/20 block mb-3">package_2</span>
               <h3 className="font-headline text-lg font-bold text-on-background mb-1">No tienes pedidos activos</h3>
               <p className="text-sm text-text-muted mb-4">Contacta a tu agente para hacer tu primera compra</p>
@@ -244,7 +244,7 @@ export default function ClientDashboard() {
           )}
 
           {/* Order History */}
-          <section className="bg-white rounded-2xl shadow-sm border border-outline-variant/10 overflow-hidden">
+          <section className="bg-white rounded-2xl border border-outline-variant/15 shadow-[0_1px_3px_rgba(0,0,0,0.04)] overflow-hidden">
             <div className="flex items-center justify-between px-6 py-5 border-b border-outline-variant/10">
               <div>
                 <h3 className="font-headline font-bold text-on-background text-lg">Historial de Pedidos</h3>
@@ -298,7 +298,7 @@ export default function ClientDashboard() {
               { icon: 'credit_card', label: 'Métodos de Pago', desc: 'Administra tus métodos de pago', to: null },
               { icon: 'lock', label: 'Seguridad', desc: 'Contraseña y verificación', to: '/mi-cuenta/seguridad' },
             ].map((c, i) => c.to ? (
-              <Link key={i} to={c.to} className="bg-white rounded-2xl p-5 shadow-sm border border-outline-variant/10 hover:shadow-md transition-all text-left flex items-center gap-4 group no-underline">
+              <Link key={i} to={c.to} className="bg-white rounded-2xl p-5 border border-outline-variant/15 shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:shadow-md hover:-translate-y-0.5 transition-all text-left flex items-center gap-4 group no-underline">
                 <div className="w-12 h-12 rounded-xl bg-primary/5 flex items-center justify-center group-hover:bg-primary/10 transition-colors">
                   <span className="material-symbols-outlined text-primary">{c.icon}</span>
                 </div>
@@ -309,7 +309,7 @@ export default function ClientDashboard() {
                 <span className="material-symbols-outlined text-text-muted/30 ml-auto">chevron_right</span>
               </Link>
             ) : (
-              <button key={i} className="bg-white rounded-2xl p-5 shadow-sm border border-outline-variant/10 hover:shadow-md transition-all text-left flex items-center gap-4 group opacity-60 cursor-default">
+              <button key={i} className="bg-white rounded-2xl p-5 border border-outline-variant/15 shadow-[0_1px_3px_rgba(0,0,0,0.04)] text-left flex items-center gap-4 group opacity-50 cursor-default">
                 <div className="w-12 h-12 rounded-xl bg-primary/5 flex items-center justify-center">
                   <span className="material-symbols-outlined text-primary">{c.icon}</span>
                 </div>

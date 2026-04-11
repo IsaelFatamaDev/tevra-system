@@ -76,7 +76,7 @@ export default function AdminBrands() {
   }
 
   return (
-    <div className="p-4 sm:p-6 max-w-5xl mx-auto space-y-6">
+    <div className="max-w-5xl mx-auto space-y-6 platform-enter">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4">
         <div>

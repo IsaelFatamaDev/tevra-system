@@ -114,7 +114,7 @@ export default function AgentDashboard() {
   const totalRevenue = orders.reduce((sum, o) => sum + parseFloat(o.total || 0), 0)
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 platform-enter">
       {/* Hero / Profile Header */}
       <div className="relative overflow-hidden rounded-2xl p-6 sm:p-8 text-white"
         style={{ background: 'linear-gradient(135deg, #0a2540 0%, #1a1a2e 50%, #0d2137 100%)' }}>

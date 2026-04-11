@@ -66,7 +66,7 @@ export default function AdminCommunications() {
   }
 
   return (
-    <div className="p-4 sm:p-6 max-w-7xl mx-auto space-y-6">
+    <div className="max-w-7xl mx-auto space-y-6 platform-enter">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4">
         <div>
@@ -74,7 +74,7 @@ export default function AdminCommunications() {
           <p className="text-sm text-text-muted mt-1">Gestiona campañas de email, WhatsApp, SMS y push.</p>
         </div>
         <button onClick={() => setShowCreate(true)}
-          className="bg-primary hover:bg-primary text-white px-5 py-2.5 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-primary/20 transition-all hover:scale-[1.02] active:scale-95 text-sm">
+          className="bg-primary hover:bg-primary-dark text-white px-5 py-2.5 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-primary/20 transition-all active:scale-95 text-sm">
           <span className="material-symbols-outlined text-[18px]">campaign</span> Nueva Campaña
         </button>
       </div>

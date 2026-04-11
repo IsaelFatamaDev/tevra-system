@@ -87,7 +87,7 @@ export default function ClientSecurity() {
   ]
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 platform-enter">
       <div>
         <h1 className="font-headline text-2xl font-bold text-primary">Seguridad y Perfil</h1>
         <p className="text-sm text-text-muted mt-1">Administra tu información personal y contraseña</p>
