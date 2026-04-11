@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import useScrollReveal from '../../../core/hooks/useScrollReveal'
+import { useCart } from '../../../core/hooks/useCart'
 import productsService from '../services/products.service'
 
 const SORT_OPTIONS = [
@@ -16,15 +17,33 @@ const DEMAND_BADGES = {
   high: { label: 'Más pedido', bg: 'bg-mint text-primary' },
 }
 
-function ProductCard({ producto }) {
+function ProductCard({ producto, onClick }) {
   const { ref, isVisible } = useScrollReveal(0.05)
+  const { addItem } = useCart()
+  const [added, setAdded] = useState(false)
   const imgUrl = producto.images?.[0]
   const badge = DEMAND_BADGES[producto.demandLevel]
+
+  const handleAddToCart = (e) => {
+    e.stopPropagation()
+    addItem({
+      productId: producto.id,
+      slug: producto.slug,
+      name: producto.name,
+      price: Number(producto.priceUsd || 0),
+      image: producto.images?.[0] || '',
+      brand: producto.brand?.name || '',
+      qty: 1,
+    })
+    setAdded(true)
+    setTimeout(() => setAdded(false), 1500)
+  }
 
   return (
     <div
       ref={ref}
-      className={`bg-surface-container-lowest rounded-3xl overflow-hidden shadow-soft hover:shadow-premium hover:-translate-y-1.5 transition-all duration-400 flex flex-col group reveal ${isVisible ? 'visible' : ''}`}
+      onClick={onClick}
+      className={`bg-surface-container-lowest rounded-3xl overflow-hidden shadow-soft hover:shadow-premium hover:-translate-y-1.5 transition-all duration-400 flex flex-col group reveal cursor-pointer ${isVisible ? 'visible' : ''}`}
     >
       <div className="relative overflow-hidden h-52 bg-surface-container-low">
         {imgUrl ? (
@@ -76,9 +95,9 @@ function ProductCard({ producto }) {
               <span className="text-[10px] font-bold text-mint">Ahorras ~{producto.marginPct}%</span>
             </div>
           )}
-          <button className="w-full bg-primary text-white py-3 rounded-2xl font-headline font-bold text-sm hover:bg-primary-dark transition-colors flex items-center justify-center gap-2 group-hover:bg-secondary">
-            <span className="material-symbols-outlined text-base">chat_bubble</span>
-            Cotizar ahora
+          <button onClick={handleAddToCart} className={`w-full py-3 rounded-2xl font-headline font-bold text-sm transition-colors flex items-center justify-center gap-2 ${added ? 'bg-mint text-primary' : 'bg-primary text-white hover:bg-secondary group-hover:bg-secondary'}`}>
+            <span className="material-symbols-outlined text-base">{added ? 'check_circle' : 'add_shopping_cart'}</span>
+            {added ? '¡Agregado!' : 'Agregar al carrito'}
           </button>
         </div>
       </div>
@@ -97,6 +116,7 @@ export default function CatalogoPage() {
   const [page, setPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
   const [searchTimeout, setSearchTimeout] = useState(null)
+  const navigate = useNavigate()
 
   useEffect(() => {
     productsService.getCategories()
@@ -233,7 +253,7 @@ export default function CatalogoPage() {
               </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 lg:gap-6">
-              {products.map((p) => <ProductCard key={p.id} producto={p} />)}
+              {products.map((p) => <ProductCard key={p.id} producto={p} onClick={() => navigate(`/catalogo/${p.slug || p.id}`)} />)}
             </div>
             {totalPages > 1 && (
               <div className="flex justify-center items-center gap-2 mt-12">
@@ -276,6 +296,7 @@ export default function CatalogoPage() {
           </div>
         </div>
       </section>
+
     </main>
   )
 }

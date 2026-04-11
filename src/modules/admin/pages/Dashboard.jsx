@@ -90,7 +90,7 @@ export default function AdminDashboard() {
             <span className="material-symbols-outlined text-lg">file_download</span>
             Exportar
           </button>
-          <button className="px-5 py-2.5 bg-gradient-to-br from-primary to-primary-dark text-white font-semibold rounded-xl shadow-lg flex items-center gap-2 hover:opacity-90 transition-opacity text-sm">
+          <button className="px-5 py-2.5 bg-linear-to-br from-primary to-primary-dark text-white font-semibold rounded-xl shadow-lg flex items-center gap-2 hover:opacity-90 transition-opacity text-sm">
             <span className="material-symbols-outlined text-lg">add</span>
             Nuevo Agente
           </button>

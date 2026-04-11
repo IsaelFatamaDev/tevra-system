@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../../../core/contexts/AuthContext'
 import dashboardService from '../../admin/services/dashboard.service'
+import api from '../../../core/services/api'
 
 const statusColors = {
   pending: 'bg-amber-100 text-amber-700',
@@ -31,6 +32,11 @@ export default function AgentDashboard() {
   const [commissionSummary, setCommissionSummary] = useState({ totalEarned: 0, totalPaid: 0, totalPending: 0, count: 0 })
   const [agentProfile, setAgentProfile] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [showOrderModal, setShowOrderModal] = useState(false)
+  const [orderForm, setOrderForm] = useState({ customerEmail: '', productName: '', productLink: '', quantity: 1, unitPrice: '', notes: '' })
+  const [orderSaving, setOrderSaving] = useState(false)
+  const [orderErrors, setOrderErrors] = useState({})
+  const [orderMsg, setOrderMsg] = useState(null)
 
   const referralLink = `${window.location.origin}/ref/${agentProfile?.referralCode || user?.id?.slice(0, 8) || 'agent'}`
 
@@ -55,6 +61,54 @@ export default function AgentDashboard() {
     navigator.clipboard.writeText(referralLink)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
+  }
+
+  const validateOrder = () => {
+    const e = {}
+    if (!orderForm.customerEmail.trim()) e.customerEmail = 'Email del cliente requerido'
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(orderForm.customerEmail)) e.customerEmail = 'Email inválido'
+    if (!orderForm.productName.trim()) e.productName = 'Nombre del producto requerido'
+    if (!orderForm.unitPrice || isNaN(orderForm.unitPrice) || Number(orderForm.unitPrice) <= 0) e.unitPrice = 'Precio válido requerido'
+    if (!orderForm.quantity || Number(orderForm.quantity) < 1) e.quantity = 'Cantidad mínima: 1'
+    setOrderErrors(e)
+    return Object.keys(e).length === 0
+  }
+
+  const handleCreateOrder = async () => {
+    if (!validateOrder()) return
+    setOrderSaving(true)
+    setOrderMsg(null)
+    try {
+      const users = await api.get(`/users?email=${encodeURIComponent(orderForm.customerEmail)}`)
+      const customerList = users?.items || (Array.isArray(users) ? users : [])
+      const customer = customerList.find(u => u.email === orderForm.customerEmail)
+      if (!customer) {
+        setOrderMsg({ type: 'error', text: 'No se encontró un cliente con ese email. El cliente debe estar registrado.' })
+        setOrderSaving(false)
+        return
+      }
+      await api.post('/orders', {
+        customerId: customer.id,
+        agentId: agentProfile?.id || undefined,
+        items: [{
+          productName: orderForm.productName,
+          quantity: Number(orderForm.quantity),
+          unitPrice: Number(orderForm.unitPrice),
+        }],
+        notes: orderForm.notes || undefined,
+        productLink: orderForm.productLink || undefined,
+      })
+      setShowOrderModal(false)
+      setOrderForm({ customerEmail: '', productName: '', productLink: '', quantity: 1, unitPrice: '', notes: '' })
+      setOrderMsg(null)
+      const ordersRes = await dashboardService.getAgentOrders().catch(() => [])
+      const orderList = ordersRes?.data || (Array.isArray(ordersRes) ? ordersRes : [])
+      setOrders(orderList)
+    } catch (err) {
+      setOrderMsg({ type: 'error', text: err.message || 'Error al crear pedido' })
+    } finally {
+      setOrderSaving(false)
+    }
   }
 
   const totalRevenue = orders.reduce((sum, o) => sum + parseFloat(o.total || 0), 0)
@@ -88,6 +142,11 @@ export default function AgentDashboard() {
             </div>
           </div>
           <div className="flex gap-2">
+            <button onClick={() => { setShowOrderModal(true); setOrderMsg(null); setOrderErrors({}) }}
+              className="flex items-center gap-2 px-4 py-2.5 bg-secondary hover:bg-secondary/90 rounded-xl font-medium text-sm transition-colors text-white">
+              <span className="material-symbols-outlined text-[18px]">add_shopping_cart</span>
+              Crear Pedido
+            </button>
             <a href="https://wa.me/50370001234" target="_blank" rel="noopener noreferrer"
               className="flex items-center gap-2 px-4 py-2.5 bg-[#25d366] hover:bg-[#20bd5a] rounded-xl font-medium text-sm transition-colors">
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" /><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492l4.624-1.467A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818c-2.168 0-4.19-.588-5.932-1.609l-.425-.253-2.744.87.884-2.685-.276-.44A9.77 9.77 0 012.182 12c0-5.423 4.395-9.818 9.818-9.818S21.818 6.577 21.818 12s-4.395 9.818-9.818 9.818z" /></svg>
@@ -206,6 +265,105 @@ export default function AgentDashboard() {
                     }`}>{c.status === 'paid' ? 'Pagada' : c.status === 'approved' ? 'Aprobada' : c.status === 'cancelled' ? 'Cancelada' : 'Pendiente'}</span>
                 </div>
               ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showOrderModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={() => setShowOrderModal(false)}>
+          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
+          <div className="relative bg-white rounded-2xl w-full max-w-lg p-6 shadow-2xl" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-5">
+              <h3 className="text-lg font-bold text-on-background">Crear Pedido para Cliente</h3>
+              <button onClick={() => setShowOrderModal(false)} className="w-8 h-8 rounded-full bg-surface-container-low flex items-center justify-center hover:bg-surface-container-high">
+                <span className="material-symbols-outlined text-[18px]">close</span>
+              </button>
+            </div>
+            {orderMsg && (
+              <div className={`mb-4 p-3 rounded-xl text-sm font-medium ${orderMsg.type === 'success' ? 'bg-emerald-50 text-emerald-700' : 'bg-red-50 text-red-700'}`}>
+                {orderMsg.text}
+              </div>
+            )}
+            <div className="space-y-4">
+              <div>
+                <label className="block text-xs font-semibold text-text-muted mb-1">Email del cliente</label>
+                <input
+                  value={orderForm.customerEmail}
+                  onChange={e => setOrderForm({ ...orderForm, customerEmail: e.target.value })}
+                  className={`w-full px-3 py-2.5 rounded-xl border ${orderErrors.customerEmail ? 'border-red-400' : 'border-outline-variant/20'} text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none`}
+                  placeholder="cliente@email.com"
+                />
+                {orderErrors.customerEmail && <p className="text-xs text-red-500 mt-1">{orderErrors.customerEmail}</p>}
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-text-muted mb-1">Nombre del producto</label>
+                <input
+                  value={orderForm.productName}
+                  onChange={e => setOrderForm({ ...orderForm, productName: e.target.value })}
+                  className={`w-full px-3 py-2.5 rounded-xl border ${orderErrors.productName ? 'border-red-400' : 'border-outline-variant/20'} text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none`}
+                  placeholder="Nike Air Max 90"
+                />
+                {orderErrors.productName && <p className="text-xs text-red-500 mt-1">{orderErrors.productName}</p>}
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-text-muted mb-1">Link del producto (opcional)</label>
+                <input
+                  value={orderForm.productLink}
+                  onChange={e => setOrderForm({ ...orderForm, productLink: e.target.value })}
+                  className="w-full px-3 py-2.5 rounded-xl border border-outline-variant/20 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
+                  placeholder="https://www.amazon.com/..."
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-semibold text-text-muted mb-1">Cantidad</label>
+                  <input
+                    type="number"
+                    min="1"
+                    value={orderForm.quantity}
+                    onChange={e => setOrderForm({ ...orderForm, quantity: e.target.value })}
+                    className={`w-full px-3 py-2.5 rounded-xl border ${orderErrors.quantity ? 'border-red-400' : 'border-outline-variant/20'} text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none`}
+                  />
+                  {orderErrors.quantity && <p className="text-xs text-red-500 mt-1">{orderErrors.quantity}</p>}
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-text-muted mb-1">Precio unitario (USD)</label>
+                  <input
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value={orderForm.unitPrice}
+                    onChange={e => setOrderForm({ ...orderForm, unitPrice: e.target.value })}
+                    className={`w-full px-3 py-2.5 rounded-xl border ${orderErrors.unitPrice ? 'border-red-400' : 'border-outline-variant/20'} text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none`}
+                    placeholder="0.00"
+                  />
+                  {orderErrors.unitPrice && <p className="text-xs text-red-500 mt-1">{orderErrors.unitPrice}</p>}
+                </div>
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-text-muted mb-1">Notas (opcional)</label>
+                <textarea
+                  value={orderForm.notes}
+                  onChange={e => setOrderForm({ ...orderForm, notes: e.target.value })}
+                  className="w-full px-3 py-2.5 rounded-xl border border-outline-variant/20 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none resize-none"
+                  rows={2}
+                  placeholder="Talla, color, especificaciones..."
+                />
+              </div>
+            </div>
+            <div className="flex justify-end gap-2 mt-6">
+              <button onClick={() => setShowOrderModal(false)} className="px-4 py-2.5 rounded-xl text-sm font-medium text-text-muted hover:bg-surface-container-low transition-colors">
+                Cancelar
+              </button>
+              <button
+                onClick={handleCreateOrder}
+                disabled={orderSaving}
+                className="px-5 py-2.5 bg-primary text-white rounded-xl text-sm font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50 flex items-center gap-2"
+              >
+                {orderSaving && <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />}
+                Crear Pedido
+              </button>
             </div>
           </div>
         </div>

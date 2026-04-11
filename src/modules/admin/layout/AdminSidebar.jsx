@@ -51,10 +51,10 @@ export default function AdminSidebar({ open, onClose }) {
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden" onClick={onClose} />
       )}
 
-      <aside className={`fixed top-0 left-0 z-50 h-screen w-65 bg-[#0B1120] flex flex-col transition-transform duration-300 lg:translate-x-0 ${open ? 'translate-x-0' : '-translate-x-full'}`}>
+      <aside className={`fixed top-0 left-0 z-50 h-screen w-65 bg-[#111318] flex flex-col transition-transform duration-300 lg:translate-x-0 ${open ? 'translate-x-0' : '-translate-x-full'}`}>
         {/* Brand */}
         <div className="flex items-center gap-3 px-5 h-17 border-b border-white/6">
-          <div className="w-9 h-9 rounded-xl bg-linear-to-br from-sky-500 to-indigo-500 flex items-center justify-center shadow-lg shadow-sky-500/20">
+          <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center">
             <span className="text-white font-black text-sm">TV</span>
           </div>
           <div>
@@ -77,7 +77,7 @@ export default function AdminSidebar({ open, onClose }) {
                     onClick={onClose}
                     className={({ isActive }) =>
                       `group flex items-center gap-3 px-3 py-2 rounded-lg text-[13px] font-medium transition-all duration-150 ${isActive
-                        ? 'bg-sky-500/15 text-sky-400'
+                        ? 'bg-white/10 text-white'
                         : 'text-white/45 hover:text-white/80 hover:bg-white/4'
                       }`
                     }
@@ -85,13 +85,13 @@ export default function AdminSidebar({ open, onClose }) {
                     {({ isActive }) => (
                       <>
                         <span
-                          className={`material-symbols-outlined text-[20px] transition-colors ${isActive ? 'text-sky-400' : 'text-white/30 group-hover:text-white/60'}`}
+                          className={`material-symbols-outlined text-[20px] transition-colors ${isActive ? 'text-white' : 'text-white/30 group-hover:text-white/60'}`}
                           style={isActive ? { fontVariationSettings: "'FILL' 1" } : {}}
                         >
                           {item.icon}
                         </span>
                         {item.label}
-                        {isActive && <span className="ml-auto w-1 h-4 rounded-full bg-sky-400" />}
+                        {isActive && <span className="ml-auto w-1 h-4 rounded-full bg-white" />}
                       </>
                     )}
                   </NavLink>
@@ -104,7 +104,7 @@ export default function AdminSidebar({ open, onClose }) {
         {/* User Section */}
         <div className="border-t border-white/6 p-3">
           <div className="flex items-center gap-3 p-2 rounded-xl hover:bg-white/4 transition-colors">
-            <div className="w-9 h-9 rounded-full bg-linear-to-br from-sky-500 to-indigo-600 flex items-center justify-center text-white font-bold text-xs shadow-lg shadow-sky-500/20">
+            <div className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-white font-bold text-xs">
               {user?.firstName?.[0]}{user?.lastName?.[0]}
             </div>
             <div className="flex-1 min-w-0">

@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react'
 import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom'
 import { AuthProvider, useAuth } from './core/contexts/AuthContext'
+import { CartProvider } from './core/contexts/CartContext'
 import Navbar from './core/components/Navbar'
 import Footer from './core/components/Footer'
 import WhatsAppButton from './core/components/WhatsAppButton'
@@ -13,8 +14,14 @@ import HomePage from './modules/public/pages/HomePage'
 import LoginPage from './modules/public/pages/LoginPage'
 import AgentesPage from './modules/public/pages/AgentesPage'
 import CatalogoPage from './modules/public/pages/CatalogoPage'
+import ProductDetailPage from './modules/public/pages/ProductDetailPage'
+import AgentRegistrationPage from './modules/public/pages/AgentRegistrationPage'
 import EmpresaPage from './modules/public/pages/EmpresaPage'
 import TrackingPage from './modules/public/pages/TrackingPage'
+import CartPage from './modules/public/pages/CartPage'
+import AgentDirectoryPage from './modules/public/pages/AgentDirectoryPage'
+import AgentProfilePage from './modules/public/pages/AgentProfilePage'
+import QuotePage from './modules/public/pages/QuotePage'
 
 // Admin module
 import AdminLayout from './modules/admin/layout/AdminLayout'
@@ -33,16 +40,29 @@ import AdminBrands from './modules/admin/pages/Brands'
 // Client module
 import ClientLayout from './modules/client/layout/ClientLayout'
 import ClientDashboard from './modules/client/pages/Dashboard'
+import ClientOrders from './modules/client/pages/Orders'
+import ClientAddresses from './modules/client/pages/Addresses'
+import ClientSecurity from './modules/client/pages/Security'
 
 // Agent module
 import AgentLayout from './modules/agent/layout/AgentLayout'
 import AgentDashboard from './modules/agent/pages/Dashboard'
+import AgentOrders from './modules/agent/pages/Orders'
+import AgentCommissions from './modules/agent/pages/Commissions'
+import AgentClients from './modules/agent/pages/Clients'
 
 function ProtectedRoute({ roles, children }) {
   const { user, isAuthenticated, loading } = useAuth()
   if (loading) return null
   if (!isAuthenticated) return <Navigate to="/login" replace />
   if (roles && !roles.includes(user?.role)) return <Navigate to={getDashboardPath(user?.role)} replace />
+  return children
+}
+
+function RedirectIfAuthenticated({ children }) {
+  const { isAuthenticated, user, loading } = useAuth()
+  if (loading) return null
+  if (isAuthenticated) return <Navigate to={getDashboardPath(user?.role)} replace />
   return children
 }
 
@@ -55,11 +75,16 @@ function PublicLayout() {
       {!isAuthPage && <Navbar />}
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/login" element={<RedirectIfAuthenticated><LoginPage /></RedirectIfAuthenticated>} />
         <Route path="/agentes" element={<AgentesPage />} />
         <Route path="/catalogo" element={<CatalogoPage />} />
+        <Route path="/catalogo/:slug" element={<ProductDetailPage />} />
         <Route path="/empresa" element={<EmpresaPage />} />
         <Route path="/tracking" element={<TrackingPage />} />
+        <Route path="/carrito" element={<CartPage />} />
+        <Route path="/directorio-agentes" element={<AgentDirectoryPage />} />
+        <Route path="/agente/:code" element={<AgentProfilePage />} />
+        <Route path="/cotizar" element={<QuotePage />} />
       </Routes>
       {!isAuthPage && <Footer />}
       {!isAuthPage && <WhatsAppButton />}
@@ -98,6 +123,9 @@ function AppLayout() {
           </ProtectedRoute>
         }>
           <Route index element={<ClientDashboard />} />
+          <Route path="pedidos" element={<ClientOrders />} />
+          <Route path="direcciones" element={<ClientAddresses />} />
+          <Route path="seguridad" element={<ClientSecurity />} />
         </Route>
 
         {/* Agent routes */}
@@ -107,7 +135,13 @@ function AppLayout() {
           </ProtectedRoute>
         }>
           <Route index element={<AgentDashboard />} />
+          <Route path="pedidos" element={<AgentOrders />} />
+          <Route path="comisiones" element={<AgentCommissions />} />
+          <Route path="clientes" element={<AgentClients />} />
         </Route>
+
+        {/* Agent Registration (standalone layout) */}
+        <Route path="/registro-agente" element={<AgentRegistrationPage />} />
 
         {/* Public routes */}
         <Route path="/*" element={<PublicLayout />} />
@@ -123,8 +157,10 @@ export default function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        {showSplash && <SplashScreen onFinish={handleSplashFinish} />}
-        <AppLayout />
+        <CartProvider>
+          {showSplash && <SplashScreen onFinish={handleSplashFinish} />}
+          <AppLayout />
+        </CartProvider>
       </AuthProvider>
     </BrowserRouter>
   )

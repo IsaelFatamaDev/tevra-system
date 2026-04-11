@@ -62,13 +62,13 @@ function HeroAgentes() {
               Sé agente TeVra. Sin inversión. Sin jefe. Sin límites.
             </p>
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 pt-2">
-              <a
-                href="#registro"
+              <Link
+                to="/registro-agente"
                 className="px-10 py-4 bg-white text-primary rounded-2xl font-headline font-bold text-lg hover:bg-surface-container-lowest transition-all shadow-xl shadow-black/10 active:scale-95"
                 style={{ fontSize: 'clamp(0.9rem, 1.5vw, 1.125rem)' }}
               >
                 Quiero unirme
-              </a>
+              </Link>
               <div className="text-white/80 text-sm font-medium leading-relaxed">
                 <span className="block">Es gratis.</span>
                 <span className="block">Sin inversión inicial.</span>
@@ -271,58 +271,43 @@ function RegistroSection() {
     <section id="registro" className="py-24 bg-surface-container-low">
       <div className="max-w-4xl mx-auto px-4 sm:px-8">
         <div ref={ref} className={`bg-surface-container-lowest rounded-[2.5rem] p-10 md:p-16 shadow-2xl relative reveal ${isVisible ? 'visible' : ''}`}>
-          <div className="text-center mb-12">
-            <h2 className="font-headline text-4xl font-extrabold text-primary mb-4">Únete a la Red TeVra</h2>
-            <p className="text-text-muted">Completa el formulario y un asesor se pondrá en contacto contigo para tu entrevista inicial.</p>
+          <div className="text-center space-y-8">
+            <h2 className="font-headline text-4xl font-extrabold text-primary">Únete a la Red TeVra</h2>
+            <p className="text-text-muted text-lg max-w-xl mx-auto">
+              Completa el proceso de registro en 3 simples pasos y un asesor se pondrá en contacto contigo para tu entrevista inicial.
+            </p>
+            <div className="grid grid-cols-3 gap-6 max-w-lg mx-auto">
+              <div className="text-center">
+                <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center mx-auto mb-2">
+                  <span className="font-headline font-bold text-secondary">1</span>
+                </div>
+                <p className="text-xs font-bold text-primary">Datos personales</p>
+              </div>
+              <div className="text-center">
+                <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center mx-auto mb-2">
+                  <span className="font-headline font-bold text-secondary">2</span>
+                </div>
+                <p className="text-xs font-bold text-primary">Perfil profesional</p>
+              </div>
+              <div className="text-center">
+                <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center mx-auto mb-2">
+                  <span className="font-headline font-bold text-secondary">3</span>
+                </div>
+                <p className="text-xs font-bold text-primary">Confirmación</p>
+              </div>
+            </div>
+            <Link
+              to="/registro-agente"
+              className="inline-flex items-center gap-3 text-white py-5 px-12 rounded-2xl font-headline font-bold text-lg hover:opacity-90 transition-all shadow-xl active:scale-[0.98]"
+              style={{ background: 'linear-gradient(135deg, #000f22 0%, #0a2540 100%)' }}
+            >
+              <span className="material-symbols-outlined">person_add</span>
+              Comenzar registro
+            </Link>
+            <p className="text-xs text-text-muted italic">
+              Proceso 100% online. Sin inversión inicial.
+            </p>
           </div>
-          <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <label className="text-sm font-bold text-primary ml-1">Nombre completo</label>
-                <input
-                  className="w-full bg-surface-container-low border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-secondary outline-none transition-all text-on-surface"
-                  placeholder="Ej. Ana García"
-                  type="text"
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-bold text-primary ml-1">Ciudad</label>
-                <input
-                  className="w-full bg-surface-container-low border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-secondary outline-none transition-all text-on-surface"
-                  placeholder="Ej. Ciudad de México"
-                  type="text"
-                />
-              </div>
-            </div>
-            <div className="space-y-2">
-              <label className="text-sm font-bold text-primary ml-1">WhatsApp</label>
-              <input
-                className="w-full bg-surface-container-low border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-secondary outline-none transition-all text-on-surface"
-                placeholder="+52 ..."
-                type="tel"
-              />
-            </div>
-            <div className="space-y-2">
-              <label className="text-sm font-bold text-primary ml-1">¿Por qué quieres ser agente?</label>
-              <textarea
-                className="w-full bg-surface-container-low border-none rounded-2xl py-4 px-6 focus:ring-2 focus:ring-secondary outline-none transition-all resize-none text-on-surface"
-                placeholder="Cuéntanos un poco sobre tu experiencia o tus metas..."
-                rows="4"
-              />
-            </div>
-            <div className="pt-4">
-              <button
-                type="submit"
-                className="w-full text-white py-5 rounded-2xl font-headline font-bold text-lg hover:opacity-90 transition-all shadow-xl active:scale-[0.98]"
-                style={{ background: 'linear-gradient(135deg, #000f22 0%, #0a2540 100%)' }}
-              >
-                Enviar solicitud
-              </button>
-              <p className="text-center mt-4 text-xs text-text-muted italic">
-                Al enviar confirmas que aceptas nuestros términos de selección.
-              </p>
-            </div>
-          </form>
           <div className="absolute -top-10 -right-10 hidden lg:flex w-24 h-24 rounded-full items-center justify-center text-white shadow-xl rotate-12" style={{ background: 'linear-gradient(135deg, #ff6b6b 0%, #ae2f34 100%)' }}>
             <span className="material-symbols-outlined text-4xl">edit_note</span>
           </div>

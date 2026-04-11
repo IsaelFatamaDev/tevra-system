@@ -48,7 +48,7 @@ export default function AdminLayout() {
             </button>
             <div className="w-px h-6 bg-gray-200 mx-1" />
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-full bg-linear-to-br from-sky-500 to-indigo-600 flex items-center justify-center text-white font-bold text-[11px]">
+              <div className="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center text-white font-bold text-[11px]">
                 {user?.firstName?.[0]}{user?.lastName?.[0]}
               </div>
               <div className="hidden sm:block">

@@ -12,6 +12,7 @@ export const productsService = {
     if (params.sortBy) query.set('sortBy', params.sortBy);
     if (params.page) query.set('page', String(params.page));
     if (params.limit) query.set('limit', String(params.limit));
+    if (params.includeInactive) query.set('includeInactive', 'true');
     const qs = query.toString();
     return api.get(`/products${qs ? `?${qs}` : ''}`);
   },
@@ -21,15 +22,14 @@ export const productsService = {
   create: (data) => api.post('/products', data),
   update: (id, data) => api.put(`/products/${id}`, data),
   delete: (id) => api.delete(`/products/${id}`),
+  toggleActive: (id) => api.patch(`/products/${id}/toggle-active`),
   createCategory: (data) => api.post('/categories', data),
   updateCategory: (id, data) => api.put(`/categories/${id}`, data),
   createBrand: (data) => api.post('/brands', data),
   updateBrand: (id, data) => api.put(`/brands/${id}`, data),
   deleteBrand: (id) => api.delete(`/brands/${id}`),
   uploadImage: (productId, base64Image) => api.post(`/products/${productId}/image`, { image: base64Image }),
-  removeImage: (productId, index) => api.delete(`/products/${productId}/image`, { data: { index } }),
-  getMediaByEntity: (entityType, entityId) => api.get(`/media?entityType=${entityType}&entityId=${entityId}`),
-  deleteMedia: (id) => api.delete(`/media/${id}`),
+  removeImage: (productId, index) => api.post(`/products/${productId}/image/remove`, { index }),
 };
 
 export default productsService;

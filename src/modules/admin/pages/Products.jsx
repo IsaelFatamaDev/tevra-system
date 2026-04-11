@@ -26,11 +26,12 @@ export default function AdminProducts() {
   const [imageFile, setImageFile] = useState(null)
   const [imagePreview, setImagePreview] = useState(null)
   const [uploading, setUploading] = useState(false)
+  const [formErrors, setFormErrors] = useState({})
   const fileRef = useRef(null)
 
   const fetchData = () => {
     setLoading(true)
-    Promise.all([productsService.findAll(), productsService.getCategories(), productsService.getBrands()])
+    Promise.all([productsService.findAll({ includeInactive: true }), productsService.getCategories(), productsService.getBrands()])
       .then(([prodData, catData, brandData]) => {
         setProducts(Array.isArray(prodData) ? prodData : prodData?.items || [])
         setCategories(Array.isArray(catData) ? catData : [])
@@ -48,7 +49,7 @@ export default function AdminProducts() {
     return matchSearch && matchCat
   })
 
-  const openCreate = () => { setForm(EMPTY_FORM); setImageFile(null); setImagePreview(null); setModal('create') }
+  const openCreate = () => { setForm(EMPTY_FORM); setImageFile(null); setImagePreview(null); setFormErrors({}); setModal('create') }
   const openEdit = (prod) => {
     setSelected(prod)
     setForm({
@@ -82,6 +83,12 @@ export default function AdminProducts() {
   }
 
   const handleSave = async () => {
+    const e = {}
+    if (!form.name.trim()) e.name = 'Nombre requerido'
+    if (!form.priceUsd || isNaN(form.priceUsd) || Number(form.priceUsd) <= 0) e.priceUsd = 'Precio válido requerido'
+    if (!form.categoryId) e.categoryId = 'Categoría requerida'
+    setFormErrors(e)
+    if (Object.keys(e).length > 0) return
     setSaving(true)
     try {
       let product
@@ -107,6 +114,13 @@ export default function AdminProducts() {
     try { await productsService.delete(selected.id); fetchData(); setModal(null) }
     catch (err) { console.error(err) }
     finally { setSaving(false) }
+  }
+
+  const handleToggleActive = async (prod) => {
+    try {
+      await productsService.toggleActive(prod.id)
+      fetchData()
+    } catch (err) { console.error(err) }
   }
 
   const totalProducts = products.length
@@ -184,6 +198,7 @@ export default function AdminProducts() {
                   <th className="px-5 py-3">Precio USD</th>
                   <th className="px-5 py-3">Margen</th>
                   <th className="px-5 py-3">Estado</th>
+                  <th className="px-5 py-3">Publicado</th>
                   <th className="px-5 py-3 text-right">Acciones</th>
                 </tr>
               </thead>
@@ -214,6 +229,14 @@ export default function AdminProducts() {
                       <td className="px-5 py-3 text-sm font-semibold text-gray-600">{prod.marginPct ? `${prod.marginPct}%` : '—'}</td>
                       <td className="px-5 py-3">
                         <span className={`inline-flex px-2.5 py-1 ${st.bg} ${st.text} text-[11px] font-bold rounded-full`}>{st.label}</span>
+                      </td>
+                      <td className="px-5 py-3">
+                        <button onClick={() => handleToggleActive(prod)} title={prod.isActive ? 'Despublicar' : 'Publicar'}
+                          className="relative inline-flex items-center cursor-pointer">
+                          <div className={`w-9 h-5 rounded-full transition-colors ${prod.isActive !== false ? 'bg-emerald-500' : 'bg-gray-300'}`}>
+                            <div className={`absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform ${prod.isActive !== false ? 'translate-x-4' : ''}`} />
+                          </div>
+                        </button>
                       </td>
                       <td className="px-5 py-3 text-right">
                         <div className="flex justify-end gap-1 opacity-60 group-hover:opacity-100 transition-opacity">
@@ -272,9 +295,10 @@ export default function AdminProducts() {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-gray-500 mb-1.5">Nombre</label>
+                <label className="block text-xs font-bold text-gray-500 mb-1.5">Nombre *</label>
                 <input value={form.name} onChange={e => setForm({ ...form, name: e.target.value })}
-                  className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 outline-none transition-all" />
+                  className={`w-full px-3.5 py-2.5 bg-gray-50 border rounded-lg text-sm focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 outline-none transition-all ${formErrors.name ? 'border-red-400' : 'border-gray-200'}`} />
+                {formErrors.name && <p className="text-xs text-red-500 mt-1">{formErrors.name}</p>}
               </div>
               <div>
                 <label className="block text-xs font-bold text-gray-500 mb-1.5">Descripción</label>
@@ -283,12 +307,13 @@ export default function AdminProducts() {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-gray-500 mb-1.5">Categoría</label>
+                  <label className="block text-xs font-bold text-gray-500 mb-1.5">Categoría *</label>
                   <select value={form.categoryId} onChange={e => setForm({ ...form, categoryId: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 outline-none transition-all">
+                    className={`w-full px-3.5 py-2.5 bg-gray-50 border rounded-lg text-sm focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 outline-none transition-all ${formErrors.categoryId ? 'border-red-400' : 'border-gray-200'}`}>
                     <option value="">Sin categoría</option>
                     {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                   </select>
+                  {formErrors.categoryId && <p className="text-xs text-red-500 mt-1">{formErrors.categoryId}</p>}
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-gray-500 mb-1.5">Marca</label>
@@ -301,9 +326,10 @@ export default function AdminProducts() {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-gray-500 mb-1.5">Precio USD</label>
+                  <label className="block text-xs font-bold text-gray-500 mb-1.5">Precio USD *</label>
                   <input type="number" step="0.01" value={form.priceUsd} onChange={e => setForm({ ...form, priceUsd: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 outline-none transition-all" />
+                    className={`w-full px-3.5 py-2.5 bg-gray-50 border rounded-lg text-sm focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 outline-none transition-all ${formErrors.priceUsd ? 'border-red-400' : 'border-gray-200'}`} />
+                  {formErrors.priceUsd && <p className="text-xs text-red-500 mt-1">{formErrors.priceUsd}</p>}
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-gray-500 mb-1.5">Precio Ref. Local</label>
@@ -335,7 +361,7 @@ export default function AdminProducts() {
             </div>
             <div className="p-4 border-t border-gray-100 flex justify-end gap-2 sticky bottom-0 bg-white">
               <button onClick={() => setModal(null)} className="px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">Cancelar</button>
-              <button onClick={handleSave} disabled={saving || !form.name}
+              <button onClick={handleSave} disabled={saving}
                 className="px-5 py-2 bg-sky-600 hover:bg-sky-500 disabled:opacity-50 text-white rounded-lg font-bold text-sm transition-all flex items-center gap-2">
                 {(saving || uploading) && <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />}
                 {uploading ? 'Subiendo...' : saving ? 'Guardando...' : modal === 'create' ? 'Crear' : 'Guardar'}

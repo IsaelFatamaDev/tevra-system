@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { useAuth } from '../../../core/contexts/AuthContext'
 import dashboardService from '../../admin/services/dashboard.service'
 
@@ -293,17 +294,28 @@ export default function ClientDashboard() {
           {/* Quick Actions */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {[
-              { icon: 'location_on', label: 'Mis Direcciones', desc: 'Gestiona tus direcciones de envío' },
-              { icon: 'credit_card', label: 'Métodos de Pago', desc: 'Administra tus métodos de pago' },
-              { icon: 'lock', label: 'Seguridad', desc: 'Contraseña y verificación' },
-            ].map((c, i) => (
-              <button key={i} className="bg-white rounded-2xl p-5 shadow-sm border border-outline-variant/10 hover:shadow-md transition-all text-left flex items-center gap-4 group">
+              { icon: 'location_on', label: 'Mis Direcciones', desc: 'Gestiona tus direcciones de envío', to: '/mi-cuenta/direcciones' },
+              { icon: 'credit_card', label: 'Métodos de Pago', desc: 'Administra tus métodos de pago', to: null },
+              { icon: 'lock', label: 'Seguridad', desc: 'Contraseña y verificación', to: '/mi-cuenta/seguridad' },
+            ].map((c, i) => c.to ? (
+              <Link key={i} to={c.to} className="bg-white rounded-2xl p-5 shadow-sm border border-outline-variant/10 hover:shadow-md transition-all text-left flex items-center gap-4 group no-underline">
                 <div className="w-12 h-12 rounded-xl bg-primary/5 flex items-center justify-center group-hover:bg-primary/10 transition-colors">
                   <span className="material-symbols-outlined text-primary">{c.icon}</span>
                 </div>
                 <div>
                   <p className="text-sm font-bold text-on-background">{c.label}</p>
                   <p className="text-xs text-text-muted">{c.desc}</p>
+                </div>
+                <span className="material-symbols-outlined text-text-muted/30 ml-auto">chevron_right</span>
+              </Link>
+            ) : (
+              <button key={i} className="bg-white rounded-2xl p-5 shadow-sm border border-outline-variant/10 hover:shadow-md transition-all text-left flex items-center gap-4 group opacity-60 cursor-default">
+                <div className="w-12 h-12 rounded-xl bg-primary/5 flex items-center justify-center">
+                  <span className="material-symbols-outlined text-primary">{c.icon}</span>
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-on-background">{c.label}</p>
+                  <p className="text-xs text-text-muted">Próximamente</p>
                 </div>
                 <span className="material-symbols-outlined text-text-muted/30 ml-auto">chevron_right</span>
               </button>

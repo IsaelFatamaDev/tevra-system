@@ -12,7 +12,7 @@ export default function PageTransition({ onDone }) {
 
      return (
           <div
-               className={`fixed inset-0 z-[9999] flex flex-col items-center justify-center hero-gradient transition-opacity duration-400 ${phase === 'enter' ? 'opacity-0' : phase === 'exit' ? 'opacity-0' : 'opacity-100'
+               className={`fixed inset-0 z-9999 flex flex-col items-center justify-center hero-gradient transition-opacity duration-400 ${phase === 'enter' ? 'opacity-0' : phase === 'exit' ? 'opacity-0' : 'opacity-100'
                     }`}
           >
                <div className="absolute inset-0 bg-grid-pattern opacity-15" />

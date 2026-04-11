@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import PageTransition from './PageTransition'
+import { useCart } from '../hooks/useCart'
 
 const navLinks = [
   { label: 'Comprar', href: '/catalogo' },
@@ -13,6 +14,8 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [showTransition, setShowTransition] = useState(false)
   const navigate = useNavigate()
+  const { getCount } = useCart()
+  const cartCount = getCount()
 
   const handleLoginClick = useCallback((e) => {
     e.preventDefault()
@@ -62,7 +65,14 @@ export default function Navbar() {
               <button onClick={handleLoginClick}>
                 <span className="material-symbols-outlined text-primary cursor-pointer hover:text-secondary transition-colors">person</span>
               </button>
-              <span className="material-symbols-outlined text-primary cursor-pointer hover:text-secondary transition-colors">shopping_bag</span>
+              <Link to="/carrito" className="relative">
+                <span className="material-symbols-outlined text-primary cursor-pointer hover:text-secondary transition-colors">shopping_bag</span>
+                {cartCount > 0 && (
+                  <span className="absolute -top-2 -right-2 w-5 h-5 bg-secondary text-white text-[10px] font-black rounded-full flex items-center justify-center shadow-sm">
+                    {cartCount > 99 ? '99+' : cartCount}
+                  </span>
+                )}
+              </Link>
             </div>
 
             <button
