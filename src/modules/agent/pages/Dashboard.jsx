@@ -5,7 +5,7 @@ import api from '../../../core/services/api'
 
 const statusColors = {
   pending: 'bg-amber-100 text-amber-700',
-  confirmed: 'bg-sky-100 text-sky-700',
+  confirmed: 'bg-primary/10 text-primary',
   purchased_in_usa: 'bg-blue-100 text-blue-700',
   in_transit: 'bg-violet-100 text-violet-700',
   in_customs: 'bg-orange-100 text-orange-700',
@@ -174,13 +174,23 @@ export default function AgentDashboard() {
           </button>
         </div>
         <div className="flex gap-2 mt-3">
-          <button className="flex items-center gap-1.5 px-3 py-1.5 bg-[#25d366]/10 text-[#25d366] rounded-lg text-xs font-medium hover:bg-[#25d366]/20 transition-colors">
+          <button onClick={() => {
+            const url = `https://wa.me/?text=${encodeURIComponent(`¡Mira estos productos increíbles! Compra a través de mi enlace: ${referralLink}`)}`
+            window.open(url, '_blank')
+          }} className="flex items-center gap-1.5 px-3 py-1.5 bg-[#25d366]/10 text-[#25d366] rounded-lg text-xs font-medium hover:bg-[#25d366]/20 transition-colors">
             <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" /></svg>
             WhatsApp
           </button>
-          <button className="flex items-center gap-1.5 px-3 py-1.5 bg-sky-600/10 text-sky-600 rounded-lg text-xs font-medium hover:bg-sky-600/20 transition-colors">
+          <button onClick={() => {
+            if (navigator.share) {
+              navigator.share({ title: 'TeVra - Compra conmigo', text: '¡Descubre productos increíbles!', url: referralLink })
+            } else {
+              navigator.clipboard.writeText(referralLink)
+              setCopied(true); setTimeout(() => setCopied(false), 2000)
+            }
+          }} className="flex items-center gap-1.5 px-3 py-1.5 bg-primary/10 text-primary rounded-lg text-xs font-medium hover:bg-primary/20 transition-colors">
             <span className="material-symbols-outlined text-[14px]">share</span>
-            Compartir
+            {copied ? '¡Copiado!' : 'Compartir'}
           </button>
         </div>
       </div>
@@ -191,7 +201,7 @@ export default function AgentDashboard() {
           { label: 'Ventas Totales', value: `$${totalRevenue.toLocaleString()}`, icon: 'payments', color: 'text-emerald-600 bg-emerald-50' },
           { label: 'Comisiones Ganadas', value: `$${Number(commissionSummary.totalEarned || 0).toLocaleString()}`, icon: 'account_balance_wallet', color: 'text-amber-600 bg-amber-50' },
           { label: 'Total Pedidos', value: orders.length, icon: 'package_2', color: 'text-purple-600 bg-purple-50' },
-          { label: 'Comisiones Pendientes', value: `$${Number(commissionSummary.totalPending || 0).toLocaleString()}`, icon: 'pending', color: 'text-sky-600 bg-sky-50' },
+          { label: 'Comisiones Pendientes', value: `$${Number(commissionSummary.totalPending || 0).toLocaleString()}`, icon: 'pending', color: 'text-primary bg-primary/10' },
         ].map((s) => (
           <div key={s.label} className="bg-white rounded-xl p-4 border border-outline-variant/10 shadow-sm">
             <div className={`w-9 h-9 rounded-lg ${s.color} flex items-center justify-center mb-2`}>
@@ -204,7 +214,7 @@ export default function AgentDashboard() {
       </div>
 
       {loading ? (
-        <div className="flex justify-center py-8"><div className="animate-spin w-8 h-8 rounded-full border-4 border-sky-500 border-t-transparent" /></div>
+        <div className="flex justify-center py-8"><div className="animate-spin w-8 h-8 rounded-full border-4 border-primary border-t-transparent" /></div>
       ) : (
         <div className="grid lg:grid-cols-3 gap-6">
           {/* Orders Table */}
@@ -233,7 +243,7 @@ export default function AgentDashboard() {
                       <td className="px-3 py-3 text-on-background">{o.customer?.firstName || 'Cliente'} {o.customer?.lastName || ''}</td>
                       <td className="px-3 py-3 text-right font-semibold text-on-background">${parseFloat(o.total || 0).toLocaleString()}</td>
                       <td className="text-center px-3 py-3">
-                        <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${statusColors[o.status] || 'bg-gray-100 text-gray-600'}`}>
+                        <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${statusColors[o.status] || 'bg-surface-container-high text-text-muted'}`}>
                           {statusLabels[o.status] || o.status}
                         </span>
                       </td>

@@ -50,6 +50,7 @@ import AgentDashboard from './modules/agent/pages/Dashboard'
 import AgentOrders from './modules/agent/pages/Orders'
 import AgentCommissions from './modules/agent/pages/Commissions'
 import AgentClients from './modules/agent/pages/Clients'
+import AgentSecurity from './modules/agent/pages/Security'
 
 function ProtectedRoute({ roles, children }) {
   const { user, isAuthenticated, loading } = useAuth()
@@ -138,6 +139,7 @@ function AppLayout() {
           <Route path="pedidos" element={<AgentOrders />} />
           <Route path="comisiones" element={<AgentCommissions />} />
           <Route path="clientes" element={<AgentClients />} />
+          <Route path="seguridad" element={<AgentSecurity />} />
         </Route>
 
         {/* Agent Registration (standalone layout) */}

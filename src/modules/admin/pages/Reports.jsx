@@ -6,34 +6,67 @@ export default function AdminReports() {
   const [stats, setStats] = useState(null)
   const [topAgents, setTopAgents] = useState([])
   const [cities, setCities] = useState([])
+  const [revenueByMonth, setRevenueByMonth] = useState([])
+  const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(true)
+  const [period, setPeriod] = useState('30d')
 
-  useEffect(() => {
+  const fetchData = (p) => {
+    setLoading(true)
+    const query = p ? `?period=${p}` : ''
     Promise.all([
       dashboardService.getAdminStats(),
       dashboardService.getTopAgents(5),
-      dashboardService.getRevenueByMonth().catch(() => []),
-    ]).then(([statsRes, agentsRes, citiesRes]) => {
+      dashboardService.getRevenueByMonth(p).catch(() => []),
+      api.get(`/analytics/orders-by-city${query}`).catch(() => []),
+      api.get(`/analytics/orders-by-category${query}`).catch(() => []),
+    ]).then(([statsRes, agentsRes, revenueRes, citiesRes, catRes]) => {
       setStats(statsRes)
       setTopAgents(Array.isArray(agentsRes) ? agentsRes : [])
+      setRevenueByMonth(Array.isArray(revenueRes) ? revenueRes : [])
+      setCities(Array.isArray(citiesRes) ? citiesRes : [])
+      setCategories(Array.isArray(catRes) ? catRes : [])
     }).catch(err => console.error("Error fetching reports", err))
       .finally(() => setLoading(false))
+  }
 
-    // Cities/orders by city
-    api.get('/analytics/orders-by-city')
-      .then(data => setCities(Array.isArray(data) ? data : []))
-      .catch(() => { })
-  }, [])
+  useEffect(() => { fetchData(period) }, [period])
+
+  const handleExportCSV = () => {
+    const rows = [['Métrica', 'Valor']]
+    if (stats) {
+      rows.push(['Total Pedidos', stats.totalOrders || 0])
+      rows.push(['Ingresos Totales', stats.totalRevenue || 0])
+      rows.push(['Comisión TeVra', stats.totalTevraCommission || 0])
+      rows.push(['Agentes Activos', stats.totalAgents || 0])
+      rows.push(['Clientes', stats.totalCustomers || 0])
+    }
+    rows.push([])
+    rows.push(['Agente', 'Pedidos', 'Revenue'])
+    topAgents.forEach(a => rows.push([a.displayName, a.totalOrders, a.totalRevenue]))
+    rows.push([])
+    rows.push(['Ciudad', 'Pedidos'])
+    cities.forEach(c => rows.push([c.city || 'Sin ciudad', c.totalOrders]))
+
+    const csv = rows.map(r => r.join(',')).join('\n')
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `reporte-tevra-${period}.csv`
+    a.click()
+    URL.revokeObjectURL(url)
+  }
 
   const metricCards = stats ? [
-    { title: 'Total Pedidos', value: stats.totalOrders?.toLocaleString() || '0', icon: 'shopping_cart', iconColor: 'bg-sky-500/10 text-sky-600', trend: '', trendBg: 'bg-sky-500/10 text-sky-600', type: 'up', subtitle: 'Acumulado total' },
+    { title: 'Total Pedidos', value: stats.totalOrders?.toLocaleString() || '0', icon: 'shopping_cart', iconColor: 'bg-primary/10 text-primary', trend: '', trendBg: 'bg-primary/10 text-primary', type: 'up', subtitle: 'Acumulado total' },
     { title: 'Ingresos Totales', value: `$${Number(stats.totalRevenue || 0).toLocaleString()}`, icon: 'payments', iconColor: 'bg-emerald-500/10 text-emerald-600', trend: '', trendBg: 'bg-emerald-500/10 text-emerald-600', type: 'up', subtitle: 'Revenue bruto' },
     { title: 'Comisión TeVra', value: `$${Number(stats.totalTevraCommission || 0).toLocaleString()}`, icon: 'account_balance', iconColor: 'bg-amber-500/10 text-amber-600', trend: '', trendBg: 'bg-amber-500/10 text-amber-600', type: 'up', subtitle: 'Ganancia plataforma' },
     { title: 'Agentes Activos', value: stats.totalAgents?.toLocaleString() || '0', icon: 'support_agent', iconColor: 'bg-purple-500/10 text-purple-600', trend: '', trendBg: 'bg-purple-500/10 text-purple-600', type: 'up', subtitle: `${stats.totalCustomers || 0} clientes` },
   ] : []
 
   const maxCityOrders = cities.length ? Math.max(...cities.map(c => Number(c.totalOrders) || 1)) : 1
-  const cityColors = ['bg-primary', 'bg-secondary', 'bg-sky-600', 'bg-amber-500', 'bg-emerald-500']
+  const cityColors = ['bg-primary', 'bg-secondary', 'bg-primary', 'bg-amber-500', 'bg-emerald-500']
 
   return (
     <div className="p-4 sm:p-6 max-w-7xl mx-auto w-full space-y-6 sm:space-y-8">
@@ -44,12 +77,15 @@ export default function AdminReports() {
           <p className="text-text-muted text-sm sm:text-base max-w-xl">Monitorea el crecimiento y la salud operativa de TeVra.</p>
         </div>
         <div className="flex flex-wrap items-center gap-3">
-          <div className="bg-surface-container-high p-1 rounded-full flex items-center hidden sm:flex">
-            <button className="px-4 py-1.5 text-xs font-medium rounded-full text-text-muted hover:bg-white transition-all">7 días</button>
-            <button className="px-4 py-1.5 text-xs font-bold rounded-full bg-white shadow-sm text-primary transition-all">30 días</button>
-            <button className="px-4 py-1.5 text-xs font-medium rounded-full text-text-muted hover:bg-white transition-all">Este año</button>
+          <div className="bg-surface-container-high p-1 rounded-full hidden sm:flex items-center">
+            {[{ label: '7 días', value: '7d' }, { label: '30 días', value: '30d' }, { label: 'Este año', value: '1y' }].map(f => (
+              <button key={f.value} onClick={() => setPeriod(f.value)}
+                className={`px-4 py-1.5 text-xs font-medium rounded-full transition-all ${period === f.value ? 'bg-white shadow-sm text-primary font-bold' : 'text-text-muted hover:bg-white'}`}>
+                {f.label}
+              </button>
+            ))}
           </div>
-          <button className="flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-2.5 rounded-full border border-primary text-primary font-bold text-xs sm:text-sm hover:bg-surface-container-low transition-all">
+          <button onClick={handleExportCSV} className="flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-2.5 rounded-full border border-primary text-primary font-bold text-xs sm:text-sm hover:bg-surface-container-low transition-all">
             <span className="material-symbols-outlined text-[18px]">download</span>
             Exportar
           </button>
@@ -91,26 +127,29 @@ export default function AdminReports() {
               <span className="text-[10px] sm:text-xs font-bold text-primary">Ventas</span>
             </div>
           </div>
-          {/* Chart Mock */}
-          <div className="h-48 sm:h-64 flex items-end justify-between gap-1 mt-4 relative">
-            <div className="absolute inset-0 flex flex-col justify-between opacity-10">
-              <div className="border-b border-primary w-full"></div>
-              <div className="border-b border-primary w-full"></div>
-              <div className="border-b border-primary w-full"></div>
-              <div className="border-b border-primary w-full"></div>
-            </div>
-            <div className="w-full h-full absolute bottom-0 left-0 bg-gradient-to-t from-secondary/5 to-transparent"></div>
-            <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 100">
-              <path d="M 0 80 Q 20 70 30 40 T 60 50 T 80 20 T 100 30" fill="none" stroke="#ae2f34" strokeWidth="2"></path>
-              <circle cx="0" cy="80" fill="#ae2f34" r="1.5"></circle>
-              <circle cx="30" cy="40" fill="#ae2f34" r="1.5"></circle>
-              <circle cx="60" cy="50" fill="#ae2f34" r="1.5"></circle>
-              <circle cx="80" cy="20" fill="#ae2f34" r="1.5"></circle>
-              <circle cx="100" cy="30" fill="#ae2f34" r="1.5"></circle>
-            </svg>
-            <div className="flex w-full justify-between mt-auto pt-4 text-[10px] text-text-muted font-bold uppercase tracking-tighter">
-              <span>Ene</span><span>Feb</span><span>Mar</span><span>Abr</span><span>May</span><span>Jun</span><span>Jul</span>
-            </div>
+          {/* Dynamic Bar Chart */}
+          <div className="h-48 sm:h-64 flex items-end gap-1 mt-4 relative">
+            {revenueByMonth.length > 0 ? (() => {
+              const maxRev = Math.max(...revenueByMonth.map(m => Number(m.revenue) || 0), 1)
+              return revenueByMonth.map((m, i) => {
+                const pct = (Number(m.revenue) || 0) / maxRev * 100
+                const monthLabel = m.month ? new Date(m.month + '-01').toLocaleDateString('es-PE', { month: 'short' }) : ''
+                return (
+                  <div key={i} className="flex-1 flex flex-col items-center justify-end h-full group">
+                    <div className="relative w-full flex justify-center">
+                      <div className="absolute -top-6 opacity-0 group-hover:opacity-100 transition-opacity bg-primary text-white text-[10px] px-2 py-0.5 rounded font-bold whitespace-nowrap">
+                        ${Number(m.revenue).toLocaleString()}
+                      </div>
+                    </div>
+                    <div className="w-full max-w-8 rounded-t-md bg-secondary/80 hover:bg-secondary transition-colors"
+                      style={{ height: `${Math.max(pct, 3)}%` }}></div>
+                    <span className="text-[9px] sm:text-[10px] text-text-muted font-bold mt-1 capitalize">{monthLabel}</span>
+                  </div>
+                )
+              })
+            })() : (
+              <div className="flex items-center justify-center w-full h-full text-text-muted text-sm">Sin datos de ventas</div>
+            )}
           </div>
         </div>
 
@@ -118,37 +157,51 @@ export default function AdminReports() {
           <h4 className="text-lg sm:text-xl font-headline font-bold text-primary mb-1">Por Categoría</h4>
           <p className="text-xs sm:text-sm text-text-muted mb-6">Distribución por sector</p>
           <div className="flex-1 flex flex-col items-center justify-center relative">
-            {/* Doughnut Mock */}
-            <div className="w-40 h-40 sm:w-48 sm:h-48 rounded-full border-[12px] sm:border-[16px] border-primary-container relative flex items-center justify-center">
-              <div className="absolute inset-0 border-[12px] sm:border-[16px] border-secondary content-[''] rounded-full" style={{ clipPath: 'polygon(50% 50%, 50% 0, 100% 0, 100% 50%)' }}></div>
-              <div className="text-center z-10">
-                <span className="text-xl sm:text-2xl font-extrabold text-primary">100%</span>
-                <p className="text-[10px] text-text-muted font-bold uppercase">Total</p>
-              </div>
-            </div>
-
-            <div className="mt-6 sm:mt-8 grid grid-cols-2 gap-x-4 sm:gap-x-6 gap-y-2 sm:gap-y-3 w-full">
-              <div className="flex items-center gap-1 sm:gap-2">
-                <span className="w-2 h-2 rounded-full bg-primary-container"></span>
-                <span className="text-[10px] sm:text-xs font-semibold">Tecnología</span>
-                <span className="text-[10px] sm:text-xs font-bold ml-auto">45%</span>
-              </div>
-              <div className="flex items-center gap-1 sm:gap-2">
-                <span className="w-2 h-2 rounded-full bg-secondary"></span>
-                <span className="text-[10px] sm:text-xs font-semibold">Calzado</span>
-                <span className="text-[10px] sm:text-xs font-bold ml-auto">22%</span>
-              </div>
-              <div className="flex items-center gap-1 sm:gap-2">
-                <span className="w-2 h-2 rounded-full bg-sky-600"></span>
-                <span className="text-[10px] sm:text-xs font-semibold">Bolsos</span>
-                <span className="text-[10px] sm:text-xs font-bold ml-auto">15%</span>
-              </div>
-              <div className="flex items-center gap-1 sm:gap-2">
-                <span className="w-2 h-2 rounded-full bg-amber-500"></span>
-                <span className="text-[10px] sm:text-xs font-semibold">Belleza</span>
-                <span className="text-[10px] sm:text-xs font-bold ml-auto">12%</span>
-              </div>
-            </div>
+            {(() => {
+              const catColors = ['bg-primary-container', 'bg-secondary', 'bg-primary', 'bg-amber-500', 'bg-emerald-500', 'bg-violet-500']
+              const totalRev = categories.reduce((s, c) => s + Number(c.totalRevenue || 0), 0) || 1
+              const catData = categories.slice(0, 6).map((c, i) => ({
+                name: c.category || 'Sin categoría',
+                pct: Math.round(Number(c.totalRevenue || 0) / totalRev * 100),
+                color: catColors[i % catColors.length],
+              }))
+              return (
+                <>
+                  <div className="w-40 h-40 sm:w-48 sm:h-48 rounded-full bg-surface-container-high relative flex items-center justify-center overflow-hidden">
+                    {catData.length > 0 ? (
+                      <svg viewBox="0 0 42 42" className="absolute inset-0 w-full h-full">
+                        {(() => {
+                          const svgColors = ['#c4c6ce', '#ff6b6b', '#0284c7', '#f59e0b', '#10b981', '#8b5cf6']
+                          let offset = 0
+                          return catData.map((c, i) => {
+                            const dash = c.pct * 1.005
+                            const gap = 100 - dash
+                            const el = <circle key={i} cx="21" cy="21" r="15.9" fill="none" stroke={svgColors[i % svgColors.length]} strokeWidth="6"
+                              strokeDasharray={`${dash} ${gap}`} strokeDashoffset={-offset} />
+                            offset += c.pct
+                            return el
+                          })
+                        })()}
+                      </svg>
+                    ) : null}
+                    <div className="text-center z-10">
+                      <span className="text-xl sm:text-2xl font-extrabold text-primary">{categories.length}</span>
+                      <p className="text-[10px] text-text-muted font-bold uppercase">Categorías</p>
+                    </div>
+                  </div>
+                  <div className="mt-6 sm:mt-8 grid grid-cols-2 gap-x-4 sm:gap-x-6 gap-y-2 sm:gap-y-3 w-full">
+                    {catData.map((c, i) => (
+                      <div key={i} className="flex items-center gap-1 sm:gap-2">
+                        <span className={`w-2 h-2 rounded-full ${c.color}`}></span>
+                        <span className="text-[10px] sm:text-xs font-semibold truncate">{c.name}</span>
+                        <span className="text-[10px] sm:text-xs font-bold ml-auto">{c.pct}%</span>
+                      </div>
+                    ))}
+                    {catData.length === 0 && <p className="col-span-2 text-xs text-text-muted text-center">Sin datos</p>}
+                  </div>
+                </>
+              )
+            })()}
           </div>
         </div>
       </section>

@@ -1,7 +1,15 @@
 import api from '../../../core/services/api';
 
+const buildQs = (params) => {
+  const q = new URLSearchParams();
+  Object.entries(params).forEach(([k, v]) => { if (v !== undefined && v !== null && v !== '') q.set(k, v); });
+  const s = q.toString();
+  return s ? `?${s}` : '';
+};
+
 export const agentsService = {
-  findAll: () => api.get('/agents'),
+  findAll: (params = {}) => api.get(`/agents${buildQs(params)}`),
+  getCities: () => api.get('/agents/cities'),
   findOne: (id) => api.get(`/agents/${id}`),
   findByCode: (code) => api.get(`/agents/profile/${code}`),
   update: (id, data) => api.put(`/agents/${id}`, data),

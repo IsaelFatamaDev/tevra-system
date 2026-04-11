@@ -5,7 +5,7 @@ import dashboardService from '../../admin/services/dashboard.service'
 
 const statusColors = {
   pending: 'bg-amber-100 text-amber-700',
-  confirmed: 'bg-sky-100 text-sky-700',
+  confirmed: 'bg-primary/10 text-primary',
   processing: 'bg-indigo-100 text-indigo-700',
   shipped: 'bg-purple-100 text-purple-700',
   purchased_in_usa: 'bg-blue-100 text-blue-700',
@@ -147,7 +147,7 @@ export default function ClientDashboard() {
                         </h3>
                         <p className="text-sm text-text-muted">${Number(mainActiveOrder.total || 0).toLocaleString()} USD</p>
                       </div>
-                      <span className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-bold ${statusColors[mainActiveOrder.status] || 'bg-gray-100 text-gray-600'}`}>
+                      <span className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-bold ${statusColors[mainActiveOrder.status] || 'bg-surface-container-high text-text-muted'}`}>
                         {statusLabels[mainActiveOrder.status] || mainActiveOrder.status}
                       </span>
                     </div>
@@ -218,7 +218,7 @@ export default function ClientDashboard() {
                   <div key={o.id} className="bg-white rounded-xl p-4 shadow-sm border border-outline-variant/10 hover:shadow-md transition-shadow">
                     <div className="flex items-center justify-between mb-2">
                       <span className="font-mono text-xs font-semibold text-primary">{o.orderNumber || o.id?.slice(0, 8)}</span>
-                      <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold ${statusColors[o.status] || 'bg-gray-100 text-gray-600'}`}>
+                      <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold ${statusColors[o.status] || 'bg-surface-container-high text-text-muted'}`}>
                         {statusLabels[o.status] || o.status}
                       </span>
                     </div>
@@ -279,7 +279,7 @@ export default function ClientDashboard() {
                         <td className="px-4 py-3.5 text-text-muted hidden sm:table-cell">{o.createdAt ? new Date(o.createdAt).toLocaleDateString('es-PE') : '—'}</td>
                         <td className="px-4 py-3.5 text-right font-bold text-on-background">${Number(o.total || 0).toLocaleString()}</td>
                         <td className="px-4 py-3.5 text-center">
-                          <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-semibold ${statusColors[o.status] || 'bg-gray-100 text-gray-600'}`}>
+                          <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-semibold ${statusColors[o.status] || 'bg-surface-container-high text-text-muted'}`}>
                             {statusLabels[o.status] || o.status}
                           </span>
                         </td>

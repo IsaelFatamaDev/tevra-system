@@ -1,21 +1,16 @@
 import api from '../../../core/services/api';
 
+const buildQs = (params) => {
+  const q = new URLSearchParams();
+  Object.entries(params).forEach(([k, v]) => { if (v !== undefined && v !== null && v !== '') q.set(k, v); });
+  const s = q.toString();
+  return s ? `?${s}` : '';
+};
+
 export const usersService = {
-  // Get all users, optionally filtered by role
-  findAll: (role) => {
-    const url = role ? `/users?role=${role}` : '/users';
-    return api.get(url);
-  },
-
-  // Get user profile by id
-  findOne: (id) => {
-    return api.get(`/users/${id}`);
-  },
-
-  // Approve or update an agent/user
-  update: (id, data) => {
-    return api.put(`/users/${id}`, data);
-  }
+  findAll: (params = {}) => api.get(`/users${buildQs(params)}`),
+  findOne: (id) => api.get(`/users/${id}`),
+  update: (id, data) => api.put(`/users/${id}`, data),
 };
 
 export default usersService;

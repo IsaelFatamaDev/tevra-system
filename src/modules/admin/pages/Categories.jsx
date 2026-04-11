@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import productsService from '../../public/services/products.service'
+import Pagination from '../../../core/components/Pagination'
 
+const ITEMS_PER_PAGE = 10
 const EMPTY_FORM = { name: '', slug: '', description: '', icon: '' }
 
 export default function AdminCategories() {
@@ -11,6 +13,7 @@ export default function AdminCategories() {
   const [form, setForm] = useState(EMPTY_FORM)
   const [saving, setSaving] = useState(false)
   const [search, setSearch] = useState('')
+  const [page, setPage] = useState(1)
 
   const fetchData = () => {
     setLoading(true)
@@ -25,6 +28,9 @@ export default function AdminCategories() {
     const q = search.toLowerCase()
     return !q || c.name?.toLowerCase().includes(q) || c.slug?.toLowerCase().includes(q)
   })
+
+  const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE)
+  const paginated = filtered.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE)
 
   const openCreate = () => { setForm(EMPTY_FORM); setModal('create') }
   const openEdit = (cat) => {
@@ -49,71 +55,71 @@ export default function AdminCategories() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4">
         <div>
-          <h2 className="text-2xl sm:text-3xl font-black text-gray-900 font-headline tracking-tight">Categorías</h2>
-          <p className="text-sm text-gray-500 mt-1">Organiza tu catálogo de productos.</p>
+          <h2 className="text-2xl sm:text-3xl font-black text-on-background font-headline tracking-tight">Categorías</h2>
+          <p className="text-sm text-text-muted mt-1">Organiza tu catálogo de productos.</p>
         </div>
-        <button onClick={openCreate} className="bg-sky-600 hover:bg-sky-500 text-white px-5 py-2.5 rounded-xl font-bold flex items-center gap-2 shadow-lg transition-all active:scale-95 text-sm">
+        <button onClick={openCreate} className="bg-primary hover:bg-primary text-white px-5 py-2.5 rounded-xl font-bold flex items-center gap-2 shadow-lg transition-all active:scale-95 text-sm">
           <span className="material-symbols-outlined text-[18px]">add_circle</span> Nueva Categoría
         </button>
       </div>
 
       {/* Metric */}
       <div className="flex gap-4">
-        <div className="bg-white p-4 rounded-xl border border-gray-200 flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-sky-50 text-sky-600 flex items-center justify-center">
+        <div className="bg-white p-4 rounded-xl border border-outline-variant flex items-center gap-3">
+          <div className="w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
             <span className="material-symbols-outlined text-[20px]">category</span>
           </div>
           <div>
-            <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider">Total</p>
-            <p className="text-lg font-black text-gray-900 font-headline">{categories.length}</p>
+            <p className="text-[10px] font-semibold text-text-muted uppercase tracking-wider">Total</p>
+            <p className="text-lg font-black text-on-background font-headline">{categories.length}</p>
           </div>
         </div>
       </div>
 
       {/* Table */}
-      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-        <div className="p-4 border-b border-gray-100">
+      <div className="bg-white rounded-xl border border-outline-variant overflow-hidden">
+        <div className="p-4 border-b border-outline-variant/30">
           <div className="relative max-w-sm">
-            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-[18px]">search</span>
+            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-muted text-[18px]">search</span>
             <input type="text" value={search} onChange={e => setSearch(e.target.value)} placeholder="Buscar categoría..."
-              className="w-full pl-9 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 outline-none transition-all" />
+              className="w-full pl-9 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all" />
           </div>
         </div>
 
         {loading ? (
-          <div className="flex items-center justify-center py-20"><div className="w-8 h-8 border-[3px] border-sky-200 border-t-sky-600 rounded-full animate-spin" /></div>
+          <div className="flex items-center justify-center py-20"><div className="w-8 h-8 border-[3px] border-primary/30 border-t-primary rounded-full animate-spin" /></div>
         ) : filtered.length === 0 ? (
           <div className="text-center py-16">
-            <span className="material-symbols-outlined text-4xl text-gray-300">category</span>
-            <p className="text-sm text-gray-400 mt-2">No se encontraron categorías</p>
+            <span className="material-symbols-outlined text-4xl text-outline-variant">category</span>
+            <p className="text-sm text-text-muted mt-2">No se encontraron categorías</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left">
               <thead>
-                <tr className="bg-gray-50 text-[11px] font-bold text-gray-500 uppercase tracking-wider">
+                <tr className="bg-surface-container-low text-[11px] font-bold text-text-muted uppercase tracking-wider">
                   <th className="px-5 py-3">Categoría</th>
                   <th className="px-5 py-3">Slug</th>
                   <th className="px-5 py-3">Descripción</th>
                   <th className="px-5 py-3 text-right">Acciones</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-50">
-                {filtered.map(cat => (
-                  <tr key={cat.id} className="hover:bg-gray-50/50 transition-colors group">
+              <tbody className="divide-y divide-outline-variant/30">
+                {paginated.map(cat => (
+                  <tr key={cat.id} className="hover:bg-surface-container-low/50 transition-colors group">
                     <td className="px-5 py-3.5">
                       <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-lg bg-sky-50 flex items-center justify-center text-sky-600">
+                        <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
                           <span className="material-symbols-outlined text-[18px]">{cat.icon || 'category'}</span>
                         </div>
-                        <span className="text-sm font-bold text-gray-800">{cat.name}</span>
+                        <span className="text-sm font-bold text-on-background">{cat.name}</span>
                       </div>
                     </td>
-                    <td className="px-5 py-3.5 text-sm text-gray-400 font-mono">{cat.slug}</td>
-                    <td className="px-5 py-3.5 text-sm text-gray-500 max-w-xs truncate">{cat.description || '—'}</td>
+                    <td className="px-5 py-3.5 text-sm text-text-muted font-mono">{cat.slug}</td>
+                    <td className="px-5 py-3.5 text-sm text-text-muted max-w-xs truncate">{cat.description || '—'}</td>
                     <td className="px-5 py-3.5 text-right">
                       <button onClick={() => openEdit(cat)} title="Editar"
-                        className="p-1.5 rounded-lg hover:bg-sky-50 text-gray-400 hover:text-sky-600 transition-colors opacity-60 group-hover:opacity-100">
+                        className="p-1.5 rounded-lg hover:bg-primary/10 text-text-muted hover:text-primary transition-colors opacity-60 group-hover:opacity-100">
                         <span className="material-symbols-outlined text-[18px]">edit</span>
                       </button>
                     </td>
@@ -123,48 +129,49 @@ export default function AdminCategories() {
             </table>
           </div>
         )}
+        <Pagination page={page} totalPages={totalPages} onPageChange={p => setPage(p)} />
       </div>
 
       {/* Modal */}
       {modal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
           <div className="bg-white rounded-xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
-            <div className="p-5 border-b border-gray-100 flex justify-between items-center">
-              <h3 className="text-lg font-bold text-gray-900 font-headline">{modal === 'create' ? 'Nueva Categoría' : 'Editar Categoría'}</h3>
-              <button onClick={() => setModal(null)} className="p-1 hover:bg-gray-100 rounded-lg"><span className="material-symbols-outlined text-gray-400">close</span></button>
+            <div className="p-5 border-b border-outline-variant/30 flex justify-between items-center">
+              <h3 className="text-lg font-bold text-on-background font-headline">{modal === 'create' ? 'Nueva Categoría' : 'Editar Categoría'}</h3>
+              <button onClick={() => setModal(null)} className="p-1 hover:bg-surface-container-high rounded-lg"><span className="material-symbols-outlined text-text-muted">close</span></button>
             </div>
             <div className="p-5 space-y-4">
               <div>
-                <label className="block text-xs font-bold text-gray-500 mb-1.5">Nombre</label>
+                <label className="block text-xs font-bold text-text-muted mb-1.5">Nombre</label>
                 <input type="text" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} placeholder="Ej: Tecnología"
-                  className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 outline-none transition-all" />
+                  className="w-full px-3.5 py-2.5 bg-surface-container-low border border-outline-variant rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all" />
               </div>
               <div>
-                <label className="block text-xs font-bold text-gray-500 mb-1.5">Slug</label>
+                <label className="block text-xs font-bold text-text-muted mb-1.5">Slug</label>
                 <input type="text" value={form.slug} onChange={e => setForm({ ...form, slug: e.target.value })} placeholder="tecnologia"
-                  className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 outline-none transition-all font-mono" />
+                  className="w-full px-3.5 py-2.5 bg-surface-container-low border border-outline-variant rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all font-mono" />
               </div>
               <div>
-                <label className="block text-xs font-bold text-gray-500 mb-1.5">Descripción</label>
+                <label className="block text-xs font-bold text-text-muted mb-1.5">Descripción</label>
                 <textarea value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} placeholder="Descripción breve..." rows={2}
-                  className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 outline-none transition-all resize-none" />
+                  className="w-full px-3.5 py-2.5 bg-surface-container-low border border-outline-variant rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all resize-none" />
               </div>
               <div>
-                <label className="block text-xs font-bold text-gray-500 mb-1.5">Icono (Material Symbol)</label>
+                <label className="block text-xs font-bold text-text-muted mb-1.5">Icono (Material Symbol)</label>
                 <input type="text" value={form.icon} onChange={e => setForm({ ...form, icon: e.target.value })} placeholder="category"
-                  className="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 outline-none transition-all" />
+                  className="w-full px-3.5 py-2.5 bg-surface-container-low border border-outline-variant rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all" />
                 {form.icon && (
-                  <div className="mt-2 flex items-center gap-2 text-sm text-gray-500">
-                    <span className="material-symbols-outlined text-sky-600">{form.icon}</span>
+                  <div className="mt-2 flex items-center gap-2 text-sm text-text-muted">
+                    <span className="material-symbols-outlined text-primary">{form.icon}</span>
                     Vista previa
                   </div>
                 )}
               </div>
             </div>
-            <div className="p-5 border-t border-gray-100 flex justify-end gap-3">
-              <button onClick={() => setModal(null)} className="px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">Cancelar</button>
+            <div className="p-5 border-t border-outline-variant/30 flex justify-end gap-3">
+              <button onClick={() => setModal(null)} className="px-4 py-2 text-sm font-medium text-text-muted hover:bg-surface-container-high rounded-lg transition-colors">Cancelar</button>
               <button onClick={handleSave} disabled={saving || !form.name}
-                className="px-5 py-2 bg-sky-600 hover:bg-sky-500 disabled:opacity-50 text-white rounded-lg font-bold text-sm transition-all flex items-center gap-2">
+                className="px-5 py-2 bg-primary hover:bg-primary disabled:opacity-50 text-white rounded-lg font-bold text-sm transition-all flex items-center gap-2">
                 {saving && <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />}
                 {modal === 'create' ? 'Crear' : 'Guardar'}
               </button>

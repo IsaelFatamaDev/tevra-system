@@ -18,6 +18,7 @@ export default function ClientHeader() {
     { to: '/agente/pedidos', label: 'Pedidos' },
     { to: '/agente/comisiones', label: 'Comisiones' },
     { to: '/agente/clientes', label: 'Clientes' },
+    { to: '/agente/seguridad', label: 'Seguridad' },
   ] : [
     { to: '/mi-cuenta', label: 'Dashboard', end: true },
     { to: '/mi-cuenta/pedidos', label: 'Pedidos' },
@@ -29,8 +30,8 @@ export default function ClientHeader() {
     <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-outline-variant/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         <div className="flex items-center gap-8">
-          <span className="font-headline text-lg font-extrabold text-gray-900 tracking-tight">
-            Te<span className="text-gray-500">Vra</span>
+          <span className="font-headline text-lg font-extrabold text-on-background tracking-tight">
+            Te<span className="text-text-muted">Vra</span>
           </span>
           <nav className="hidden sm:flex items-center gap-1">
             {navItems.map((item) => (
@@ -40,8 +41,8 @@ export default function ClientHeader() {
                 end={item.end}
                 className={({ isActive }) =>
                   `px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${isActive
-                    ? 'text-gray-900 bg-gray-100 font-bold'
-                    : 'text-gray-500 hover:text-gray-900'
+                    ? 'text-on-background bg-surface-container-high font-bold'
+                    : 'text-text-muted hover:text-on-background'
                   }`
                 }
               >
@@ -60,9 +61,13 @@ export default function ClientHeader() {
           </button>
           <div className="w-px h-6 bg-outline-variant/20 mx-1" />
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-700 font-bold text-xs">
-              {user?.firstName?.[0]}{user?.lastName?.[0]}
-            </div>
+            {user?.avatarUrl ? (
+              <img src={user.avatarUrl} alt={user.firstName} className="w-8 h-8 rounded-full object-cover" />
+            ) : (
+              <div className="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-on-background font-bold text-xs">
+                {user?.firstName?.[0]}{user?.lastName?.[0]}
+              </div>
+            )}
             <span className="hidden sm:block text-sm font-medium text-on-background">{user?.firstName}</span>
           </div>
           <button onClick={handleLogout} className="w-9 h-9 rounded-xl flex items-center justify-center text-text-muted hover:text-red-500 transition-colors">

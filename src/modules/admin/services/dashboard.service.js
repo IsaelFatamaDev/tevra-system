@@ -4,7 +4,7 @@ export const dashboardService = {
   // --- Admin ---
   getAdminStats: () => api.get('/analytics/dashboard'),
   getTopAgents: (limit = 5) => api.get(`/analytics/top-agents?limit=${limit}`),
-  getRevenueByMonth: () => api.get('/analytics/revenue-by-month'),
+  getRevenueByMonth: (period) => api.get(`/analytics/revenue-by-month${period ? `?period=${period}` : ''}`),
   getTopProducts: (limit = 5) => api.get(`/analytics/top-products?limit=${limit}`),
   getRecentOrders: (limit = 5) => api.get(`/orders?limit=${limit}`),
   getPendingAgents: () => api.get('/agents?status=pending'),

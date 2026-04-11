@@ -1,10 +1,12 @@
 import { useAuth } from '../../../core/contexts/AuthContext'
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import dashboardService from '../services/dashboard.service'
+import agentsService from '../../public/services/agents.service'
 
 const statusColors = {
   pending: 'bg-amber-100 text-amber-700',
-  confirmed: 'bg-sky-100 text-sky-700',
+  confirmed: 'bg-primary/10 text-primary',
   processing: 'bg-indigo-100 text-indigo-700',
   shipped: 'bg-purple-100 text-purple-700',
   purchased_in_usa: 'bg-blue-100 text-blue-700',
@@ -29,6 +31,7 @@ const statusLabels = {
 
 export default function AdminDashboard() {
   const { user } = useAuth()
+  const navigate = useNavigate()
   const [stats, setStats] = useState(null)
   const [topAgents, setTopAgents] = useState([])
   const [recentOrders, setRecentOrders] = useState([])
@@ -53,6 +56,39 @@ export default function AdminDashboard() {
     }).finally(() => setLoading(false))
   }, [])
 
+  const handleExportCSV = () => {
+    if (!recentOrders.length) return
+    const headers = ['Pedido', 'Cliente', 'Email', 'Total', 'Estado', 'Fecha']
+    const rows = recentOrders.map(o => [
+      o.orderNumber || o.id?.slice(0, 8),
+      `${o.customer?.firstName || ''} ${o.customer?.lastName || ''}`.trim(),
+      o.customer?.email || '',
+      Number(o.total || 0).toFixed(2),
+      statusLabels[o.status] || o.status,
+      o.createdAt ? new Date(o.createdAt).toLocaleDateString('es-PE') : '',
+    ])
+    const csv = [headers, ...rows].map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\n')
+    const blob = new Blob([`\uFEFF${csv}`], { type: 'text/csv;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url; a.download = `tevra-dashboard-${new Date().toISOString().slice(0, 10)}.csv`; a.click()
+    URL.revokeObjectURL(url)
+  }
+
+  const handleApproveAgent = async (agent) => {
+    try {
+      await agentsService.updateStatus(agent.id, 'active')
+      setPendingAgents(prev => prev.filter(a => a.id !== agent.id))
+    } catch (err) { console.error('Error approving agent', err) }
+  }
+
+  const handleRejectAgent = async (agent) => {
+    try {
+      await agentsService.updateStatus(agent.id, 'inactive')
+      setPendingAgents(prev => prev.filter(a => a.id !== agent.id))
+    } catch (err) { console.error('Error rejecting agent', err) }
+  }
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
@@ -65,7 +101,7 @@ export default function AdminDashboard() {
   }
 
   const statCards = stats ? [
-    { title: 'Total Clientes', value: stats.totalCustomers ?? 0, icon: 'group', gradient: 'from-sky-500 to-blue-600', bg: 'bg-sky-50', iconColor: 'text-sky-600' },
+    { title: 'Total Clientes', value: stats.totalCustomers ?? 0, icon: 'group', gradient: 'from-primary to-primary-dark', bg: 'bg-primary/10', iconColor: 'text-primary' },
     { title: 'Agentes Activos', value: stats.totalAgents ?? 0, icon: 'support_agent', gradient: 'from-emerald-500 to-teal-600', bg: 'bg-emerald-50', iconColor: 'text-emerald-600' },
     { title: 'Total Pedidos', value: stats.totalOrders ?? 0, icon: 'package_2', gradient: 'from-amber-500 to-orange-600', bg: 'bg-amber-50', iconColor: 'text-amber-600' },
     { title: 'Ingresos', value: `$${Number(stats.totalRevenue ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}`, icon: 'payments', gradient: 'from-violet-500 to-purple-600', bg: 'bg-violet-50', iconColor: 'text-violet-600' },
@@ -86,11 +122,11 @@ export default function AdminDashboard() {
           <p className="text-on-surface-variant mt-1">Bienvenido, {user?.firstName}. Aquí tienes el resumen de TeVra hoy.</p>
         </div>
         <div className="flex gap-3">
-          <button className="px-5 py-2.5 bg-white text-primary font-semibold rounded-xl shadow-sm border border-outline-variant/20 flex items-center gap-2 hover:bg-surface-container-low transition-colors text-sm">
+          <button onClick={handleExportCSV} className="px-5 py-2.5 bg-white text-primary font-semibold rounded-xl shadow-sm border border-outline-variant/20 flex items-center gap-2 hover:bg-surface-container-low transition-colors text-sm">
             <span className="material-symbols-outlined text-lg">file_download</span>
             Exportar
           </button>
-          <button className="px-5 py-2.5 bg-linear-to-br from-primary to-primary-dark text-white font-semibold rounded-xl shadow-lg flex items-center gap-2 hover:opacity-90 transition-opacity text-sm">
+          <button onClick={() => navigate('/registro-agente')} className="px-5 py-2.5 bg-linear-to-br from-primary to-primary-dark text-white font-semibold rounded-xl shadow-lg flex items-center gap-2 hover:opacity-90 transition-opacity text-sm">
             <span className="material-symbols-outlined text-lg">add</span>
             Nuevo Agente
           </button>
@@ -117,7 +153,7 @@ export default function AdminDashboard() {
       {stats?.ordersByStatus?.length > 0 && (
         <div className="flex flex-wrap gap-2">
           {stats.ordersByStatus.map((s) => (
-            <span key={s.status} className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold ${statusColors[s.status] || 'bg-gray-100 text-gray-600'}`}>
+            <span key={s.status} className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold ${statusColors[s.status] || 'bg-surface-container-high text-text-muted'}`}>
               {statusLabels[s.status] || s.status}
               <span className="bg-white/60 px-1.5 py-0.5 rounded-full text-[10px] font-bold">{s.count}</span>
             </span>
@@ -148,7 +184,7 @@ export default function AdminDashboard() {
                         ${Number(r.revenue).toLocaleString()}
                       </div>
                       <div
-                        className="w-full rounded-t-lg bg-gradient-to-t from-primary to-sky-500 transition-all hover:from-primary-dark hover:to-sky-600 cursor-pointer min-h-[4px]"
+                        className="w-full rounded-t-lg bg-gradient-to-t from-primary to-primary/60 transition-all hover:from-primary-dark hover:to-primary cursor-pointer min-h-[4px]"
                         style={{ height: `${Math.max(pct, 2)}%` }}
                       />
                       <span className="text-[10px] text-text-muted font-medium">{months[monthLabel] || monthLabel}</span>
@@ -160,7 +196,7 @@ export default function AdminDashboard() {
               <div className="flex items-end gap-2 h-52">
                 {[40, 65, 45, 80, 55, 90, 70, 60, 85, 50, 75, 95].map((h, i) => (
                   <div key={i} className="flex-1 flex flex-col items-center gap-1">
-                    <div className="w-full rounded-t-lg bg-gradient-to-t from-primary/15 to-sky-400/15" style={{ height: `${h}%` }} />
+                    <div className="w-full rounded-t-lg bg-gradient-to-t from-primary/15 to-primary/5" style={{ height: `${h}%` }} />
                     <span className="text-[10px] text-text-muted">{['E', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'][i]}</span>
                   </div>
                 ))}
@@ -184,7 +220,7 @@ export default function AdminDashboard() {
             )}
             {topAgents.map((a, i) => (
               <div key={i} className="flex items-center gap-3 p-3 rounded-xl hover:bg-surface-container-low/60 transition-colors">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-sky-500 flex items-center justify-center text-white font-bold text-sm shrink-0">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center text-white font-bold text-sm shrink-0">
                   {i < 3 ? <span className="text-lg">{medals[i]}</span> : <span>{i + 1}</span>}
                 </div>
                 <div className="flex-1 min-w-0">
@@ -210,7 +246,7 @@ export default function AdminDashboard() {
               <h3 className="font-headline font-bold text-on-background text-lg">Pedidos Recientes</h3>
               <p className="text-xs text-text-muted mt-0.5">Últimas órdenes del sistema</p>
             </div>
-            <button className="text-sm font-semibold text-primary hover:text-primary-dark transition-colors flex items-center gap-1">
+            <button onClick={() => navigate('/admin/orders')} className="text-sm font-semibold text-primary hover:text-primary-dark transition-colors flex items-center gap-1">
               Ver todos
               <span className="material-symbols-outlined text-base">arrow_forward</span>
             </button>
@@ -247,7 +283,7 @@ export default function AdminDashboard() {
                     </td>
                     <td className="px-4 py-3.5 text-right font-bold text-on-background">${Number(o.total || 0).toLocaleString()}</td>
                     <td className="px-4 py-3.5 text-center">
-                      <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-semibold ${statusColors[o.status] || 'bg-gray-100 text-gray-600'}`}>
+                      <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-semibold ${statusColors[o.status] || 'bg-surface-container-high text-text-muted'}`}>
                         {statusLabels[o.status] || o.status}
                       </span>
                     </td>
@@ -294,10 +330,10 @@ export default function AdminDashboard() {
                   </div>
                 </div>
                 <div className="flex gap-2">
-                  <button className="flex-1 py-2 rounded-xl bg-primary text-white text-xs font-bold hover:bg-primary-dark transition-colors">
+                  <button onClick={() => handleApproveAgent(a)} className="flex-1 py-2 rounded-xl bg-primary text-white text-xs font-bold hover:bg-primary-dark transition-colors">
                     Aprobar
                   </button>
-                  <button className="flex-1 py-2 rounded-xl border border-outline-variant/20 text-text-muted text-xs font-bold hover:bg-surface-container-low transition-colors">
+                  <button onClick={() => handleRejectAgent(a)} className="flex-1 py-2 rounded-xl border border-outline-variant/20 text-text-muted text-xs font-bold hover:bg-surface-container-low transition-colors">
                     Rechazar
                   </button>
                 </div>

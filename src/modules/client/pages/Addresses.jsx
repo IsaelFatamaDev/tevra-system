@@ -74,9 +74,9 @@ export default function ClientAddresses() {
 
   const InputField = ({ label, field, type = 'text', placeholder = '', colSpan = false }) => (
     <div className={colSpan ? 'sm:col-span-2' : ''}>
-      <label className="block text-xs font-bold text-gray-500 mb-1.5">{label}</label>
+      <label className="block text-xs font-bold text-text-muted mb-1.5">{label}</label>
       <input type={type} value={form[field]} onChange={e => setForm({ ...form, [field]: e.target.value })} placeholder={placeholder}
-        className={`w-full px-3.5 py-2.5 bg-gray-50 border rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all ${errors[field] ? 'border-red-400' : 'border-gray-200'}`} />
+        className={`w-full px-3.5 py-2.5 bg-surface-container-low border rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all ${errors[field] ? 'border-red-400' : 'border-outline-variant'}`} />
       {errors[field] && <p className="text-[11px] text-red-500 mt-1">{errors[field]}</p>}
     </div>
   )
@@ -144,9 +144,9 @@ export default function ClientAddresses() {
       {(modal === 'create' || modal === 'edit') && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
-            <div className="p-5 border-b border-gray-100 flex justify-between items-center sticky top-0 bg-white z-10">
+            <div className="p-5 border-b border-outline-variant/30 flex justify-between items-center sticky top-0 bg-white z-10">
               <h3 className="text-lg font-bold text-on-background font-headline">{modal === 'create' ? 'Nueva Dirección' : 'Editar Dirección'}</h3>
-              <button onClick={() => setModal(null)} className="p-1 hover:bg-gray-100 rounded-lg"><span className="material-symbols-outlined text-gray-400">close</span></button>
+              <button onClick={() => setModal(null)} className="p-1 hover:bg-surface-container-high rounded-lg"><span className="material-symbols-outlined text-text-muted">close</span></button>
             </div>
             <div className="p-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
               <InputField label="Etiqueta" field="label" placeholder="Ej: Casa, Oficina" />
@@ -161,13 +161,13 @@ export default function ClientAddresses() {
               <div className="sm:col-span-2">
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input type="checkbox" checked={form.isDefault} onChange={e => setForm({ ...form, isDefault: e.target.checked })}
-                    className="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary/20" />
+                    className="w-4 h-4 rounded border-outline-variant text-primary focus:ring-primary/20" />
                   <span className="text-sm font-semibold text-on-background">Dirección principal</span>
                 </label>
               </div>
             </div>
-            <div className="p-4 border-t border-gray-100 flex justify-end gap-3 sticky bottom-0 bg-white">
-              <button onClick={() => setModal(null)} className="px-4 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-lg">Cancelar</button>
+            <div className="p-4 border-t border-outline-variant/30 flex justify-end gap-3 sticky bottom-0 bg-white">
+              <button onClick={() => setModal(null)} className="px-4 py-2.5 text-sm font-medium text-text-muted hover:bg-surface-container-high rounded-lg">Cancelar</button>
               <button onClick={handleSave} disabled={saving}
                 className="px-6 py-2.5 bg-primary hover:bg-primary/90 disabled:opacity-50 text-white rounded-xl font-bold text-sm transition-all flex items-center gap-2">
                 {saving && <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />}
