@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import productsService from '../../public/services/products.service'
 import Pagination from '../../../core/components/Pagination'
+import { useToast } from '../../../core/contexts/ToastContext'
 
 const ITEMS_PER_PAGE = 10
 const EMPTY_FORM = { name: '', slug: '', description: '', icon: '' }
@@ -14,6 +15,7 @@ export default function AdminCategories() {
   const [saving, setSaving] = useState(false)
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
+  const { addToast } = useToast()
 
   const fetchData = () => {
     setLoading(true)
@@ -40,86 +42,98 @@ export default function AdminCategories() {
   }
 
   const handleSave = async () => {
+    if (!form.name.trim()) {
+      addToast('El nombre de la categoría es obligatorio', 'error')
+      return
+    }
     setSaving(true)
     try {
-      if (modal === 'create') await productsService.createCategory(form)
-      else await productsService.updateCategory(selected.id, form)
+      if (modal === 'create') {
+        await productsService.createCategory(form)
+        addToast('Categoría creada exitosamente')
+      } else {
+        await productsService.updateCategory(selected.id, form)
+        addToast('Categoría actualizada exitosamente')
+      }
       fetchData()
       setModal(null)
-    } catch (err) { console.error(err) }
+    } catch (err) { 
+      console.error(err)
+      addToast('Error al procesar la solicitud', 'error')
+    }
     finally { setSaving(false) }
   }
 
   return (
-    <div className="max-w-5xl mx-auto space-y-6 platform-enter">
+    <div className="max-w-5xl mx-auto space-y-5 platform-enter">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4">
         <div>
-          <h2 className="text-2xl sm:text-3xl font-black text-on-background font-headline tracking-tight">Categorías</h2>
-          <p className="text-sm text-text-muted mt-1">Organiza tu catálogo de productos.</p>
+          <h2 className="text-xl font-semibold text-zinc-900">Categorías</h2>
+          <p className="text-sm text-zinc-500 mt-0.5">Organiza tu catálogo de productos.</p>
         </div>
-        <button onClick={openCreate} className="bg-primary hover:bg-primary-dark text-white px-5 py-2.5 rounded-xl font-bold flex items-center gap-2 shadow-lg transition-all active:scale-95 text-sm">
-          <span className="material-symbols-outlined text-[18px]">add_circle</span> Nueva Categoría
+        <button onClick={openCreate} className="bg-zinc-900 hover:bg-zinc-800 text-white px-4 py-2 rounded-lg font-medium flex items-center gap-1.5 transition-colors text-sm">
+          <span className="material-symbols-outlined text-[16px]">add</span> Nueva Categoría
         </button>
       </div>
 
       {/* Metric */}
-      <div className="flex gap-4">
-        <div className="bg-white p-5 rounded-2xl border border-outline-variant/15 shadow-[0_1px_3px_rgba(0,0,0,0.04)] flex items-center gap-4 stat-card">
-          <div className="w-11 h-11 rounded-xl bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
-            <span className="material-symbols-outlined text-[22px]">category</span>
+      <div className="flex gap-3">
+        <div className="bg-white p-4 rounded-xl border border-zinc-200 flex items-center gap-3 stat-card">
+          <div className="w-9 h-9 rounded-lg bg-zinc-100 text-zinc-600 flex items-center justify-center shrink-0">
+            <span className="material-symbols-outlined text-[18px]">category</span>
           </div>
           <div>
-            <p className="text-[10px] font-semibold text-text-muted uppercase tracking-wider">Total Categorías</p>
-            <p className="text-xl font-black text-on-background font-headline">{categories.length}</p>
+            <p className="text-xs text-zinc-500">Total Categorías</p>
+            <p className="text-lg font-semibold text-zinc-900">{categories.length}</p>
           </div>
         </div>
       </div>
 
       {/* Table */}
-      <div className="bg-white rounded-xl border border-outline-variant overflow-hidden">
-        <div className="p-4 border-b border-outline-variant/30">
+      <div className="bg-white rounded-xl border border-zinc-200 overflow-hidden">
+        <div className="p-4 border-b border-zinc-100">
           <div className="relative max-w-sm">
-            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-muted text-[18px]">search</span>
+            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 text-[18px]">search</span>
             <input type="text" value={search} onChange={e => setSearch(e.target.value)} placeholder="Buscar categoría..."
-              className="w-full pl-9 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all" />
+              className="w-full pl-9 pr-4 py-2 bg-zinc-50 border border-zinc-200 rounded-lg text-sm focus:ring-2 focus:ring-zinc-900/10 focus:border-zinc-400 outline-none transition-all" />
           </div>
         </div>
 
         {loading ? (
-          <div className="flex items-center justify-center py-20"><div className="w-8 h-8 border-[3px] border-primary/30 border-t-primary rounded-full animate-spin" /></div>
+          <div className="flex items-center justify-center py-16"><div className="w-6 h-6 border-2 border-zinc-200 border-t-zinc-600 rounded-full animate-spin" /></div>
         ) : filtered.length === 0 ? (
           <div className="text-center py-16">
-            <span className="material-symbols-outlined text-4xl text-outline-variant">category</span>
-            <p className="text-sm text-text-muted mt-2">No se encontraron categorías</p>
+            <span className="material-symbols-outlined text-3xl text-zinc-300">category</span>
+            <p className="text-sm text-zinc-500 mt-2">No se encontraron categorías</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left">
               <thead>
-                <tr className="bg-surface-container-low text-[11px] font-bold text-text-muted uppercase tracking-wider">
+                <tr className="bg-zinc-50 border-b border-zinc-100 text-[11px] font-medium text-zinc-500 uppercase tracking-wider">
                   <th className="px-5 py-3">Categoría</th>
                   <th className="px-5 py-3">Slug</th>
                   <th className="px-5 py-3">Descripción</th>
                   <th className="px-5 py-3 text-right">Acciones</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-outline-variant/30">
+              <tbody className="divide-y divide-zinc-100">
                 {paginated.map(cat => (
-                  <tr key={cat.id} className="hover:bg-surface-container-low/50 transition-colors group">
-                    <td className="px-5 py-3.5">
+                  <tr key={cat.id} className="hover:bg-zinc-50 transition-colors group">
+                    <td className="px-5 py-3">
                       <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+                        <div className="w-9 h-9 rounded-lg bg-zinc-100 flex items-center justify-center text-zinc-600">
                           <span className="material-symbols-outlined text-[18px]">{cat.icon || 'category'}</span>
                         </div>
-                        <span className="text-sm font-bold text-on-background">{cat.name}</span>
+                        <span className="text-sm font-medium text-zinc-900">{cat.name}</span>
                       </div>
                     </td>
-                    <td className="px-5 py-3.5 text-sm text-text-muted font-mono">{cat.slug}</td>
-                    <td className="px-5 py-3.5 text-sm text-text-muted max-w-xs truncate">{cat.description || '—'}</td>
-                    <td className="px-5 py-3.5 text-right">
+                    <td className="px-5 py-3 text-sm text-zinc-500 font-mono">{cat.slug}</td>
+                    <td className="px-5 py-3 text-sm text-zinc-500 max-w-xs truncate">{cat.description || '—'}</td>
+                    <td className="px-5 py-3 text-right">
                       <button onClick={() => openEdit(cat)} title="Editar"
-                        className="p-1.5 rounded-lg hover:bg-primary/10 text-text-muted hover:text-primary transition-colors opacity-60 group-hover:opacity-100">
+                        className="p-1.5 rounded-md hover:bg-zinc-100 text-zinc-400 hover:text-zinc-700 transition-colors opacity-60 group-hover:opacity-100">
                         <span className="material-symbols-outlined text-[18px]">edit</span>
                       </button>
                     </td>
@@ -134,46 +148,55 @@ export default function AdminCategories() {
 
       {/* Modal */}
       {modal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-          <div className="bg-white rounded-xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
-            <div className="p-5 border-b border-outline-variant/30 flex justify-between items-center">
-              <h3 className="text-lg font-bold text-on-background font-headline">{modal === 'create' ? 'Nueva Categoría' : 'Editar Categoría'}</h3>
-              <button onClick={() => setModal(null)} className="p-1 hover:bg-surface-container-high rounded-lg"><span className="material-symbols-outlined text-text-muted">close</span></button>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-zinc-900/40 backdrop-blur-sm transition-opacity" onClick={() => setModal(null)} />
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden relative z-10 transform transition-all animate-in fade-in zoom-in-95 duration-200">
+            <div className="px-6 py-5 border-b border-zinc-100 flex justify-between items-center bg-zinc-50/50">
+              <h3 className="text-lg font-semibold text-zinc-900">{modal === 'create' ? 'Nueva Categoría' : 'Editar Categoría'}</h3>
+              <button onClick={() => setModal(null)} className="p-2 hover:bg-zinc-100 rounded-full transition-colors -mr-2 text-zinc-400">
+                <span className="material-symbols-outlined text-[20px]">close</span>
+              </button>
             </div>
-            <div className="p-5 space-y-4">
+            
+            <div className="p-6 space-y-4">
               <div>
-                <label className="block text-xs font-bold text-text-muted mb-1.5">Nombre</label>
+                <label className="block text-[11px] font-bold text-zinc-600 uppercase tracking-widest mb-1.5">Nombre de Categoría *</label>
                 <input type="text" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} placeholder="Ej: Tecnología"
-                  className="w-full px-3.5 py-2.5 bg-surface-container-low border border-outline-variant rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all" />
+                  className="w-full px-4 py-2.5 bg-white border border-zinc-200 rounded-xl text-sm focus:ring-2 focus:ring-zinc-900/10 focus:border-zinc-400 outline-none transition-all" />
               </div>
               <div>
-                <label className="block text-xs font-bold text-text-muted mb-1.5">Slug</label>
+                <label className="block text-[11px] font-bold text-zinc-600 uppercase tracking-widest mb-1.5">Slug URL <span className="text-zinc-400 font-normal normal-case tracking-normal">(opcional)</span></label>
                 <input type="text" value={form.slug} onChange={e => setForm({ ...form, slug: e.target.value })} placeholder="tecnologia"
-                  className="w-full px-3.5 py-2.5 bg-surface-container-low border border-outline-variant rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all font-mono" />
+                  className="w-full px-4 py-2.5 bg-zinc-50 border border-zinc-200 rounded-xl text-sm focus:ring-2 focus:ring-zinc-900/10 focus:border-zinc-400 outline-none transition-all font-mono text-zinc-700 placeholder:text-zinc-300" />
               </div>
               <div>
-                <label className="block text-xs font-bold text-text-muted mb-1.5">Descripción</label>
-                <textarea value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} placeholder="Descripción breve..." rows={2}
-                  className="w-full px-3.5 py-2.5 bg-surface-container-low border border-outline-variant rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all resize-none" />
+                <label className="block text-[11px] font-bold text-zinc-600 uppercase tracking-widest mb-1.5">Descripción</label>
+                <textarea value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} placeholder="Breve descripción..." rows={2}
+                  className="w-full px-4 py-2.5 bg-white border border-zinc-200 rounded-xl text-sm focus:ring-2 focus:ring-zinc-900/10 focus:border-zinc-400 outline-none transition-all resize-none" />
               </div>
               <div>
-                <label className="block text-xs font-bold text-text-muted mb-1.5">Icono (Material Symbol)</label>
-                <input type="text" value={form.icon} onChange={e => setForm({ ...form, icon: e.target.value })} placeholder="category"
-                  className="w-full px-3.5 py-2.5 bg-surface-container-low border border-outline-variant rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all" />
-                {form.icon && (
-                  <div className="mt-2 flex items-center gap-2 text-sm text-text-muted">
-                    <span className="material-symbols-outlined text-primary">{form.icon}</span>
-                    Vista previa
+                <label className="block text-[11px] font-bold text-zinc-600 uppercase tracking-widest mb-1.5">Icono (Material Symbols)</label>
+                <div className="flex gap-3 items-center">
+                  <div className="relative flex-1">
+                    <input type="text" value={form.icon} onChange={e => setForm({ ...form, icon: e.target.value })} placeholder="category"
+                      className="w-full px-4 py-2.5 bg-white border border-zinc-200 rounded-xl text-sm focus:ring-2 focus:ring-zinc-900/10 focus:border-zinc-400 outline-none transition-all" />
                   </div>
-                )}
+                  <div className="w-11 h-11 rounded-xl bg-zinc-100 flex items-center justify-center border border-zinc-200 shrink-0">
+                    <span className="material-symbols-outlined text-zinc-600 text-[20px]">{form.icon || 'category'}</span>
+                  </div>
+                </div>
+                <p className="text-[10px] text-zinc-400 mt-1">Busca nombres en Google Fonts Icons.</p>
               </div>
             </div>
-            <div className="p-5 border-t border-outline-variant/30 flex justify-end gap-3">
-              <button onClick={() => setModal(null)} className="px-4 py-2 text-sm font-medium text-text-muted hover:bg-surface-container-high rounded-lg transition-colors">Cancelar</button>
-              <button onClick={handleSave} disabled={saving || !form.name}
-                className="px-5 py-2 bg-primary hover:bg-primary disabled:opacity-50 text-white rounded-lg font-bold text-sm transition-all flex items-center gap-2">
+            
+            <div className="px-6 py-4 border-t border-zinc-100 flex justify-end gap-3 bg-zinc-50/50">
+              <button onClick={() => setModal(null)} className="px-4 py-2 bg-white border border-zinc-200 text-sm font-medium text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 rounded-xl transition-colors shadow-sm">
+                Cancelar
+              </button>
+              <button onClick={handleSave} disabled={saving || !form.name.trim()}
+                className="px-6 py-2 bg-zinc-900 hover:bg-zinc-800 disabled:opacity-50 text-white rounded-xl font-semibold text-sm transition-all shadow-md hover:-translate-y-0.5 disabled:translate-y-0 disabled:shadow-none flex items-center gap-2">
                 {saving && <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />}
-                {modal === 'create' ? 'Crear' : 'Guardar'}
+                {saving ? 'Guardando...' : modal === 'create' ? 'Crear' : 'Guardar'}
               </button>
             </div>
           </div>

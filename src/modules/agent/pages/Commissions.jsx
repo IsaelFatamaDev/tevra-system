@@ -127,10 +127,10 @@ export default function AgentCommissions() {
       {/* Commission Detail Modal */}
       {viewCommission && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-          <div className="bg-white rounded-xl shadow-2xl w-full max-w-sm">
-            <div className="p-5 border-b border-outline-variant/30 flex justify-between items-center">
+          <div className="bg-white rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.15)] w-full max-w-sm">
+            <div className="p-5 border-b border-gray-100 flex justify-between items-center">
               <h3 className="text-lg font-bold text-on-background font-headline">Detalle de Comisión</h3>
-              <button onClick={() => setViewCommission(null)} className="p-1 hover:bg-surface-container-high rounded-lg"><span className="material-symbols-outlined text-text-muted">close</span></button>
+              <button onClick={() => setViewCommission(null)} className="p-1 hover:bg-gray-100 rounded-lg"><span className="material-symbols-outlined text-text-muted">close</span></button>
             </div>
             <div className="p-5 space-y-4">
               <div className="flex items-center justify-between">
@@ -166,8 +166,8 @@ export default function AgentCommissions() {
                 )}
               </div>
             </div>
-            <div className="p-4 border-t border-outline-variant/30 flex justify-end">
-              <button onClick={() => setViewCommission(null)} className="px-4 py-2 text-sm font-medium text-text-muted hover:bg-surface-container-high rounded-lg transition-colors">Cerrar</button>
+            <div className="p-4 border-t border-gray-100 flex justify-end">
+              <button onClick={() => setViewCommission(null)} className="px-4 py-2 text-sm font-medium text-text-muted hover:bg-gray-50 rounded-lg transition-colors">Cerrar</button>
             </div>
           </div>
         </div>

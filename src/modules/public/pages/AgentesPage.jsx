@@ -43,9 +43,9 @@ const tablaIngresos = [
 
 function HeroAgentes() {
   return (
-    <section className="relative overflow-hidden py-20 md:py-32" style={{ background: 'linear-gradient(135deg, #ff6b6b 0%, #ae2f34 100%)' }}>
-      <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-white/10 rounded-full blur-3xl" />
-      <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-96 h-96 bg-primary/20 rounded-full blur-3xl" />
+    <section className="tevra-hero-gradient py-20 md:py-32 overflow-hidden">
+      <div className="tevra-hero-overlay" />
+      <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-96 h-96 bg-mint/10 rounded-full blur-3xl" />
       <div className="max-w-7xl mx-auto px-4 sm:px-8 relative z-10">
         <div className="grid md:grid-cols-12 gap-12 items-center hero-enter">
           <div className="md:col-span-7 space-y-6 sm:space-y-8">
@@ -64,7 +64,7 @@ function HeroAgentes() {
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 pt-2">
               <Link
                 to="/registro-agente"
-                className="px-10 py-4 bg-white text-primary rounded-2xl font-headline font-bold text-lg hover:bg-surface-container-lowest transition-all shadow-xl shadow-black/10 active:scale-95"
+                className="px-10 py-4 bg-white text-tevra-dark rounded-2xl font-headline font-bold text-lg hover:bg-surface-container-lowest transition-all shadow-xl shadow-black/10 active:scale-95"
                 style={{ fontSize: 'clamp(0.9rem, 1.5vw, 1.125rem)' }}
               >
                 Quiero unirme
@@ -308,7 +308,7 @@ function RegistroSection() {
               Proceso 100% online. Sin inversión inicial.
             </p>
           </div>
-          <div className="absolute -top-10 -right-10 hidden lg:flex w-24 h-24 rounded-full items-center justify-center text-white shadow-xl rotate-12" style={{ background: 'linear-gradient(135deg, #ff6b6b 0%, #ae2f34 100%)' }}>
+          <div className="absolute -top-10 -right-10 hidden lg:flex w-24 h-24 rounded-full items-center justify-center text-white shadow-xl rotate-12" style={{ background: 'linear-gradient(135deg, #000f22 0%, #0a2540 100%)' }}>
             <span className="material-symbols-outlined text-4xl">edit_note</span>
           </div>
         </div>

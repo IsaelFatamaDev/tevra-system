@@ -47,38 +47,33 @@ export default function AdminSidebar({ open, onClose }) {
   return (
     <>
       {open && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden" onClick={onClose} />
+        <div className="fixed inset-0 bg-black/30 z-40 lg:hidden" onClick={onClose} />
       )}
 
-      <aside className={`fixed top-0 left-0 z-50 h-screen w-65 flex flex-col transition-transform duration-300 lg:translate-x-0 ${open ? 'translate-x-0' : '-translate-x-full'}`}
-        style={{ background: 'linear-gradient(180deg, #0d1520 0%, #111318 40%, #0f1218 100%)' }}>
-
-        {/* Top accent line */}
-        <div className="h-[2px] w-full bg-gradient-to-r from-secondary/60 via-secondary to-transparent flex-shrink-0" />
+      <aside className={`fixed top-0 left-0 z-50 h-screen w-60 flex flex-col bg-white border-r border-zinc-200 transition-transform duration-200 lg:translate-x-0 ${open ? 'translate-x-0' : '-translate-x-full'}`}>
 
         {/* Brand */}
-        <div className="flex items-center gap-3 px-5 h-16 border-b border-white/[0.06] flex-shrink-0">
-          <div className="w-9 h-9 rounded-xl flex items-center justify-center shadow-lg"
-            style={{ background: 'linear-gradient(135deg, #ff6b6b 0%, #ff4757 100%)' }}>
-            <span className="text-white font-black text-sm tracking-tight">TV</span>
+        <div className="flex items-center gap-2.5 px-5 h-14 border-b border-zinc-100 flex-shrink-0">
+          <div className="w-7 h-7 rounded-lg bg-zinc-900 flex items-center justify-center">
+            <span className="text-white font-bold text-[10px] tracking-tight">TV</span>
           </div>
           <div>
-            <p className="font-headline text-[15px] font-extrabold text-white tracking-tight">TeVra</p>
-            <p className="text-[10px] text-white/30 font-medium tracking-widest uppercase">Admin Panel</p>
+            <p className="text-sm font-semibold text-zinc-900 tracking-tight">TeVra</p>
+            <p className="text-[10px] text-zinc-400 font-medium">Admin</p>
           </div>
           <button
             onClick={onClose}
-            className="ml-auto lg:hidden p-1.5 rounded-lg text-white/20 hover:text-white/60 hover:bg-white/5 transition-all"
+            className="ml-auto lg:hidden p-1 rounded-md text-zinc-400 hover:text-zinc-600 hover:bg-zinc-100 transition-colors"
           >
             <span className="material-symbols-outlined text-[18px]">close</span>
           </button>
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 py-4 px-3 overflow-y-auto sidebar-scroll">
+        <nav className="flex-1 py-3 px-3 overflow-y-auto sidebar-scroll">
           {navSections.map((section, idx) => (
-            <div key={section.title} className={idx > 0 ? 'mt-6' : ''}>
-              <p className="px-3 mb-1.5 text-[9px] font-bold uppercase tracking-[0.16em] text-white/20">{section.title}</p>
+            <div key={section.title} className={idx > 0 ? 'mt-5' : ''}>
+              <p className="px-2 mb-1 text-[10px] font-semibold uppercase tracking-wider text-zinc-400">{section.title}</p>
               <div className="space-y-0.5">
                 {section.items.map((item) => (
                   <NavLink
@@ -87,27 +82,21 @@ export default function AdminSidebar({ open, onClose }) {
                     end={item.end}
                     onClick={onClose}
                     className={({ isActive }) =>
-                      `group flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-medium transition-all duration-150 relative overflow-hidden ${isActive
-                        ? 'text-white'
-                        : 'text-white/40 hover:text-white/75 hover:bg-white/[0.04]'
+                      `flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-[13px] font-medium transition-colors ${isActive
+                        ? 'bg-zinc-100 text-zinc-900'
+                        : 'text-zinc-500 hover:text-zinc-700 hover:bg-zinc-50'
                       }`
                     }
-                    style={({ isActive }) => isActive ? {
-                      background: 'linear-gradient(90deg, rgba(255,107,107,0.12) 0%, rgba(255,107,107,0.04) 60%, transparent 100%)',
-                    } : {}}
                   >
                     {({ isActive }) => (
                       <>
-                        {isActive && (
-                          <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-r-full bg-secondary" />
-                        )}
                         <span
-                          className={`material-symbols-outlined text-[20px] transition-colors ${isActive ? 'text-secondary' : 'text-white/25 group-hover:text-white/50'}`}
+                          className={`material-symbols-outlined text-[18px] ${isActive ? 'text-zinc-900' : 'text-zinc-400'}`}
                           style={isActive ? { fontVariationSettings: "'FILL' 1" } : {}}
                         >
                           {item.icon}
                         </span>
-                        <span className={isActive ? 'font-semibold' : ''}>{item.label}</span>
+                        <span>{item.label}</span>
                       </>
                     )}
                   </NavLink>
@@ -118,22 +107,21 @@ export default function AdminSidebar({ open, onClose }) {
         </nav>
 
         {/* User Section */}
-        <div className="border-t border-white/[0.06] p-3 flex-shrink-0">
-          <div className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/[0.04] transition-colors group">
-            <div className="w-9 h-9 rounded-full flex items-center justify-center text-white font-bold text-xs flex-shrink-0"
-              style={{ background: 'linear-gradient(135deg, rgba(255,107,107,0.3) 0%, rgba(255,107,107,0.15) 100%)', border: '1px solid rgba(255,107,107,0.2)' }}>
+        <div className="border-t border-zinc-100 p-3 flex-shrink-0">
+          <div className="flex items-center gap-2.5 p-2 rounded-lg hover:bg-zinc-50 transition-colors group">
+            <div className="w-8 h-8 rounded-full bg-zinc-100 flex items-center justify-center text-zinc-600 font-semibold text-xs flex-shrink-0">
               {user?.firstName?.[0]}{user?.lastName?.[0]}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-[13px] font-semibold text-white truncate leading-tight">{user?.firstName} {user?.lastName}</p>
-              <p className="text-[10px] text-white/25 capitalize truncate leading-tight">{user?.role?.replace('_', ' ')}</p>
+              <p className="text-[13px] font-medium text-zinc-900 truncate leading-tight">{user?.firstName} {user?.lastName}</p>
+              <p className="text-[10px] text-zinc-400 capitalize truncate leading-tight">{user?.role?.replace('_', ' ')}</p>
             </div>
             <button
               onClick={handleLogout}
-              className="p-1.5 rounded-lg text-white/20 hover:text-red-400 hover:bg-red-500/10 transition-all opacity-0 group-hover:opacity-100"
+              className="p-1 rounded-md text-zinc-400 hover:text-red-500 hover:bg-red-50 transition-colors opacity-0 group-hover:opacity-100"
               title="Cerrar sesión"
             >
-              <span className="material-symbols-outlined text-[18px]">logout</span>
+              <span className="material-symbols-outlined text-[16px]">logout</span>
             </button>
           </div>
         </div>

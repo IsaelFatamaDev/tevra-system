@@ -3,13 +3,12 @@ import useScrollReveal from '../../../core/hooks/useScrollReveal'
 import shipmentsService from '../services/shipments.service'
 
 const STATUS_MAP = {
-  PENDING: 'confirmado',
-  CONFIRMED: 'confirmado',
-  PURCHASED_IN_USA: 'comprado',
-  IN_TRANSIT: 'transito',
-  IN_CUSTOMS: 'aduana',
-  READY_FOR_DELIVERY: 'listo',
-  DELIVERED: 'entregado',
+  pending: 'confirmado',
+  purchased: 'comprado',
+  in_transit: 'transito',
+  in_customs: 'aduana',
+  ready: 'listo',
+  delivered: 'entregado',
 }
 
 const estadosPosibles = [
@@ -133,8 +132,8 @@ export default function TrackingPage() {
 
   return (
     <main className="min-h-screen bg-background-cream" style={{ paddingTop: 'clamp(3.5rem, 8vh, 5rem)' }}>
-      <section className="hero-gradient py-16 sm:py-24 relative overflow-hidden">
-        <div className="absolute inset-0 bg-grid-pattern opacity-20" />
+      <section className="tevra-hero-gradient py-16 sm:py-24 overflow-hidden">
+        <div className="tevra-hero-overlay" />
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-mint/10 blur-[100px] rounded-full" />
         <div className="max-w-7xl mx-auto px-4 sm:px-8 relative z-10">
           <div className="max-w-2xl hero-enter">
@@ -162,11 +161,11 @@ export default function TrackingPage() {
               <button
                 type="submit"
                 disabled={buscando}
-                className="px-8 py-3.5 bg-secondary text-white rounded-2xl font-headline font-bold text-sm hover:-translate-y-0.5 hover:shadow-xl shadow-lg shadow-secondary/30 transition-all disabled:opacity-60 flex items-center gap-2 justify-center"
+                className="px-8 py-3.5 bg-tevra-coral text-white rounded-2xl font-headline font-bold text-sm hover:-translate-y-0.5 hover:shadow-xl shadow-lg shadow-tevra-coral transition-all disabled:opacity-60 flex items-center gap-2 justify-center"
               >
                 {buscando ? (
                   <>
-                    <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    <span className="material-symbols-outlined text-base">hourglass_top</span>
                     Buscando...
                   </>
                 ) : (
@@ -178,8 +177,8 @@ export default function TrackingPage() {
               </button>
             </form>
             {error && (
-              <div className="mt-4 flex items-center gap-3 px-4 py-3 bg-secondary/20 border border-secondary/30 rounded-2xl">
-                <span className="material-symbols-outlined text-secondary text-sm">error</span>
+              <div className="mt-4 flex items-center gap-3 px-4 py-3 bg-tevra-coral/10 border border-tevra-coral/30 rounded-2xl">
+                <span className="material-symbols-outlined text-tevra-coral text-sm">error</span>
                 <p className="text-white/80 text-sm">{error}</p>
               </div>
             )}

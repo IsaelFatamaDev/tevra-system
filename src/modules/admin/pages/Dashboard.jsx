@@ -93,18 +93,18 @@ export default function AdminDashboard() {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="text-center">
-          <div className="w-12 h-12 rounded-full border-4 border-primary/20 border-t-primary animate-spin mx-auto mb-4" />
-          <p className="text-sm text-text-muted">Cargando dashboard...</p>
+          <div className="w-8 h-8 rounded-full border-2 border-zinc-200 border-t-zinc-600 animate-spin mx-auto mb-3" />
+          <p className="text-sm text-zinc-500">Cargando dashboard...</p>
         </div>
       </div>
     )
   }
 
   const statCards = stats ? [
-    { title: 'Total Clientes', value: stats.totalCustomers ?? 0, icon: 'group', gradient: 'from-primary to-primary-dark', bg: 'bg-primary/10', iconColor: 'text-primary' },
-    { title: 'Agentes Activos', value: stats.totalAgents ?? 0, icon: 'support_agent', gradient: 'from-emerald-500 to-teal-600', bg: 'bg-emerald-50', iconColor: 'text-emerald-600' },
-    { title: 'Total Pedidos', value: stats.totalOrders ?? 0, icon: 'package_2', gradient: 'from-amber-500 to-orange-600', bg: 'bg-amber-50', iconColor: 'text-amber-600' },
-    { title: 'Ingresos', value: `$${Number(stats.totalRevenue ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}`, icon: 'payments', gradient: 'from-violet-500 to-purple-600', bg: 'bg-violet-50', iconColor: 'text-violet-600' },
+    { title: 'Total Clientes', value: stats.totalCustomers ?? 0, icon: 'group', bg: 'bg-zinc-100', iconColor: 'text-zinc-600' },
+    { title: 'Agentes Activos', value: stats.totalAgents ?? 0, icon: 'support_agent', bg: 'bg-zinc-100', iconColor: 'text-zinc-600' },
+    { title: 'Total Pedidos', value: stats.totalOrders ?? 0, icon: 'package_2', bg: 'bg-zinc-100', iconColor: 'text-zinc-600' },
+    { title: 'Ingresos', value: `$${Number(stats.totalRevenue ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}`, icon: 'payments', bg: 'bg-zinc-100', iconColor: 'text-zinc-600' },
   ] : []
 
   const medals = ['🥇', '🥈', '🥉']
@@ -114,37 +114,36 @@ export default function AdminDashboard() {
     : 100
 
   return (
-    <div className="space-y-8 platform-enter">
+    <div className="space-y-6 platform-enter">
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
         <div>
-          <h1 className="font-headline text-3xl font-extrabold text-primary tracking-tight">Dashboard Overview</h1>
-          <p className="text-on-surface-variant mt-1">Bienvenido, {user?.firstName}. Aquí tienes el resumen de TeVra hoy.</p>
+          <h1 className="text-xl font-semibold text-zinc-900">Dashboard</h1>
+          <p className="text-sm text-zinc-500 mt-0.5">Bienvenido, {user?.firstName}. Resumen general de TeVra.</p>
         </div>
-        <div className="flex gap-3">
-          <button onClick={handleExportCSV} className="px-5 py-2.5 bg-white text-primary font-semibold rounded-xl shadow-sm border border-outline-variant/20 flex items-center gap-2 hover:bg-surface-container-low transition-colors text-sm">
-            <span className="material-symbols-outlined text-lg">file_download</span>
+        <div className="flex gap-2">
+          <button onClick={handleExportCSV} className="px-4 py-2 bg-white text-zinc-700 font-medium rounded-lg border border-zinc-200 flex items-center gap-1.5 hover:bg-zinc-50 transition-colors text-sm">
+            <span className="material-symbols-outlined text-[16px]">file_download</span>
             Exportar
           </button>
-          <button onClick={() => navigate('/registro-agente')} className="px-5 py-2.5 bg-linear-to-br from-primary to-primary-dark text-white font-semibold rounded-xl shadow-lg flex items-center gap-2 hover:opacity-90 transition-opacity text-sm">
-            <span className="material-symbols-outlined text-lg">add</span>
+          <button onClick={() => navigate('/registro-agente')} className="px-4 py-2 bg-zinc-900 text-white font-medium rounded-lg flex items-center gap-1.5 hover:bg-zinc-800 transition-colors text-sm">
+            <span className="material-symbols-outlined text-[16px]">add</span>
             Nuevo Agente
           </button>
         </div>
       </div>
 
       {/* Metric Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
         {statCards.map((s) => (
-          <div key={s.title} className="bg-white rounded-2xl p-6 border border-outline-variant/15 shadow-[0_1px_3px_rgba(0,0,0,0.04)] stat-card group">
-            <div className="flex items-start justify-between mb-4">
-              <div className={`w-12 h-12 rounded-2xl ${s.bg} flex items-center justify-center`}>
-                <span className={`material-symbols-outlined text-[24px] ${s.iconColor}`} style={{ fontVariationSettings: "'FILL' 1" }}>{s.icon}</span>
+          <div key={s.title} className="bg-white rounded-xl p-5 border border-zinc-200 stat-card">
+            <div className="flex items-center gap-3 mb-3">
+              <div className={`w-9 h-9 rounded-lg ${s.bg} flex items-center justify-center`}>
+                <span className={`material-symbols-outlined text-[18px] ${s.iconColor}`}>{s.icon}</span>
               </div>
-              <span className="material-symbols-outlined text-emerald-400/40 text-lg group-hover:text-emerald-500 transition-colors">trending_up</span>
+              <p className="text-xs font-medium text-zinc-500">{s.title}</p>
             </div>
-            <p className="text-3xl font-extrabold text-on-background font-headline tracking-tight">{s.value}</p>
-            <p className="text-sm text-text-muted mt-1 font-medium">{s.title}</p>
+            <p className="text-2xl font-semibold text-zinc-900">{s.value}</p>
           </div>
         ))}
       </div>
@@ -164,11 +163,11 @@ export default function AdminDashboard() {
       {/* Charts + Top Agents */}
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
         {/* Revenue Chart */}
-        <div className="xl:col-span-2 bg-white rounded-2xl border border-outline-variant/15 shadow-[0_1px_3px_rgba(0,0,0,0.04)] overflow-hidden">
-          <div className="flex items-center justify-between px-6 py-5 border-b border-outline-variant/10">
+        <div className="xl:col-span-2 bg-white rounded-xl border border-zinc-200 overflow-hidden">
+          <div className="flex items-center justify-between px-5 py-4 border-b border-zinc-100">
             <div>
-              <h3 className="font-headline font-bold text-on-background text-lg">Rendimiento de Ventas</h3>
-              <p className="text-xs text-text-muted mt-0.5">Ingresos mensuales</p>
+              <h3 className="text-sm font-semibold text-zinc-900">Rendimiento de Ventas</h3>
+              <p className="text-xs text-zinc-500 mt-0.5">Ingresos mensuales</p>
             </div>
           </div>
           <div className="p-6">
@@ -184,7 +183,7 @@ export default function AdminDashboard() {
                         ${Number(r.revenue).toLocaleString()}
                       </div>
                       <div
-                        className="w-full rounded-t-lg bg-gradient-to-t from-primary to-primary/60 transition-all hover:from-primary-dark hover:to-primary cursor-pointer min-h-[4px]"
+                        className="w-full rounded-t-md bg-zinc-800 hover:bg-zinc-700 transition-colors cursor-pointer min-h-[4px]"
                         style={{ height: `${Math.max(pct, 2)}%` }}
                       />
                       <span className="text-[10px] text-text-muted font-medium">{months[monthLabel] || monthLabel}</span>
@@ -196,7 +195,7 @@ export default function AdminDashboard() {
               <div className="flex items-end gap-2 h-52">
                 {[40, 65, 45, 80, 55, 90, 70, 60, 85, 50, 75, 95].map((h, i) => (
                   <div key={i} className="flex-1 flex flex-col items-center gap-1">
-                    <div className="w-full rounded-t-lg bg-gradient-to-t from-primary/15 to-primary/5" style={{ height: `${h}%` }} />
+                    <div className="w-full rounded-t-md bg-zinc-200" style={{ height: `${h}%` }} />
                     <span className="text-[10px] text-text-muted">{['E', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'][i]}</span>
                   </div>
                 ))}
@@ -206,10 +205,10 @@ export default function AdminDashboard() {
         </div>
 
         {/* Top Agents */}
-        <div className="bg-white rounded-2xl border border-outline-variant/15 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
-          <div className="px-6 py-5 border-b border-outline-variant/10">
-            <h3 className="font-headline font-bold text-on-background text-lg">Top Agentes</h3>
-            <p className="text-xs text-text-muted mt-0.5">Por ingresos generados</p>
+        <div className="bg-white rounded-xl border border-zinc-200">
+          <div className="px-5 py-4 border-b border-zinc-100">
+            <h3 className="text-sm font-semibold text-zinc-900">Top Agentes</h3>
+            <p className="text-xs text-zinc-500 mt-0.5">Por ingresos generados</p>
           </div>
           <div className="p-4 space-y-2">
             {topAgents.length === 0 && (
@@ -220,8 +219,8 @@ export default function AdminDashboard() {
             )}
             {topAgents.map((a, i) => (
               <div key={i} className="flex items-center gap-3 p-3 rounded-xl hover:bg-surface-container-low/60 transition-colors">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center text-white font-bold text-sm shrink-0">
-                  {i < 3 ? <span className="text-lg">{medals[i]}</span> : <span>{i + 1}</span>}
+                <div className="w-8 h-8 rounded-full bg-zinc-100 flex items-center justify-center text-zinc-600 font-semibold text-xs shrink-0">
+                  {i < 3 ? <span className="text-sm">{medals[i]}</span> : <span>{i + 1}</span>}
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-semibold text-on-background truncate">{a.displayName || 'Agente'}</p>
@@ -240,15 +239,15 @@ export default function AdminDashboard() {
       {/* Recent Orders + Pending Agents */}
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
         {/* Recent Orders */}
-        <div className="xl:col-span-2 bg-white rounded-2xl border border-outline-variant/15 shadow-[0_1px_3px_rgba(0,0,0,0.04)] overflow-hidden">
-          <div className="flex items-center justify-between px-6 py-5 border-b border-outline-variant/10">
+        <div className="xl:col-span-2 bg-white rounded-xl border border-zinc-200 overflow-hidden">
+          <div className="flex items-center justify-between px-5 py-4 border-b border-zinc-100">
             <div>
-              <h3 className="font-headline font-bold text-on-background text-lg">Pedidos Recientes</h3>
-              <p className="text-xs text-text-muted mt-0.5">Últimas órdenes del sistema</p>
+              <h3 className="text-sm font-semibold text-zinc-900">Pedidos Recientes</h3>
+              <p className="text-xs text-zinc-500 mt-0.5">Últimas órdenes del sistema</p>
             </div>
-            <button onClick={() => navigate('/admin/orders')} className="text-sm font-semibold text-primary hover:text-primary-dark transition-colors flex items-center gap-1">
+            <button onClick={() => navigate('/admin/orders')} className="text-sm font-medium text-zinc-500 hover:text-zinc-900 transition-colors flex items-center gap-1">
               Ver todos
-              <span className="material-symbols-outlined text-base">arrow_forward</span>
+              <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
             </button>
           </div>
           <div className="overflow-x-auto">
@@ -295,15 +294,15 @@ export default function AdminDashboard() {
         </div>
 
         {/* Pending Agent Applications */}
-        <div className="bg-white rounded-2xl border border-outline-variant/15 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
-          <div className="px-6 py-5 border-b border-outline-variant/10">
+        <div className="bg-white rounded-xl border border-zinc-200">
+          <div className="px-5 py-4 border-b border-zinc-100">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="font-headline font-bold text-on-background text-lg">Solicitudes</h3>
-                <p className="text-xs text-text-muted mt-0.5">Agentes pendientes</p>
+                <h3 className="text-sm font-semibold text-zinc-900">Solicitudes</h3>
+                <p className="text-xs text-zinc-500 mt-0.5">Agentes pendientes</p>
               </div>
               {pendingAgents.length > 0 && (
-                <span className="bg-secondary/10 text-secondary text-xs font-bold px-2.5 py-1 rounded-full">
+                <span className="bg-zinc-100 text-zinc-700 text-xs font-semibold px-2 py-0.5 rounded-full">
                   {pendingAgents.length}
                 </span>
               )}
@@ -317,9 +316,9 @@ export default function AdminDashboard() {
               </div>
             )}
             {pendingAgents.map((a, i) => (
-              <div key={a.id || i} className="p-4 rounded-xl border border-outline-variant/10 hover:border-primary/20 transition-colors">
+              <div key={a.id || i} className="p-3 rounded-lg border border-zinc-100 hover:border-zinc-200 transition-colors">
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-secondary/20 to-secondary/10 flex items-center justify-center text-secondary font-bold text-xs shrink-0">
+                  <div className="w-8 h-8 rounded-full bg-zinc-100 flex items-center justify-center text-zinc-600 font-semibold text-xs shrink-0">
                     {(a.firstName || a.fullName || '?')[0].toUpperCase()}{(a.lastName || '')[0]?.toUpperCase() || ''}
                   </div>
                   <div className="flex-1 min-w-0">
@@ -330,10 +329,10 @@ export default function AdminDashboard() {
                   </div>
                 </div>
                 <div className="flex gap-2">
-                  <button onClick={() => handleApproveAgent(a)} className="flex-1 py-2 rounded-xl bg-primary text-white text-xs font-bold hover:bg-primary-dark transition-colors">
+                  <button onClick={() => handleApproveAgent(a)} className="flex-1 py-1.5 rounded-lg bg-zinc-900 text-white text-xs font-medium hover:bg-zinc-800 transition-colors">
                     Aprobar
                   </button>
-                  <button onClick={() => handleRejectAgent(a)} className="flex-1 py-2 rounded-xl border border-outline-variant/20 text-text-muted text-xs font-bold hover:bg-surface-container-low transition-colors">
+                  <button onClick={() => handleRejectAgent(a)} className="flex-1 py-1.5 rounded-lg border border-zinc-200 text-zinc-600 text-xs font-medium hover:bg-zinc-50 transition-colors">
                     Rechazar
                   </button>
                 </div>
@@ -345,21 +344,21 @@ export default function AdminDashboard() {
 
       {/* Commission Summary */}
       {stats && (
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-          <div className="bg-gradient-to-br from-primary to-primary-dark rounded-2xl p-6 text-white">
-            <span className="material-symbols-outlined text-white/50 text-2xl mb-3 block">account_balance</span>
-            <p className="text-3xl font-extrabold font-headline">${Number(stats.totalTevraCommission ?? 0).toLocaleString()}</p>
-            <p className="text-sm text-white/60 mt-1">Comisión TeVra</p>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="bg-white rounded-xl border border-zinc-200 p-5">
+            <span className="material-symbols-outlined text-zinc-400 text-xl mb-3 block">account_balance</span>
+            <p className="text-2xl font-semibold text-zinc-900">${Number(stats.totalTevraCommission ?? 0).toLocaleString()}</p>
+            <p className="text-xs text-zinc-500 mt-1">Comisión TeVra</p>
           </div>
-          <div className="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl p-6 text-white">
-            <span className="material-symbols-outlined text-white/50 text-2xl mb-3 block">handshake</span>
-            <p className="text-3xl font-extrabold font-headline">${Number(stats.totalAgentCommission ?? 0).toLocaleString()}</p>
-            <p className="text-sm text-white/60 mt-1">Comisión Agentes</p>
+          <div className="bg-white rounded-xl border border-zinc-200 p-5">
+            <span className="material-symbols-outlined text-zinc-400 text-xl mb-3 block">handshake</span>
+            <p className="text-2xl font-semibold text-zinc-900">${Number(stats.totalAgentCommission ?? 0).toLocaleString()}</p>
+            <p className="text-xs text-zinc-500 mt-1">Comisión Agentes</p>
           </div>
-          <div className="bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl p-6 text-white">
-            <span className="material-symbols-outlined text-white/50 text-2xl mb-3 block">inventory_2</span>
-            <p className="text-3xl font-extrabold font-headline">{stats.totalProducts ?? 0}</p>
-            <p className="text-sm text-white/60 mt-1">Productos en Catálogo</p>
+          <div className="bg-white rounded-xl border border-zinc-200 p-5">
+            <span className="material-symbols-outlined text-zinc-400 text-xl mb-3 block">inventory_2</span>
+            <p className="text-2xl font-semibold text-zinc-900">{stats.totalProducts ?? 0}</p>
+            <p className="text-xs text-zinc-500 mt-1">Productos en Catálogo</p>
           </div>
         </div>
       )}

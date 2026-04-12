@@ -2,10 +2,10 @@ import { useState, useCallback } from 'react'
 import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom'
 import { AuthProvider, useAuth } from './core/contexts/AuthContext'
 import { CartProvider } from './core/contexts/CartContext'
+import { ToastProvider } from './core/contexts/ToastContext'
 import Navbar from './core/components/Navbar'
 import Footer from './core/components/Footer'
 import WhatsAppButton from './core/components/WhatsAppButton'
-import SplashScreen from './core/components/SplashScreen'
 import ScrollToTop from './core/components/ScrollToTop'
 import { getDashboardPath } from './core/utils/roles'
 
@@ -153,15 +153,13 @@ function AppLayout() {
 }
 
 export default function App() {
-  const [showSplash, setShowSplash] = useState(true)
-  const handleSplashFinish = useCallback(() => setShowSplash(false), [])
-
   return (
     <BrowserRouter>
       <AuthProvider>
         <CartProvider>
-          {showSplash && <SplashScreen onFinish={handleSplashFinish} />}
-          <AppLayout />
+          <ToastProvider>
+            <AppLayout />
+          </ToastProvider>
         </CartProvider>
       </AuthProvider>
     </BrowserRouter>

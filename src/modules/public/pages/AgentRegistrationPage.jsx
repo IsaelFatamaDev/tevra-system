@@ -1,15 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { agentsService } from '../services/agents.service'
-
-const CITIES = ['Lima', 'Arequipa', 'Trujillo', 'Cusco']
-const CATEGORIES = ['Apple', 'Fashion', 'Supplements', 'Electronics', 'Beauty', 'Home']
-const COVERAGE_ZONES = [
-  'Miraflores, San Isidro, Barranco',
-  'Surco, San Borja, La Molina',
-  'Lima Norte (Los Olivos, Comas)',
-  'Lima Este (Ate, Santa Anita)',
-]
+import productsService from '../services/products.service'
 
 const STEPS = [
   { icon: 'person', label: 'Información Personal' },
@@ -62,12 +54,26 @@ export default function AgentRegistrationPage() {
   }
 
   // Validation
-  const step1Valid = form.fullName.trim() && form.dni.trim().length >= 8 && form.email.includes('@') && form.whatsapp.trim().length >= 9 && form.city && form.password.length >= 8 && /[A-Z]/.test(form.password) && /[0-9]/.test(form.password) && form.password === form.confirmPassword
+  const step1Valid = form.fullName.trim() && /^[0-9]{8}$/.test(form.dni.trim()) && form.email.includes('@') && form.whatsapp.trim().length >= 7 && form.city.trim() && form.password.length >= 8 && /[A-Z]/.test(form.password) && /[0-9]/.test(form.password) && form.password === form.confirmPassword
   const step2Valid = form.categories.length > 0 && form.coverageAreas.length > 0
 
   const handleSubmit = async () => {
     setSubmitting(true)
     setError('')
+
+    // Validations
+    if (!form.fullName.trim()) { setError('El nombre completo es obligatorio.'); setSubmitting(false); return }
+    if (!/^[0-9]{8}$/.test(form.dni.trim())) { setError('El número de ID debe tener exactamente 8 dígitos.'); setSubmitting(false); return }
+    if (!form.email.trim() || !form.email.includes('@')) { setError('Ingresa un correo electr\u00f3nico v\u00e1lido.'); setSubmitting(false); return }
+    if (!form.whatsapp.trim() || form.whatsapp.trim().length < 7) { setError('Ingresa un n\u00famero de WhatsApp v\u00e1lido.'); setSubmitting(false); return }
+    if (!form.city.trim()) { setError('La ciudad de operaci\u00f3n es obligatoria.'); setSubmitting(false); return }
+    if (form.password.length < 8) { setError('La contrase\u00f1a debe tener al menos 8 caracteres.'); setSubmitting(false); return }
+    if (!/[A-Z]/.test(form.password)) { setError('La contrase\u00f1a debe tener al menos 1 may\u00fascula.'); setSubmitting(false); return }
+    if (!/[0-9]/.test(form.password)) { setError('La contrase\u00f1a debe tener al menos 1 n\u00famero.'); setSubmitting(false); return }
+    if (form.password !== form.confirmPassword) { setError('Las contrase\u00f1as no coinciden.'); setSubmitting(false); return }
+    if (form.categories.length === 0) { setError('Selecciona al menos una categor\u00eda.'); setSubmitting(false); return }
+    if (form.coverageAreas.length === 0) { setError('Agrega al menos una zona de cobertura.'); setSubmitting(false); return }
+
     try {
       const { confirmPassword, ...submitData } = form
       await agentsService.submitApplication(submitData)
@@ -187,14 +193,19 @@ function Step1({ form, set, onNext, valid, generatedUsername }) {
               />
             </div>
             <div className="space-y-1.5">
-              <label className="text-sm font-bold text-on-background">Número de DNI</label>
+              <label className="text-sm font-bold text-on-background">Número de ID (DNI)</label>
               <input
                 value={form.dni}
-                onChange={(e) => set('dni', e.target.value.replace(/\D/g, '').slice(0, 8))}
+                onChange={(e) => set('dni', e.target.value.replace(/[^0-9]/g, '').slice(0, 8))}
                 className="w-full bg-surface-container-low border-b-2 border-outline-variant focus:border-gray-900 focus:ring-0 px-4 py-3 rounded-t-lg transition-all outline-none"
-                placeholder="8 dígitos"
+                placeholder="Exactamente 8 dígitos"
                 maxLength={8}
+                type="text"
+                inputMode="numeric"
               />
+              {form.dni && form.dni.length !== 8 && (
+                <p className="text-xs text-red-500 font-medium mt-1">El ID debe tener 8 dígitos.</p>
+              )}
             </div>
           </div>
         </div>
@@ -221,16 +232,13 @@ function Step1({ form, set, onNext, valid, generatedUsername }) {
               </div>
               <div className="space-y-1.5">
                 <label className="text-xs font-bold text-on-background uppercase tracking-wide">WhatsApp</label>
-                <div className="relative">
-                  <span className="absolute left-4 top-3.5 text-text-muted font-medium">+51</span>
-                  <input
-                    value={form.whatsapp}
-                    onChange={(e) => set('whatsapp', e.target.value.replace(/\D/g, '').slice(0, 9))}
-                    className="w-full bg-white border-b-2 border-outline-variant focus:border-gray-900 focus:ring-0 pl-14 pr-4 py-3 rounded-t-lg transition-all outline-none"
-                    placeholder="999 999 999"
-                    type="tel"
-                  />
-                </div>
+                <input
+                  value={form.whatsapp}
+                  onChange={(e) => set('whatsapp', e.target.value.replace(/[^0-9+\- ]/g, '').slice(0, 20))}
+                  className="w-full bg-white border-b-2 border-outline-variant focus:border-gray-900 focus:ring-0 px-4 py-3 rounded-t-lg transition-all outline-none"
+                  placeholder="+1 555 123 4567"
+                  type="tel"
+                />
               </div>
             </div>
           </div>
@@ -243,25 +251,15 @@ function Step1({ form, set, onNext, valid, generatedUsername }) {
               </span>
               <h3 className="text-xl font-bold text-on-background">Ciudad de Operación</h3>
             </div>
-            <div className="grid grid-cols-2 gap-3">
-              {CITIES.map((city) => (
-                <button
-                  key={city}
-                  type="button"
-                  onClick={() => set('city', city)}
-                  className={`px-4 py-3 rounded-xl font-medium text-sm text-left flex items-center justify-between transition-colors ${form.city === city
-                    ? 'bg-white border-2 border-gray-900 text-on-background'
-                    : 'bg-white border border-outline-variant text-text-muted hover:border-gray-400'
-                    }`}
-                >
-                  {city}
-                  {form.city === city && (
-                    <span className="material-symbols-outlined text-sm text-on-background" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
-                  )}
-                </button>
-              ))}
+            <div className="space-y-1.5">
+              <input
+                value={form.city}
+                onChange={(e) => set('city', e.target.value)}
+                className="w-full bg-white border-b-2 border-outline-variant focus:border-gray-900 focus:ring-0 px-4 py-3 rounded-t-lg transition-all outline-none"
+                placeholder="Ej. Los Angeles, Miami, Lima..."
+              />
             </div>
-            <p className="mt-4 text-xs text-outline">¿No ves tu ciudad? Pronto expandiremos nuestra red.</p>
+            <p className="mt-4 text-xs text-outline">Escribe la ciudad donde operarás como agente TeVra.</p>
           </div>
         </div>
 
@@ -348,6 +346,30 @@ function Step1({ form, set, onNext, valid, generatedUsername }) {
 
 /* =========== STEP 2: Professional Profile =========== */
 function Step2({ form, toggleCategory, toggleCoverage, set, onBack, onSubmit, submitting, error, valid }) {
+  const [apiCategories, setApiCategories] = useState([])
+  const [zoneInput, setZoneInput] = useState('')
+
+  useEffect(() => {
+    productsService.getCategories()
+      .then(data => {
+        const cats = Array.isArray(data) ? data : data?.items || []
+        setApiCategories(cats.map(c => c.name))
+      })
+      .catch(() => setApiCategories(['Electronics', 'Fashion', 'Apple', 'Beauty', 'Home']))
+  }, [])
+
+  const addZone = () => {
+    const zone = zoneInput.trim()
+    if (zone && !form.coverageAreas.includes(zone)) {
+      set('coverageAreas', [...form.coverageAreas, zone])
+    }
+    setZoneInput('')
+  }
+
+  const removeZone = (zone) => {
+    set('coverageAreas', form.coverageAreas.filter(z => z !== zone))
+  }
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
       <div className="lg:col-span-7">
@@ -361,7 +383,7 @@ function Step2({ form, toggleCategory, toggleCoverage, set, onBack, onSubmit, su
           <div className="space-y-4">
             <label className="block font-bold text-on-background text-sm uppercase tracking-wider">Categorías que manejas</label>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-              {CATEGORIES.map((cat) => (
+              {apiCategories.map((cat) => (
                 <label
                   key={cat}
                   className={`flex items-center p-4 rounded-xl bg-white border cursor-pointer transition-all ${form.categories.includes(cat) ? 'border-gray-900 ring-1 ring-gray-900' : 'border-outline-variant hover:border-gray-400'
@@ -379,24 +401,32 @@ function Step2({ form, toggleCategory, toggleCoverage, set, onBack, onSubmit, su
             </div>
           </div>
 
-          {/* Coverage Zones */}
+          {/* Coverage Zones — free text with tags */}
           <div className="space-y-4">
-            <label className="block font-bold text-on-background text-sm uppercase tracking-wider">Zona de cobertura</label>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {COVERAGE_ZONES.map((zone) => (
-                <button
-                  key={zone}
-                  type="button"
-                  onClick={() => toggleCoverage(zone)}
-                  className={`text-left px-4 py-3 rounded-xl text-sm font-medium transition-all ${form.coverageAreas.includes(zone)
-                    ? 'bg-primary text-white'
-                    : 'bg-white border border-outline-variant text-gray-700 hover:border-gray-400'
-                    }`}
-                >
-                  {zone}
-                </button>
-              ))}
+            <label className="block font-bold text-on-background text-sm uppercase tracking-wider">Zonas de cobertura</label>
+            <div className="flex gap-2">
+              <input
+                value={zoneInput}
+                onChange={(e) => setZoneInput(e.target.value)}
+                onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addZone() } }}
+                className="flex-1 bg-white border-b-2 border-outline-variant focus:border-gray-900 focus:ring-0 px-4 py-3 rounded-t-lg transition-all outline-none text-sm"
+                placeholder="Escribe una zona y presiona Enter o Agregar"
+              />
+              <button type="button" onClick={addZone} className="px-4 py-3 bg-primary text-white rounded-xl text-sm font-bold hover:bg-gray-800 transition-colors">Agregar</button>
             </div>
+            {form.coverageAreas.length > 0 && (
+              <div className="flex flex-wrap gap-2 mt-2">
+                {form.coverageAreas.map((zone) => (
+                  <span key={zone} className="inline-flex items-center gap-1 px-3 py-1.5 bg-primary text-white rounded-full text-sm font-medium">
+                    {zone}
+                    <button type="button" onClick={() => removeZone(zone)} className="ml-1 hover:text-red-300 transition-colors">
+                      <span className="material-symbols-outlined text-sm">close</span>
+                    </button>
+                  </span>
+                ))}
+              </div>
+            )}
+            <p className="text-xs text-outline">Agrega las áreas, barrios o ciudades donde puedes operar.</p>
           </div>
 
           {/* Bio */}

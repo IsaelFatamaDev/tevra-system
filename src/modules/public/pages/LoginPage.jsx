@@ -20,6 +20,17 @@ export default function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
+
+    // Validations
+    if (!email.trim()) return setError('El correo electrónico es obligatorio.')
+    if (!/\S+@\S+\.\S+/.test(email)) return setError('Ingresa un correo electrónico válido.')
+    if (!password) return setError('La contraseña es obligatoria.')
+    if (password.length < 6) return setError('La contraseña debe tener al menos 6 caracteres.')
+    if (isSignUp) {
+      if (!firstName.trim()) return setError('El nombre es obligatorio.')
+      if (!lastName.trim()) return setError('El apellido es obligatorio.')
+    }
+
     setLoading(true)
     try {
       let loggedUser
@@ -260,16 +271,14 @@ export default function LoginPage() {
               disabled={loading}
               className="w-full flex items-center justify-center gap-2 py-3 sm:py-3.5 mt-1 bg-secondary hover:bg-secondary/90 disabled:opacity-50 text-white font-headline font-bold text-xs sm:text-sm uppercase tracking-wider rounded-xl transition-all shadow-[0_4px_20px_rgba(255,107,107,0.3)] hover:shadow-[0_6px_30px_rgba(255,107,107,0.4)] active:scale-[0.98]"
             >
-              {loading ? (
-                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-              ) : (
-                <>
-                  <span className="material-symbols-outlined text-base">
-                    {isSignUp ? 'person_add' : 'login'}
-                  </span>
-                  {isSignUp ? 'Crear cuenta' : 'Iniciar sesión'}
-                </>
-              )}
+              <>
+                <span className="material-symbols-outlined text-base">
+                  {isSignUp ? 'person_add' : 'login'}
+                </span>
+                {loading
+                  ? (isSignUp ? 'Creando cuenta...' : 'Ingresando...')
+                  : (isSignUp ? 'Crear cuenta' : 'Iniciar sesión')}
+              </>
             </button>
           </form>
 

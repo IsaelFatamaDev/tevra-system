@@ -1,20 +1,16 @@
-FROM oven/bun:1 as build
-
+FROM node:20-alpine AS builder
 WORKDIR /app
-
-COPY package.json bun.lock ./
-RUN bun install
-
+COPY package*.json ./
+RUN npm ci
 COPY . .
-
-RUN bun run build
+ARG VITE_API_URL
+ARG VITE_DEFAULT_TENANT_ID
+ENV VITE_API_URL=$VITE_API_URL
+ENV VITE_DEFAULT_TENANT_ID=$VITE_DEFAULT_TENANT_ID
+RUN npm run build
 
 FROM nginx:alpine
-
+COPY --from=builder /app/dist /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-COPY --from=build /app/dist /usr/share/nginx/html
-
 EXPOSE 80
-
 CMD ["nginx", "-g", "daemon off;"]

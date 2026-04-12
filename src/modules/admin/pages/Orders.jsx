@@ -7,10 +7,10 @@ const ITEMS_PER_PAGE = 10
 
 const STATUS_CONFIG = {
   delivered: { bg: 'bg-emerald-50', text: 'text-emerald-700', dot: 'bg-emerald-500', label: 'Entregado' },
-  in_transit: { bg: 'bg-primary/10', text: 'text-primary', dot: 'bg-primary', label: 'En Tránsito' },
+  in_transit: { bg: 'bg-blue-50', text: 'text-blue-700', dot: 'bg-blue-500', label: 'En Tránsito' },
   purchased_in_usa: { bg: 'bg-indigo-50', text: 'text-indigo-700', dot: 'bg-indigo-500', label: 'Comprado USA' },
   confirmed: { bg: 'bg-amber-50', text: 'text-amber-700', dot: 'bg-amber-500', label: 'Confirmado' },
-  pending: { bg: 'bg-surface-container-low', text: 'text-text-muted', dot: 'bg-outline', label: 'Pendiente' },
+  pending: { bg: 'bg-zinc-100', text: 'text-zinc-600', dot: 'bg-zinc-400', label: 'Pendiente' },
   in_customs: { bg: 'bg-orange-50', text: 'text-orange-700', dot: 'bg-orange-500', label: 'En Aduana' },
   ready_for_delivery: { bg: 'bg-violet-50', text: 'text-violet-700', dot: 'bg-violet-500', label: 'Listo Entrega' },
   cancelled: { bg: 'bg-red-50', text: 'text-red-700', dot: 'bg-red-500', label: 'Cancelado' },
@@ -83,56 +83,56 @@ export default function AdminOrders() {
   }
 
   const metrics = [
-    { label: 'Total Pedidos', value: orders.length, icon: 'shopping_cart', color: 'text-primary', bg: 'bg-primary/10' },
-    { label: 'Ingresos', value: `$${totalRevenue.toLocaleString('en-US', { minimumFractionDigits: 2 })}`, icon: 'payments', color: 'text-emerald-600', bg: 'bg-emerald-50' },
-    { label: 'Entregados', value: orders.filter(o => o.status === 'delivered').length, icon: 'check_circle', color: 'text-violet-600', bg: 'bg-violet-50' },
-    { label: 'En Camino', value: orders.filter(o => ['in_transit', 'in_customs', 'purchased_in_usa'].includes(o.status)).length, icon: 'local_shipping', color: 'text-amber-600', bg: 'bg-amber-50' },
+    { label: 'Total Pedidos', value: orders.length, icon: 'shopping_cart' },
+    { label: 'Ingresos', value: `$${totalRevenue.toLocaleString('en-US', { minimumFractionDigits: 2 })}`, icon: 'payments' },
+    { label: 'Entregados', value: orders.filter(o => o.status === 'delivered').length, icon: 'check_circle' },
+    { label: 'En Camino', value: orders.filter(o => ['in_transit', 'in_customs', 'purchased_in_usa'].includes(o.status)).length, icon: 'local_shipping' },
   ]
 
   return (
-    <div className="max-w-7xl mx-auto space-y-6 platform-enter">
+    <div className="max-w-7xl mx-auto space-y-5 platform-enter">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4">
         <div>
-          <h2 className="text-2xl sm:text-3xl font-black text-on-background font-headline tracking-tight">Gestión de Pedidos</h2>
-          <p className="text-sm text-text-muted mt-1">Monitorea el ciclo de vida de los envíos.</p>
+          <h2 className="text-xl font-semibold text-zinc-900">Gestión de Pedidos</h2>
+          <p className="text-sm text-zinc-500 mt-0.5">Monitorea el ciclo de vida de los envíos.</p>
         </div>
-        <button onClick={handleExportCSV} className="bg-primary hover:bg-primary-dark text-white px-5 py-2.5 rounded-xl font-bold flex items-center gap-2 shadow-lg transition-all active:scale-95 text-sm">
-          <span className="material-symbols-outlined text-[18px]">download</span> Exportar
+        <button onClick={handleExportCSV} className="bg-zinc-900 hover:bg-zinc-800 text-white px-4 py-2 rounded-lg font-medium flex items-center gap-1.5 transition-colors text-sm">
+          <span className="material-symbols-outlined text-[16px]">download</span> Exportar
         </button>
       </div>
 
       {/* Metrics */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         {metrics.map((m, i) => (
-          <div key={i} className="bg-white p-5 rounded-2xl border border-outline-variant/15 shadow-[0_1px_3px_rgba(0,0,0,0.04)] flex items-center gap-4 stat-card">
-            <div className={`w-11 h-11 rounded-xl ${m.bg} ${m.color} flex items-center justify-center flex-shrink-0`}>
-              <span className="material-symbols-outlined text-[22px]">{m.icon}</span>
+          <div key={i} className="bg-white p-4 rounded-xl border border-zinc-200 flex items-center gap-3 stat-card">
+            <div className="w-9 h-9 rounded-lg bg-zinc-100 text-zinc-600 flex items-center justify-center shrink-0">
+              <span className="material-symbols-outlined text-[18px]">{m.icon}</span>
             </div>
             <div>
-              <p className="text-[10px] font-semibold text-text-muted uppercase tracking-wider">{m.label}</p>
-              <p className="text-xl font-black text-on-background font-headline">{m.value}</p>
+              <p className="text-xs text-zinc-500">{m.label}</p>
+              <p className="text-lg font-semibold text-zinc-900">{m.value}</p>
             </div>
           </div>
         ))}
       </div>
 
       {/* Table Card */}
-      <div className="bg-white rounded-2xl border border-outline-variant/15 shadow-[0_1px_3px_rgba(0,0,0,0.04)] overflow-hidden">
-        <div className="p-4 border-b border-outline-variant/10 flex flex-col sm:flex-row gap-3">
+      <div className="bg-white rounded-xl border border-zinc-200 overflow-hidden">
+        <div className="p-4 border-b border-zinc-100 flex flex-col sm:flex-row gap-3">
           <div className="relative flex-1">
-            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-muted text-[18px]">search</span>
+            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 text-[18px]">search</span>
             <input type="text" value={search} onChange={e => setSearch(e.target.value)} placeholder="Buscar por # pedido o cliente..."
-              className="w-full pl-9 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all" />
+              className="w-full pl-9 pr-4 py-2 bg-zinc-50 border border-zinc-200 rounded-lg text-sm focus:ring-2 focus:ring-zinc-900/10 focus:border-zinc-400 outline-none transition-all" />
           </div>
           <div className="flex gap-1.5 flex-wrap">
             <button onClick={() => setStatusFilter('')}
-              className={`px-3 py-1.5 rounded-lg text-[11px] font-bold transition-all ${!statusFilter ? 'bg-primary text-white shadow-sm' : 'bg-surface-container-low text-text-muted hover:bg-surface-container-high border border-outline-variant'}`}>
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${!statusFilter ? 'bg-zinc-900 text-white' : 'bg-zinc-50 text-zinc-600 hover:bg-zinc-100 border border-zinc-200'}`}>
               Todos
             </button>
             {Object.entries(STATUS_CONFIG).map(([key, cfg]) => (
               <button key={key} onClick={() => setStatusFilter(statusFilter === key ? '' : key)}
-                className={`px-3 py-1.5 rounded-lg text-[11px] font-bold transition-all ${statusFilter === key ? `${cfg.bg} ${cfg.text} ring-1 ring-current` : 'bg-surface-container-low text-text-muted hover:bg-surface-container-high border border-outline-variant'}`}>
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${statusFilter === key ? 'bg-zinc-900 text-white' : 'bg-zinc-50 text-zinc-600 hover:bg-zinc-100 border border-zinc-200'}`}>
                 {cfg.label}
               </button>
             ))}
@@ -140,17 +140,17 @@ export default function AdminOrders() {
         </div>
 
         {loading ? (
-          <div className="flex items-center justify-center py-20"><div className="w-8 h-8 border-[3px] border-primary/30 border-t-primary rounded-full animate-spin" /></div>
+          <div className="flex items-center justify-center py-16"><div className="w-6 h-6 border-2 border-zinc-200 border-t-zinc-600 rounded-full animate-spin" /></div>
         ) : orders.length === 0 ? (
           <div className="text-center py-16">
-            <span className="material-symbols-outlined text-4xl text-outline-variant">inbox</span>
-            <p className="text-sm text-text-muted mt-2">No se encontraron pedidos</p>
+            <span className="material-symbols-outlined text-3xl text-zinc-300">inbox</span>
+            <p className="text-sm text-zinc-500 mt-2">No se encontraron pedidos</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left min-w-[700px]">
               <thead>
-                <tr className="bg-[#f8fafc] text-[11px] font-bold text-text-muted uppercase tracking-wider border-b border-outline-variant/10">
+                <tr className="bg-zinc-50 text-[11px] font-medium text-zinc-500 uppercase tracking-wider border-b border-zinc-100">
                   <th className="px-5 py-3">Pedido</th>
                   <th className="px-5 py-3">Cliente</th>
                   <th className="px-5 py-3">Fecha</th>
@@ -159,33 +159,33 @@ export default function AdminOrders() {
                   <th className="px-5 py-3 text-right">Acciones</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-outline-variant/8">
+              <tbody className="divide-y divide-zinc-100">
                 {paginated.map(ord => {
                   const st = STATUS_CONFIG[ord.status] || STATUS_CONFIG.pending
                   const customerName = ord.customer ? `${ord.customer.firstName} ${ord.customer.lastName}` : '—'
                   return (
-                    <tr key={ord.id} className="hover:bg-surface-container-low/50 transition-colors group">
-                      <td className="px-5 py-3.5"><span className="text-sm font-bold text-primary">{ord.orderNumber || ord.id?.slice(0, 8)}</span></td>
-                      <td className="px-5 py-3.5">
-                        <p className="text-sm font-semibold text-on-background">{customerName}</p>
-                        <p className="text-xs text-text-muted">{ord.customer?.email || ''}</p>
+                    <tr key={ord.id} className="hover:bg-zinc-50 transition-colors group">
+                      <td className="px-5 py-3"><span className="text-sm font-medium text-zinc-900">{ord.orderNumber || ord.id?.slice(0, 8)}</span></td>
+                      <td className="px-5 py-3">
+                        <p className="text-sm font-medium text-zinc-900">{customerName}</p>
+                        <p className="text-xs text-zinc-500">{ord.customer?.email || ''}</p>
                       </td>
-                      <td className="px-5 py-3.5 text-sm text-text-muted">{ord.createdAt ? new Date(ord.createdAt).toLocaleDateString('es-PE', { day: '2-digit', month: 'short', year: 'numeric' }) : '—'}</td>
-                      <td className="px-5 py-3.5 text-sm font-bold text-on-background">${Number(ord.total || 0).toFixed(2)}</td>
-                      <td className="px-5 py-3.5">
-                        <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 ${st.bg} ${st.text} text-[11px] font-bold rounded-full`}>
+                      <td className="px-5 py-3 text-sm text-zinc-500">{ord.createdAt ? new Date(ord.createdAt).toLocaleDateString('es-PE', { day: '2-digit', month: 'short', year: 'numeric' }) : '—'}</td>
+                      <td className="px-5 py-3 text-sm font-medium text-zinc-900">${Number(ord.total || 0).toFixed(2)}</td>
+                      <td className="px-5 py-3">
+                        <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 ${st.bg} ${st.text} text-[11px] font-medium rounded-md`}>
                           <span className={`w-1.5 h-1.5 rounded-full ${st.dot}`} />
                           {st.label}
                         </span>
                       </td>
-                      <td className="px-5 py-3.5 text-right">
+                      <td className="px-5 py-3 text-right">
                         <div className="flex justify-end gap-1 opacity-60 group-hover:opacity-100 transition-opacity">
                           <button onClick={() => setViewOrder(ord)} title="Ver detalle"
-                            className="p-1.5 rounded-lg hover:bg-primary/10 text-text-muted hover:text-primary transition-colors">
+                            className="p-1.5 rounded-md hover:bg-zinc-100 text-zinc-400 hover:text-zinc-700 transition-colors">
                             <span className="material-symbols-outlined text-[18px]">visibility</span>
                           </button>
                           <button onClick={() => { setStatusModal(ord); setNewStatus(ord.status) }} title="Cambiar estado"
-                            className="p-1.5 rounded-lg hover:bg-amber-50 text-text-muted hover:text-amber-600 transition-colors">
+                            className="p-1.5 rounded-md hover:bg-zinc-100 text-zinc-400 hover:text-amber-600 transition-colors">
                             <span className="material-symbols-outlined text-[18px]">sync</span>
                           </button>
                         </div>
@@ -198,9 +198,9 @@ export default function AdminOrders() {
           </div>
         )}
 
-        <div className="px-5 py-3 border-t border-outline-variant/10 bg-[#fafafa] flex flex-col sm:flex-row justify-between items-center gap-3">
-          <span className="text-xs text-text-muted">
-            Mostrando <span className="font-bold text-text-muted">{Math.min((page - 1) * ITEMS_PER_PAGE + 1, total)}-{Math.min(page * ITEMS_PER_PAGE, total)}</span> de <span className="font-bold text-text-muted">{total}</span> pedidos
+        <div className="px-5 py-3 border-t border-zinc-100 flex flex-col sm:flex-row justify-between items-center gap-3">
+          <span className="text-xs text-zinc-500">
+            Mostrando <span className="font-medium">{Math.min((page - 1) * ITEMS_PER_PAGE + 1, total)}-{Math.min(page * ITEMS_PER_PAGE, total)}</span> de <span className="font-medium">{total}</span> pedidos
           </span>
           <Pagination page={page} totalPages={totalPages} onPageChange={p => setPage(p)} />
         </div>
@@ -208,45 +208,63 @@ export default function AdminOrders() {
 
       {/* View Order Modal */}
       {viewOrder && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-          <div className="bg-white rounded-xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
-            <div className="p-5 border-b border-outline-variant/30 flex justify-between items-center">
-              <h3 className="text-lg font-bold text-on-background font-headline">Pedido {viewOrder.orderNumber}</h3>
-              <button onClick={() => setViewOrder(null)} className="p-1 hover:bg-surface-container-high rounded-lg"><span className="material-symbols-outlined text-text-muted">close</span></button>
-            </div>
-            <div className="p-5 space-y-4">
-              <div className="grid grid-cols-2 gap-4 text-sm">
-                <div><p className="text-[11px] text-text-muted font-semibold mb-0.5">Cliente</p><p className="font-bold text-on-background">{viewOrder.customer?.firstName} {viewOrder.customer?.lastName}</p></div>
-                <div><p className="text-[11px] text-text-muted font-semibold mb-0.5">Agente</p><p className="font-bold text-on-background">{viewOrder.agent?.firstName || '—'} {viewOrder.agent?.lastName || ''}</p></div>
-                <div><p className="text-[11px] text-text-muted font-semibold mb-0.5">Subtotal</p><p className="font-bold">${Number(viewOrder.subtotal || 0).toFixed(2)}</p></div>
-                <div><p className="text-[11px] text-text-muted font-semibold mb-0.5">Envío</p><p className="font-bold">${Number(viewOrder.shippingCost || 0).toFixed(2)}</p></div>
-                <div><p className="text-[11px] text-text-muted font-semibold mb-0.5">Total</p><p className="font-bold text-primary text-lg">${Number(viewOrder.total || 0).toFixed(2)}</p></div>
-                <div><p className="text-[11px] text-text-muted font-semibold mb-0.5">Entrega estimada</p><p className="font-bold">{viewOrder.estimatedDeliveryDate ? new Date(viewOrder.estimatedDeliveryDate).toLocaleDateString('es-PE') : '—'}</p></div>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-zinc-900/40 backdrop-blur-sm transition-opacity" onClick={() => setViewOrder(null)} />
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-xl max-h-[85vh] overflow-hidden relative z-10 flex flex-col transform transition-all animate-in fade-in zoom-in-95 duration-200">
+            <div className="px-6 py-5 border-b border-zinc-100 flex justify-between items-center bg-zinc-50/50">
+              <div>
+                <h3 className="text-lg font-semibold text-zinc-900">Detalle del Pedido</h3>
+                <p className="text-sm font-mono text-zinc-500 mt-0.5">{viewOrder.orderNumber}</p>
               </div>
+              <button onClick={() => setViewOrder(null)} className="p-2 hover:bg-zinc-100 rounded-full transition-colors">
+                <span className="material-symbols-outlined text-zinc-400 text-[20px]">close</span>
+              </button>
+            </div>
+            
+            <div className="p-6 overflow-y-auto">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 text-sm mb-8 bg-zinc-50 p-5 rounded-xl border border-zinc-100">
+                <div><p className="text-[11px] font-medium uppercase tracking-wider text-zinc-500 mb-1">Cliente</p><p className="font-medium text-zinc-900">{viewOrder.customer?.firstName} {viewOrder.customer?.lastName}</p></div>
+                <div><p className="text-[11px] font-medium uppercase tracking-wider text-zinc-500 mb-1">Agente</p><p className="font-medium text-zinc-900">{viewOrder.agent?.firstName || '—'} {viewOrder.agent?.lastName || ''}</p></div>
+                <div><p className="text-[11px] font-medium uppercase tracking-wider text-zinc-500 mb-1">Entrega Est.</p><p className="font-medium text-zinc-900">{viewOrder.estimatedDeliveryDate ? new Date(viewOrder.estimatedDeliveryDate).toLocaleDateString('es-PE') : '—'}</p></div>
+                <div><p className="text-[11px] font-medium uppercase tracking-wider text-zinc-500 mb-1">Subtotal</p><p className="font-medium text-zinc-900">${Number(viewOrder.subtotal || 0).toFixed(2)}</p></div>
+                <div><p className="text-[11px] font-medium uppercase tracking-wider text-zinc-500 mb-1">Envío</p><p className="font-medium text-zinc-900">${Number(viewOrder.shippingCost || 0).toFixed(2)}</p></div>
+                <div><p className="text-[11px] font-medium uppercase tracking-wider text-zinc-500 mb-1">Total</p><p className="font-semibold text-tevra-coral text-lg">${Number(viewOrder.total || 0).toFixed(2)}</p></div>
+              </div>
+              
               {viewOrder.items?.length > 0 && (
                 <div>
-                  <p className="text-[11px] text-text-muted font-semibold mb-2">Productos</p>
+                  <p className="text-sm font-semibold text-zinc-900 mb-3 flex items-center gap-2">
+                    <span className="material-symbols-outlined text-zinc-400 text-[18px]">inventory_2</span>
+                    Productos ({viewOrder.items.length})
+                  </p>
                   <div className="space-y-2">
                     {viewOrder.items.map((item, idx) => (
-                      <div key={idx} className="flex items-center gap-3 p-2.5 bg-surface-container-low rounded-lg">
-                        {item.productImage && <img src={item.productImage} alt="" className="w-8 h-8 rounded object-cover" />}
+                      <div key={idx} className="flex items-center gap-4 p-3 bg-white border border-zinc-100 rounded-xl hover:border-zinc-200 transition-colors">
+                        {item.productImage ? (
+                          <img src={item.productImage} alt="" className="w-12 h-12 rounded-lg object-cover ring-1 ring-zinc-100" />
+                        ) : (
+                          <div className="w-12 h-12 rounded-lg bg-zinc-50 flex items-center justify-center ring-1 ring-zinc-100"><span className="material-symbols-outlined text-zinc-300">image</span></div>
+                        )}
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-semibold truncate">{item.productName}</p>
-                          <p className="text-xs text-text-muted">x{item.quantity}</p>
+                          <p className="text-sm font-medium text-zinc-900 truncate">{item.productName}</p>
+                          <p className="text-xs font-medium text-zinc-500 bg-zinc-100 w-fit px-2 py-0.5 rounded-full mt-1">Cant: {item.quantity}</p>
                         </div>
-                        <p className="text-sm font-bold">${Number(item.totalPrice || 0).toFixed(2)}</p>
+                        <p className="text-sm font-semibold text-zinc-900">${Number(item.totalPrice || 0).toFixed(2)}</p>
                       </div>
                     ))}
                   </div>
                 </div>
               )}
             </div>
-            <div className="p-4 border-t border-outline-variant/30 flex justify-end gap-2">
+            
+            <div className="px-6 py-4 border-t border-zinc-100 flex justify-end gap-3 bg-zinc-50/50">
+              <button onClick={() => setViewOrder(null)} className="px-4 py-2 bg-white border border-zinc-200 text-sm font-medium text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 rounded-xl transition-colors shadow-sm">
+                Cerrar
+              </button>
               <button onClick={() => generateBoleta(viewOrder)}
-                className="px-4 py-2 text-sm font-bold text-primary bg-primary/10 hover:bg-primary/10 rounded-lg flex items-center gap-1.5 transition-colors">
+                className="px-5 py-2 text-sm font-semibold text-white bg-zinc-900 hover:bg-zinc-800 rounded-xl shadow-md transition-all flex items-center gap-2">
                 <span className="material-symbols-outlined text-[18px]">receipt_long</span> Generar Boleta
               </button>
-              <button onClick={() => setViewOrder(null)} className="px-4 py-2 text-sm font-bold text-text-muted hover:bg-surface-container-high rounded-lg transition-colors">Cerrar</button>
             </div>
           </div>
         </div>
@@ -254,27 +272,37 @@ export default function AdminOrders() {
 
       {/* Change Status Modal */}
       {statusModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-          <div className="bg-white rounded-xl shadow-2xl w-full max-w-sm max-h-[90vh] overflow-y-auto">
-            <div className="p-5 border-b border-outline-variant/30">
-              <h3 className="text-lg font-bold text-on-background font-headline">Cambiar Estado</h3>
-              <p className="text-sm text-text-muted mt-0.5">Pedido {statusModal.orderNumber}</p>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-zinc-900/40 backdrop-blur-sm transition-opacity" onClick={() => setStatusModal(null)} />
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden relative z-10 transform transition-all animate-in fade-in zoom-in-95 duration-200">
+            <div className="px-6 py-5 border-b border-zinc-100 flex justify-between items-start bg-zinc-50/50">
+              <div>
+                <h3 className="text-lg font-semibold text-zinc-900">Cambiar Estado</h3>
+                <p className="text-sm font-mono text-zinc-500 mt-0.5">{statusModal.orderNumber}</p>
+              </div>
+              <button onClick={() => setStatusModal(null)} className="p-2 hover:bg-zinc-100 rounded-full transition-colors -mr-2">
+                <span className="material-symbols-outlined text-zinc-400 text-[20px]">close</span>
+              </button>
             </div>
-            <div className="p-5">
-              <div className="grid grid-cols-2 gap-2">
+            
+            <div className="p-6">
+              <div className="grid grid-cols-1 gap-2.5">
                 {Object.entries(STATUS_CONFIG).map(([key, cfg]) => (
                   <button key={key} onClick={() => setNewStatus(key)}
-                    className={`flex items-center gap-2 px-3 py-2 rounded-lg text-[11px] font-bold transition-all border ${newStatus === key ? `${cfg.bg} ${cfg.text} border-current` : 'border-outline-variant/30 text-text-muted hover:bg-surface-container-low'}`}>
-                    <span className={`w-2 h-2 rounded-full ${cfg.dot}`} />
+                    className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all border ${newStatus === key ? 'bg-zinc-900 text-white border-zinc-900 shadow-md ring-1 ring-zinc-900 ring-offset-1' : 'bg-white border-zinc-200 text-zinc-700 hover:border-zinc-300 hover:bg-zinc-50'}`}>
+                    <span className={`w-2.5 h-2.5 rounded-full ${newStatus === key ? 'bg-white' : cfg.dot} ring-2 ${newStatus === key ? 'ring-white/30' : 'ring-transparent'}`} />
                     {cfg.label}
                   </button>
                 ))}
               </div>
             </div>
-            <div className="p-4 border-t border-outline-variant/30 flex justify-end gap-2">
-              <button onClick={() => setStatusModal(null)} className="px-4 py-2 text-sm font-medium text-text-muted hover:bg-surface-container-high rounded-lg transition-colors">Cancelar</button>
+            
+            <div className="px-6 py-4 border-t border-zinc-100 flex justify-end gap-3 bg-zinc-50/50">
+              <button onClick={() => setStatusModal(null)} className="px-4 py-2 bg-white border border-zinc-200 text-sm font-medium text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 rounded-xl transition-colors shadow-sm">
+                Cancelar
+              </button>
               <button onClick={handleUpdateStatus} disabled={saving || newStatus === statusModal.status}
-                className="px-4 py-2 text-sm font-bold bg-primary text-white rounded-lg hover:bg-primary disabled:opacity-40 transition-colors">
+                className="px-5 py-2 text-sm font-semibold bg-tevra-coral text-white rounded-xl shadow-md hover:-translate-y-0.5 hover:shadow-lg transition-all disabled:opacity-40 disabled:hover:translate-y-0 disabled:shadow-none">
                 {saving ? 'Guardando...' : 'Actualizar'}
               </button>
             </div>

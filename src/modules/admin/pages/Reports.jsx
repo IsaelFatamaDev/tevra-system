@@ -59,71 +59,66 @@ export default function AdminReports() {
   }
 
   const metricCards = stats ? [
-    { title: 'Total Pedidos', value: stats.totalOrders?.toLocaleString() || '0', icon: 'shopping_cart', iconColor: 'bg-primary/10 text-primary', trend: '', trendBg: 'bg-primary/10 text-primary', type: 'up', subtitle: 'Acumulado total' },
-    { title: 'Ingresos Totales', value: `$${Number(stats.totalRevenue || 0).toLocaleString()}`, icon: 'payments', iconColor: 'bg-emerald-500/10 text-emerald-600', trend: '', trendBg: 'bg-emerald-500/10 text-emerald-600', type: 'up', subtitle: 'Revenue bruto' },
-    { title: 'Comisión TeVra', value: `$${Number(stats.totalTevraCommission || 0).toLocaleString()}`, icon: 'account_balance', iconColor: 'bg-amber-500/10 text-amber-600', trend: '', trendBg: 'bg-amber-500/10 text-amber-600', type: 'up', subtitle: 'Ganancia plataforma' },
-    { title: 'Agentes Activos', value: stats.totalAgents?.toLocaleString() || '0', icon: 'support_agent', iconColor: 'bg-purple-500/10 text-purple-600', trend: '', trendBg: 'bg-purple-500/10 text-purple-600', type: 'up', subtitle: `${stats.totalCustomers || 0} clientes` },
+    { title: 'Total Pedidos', value: stats.totalOrders?.toLocaleString() || '0', icon: 'shopping_cart', subtitle: 'Acumulado total' },
+    { title: 'Ingresos Totales', value: `$${Number(stats.totalRevenue || 0).toLocaleString()}`, icon: 'payments', subtitle: 'Revenue bruto' },
+    { title: 'Comisión TeVra', value: `$${Number(stats.totalTevraCommission || 0).toLocaleString()}`, icon: 'account_balance', subtitle: 'Ganancia plataforma' },
+    { title: 'Agentes Activos', value: stats.totalAgents?.toLocaleString() || '0', icon: 'support_agent', subtitle: `${stats.totalCustomers || 0} clientes` },
   ] : []
 
   const maxCityOrders = cities.length ? Math.max(...cities.map(c => Number(c.totalOrders) || 1)) : 1
-  const cityColors = ['bg-primary', 'bg-secondary', 'bg-primary', 'bg-amber-500', 'bg-emerald-500']
+  const cityColors = ['bg-zinc-900', 'bg-zinc-700', 'bg-zinc-500', 'bg-zinc-400', 'bg-zinc-300']
 
   return (
-    <div className="max-w-7xl mx-auto w-full space-y-6 sm:space-y-8 platform-enter">
+    <div className="max-w-7xl mx-auto w-full space-y-5 platform-enter">
       {/* Header & Filters */}
       <section className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-        <div className="space-y-1">
-          <h2 className="text-2xl sm:text-3xl font-headline font-extrabold text-primary tracking-tight">Reportes y Analítica</h2>
-          <p className="text-text-muted text-sm sm:text-base max-w-xl">Monitorea el crecimiento y la salud operativa de TeVra.</p>
+        <div>
+          <h2 className="text-xl font-semibold text-zinc-900">Reportes y Analítica</h2>
+          <p className="text-sm text-zinc-500 mt-0.5">Monitorea el crecimiento y la salud operativa de TeVra.</p>
         </div>
-        <div className="flex flex-wrap items-center gap-3">
-          <div className="bg-surface-container-high p-1 rounded-full hidden sm:flex items-center">
+        <div className="flex flex-wrap items-center gap-2">
+          <div className="bg-zinc-100 p-0.5 rounded-lg hidden sm:flex items-center">
             {[{ label: '7 días', value: '7d' }, { label: '30 días', value: '30d' }, { label: 'Este año', value: '1y' }].map(f => (
               <button key={f.value} onClick={() => setPeriod(f.value)}
-                className={`px-4 py-1.5 text-xs font-medium rounded-full transition-all ${period === f.value ? 'bg-white shadow-sm text-primary font-bold' : 'text-text-muted hover:bg-white'}`}>
+                className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all ${period === f.value ? 'bg-white shadow-sm text-zinc-900' : 'text-zinc-500 hover:bg-white/60'}`}>
                 {f.label}
               </button>
             ))}
           </div>
-          <button onClick={handleExportCSV} className="flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-2.5 rounded-full border border-primary text-primary font-bold text-xs sm:text-sm hover:bg-surface-container-low transition-all">
-            <span className="material-symbols-outlined text-[18px]">download</span>
+          <button onClick={handleExportCSV} className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-zinc-900 text-white font-medium text-sm hover:bg-zinc-800 transition-colors">
+            <span className="material-symbols-outlined text-[16px]">download</span>
             Exportar
           </button>
         </div>
       </section>
 
       {/* Metric Cards Grid */}
-      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
         {metricCards.map((card, i) => (
-          <div key={i} className="bg-white p-5 sm:p-6 rounded-2xl border border-outline-variant/15 shadow-[0_1px_3px_rgba(0,0,0,0.04)] stat-card">
-            <div className="flex justify-between items-start mb-4">
-              <div className={`w-11 h-11 rounded-xl flex items-center justify-center ${card.iconColor}`}>
-                <span className="material-symbols-outlined text-[22px]">{card.icon}</span>
+          <div key={i} className="bg-white p-4 rounded-xl border border-zinc-200 stat-card">
+            <div className="flex justify-between items-start mb-3">
+              <div className="w-9 h-9 rounded-lg flex items-center justify-center bg-zinc-100 text-zinc-600">
+                <span className="material-symbols-outlined text-[18px]">{card.icon}</span>
               </div>
-              <span className={`${card.trendBg} px-2 py-1 rounded-lg text-[10px] font-bold flex items-center gap-1`}>
-                <span className="material-symbols-outlined text-[13px]">
-                  {card.type === 'up' ? 'trending_up' : 'trending_down'}
-                </span>
-              </span>
             </div>
-            <p className="text-text-muted text-[10px] font-semibold uppercase tracking-wider mb-1">{card.title}</p>
-            <h3 className="text-2xl sm:text-3xl font-headline font-extrabold text-primary">{card.value}</h3>
-            <p className="text-[10px] text-text-muted/70 mt-2">{card.subtitle}</p>
+            <p className="text-xs text-zinc-500 mb-0.5">{card.title}</p>
+            <h3 className="text-xl font-semibold text-zinc-900">{card.value}</h3>
+            <p className="text-[10px] text-zinc-400 mt-1">{card.subtitle}</p>
           </div>
         ))}
       </section>
 
       {/* Charts Section */}
-      <section className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
-        <div className="lg:col-span-2 bg-white p-6 sm:p-8 rounded-xl shadow-sm border border-outline-variant/10 relative overflow-hidden">
-          <div className="flex justify-between items-start mb-6 relative z-10">
+      <section className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+        <div className="lg:col-span-2 bg-white p-5 rounded-xl border border-zinc-200 relative overflow-hidden">
+          <div className="flex justify-between items-start mb-5 relative z-10">
             <div>
-              <h4 className="text-lg sm:text-xl font-headline font-bold text-primary">Crecimiento de Ventas</h4>
-              <p className="text-xs sm:text-sm text-text-muted">Tendencia histórica mensual de ingresos</p>
+              <h4 className="text-sm font-semibold text-zinc-900">Crecimiento de Ventas</h4>
+              <p className="text-xs text-zinc-500">Tendencia histórica mensual de ingresos</p>
             </div>
             <div className="flex items-center gap-2">
-              <span className="w-2 sm:w-3 h-2 sm:h-3 rounded-full bg-secondary"></span>
-              <span className="text-[10px] sm:text-xs font-bold text-primary">Ventas</span>
+              <span className="w-2 h-2 rounded-full bg-zinc-900"></span>
+              <span className="text-xs font-medium text-zinc-600">Ventas</span>
             </div>
           </div>
           {/* Dynamic Bar Chart */}
@@ -136,28 +131,28 @@ export default function AdminReports() {
                 return (
                   <div key={i} className="flex-1 flex flex-col items-center justify-end h-full group">
                     <div className="relative w-full flex justify-center">
-                      <div className="absolute -top-6 opacity-0 group-hover:opacity-100 transition-opacity bg-primary text-white text-[10px] px-2 py-0.5 rounded font-bold whitespace-nowrap">
+                      <div className="absolute -top-6 opacity-0 group-hover:opacity-100 transition-opacity bg-zinc-900 text-white text-[10px] px-2 py-0.5 rounded font-medium whitespace-nowrap">
                         ${Number(m.revenue).toLocaleString()}
                       </div>
                     </div>
-                    <div className="w-full max-w-8 rounded-t-md bg-secondary/80 hover:bg-secondary transition-colors"
+                    <div className="w-full max-w-8 rounded-t-md bg-zinc-300 hover:bg-zinc-900 transition-colors"
                       style={{ height: `${Math.max(pct, 3)}%` }}></div>
-                    <span className="text-[9px] sm:text-[10px] text-text-muted font-bold mt-1 capitalize">{monthLabel}</span>
+                    <span className="text-[9px] sm:text-[10px] text-zinc-500 font-medium mt-1 capitalize">{monthLabel}</span>
                   </div>
                 )
               })
             })() : (
-              <div className="flex items-center justify-center w-full h-full text-text-muted text-sm">Sin datos de ventas</div>
+              <div className="flex items-center justify-center w-full h-full text-zinc-400 text-sm">Sin datos de ventas</div>
             )}
           </div>
         </div>
 
-        <div className="bg-surface-container-low p-6 sm:p-8 rounded-xl shadow-sm border border-outline-variant/10 flex flex-col">
-          <h4 className="text-lg sm:text-xl font-headline font-bold text-primary mb-1">Por Categoría</h4>
-          <p className="text-xs sm:text-sm text-text-muted mb-6">Distribución por sector</p>
+        <div className="bg-white p-5 rounded-xl border border-zinc-200 flex flex-col">
+          <h4 className="text-sm font-semibold text-zinc-900 mb-1">Por Categoría</h4>
+          <p className="text-xs text-zinc-500 mb-5">Distribución por sector</p>
           <div className="flex-1 flex flex-col items-center justify-center relative">
             {(() => {
-              const catColors = ['bg-primary-container', 'bg-secondary', 'bg-primary', 'bg-amber-500', 'bg-emerald-500', 'bg-violet-500']
+              const catColors = ['bg-zinc-200', 'bg-zinc-400', 'bg-zinc-600', 'bg-zinc-800', 'bg-zinc-900', 'bg-zinc-500']
               const totalRev = categories.reduce((s, c) => s + Number(c.totalRevenue || 0), 0) || 1
               const catData = categories.slice(0, 6).map((c, i) => ({
                 name: c.category || 'Sin categoría',
@@ -166,11 +161,11 @@ export default function AdminReports() {
               }))
               return (
                 <>
-                  <div className="w-40 h-40 sm:w-48 sm:h-48 rounded-full bg-surface-container-high relative flex items-center justify-center overflow-hidden">
+                  <div className="w-40 h-40 sm:w-48 sm:h-48 rounded-full bg-zinc-50 relative flex items-center justify-center overflow-hidden">
                     {catData.length > 0 ? (
                       <svg viewBox="0 0 42 42" className="absolute inset-0 w-full h-full">
                         {(() => {
-                          const svgColors = ['#c4c6ce', '#ff6b6b', '#0284c7', '#f59e0b', '#10b981', '#8b5cf6']
+                          const svgColors = ['#d4d4d8', '#a1a1aa', '#71717a', '#52525b', '#3f3f46', '#27272a']
                           let offset = 0
                           return catData.map((c, i) => {
                             const dash = c.pct * 1.005
@@ -184,19 +179,19 @@ export default function AdminReports() {
                       </svg>
                     ) : null}
                     <div className="text-center z-10">
-                      <span className="text-xl sm:text-2xl font-extrabold text-primary">{categories.length}</span>
-                      <p className="text-[10px] text-text-muted font-bold uppercase">Categorías</p>
+                      <span className="text-xl sm:text-2xl font-semibold text-zinc-900">{categories.length}</span>
+                      <p className="text-[10px] text-zinc-500 font-medium uppercase">Categorías</p>
                     </div>
                   </div>
-                  <div className="mt-6 sm:mt-8 grid grid-cols-2 gap-x-4 sm:gap-x-6 gap-y-2 sm:gap-y-3 w-full">
+                  <div className="mt-5 grid grid-cols-2 gap-x-4 gap-y-2 w-full">
                     {catData.map((c, i) => (
-                      <div key={i} className="flex items-center gap-1 sm:gap-2">
+                      <div key={i} className="flex items-center gap-1.5">
                         <span className={`w-2 h-2 rounded-full ${c.color}`}></span>
-                        <span className="text-[10px] sm:text-xs font-semibold truncate">{c.name}</span>
-                        <span className="text-[10px] sm:text-xs font-bold ml-auto">{c.pct}%</span>
+                        <span className="text-xs text-zinc-600 truncate">{c.name}</span>
+                        <span className="text-xs font-medium text-zinc-900 ml-auto">{c.pct}%</span>
                       </div>
                     ))}
-                    {catData.length === 0 && <p className="col-span-2 text-xs text-text-muted text-center">Sin datos</p>}
+                    {catData.length === 0 && <p className="col-span-2 text-xs text-zinc-400 text-center">Sin datos</p>}
                   </div>
                 </>
               )
@@ -206,33 +201,32 @@ export default function AdminReports() {
       </section>
 
       {/* Insights */}
-      <section className="grid grid-cols-1 lg:grid-cols-5 gap-6 sm:gap-8">
-        <div className="lg:col-span-3 bg-white rounded-xl shadow-sm border border-outline-variant/10 overflow-hidden">
-          <div className="p-5 sm:p-6 border-b border-outline-variant/10 flex justify-between items-center">
-            <h4 className="text-base sm:text-lg font-headline font-bold text-primary">Agentes con Mayor Crecimiento</h4>
-            <button className="text-[10px] sm:text-xs font-bold text-secondary uppercase tracking-widest hover:underline transition-all">Ver todos</button>
+      <section className="grid grid-cols-1 lg:grid-cols-5 gap-5">
+        <div className="lg:col-span-3 bg-white rounded-xl border border-zinc-200 overflow-hidden">
+          <div className="p-4 border-b border-zinc-100 flex justify-between items-center">
+            <h4 className="text-sm font-semibold text-zinc-900">Agentes con Mayor Crecimiento</h4>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-left min-w-[500px]">
               <thead>
-                <tr className="bg-surface-container-low text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-text-muted">
-                  <th className="px-5 sm:px-6 py-3 sm:py-4">Agente</th>
-                  <th className="px-5 sm:px-6 py-3 sm:py-4">Pedidos</th>
-                  <th className="px-5 sm:px-6 py-3 sm:py-4 text-right">Revenue</th>
+                <tr className="bg-zinc-50 text-[11px] font-medium uppercase tracking-wider text-zinc-500 border-b border-zinc-100">
+                  <th className="px-5 py-3">Agente</th>
+                  <th className="px-5 py-3">Pedidos</th>
+                  <th className="px-5 py-3 text-right">Revenue</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-outline-variant/5">
+              <tbody className="divide-y divide-zinc-100">
                 {topAgents.map((agent, i) => (
-                  <tr key={i} className="hover:bg-surface-container-low/50 transition-colors">
-                    <td className="px-5 sm:px-6 py-3 sm:py-4">
+                  <tr key={i} className="hover:bg-zinc-50 transition-colors">
+                    <td className="px-5 py-3">
                       <div className="flex items-center gap-3">
-                        <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-surface-container-highest flex items-center justify-center font-bold text-[10px] sm:text-xs text-primary">{i + 1}</div>
-                        <span className="text-xs sm:text-sm font-semibold text-primary">{agent.displayName}</span>
+                        <div className="w-7 h-7 rounded-full bg-zinc-100 flex items-center justify-center font-medium text-xs text-zinc-600">{i + 1}</div>
+                        <span className="text-sm font-medium text-zinc-900">{agent.displayName}</span>
                       </div>
                     </td>
-                    <td className="px-5 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm font-bold text-primary">{Number(agent.totalOrders).toLocaleString()}</td>
-                    <td className="px-5 sm:px-6 py-3 sm:py-4 text-right">
-                      <span className="text-emerald-600 font-bold text-xs sm:text-sm">${Number(agent.totalRevenue).toLocaleString()}</span>
+                    <td className="px-5 py-3 text-sm font-medium text-zinc-900">{Number(agent.totalOrders).toLocaleString()}</td>
+                    <td className="px-5 py-3 text-right">
+                      <span className="text-emerald-600 font-medium text-sm">${Number(agent.totalRevenue).toLocaleString()}</span>
                     </td>
                   </tr>
                 ))}
@@ -241,16 +235,16 @@ export default function AdminReports() {
           </div>
         </div>
 
-        <div className="lg:col-span-2 bg-white p-5 sm:p-6 rounded-xl shadow-sm border border-outline-variant/10">
-          <h4 className="text-base sm:text-lg font-headline font-bold text-primary mb-5 sm:mb-6">Ciudades con Más Pedidos</h4>
-          <div className="space-y-4 sm:space-y-6">
+        <div className="lg:col-span-2 bg-white p-5 rounded-xl border border-zinc-200">
+          <h4 className="text-sm font-semibold text-zinc-900 mb-5">Ciudades con Más Pedidos</h4>
+          <div className="space-y-4">
             {cities.slice(0, 5).map((city, i) => (
-              <div key={i} className="space-y-1 sm:space-y-2">
-                <div className="flex justify-between text-xs sm:text-sm font-bold">
-                  <span className="text-primary">{city.city || 'Sin ciudad'}</span>
-                  <span className="text-text-muted">{Number(city.totalOrders).toLocaleString()} pedidos</span>
+              <div key={i} className="space-y-1.5">
+                <div className="flex justify-between text-sm">
+                  <span className="font-medium text-zinc-900">{city.city || 'Sin ciudad'}</span>
+                  <span className="text-zinc-500">{Number(city.totalOrders).toLocaleString()} pedidos</span>
                 </div>
-                <div className="w-full h-2 sm:h-2.5 bg-surface-container-low rounded-full overflow-hidden">
+                <div className="w-full h-1.5 bg-zinc-100 rounded-full overflow-hidden">
                   <div className={`h-full ${cityColors[i % cityColors.length]} rounded-full`} style={{ width: `${(Number(city.totalOrders) / maxCityOrders * 100).toFixed(0)}%` }}></div>
                 </div>
               </div>

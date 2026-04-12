@@ -163,12 +163,12 @@ export default function CatalogoPage() {
 
   return (
     <main className="min-h-screen bg-background-cream" style={{ paddingTop: 'clamp(3.5rem, 8vh, 5rem)' }}>
-      <section className="hero-gradient py-16 sm:py-20 relative overflow-hidden">
-        <div className="absolute inset-0 bg-grid-pattern opacity-20" />
+      <section className="tevra-hero-gradient py-16 sm:py-20 overflow-hidden">
+        <div className="tevra-hero-overlay" />
         <div className="max-w-7xl mx-auto px-4 sm:px-8 relative z-10">
           <div className="hero-enter">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 rounded-full border border-white/20 mb-5">
-              <span className="w-2 h-2 bg-secondary rounded-full animate-pulse" />
+              <span className="w-2 h-2 bg-tevra-coral rounded-full animate-pulse" />
               <span className="text-white text-[11px] font-bold uppercase tracking-widest">Productos desde USA</span>
             </div>
             <h1 className="font-headline font-extrabold text-white tracking-tight mb-4" style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)' }}>
@@ -178,9 +178,9 @@ export default function CatalogoPage() {
               Elige cualquier producto, cotiza con tu agente y recíbelo en 5–10 días hábiles. Originales garantizados.
             </p>
             <div className="flex items-center bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl px-5 py-3 max-w-md">
-              <span className="material-symbols-outlined text-white/60 mr-3">search</span>
+              <span className="material-symbols-outlined text-white/50 mr-3">search</span>
               <input
-                className="bg-transparent border-none focus:outline-none text-white placeholder:text-white/50 text-sm w-full"
+                className="bg-transparent border-none focus:outline-none text-white placeholder:text-white/40 text-sm w-full"
                 placeholder="Busca tu producto (Nike, iPhone, Coach...)"
                 type="text"
                 value={busqueda}
@@ -217,11 +217,7 @@ export default function CatalogoPage() {
       </div>
 
       <section className="max-w-7xl mx-auto px-4 sm:px-8 py-12 sm:py-16">
-        {loading ? (
-          <div className="flex justify-center py-24">
-            <div className="w-10 h-10 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
-          </div>
-        ) : products.length === 0 ? (
+        {!loading && products.length === 0 ? (
           <div className="text-center py-24">
             <span className="material-symbols-outlined text-6xl text-outline-variant mb-4 block">search_off</span>
             <p className="font-headline font-bold text-xl text-primary mb-2">Sin resultados</p>

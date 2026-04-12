@@ -54,9 +54,9 @@ export default function EmpresaPage() {
 
   return (
     <main className="min-h-screen bg-background-cream" style={{ paddingTop: 'clamp(3.5rem, 8vh, 5rem)' }}>
-      <section className="hero-gradient py-20 sm:py-28 relative overflow-hidden">
-        <div className="absolute inset-0 bg-grid-pattern opacity-20" />
-        <div className="absolute top-0 right-0 w-96 h-96 bg-secondary/10 blur-[120px] rounded-full" />
+      <section className="tevra-hero-gradient py-20 sm:py-28 overflow-hidden">
+        <div className="tevra-hero-overlay" />
+        <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 blur-[120px] rounded-full" />
         <div className="max-w-7xl mx-auto px-4 sm:px-8 relative z-10">
           <div className="max-w-3xl hero-enter">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 rounded-full border border-white/20 mb-6">
@@ -64,7 +64,7 @@ export default function EmpresaPage() {
               <span className="text-white text-[11px] font-bold uppercase tracking-widest">TeVra LLC · California, USA</span>
             </div>
             <h1 className="font-headline font-extrabold text-white leading-tight tracking-tight mb-6" style={{ fontSize: 'clamp(2.2rem, 5.5vw, 4rem)' }}>
-              Tu puente hacia<br /><span className="text-secondary">Estados Unidos</span>
+              Tu puente hacia<br /><span className="text-tevra-coral">Estados Unidos</span>
             </h1>
             <p className="text-white/70 leading-relaxed max-w-2xl" style={{ fontSize: 'clamp(1rem, 2vw, 1.2rem)' }}>
               Somos una empresa legalmente registrada en California dedicada a la compra, venta y distribución de productos tecnológicos y de marca original desde USA hacia Latinoamérica.

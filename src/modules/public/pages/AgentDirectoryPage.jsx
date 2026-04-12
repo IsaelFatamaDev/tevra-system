@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom'
 import useScrollReveal from '../../../core/hooks/useScrollReveal'
 import agentsService from '../services/agents.service'
 
-const CITIES = ['Todas', 'Lima', 'Arequipa', 'Trujillo', 'Cusco', 'Chiclayo', 'Piura', 'Huancayo']
-
 function AgentCard({ agent }) {
   const { ref, isVisible } = useScrollReveal(0.05)
   const user = agent.user || {}
@@ -114,15 +112,17 @@ export default function AgentDirectoryPage() {
     return true
   })
 
+  const availableCities = [...new Set(agents.map(a => a.city).filter(Boolean))].sort()
+
   return (
     <main className="min-h-screen bg-background-cream" style={{ paddingTop: 'clamp(3.5rem, 8vh, 5rem)' }}>
       {/* Hero */}
-      <section className="hero-gradient py-16 sm:py-20 relative overflow-hidden">
-        <div className="absolute inset-0 bg-grid-pattern opacity-20" />
+      <section className="tevra-hero-gradient py-16 sm:py-20 overflow-hidden">
+        <div className="tevra-hero-overlay" />
         <div className="max-w-7xl mx-auto px-4 sm:px-8 relative z-10">
           <div className="hero-enter">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 rounded-full border border-white/20 mb-5">
-              <span className="w-2 h-2 bg-secondary rounded-full animate-pulse" />
+              <span className="w-2 h-2 bg-tevra-coral rounded-full animate-pulse" />
               <span className="text-white text-[11px] font-bold uppercase tracking-widest">Red de Agentes</span>
             </div>
             <h1 className="font-headline font-extrabold text-white tracking-tight mb-4" style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)' }}>
@@ -132,9 +132,9 @@ export default function AgentDirectoryPage() {
               Elige un agente verificado en tu ciudad. Ellos gestionan tu pedido, te asesoran y te acompañan hasta la entrega.
             </p>
             <div className="flex items-center bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl px-5 py-3 max-w-md">
-              <span className="material-symbols-outlined text-white/60 mr-3">search</span>
+              <span className="material-symbols-outlined text-white/50 mr-3">search</span>
               <input
-                className="bg-transparent border-none focus:outline-none text-white placeholder:text-white/50 text-sm w-full"
+                className="bg-transparent border-none focus:outline-none text-white placeholder:text-white/30 text-sm w-full"
                 placeholder="Buscar agente por nombre, ciudad..."
                 type="text"
                 value={search}
@@ -146,32 +146,39 @@ export default function AgentDirectoryPage() {
       </section>
 
       {/* Filter bar */}
-      <div className="sticky top-[clamp(3.5rem,8vh,5rem)] z-40 bg-surface-container-lowest/95 backdrop-blur-md border-b border-outline-variant/20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-8 py-3 overflow-x-auto no-scrollbar">
-          <div className="flex gap-2 min-w-max">
-            {CITIES.map(city => (
+      {availableCities.length > 0 && (
+        <div className="sticky top-[clamp(3.5rem,8vh,5rem)] z-40 bg-surface-container-lowest/95 backdrop-blur-md border-b border-outline-variant/20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-8 py-3 overflow-x-auto no-scrollbar">
+            <div className="flex gap-2 min-w-max">
               <button
-                key={city}
-                onClick={() => setCityFilter(city === 'Todas' ? '' : city)}
-                className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wide transition-all whitespace-nowrap ${(city === 'Todas' && !cityFilter) || cityFilter === city
+                onClick={() => setCityFilter('')}
+                className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wide transition-all whitespace-nowrap ${!cityFilter
                     ? 'bg-primary text-white shadow-md'
                     : 'bg-surface-container text-text-muted hover:bg-surface-container-high'
                   }`}
               >
-                {city}
+                Todas
               </button>
-            ))}
+              {availableCities.map(city => (
+                <button
+                  key={city}
+                  onClick={() => setCityFilter(city)}
+                  className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wide transition-all whitespace-nowrap ${cityFilter === city
+                      ? 'bg-primary text-white shadow-md'
+                      : 'bg-surface-container text-text-muted hover:bg-surface-container-high'
+                    }`}
+                >
+                  {city}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Grid */}
       <section className="max-w-7xl mx-auto px-4 sm:px-8 py-12 sm:py-16">
-        {loading ? (
-          <div className="flex justify-center py-24">
-            <div className="w-10 h-10 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
-          </div>
-        ) : filtered.length === 0 ? (
+        {!loading && filtered.length === 0 ? (
           <div className="text-center py-24">
             <span className="material-symbols-outlined text-6xl text-outline-variant mb-4 block">person_search</span>
             <p className="font-headline font-bold text-xl text-primary mb-2">No encontramos agentes</p>

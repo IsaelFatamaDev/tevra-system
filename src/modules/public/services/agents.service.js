@@ -15,6 +15,7 @@ export const agentsService = {
   update: (id, data) => api.put(`/agents/${id}`, data),
   updateStatus: (id, status) => api.patch(`/agents/${id}/status`, { status }),
   submitApplication: (data) => api.post('/agents/applications', data),
+  findAllApplications: (status) => api.get('/agents/applications/all' + (status ? `?status=${status}` : '')),
   reviewApplication: (id, decision, notes) => api.patch(`/agents/applications/${id}/review`, { decision, notes }),
 };
 

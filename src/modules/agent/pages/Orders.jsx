@@ -150,8 +150,8 @@ export default function AgentOrders() {
                     <td className="text-center px-3 py-3">
                       <div className="flex items-center justify-center gap-1">
                         <button onClick={() => handleViewOrder(o)} title="Ver detalle"
-                          className="p-1.5 hover:bg-surface-container-high rounded-lg transition-colors">
-                          <span className="material-symbols-outlined text-[18px] text-text-muted">visibility</span>
+                          className="p-1.5 hover:bg-primary/10 rounded-lg transition-colors">
+                          <span className="material-symbols-outlined text-[18px] text-text-muted hover:text-primary">visibility</span>
                         </button>
                         {o.customer?.phone && (
                           <a href={`https://wa.me/${o.customer.phone.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" title="WhatsApp"
@@ -173,8 +173,8 @@ export default function AgentOrders() {
       {/* Order Detail Modal */}
       {viewOrder && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-            <div className="p-5 border-b border-outline-variant/30 flex justify-between items-center">
+          <div className="bg-white rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.15)] w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div className="p-5 border-b border-gray-100 flex justify-between items-center">
               <div>
                 <h3 className="text-lg font-bold text-on-background font-headline">Pedido {viewOrder.orderNumber}</h3>
                 <p className="text-xs text-text-muted mt-0.5">{viewOrder.createdAt ? new Date(viewOrder.createdAt).toLocaleDateString('es-PE', { year: 'numeric', month: 'long', day: 'numeric' }) : ''}</p>
@@ -183,7 +183,7 @@ export default function AgentOrders() {
                 <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${statusColors[viewOrder.status] || 'bg-surface-container-high text-text-muted'}`}>
                   {statusLabels[viewOrder.status] || viewOrder.status}
                 </span>
-                <button onClick={() => setViewOrder(null)} className="p-1.5 hover:bg-surface-container-high rounded-lg">
+                <button onClick={() => setViewOrder(null)} className="p-1.5 hover:bg-gray-100 rounded-lg">
                   <span className="material-symbols-outlined text-text-muted">close</span>
                 </button>
               </div>
@@ -264,7 +264,7 @@ export default function AgentOrders() {
             </div>
 
             {/* Footer Actions */}
-            <div className="p-4 border-t border-outline-variant/30 flex justify-end gap-2">
+            <div className="p-4 border-t border-gray-100 flex justify-end gap-2">
               <button onClick={() => generateBoleta(viewOrder)}
                 className="px-4 py-2 text-sm font-bold text-primary bg-primary/10 hover:bg-primary/10 rounded-lg flex items-center gap-1.5 transition-colors">
                 <span className="material-symbols-outlined text-[18px]">receipt_long</span> Generar Boleta
@@ -275,7 +275,7 @@ export default function AgentOrders() {
                   <span className="material-symbols-outlined text-[18px]">chat</span> WhatsApp
                 </a>
               )}
-              <button onClick={() => setViewOrder(null)} className="px-4 py-2 text-sm font-bold text-text-muted hover:bg-surface-container-high rounded-lg transition-colors">Cerrar</button>
+              <button onClick={() => setViewOrder(null)} className="px-4 py-2 text-sm font-bold text-text-muted hover:bg-gray-50 rounded-lg transition-colors">Cerrar</button>
             </div>
           </div>
         </div>
