@@ -1,0 +1,39 @@
+name: Deploy Frontend to Docker Hub
+
+on:
+  push:
+    branches: [ "main", "master" ]
+    paths:
+      - 'tevra-system/**'
+  workflow_dispatch:
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: isaelfatamadev
+          password: ${{ secrets.DOCKER_TOKEN }}
+
+      - name: Build and push frontend image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./tevra-system
+          file: ./tevra-system/Dockerfile
+          push: true
+          tags: isaelfatamadev/tevra-frontend:latest
+          build-args: |
+            VITE_API_URL=https://tevra.ddns.net/backend/api/v1
+            VITE_DEFAULT_TENANT_ID=2cc9d9f5-ddb1-4401-ac72-94e3dc341a0b
+
+      - name: Trigger Deployment Webhook
+        run: curl -X POST -k https://vaplexcorp.ddns.net/api/deploy/b44MZR5MPtupnNQtIGyLG
