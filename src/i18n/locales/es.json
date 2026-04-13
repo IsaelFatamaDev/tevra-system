@@ -1,0 +1,679 @@
+{
+  "common": {
+    "loading": "Cargando...",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "all": "Todos",
+    "actions": "Acciones",
+    "confirm": "Confirmar",
+    "back": "Volver",
+    "next": "Siguiente",
+    "previous": "Anterior",
+    "close": "Cerrar",
+    "error": "Error",
+    "success": "Éxito",
+    "saving": "Guardando...",
+    "noData": "Sin datos",
+    "comingSoon": "Próximamente",
+    "approved": "Aprobado",
+    "rejected": "Rechazado",
+    "approve": "Aprobar",
+    "reject": "Rechazar",
+    "export": "Exportar",
+    "new": "Nuevo",
+    "copy": "Copiar",
+    "copied": "Copiado",
+    "share": "Compartir",
+    "logout": "Cerrar sesión",
+    "page": "Página",
+    "of": "de",
+    "showing": "Mostrando",
+    "users": "usuarios",
+    "viewAll": "Ver todos",
+    "verified": "Verificado",
+    "pending": "Pendiente",
+    "status": {
+      "pending": "Pendiente",
+      "confirmed": "Confirmado",
+      "processing": "Procesando",
+      "shipped": "Enviado",
+      "purchased_in_usa": "Comprado USA",
+      "in_transit": "En tránsito",
+      "in_customs": "En aduana",
+      "ready_for_delivery": "Listo entrega",
+      "delivered": "Entregado",
+      "cancelled": "Cancelado",
+      "paid": "Pagada",
+      "approved_comm": "Aprobada"
+    }
+  },
+  "lang": {
+    "es": "Español",
+    "en": "English",
+    "switchTo": "Cambiar idioma"
+  },
+  "nav": {
+    "buy": "Comprar",
+    "agents": "Agentes",
+    "company": "Empresa",
+    "tracking": "Seguimiento",
+    "searchPlaceholder": "Buscar producto...",
+    "login": "Ingresar"
+  },
+  "auth": {
+    "welcome": "Bienvenido de vuelta",
+    "createAccount": "Crea tu cuenta",
+    "loginSubtitle": "Ingresa tus credenciales para continuar",
+    "registerSubtitle": "Regístrate para acceder a productos exclusivos",
+    "login": "Ingresar",
+    "register": "Crear cuenta",
+    "signIn": "Iniciar sesión",
+    "signingIn": "Ingresando...",
+    "creatingAccount": "Creando cuenta...",
+    "createFree": "Crear cuenta gratis",
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "phone": "Teléfono / WhatsApp",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "rememberMe": "Recordarme",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "orContinueWith": "o continúa con",
+    "alreadyHaveAccount": "¿Ya tienes cuenta?",
+    "dontHaveAccount": "¿No tienes cuenta?",
+    "backToHome": "Volver al inicio",
+    "premiumImports": "Importaciones Premium desde USA",
+    "features": {
+      "originals": "Productos 100% originales importados desde Estados Unidos",
+      "tracking": "Seguimiento en tiempo real de puerta a puerta",
+      "agents": "Red de agentes certificados con atención personalizada"
+    },
+    "errors": {
+      "emailRequired": "El correo electrónico es obligatorio.",
+      "emailInvalid": "Ingresa un correo electrónico válido.",
+      "passwordRequired": "La contraseña es obligatoria.",
+      "passwordLength": "La contraseña debe tener al menos 6 caracteres.",
+      "firstNameRequired": "El nombre es obligatorio.",
+      "lastNameRequired": "El apellido es obligatorio.",
+      "generic": "Error al procesar tu solicitud"
+    }
+  },
+  "home": {
+    "hero": {
+      "badge": "Servicio Premium 2026",
+      "title": "Lo que quieras de <coral>USA</coral>, en la puerta de tu casa.",
+      "subtitle": "Accede a las mejores tiendas del mundo sin complicaciones. Productos 100% originales con logística asegurada de puerta a puerta.",
+      "exploreCatalog": "Explorar Catálogo",
+      "quoteLink": "Cotizar Link",
+      "shipments": "Envíos Exitosos",
+      "rating": "Calificación",
+      "guarantee": "Envío garantizado puerta a puerta"
+    },
+    "trust": {
+      "registered": "LLC REGISTERED IN CALIFORNIA",
+      "shipping": "ENVÍO 100% GARANTIZADO",
+      "payment": "PAGO SEGURO"
+    },
+    "steps": {
+      "title": "Así de fácil es traer tus deseos",
+      "subtitle": "Olvídate de trámites complejos. Nosotros nos encargamos de todo el proceso logístico por ti.",
+      "step": "Paso",
+      "steps": [
+        {
+          "title": "Elige",
+          "description": "Navega por tus tiendas favoritas de USA y copia el link del producto que deseas."
+        },
+        {
+          "title": "Conecta",
+          "description": "Un agente verificado te brindará una cotización final con todo incluido hasta tu casa."
+        },
+        {
+          "title": "Recibe",
+          "description": "Relájate. Tu paquete llegará a tu domicilio en el tiempo acordado y con garantía total."
+        }
+      ]
+    },
+    "categories": {
+      "title": "Categorías Exclusivas",
+      "subtitle": "La mejor selección de productos americanos a un click.",
+      "seeAll": "Ver Catálogo Completo",
+      "explore": "Explorar"
+    },
+    "social": {
+      "title": "Comunidad TeVra",
+      "subtitle": "Cientos de usuarios y agentes conectando cada día.",
+      "recentSales": "Ventas Recientes",
+      "certifiedAgents": "Agentes Certificados",
+      "sentTo": "Enviado a",
+      "successfulMgmt": "gestiones exitosas"
+    },
+    "cta": {
+      "title": "¿Listo para traer tus deseos de USA?",
+      "subtitle": "Únete a los miles de usuarios que ya ahorran comprando original sin salir de casa.",
+      "exploreCatalog": "Explorar Catálogo",
+      "talkToAgent": "Hablar con un Agente"
+    }
+  },
+  "catalog": {
+    "badge": "Productos desde USA",
+    "title": "Catálogo TeVra",
+    "subtitle": "Elige cualquier producto, cotiza con tu agente y recíbelo en 5–10 días hábiles. Originales garantizados.",
+    "searchPlaceholder": "Busca tu producto (Nike, iPhone, Coach...)",
+    "allCategories": "Todo",
+    "noResults": "Sin resultados",
+    "noResultsDesc": "Intenta con otro término o envíanos el link del producto que buscas.",
+    "seeAll": "Ver todo el catálogo",
+    "productsFound": "productos encontrados",
+    "originals": "100% originales desde USA",
+    "ctaTitle": "¿No encontraste lo que buscas?",
+    "ctaDesc": "Envíanos el link de cualquier tienda de USA y te cotizamos en minutos.",
+    "quoteByLink": "Cotizar por link",
+    "sort": {
+      "featured": "Destacados",
+      "newest": "Más recientes",
+      "priceAsc": "Menor precio",
+      "priceDesc": "Mayor precio",
+      "popular": "Más populares"
+    },
+    "badges": {
+      "topSales": "Top ventas",
+      "mostOrdered": "Más pedido",
+      "featured": "Destacado"
+    },
+    "card": {
+      "addToCart": "Agregar al carrito",
+      "added": "¡Agregado!",
+      "savingsIn": "en Perú",
+      "saves": "Ahorras ~"
+    }
+  },
+  "cart": {
+    "emptyTitle": "Tu carrito está vacío",
+    "emptyDesc": "Agrega productos desde nuestro catálogo y luego cotiza con un agente TeVra.",
+    "goToCatalog": "Ir al catálogo",
+    "title": "Mi Carrito",
+    "product": "producto",
+    "products": "productos",
+    "continueShopping": "Seguir comprando",
+    "summary": "Resumen",
+    "subtotal": "Subtotal",
+    "items": "items",
+    "estimatedShipping": "Envío estimado",
+    "quoteWithAgent": "Cotizar con agente",
+    "estimatedTotal": "Total estimado",
+    "originalsGuarantee": "Todos los productos son 100% originales importados desde USA.",
+    "chooseAgent": "Elegir un agente",
+    "quoteWhatsApp": "Cotizar por WhatsApp",
+    "changeAgent": "Cambiar"
+  },
+  "product": {
+    "notFound": "Producto no encontrado",
+    "backToCatalog": "Volver al catálogo",
+    "reviews": "opiniones",
+    "addToCart": "Agregar al carrito",
+    "addedToCart": "¡Agregado al carrito!",
+    "quoteWithAgent": "Cotizar con un agente 💬",
+    "agentNetwork": "Red de Agentes TeVra",
+    "agentNetworkDesc": "Asesores verificados en tu ciudad",
+    "findAgent": "Encuentra tu agente →",
+    "shippingFrom": "Envío asegurado desde Miami. 5-10 días hábiles.",
+    "specs": "Especificaciones Clave",
+    "customerReviews": "Opiniones de clientes",
+    "reviewsDesc": "Lo que dicen los usuarios sobre su experiencia.",
+    "relatedProducts": "También te puede interesar",
+    "savingsUpTo": "Ahorras hasta S/"
+  },
+  "agentes": {
+    "hero": {
+      "badge": "Oportunidad TeVra",
+      "title": "Convierte tu Red de Contactos en Ingresos",
+      "subtitle": "Sé agente TeVra. Sin inversión. Sin jefe. Sin límites.",
+      "joinBtn": "Quiero unirme",
+      "free": "Es gratis.",
+      "noInvestment": "Sin inversión inicial."
+    },
+    "values": [
+      {
+        "title": "Tu propio negocio",
+        "desc": "Sin jefe, sin horario, sin oficina. Tú gestionas tu tiempo y el crecimiento de tu red de clientes con total libertad."
+      },
+      {
+        "title": "Cero inversión",
+        "desc": "El cliente paga primero. No arriesgas capital propio ni necesitas stock físico. TeVra se encarga de la logística."
+      },
+      {
+        "title": "Sin techo",
+        "desc": "Ganas del 10–15% por venta realizada. No hay límites en tus comisiones; tú decides cuánto quieres ganar cada mes."
+      }
+    ],
+    "calculator": {
+      "title": "Calcula tu potencial",
+      "subtitle": "Desliza para ver cuánto puedes generar mensualmente basándote en tu red de contactos.",
+      "clientsQuestion": "¿Cuántos clientes puedes tener?",
+      "earningsEst": "Estimación de ganancias",
+      "perMonth": "/mes",
+      "disclaimer": "Basado en un promedio de compra estándar por cliente activo.",
+      "quickRef": "Tabla de referencia rápida",
+      "activeClients": "clientes activos",
+      "estimateNote": "* Estimaciones basadas en promedios históricos. Los resultados individuales pueden variar."
+    },
+    "tools": {
+      "title": "Herramientas que recibes",
+      "subtitle": "Te proporcionamos todo el ecosistema digital necesario para que empieces a vender desde el primer día.",
+      "items": [
+        {"title": "Perfil en la web", "desc": "Tu propia página profesional dentro de TeVra para generar confianza inmediata."},
+        {"title": "Link personalizado", "desc": "Comparte tu enlace único por WhatsApp y redes para rastrear cada una de tus ventas."},
+        {"title": "Catálogo actualizado", "desc": "Acceso a todos nuestros productos con descripciones y materiales de venta listos."},
+        {"title": "Capacitación", "desc": "Aprende técnicas de venta consultiva y manejo de clientes con nuestros expertos."},
+        {"title": "Soporte prioritario", "desc": "Atención prioritaria para resolver dudas tuyas o de tus clientes en minutos."},
+        {"title": "Dashboard", "desc": "Un panel avanzado para visualizar analíticas de tus clientes y pedidos."}
+      ]
+    },
+    "vlapex": {
+      "badge": "TECNOLOGÍA PROPIA",
+      "title": "Estamos construyendo VLAPEX",
+      "desc": "La app que te permitirá gestionar pedidos y ver comisiones en tiempo real. Un centro de mando digital diseñado para que operes tu negocio desde la palma de tu mano. Los primeros agentes tendrán acceso prioritario.",
+      "rtd": "Real-Time Data",
+      "digitalNative": "Digital Native"
+    },
+    "register": {
+      "title": "Únete a la Red TeVra",
+      "subtitle": "Completa el proceso de registro en 3 simples pasos y un asesor se pondrá en contacto contigo para tu entrevista inicial.",
+      "step1": "Datos personales",
+      "step2": "Perfil profesional",
+      "step3": "Confirmación",
+      "startBtn": "Comenzar registro",
+      "disclaimer": "Proceso 100% online. Sin inversión inicial."
+    }
+  },
+  "empresa": {
+    "hero": {
+      "badge": "TeVra LLC · California, USA",
+      "title": "Tu puente hacia Estados Unidos",
+      "subtitle": "Somos una empresa legalmente registrada en California dedicada a la compra, venta y distribución de productos tecnológicos y de marca original desde USA hacia Latinoamérica."
+    },
+    "stats": [
+      {"valor": "2", "label": "Hubs en USA", "sub": "California & Miami"},
+      {"valor": "12+", "label": "Años de socio logístico", "sub": "Experiencia probada"},
+      {"valor": "2", "label": "Vuelos/semana a Perú", "sub": "Salidas garantizadas"},
+      {"valor": "LLC", "label": "Registro legal USA", "sub": "California, EIN federal"}
+    ],
+    "mission": {
+      "badge": "Misión",
+      "title": "Conectar Latinoamérica con lo mejor de USA",
+      "desc": "Conectar a consumidores y emprendedores de Latinoamérica con productos tecnológicos y de marca originales desde Estados Unidos, a través de una red confiable de agentes comerciales independientes, ofreciendo precios accesibles, envíos seguros y un servicio transparente que genera valor para todos.",
+      "quote": "\"En palabras simples: hacemos que cualquier persona en Perú pueda comprar productos de USA a precios justos, de manera segura, a través de alguien de confianza.\""
+    },
+    "vision": {
+      "badge": "Visión",
+      "title": "La red de importación más grande de América",
+      "desc": "Ser la red de importación y distribución más grande y confiable entre Estados Unidos y Latinoamérica, potenciada por tecnología propia, donde cada agente tenga la oportunidad de construir su propio negocio con el respaldo de una empresa sólida en USA.",
+      "uber": "Piensa en el modelo Uber, pero para importaciones.",
+      "uberDesc": " Uber no tiene autos propios — conecta conductores con pasajeros. TeVra conecta agentes locales con el mercado de USA."
+    },
+    "process": {
+      "title": "Cómo funciona el proceso",
+      "subtitle": "7 pasos simples desde que tu cliente pide hasta que recibe en casa.",
+      "businessDays": "5–10 días hábiles",
+      "steps": [
+        {"titulo": "Tu cliente quiere un producto", "desc": "Un amigo, familiar o seguidor te dice qué quiere: Nike, iPhone, perfume, ropa de marca... cualquier producto disponible en tiendas de Estados Unidos."},
+        {"titulo": "Tú tomas el pedido", "desc": "Le indicas el precio (producto + tu comisión + envío). Si acepta, el cliente te paga a ti directamente. Él es TU cliente, no de TeVra."},
+        {"titulo": "Reportas el pedido a TeVra", "desc": "Nos envías el detalle: producto, talla/color/modelo y comprobante de pago. Nosotros nos encargamos del resto."},
+        {"titulo": "TeVra compra en USA", "desc": "Vamos a la tienda, outlet o proveedor mayorista y compramos exactamente lo que tu cliente pidió. Tomamos foto como comprobante."},
+        {"titulo": "TeVra envía a Perú", "desc": "El producto va a nuestro socio logístico en Miami. Lo embarcan en el próximo vuelo a Perú, 2 salidas por semana. Viaja asegurado."},
+        {"titulo": "Llega a Perú y pasa aduana", "desc": "Nuestro socio logístico tiene oficina en Lima y se encarga del desaduanaje. Tú no haces ningún trámite con aduanas ni SUNAT."},
+        {"titulo": "Tú entregas al cliente", "desc": "El producto llega a la oficina en Lima. Tú lo recoges y lo entregas. Pedido completado. Tiempo estimado: 5 a 10 días hábiles."}
+      ]
+    },
+    "advantages": {
+      "title": "Ventajas del modelo TeVra",
+      "subtitle": "Lo que nos diferencia de cualquier otro courier o personal shopper.",
+      "items": [
+        {"titulo": "Acceso directo sin intermediarios", "desc": "Trabajamos con un socio logístico en Miami con licencias propias para embarcar carga. Sin intermediarios de por medio — vamos directo a la fuente."},
+        {"titulo": "Dos hubs en Estados Unidos", "desc": "Operamos desde California y Miami. Siempre buscamos el mejor precio disponible en ambas costas para tu cliente."},
+        {"titulo": "Empresa legal registrada", "desc": "TeVra es una LLC registrada en California con número EIN federal. No somos informales — esto le da confianza a ti y a tus clientes."},
+        {"titulo": "Envío asegurado", "desc": "Cada envío viaja con seguro de carga. Si algo se pierde o daña, está cubierto. Tu reputación y la del cliente están protegidas."},
+        {"titulo": "Aduana resuelta", "desc": "Nuestro socio tiene 12+ años manejando aduana peruana. Ellos se encargan de todo el proceso de liberación. Tú no tramitas nada."},
+        {"titulo": "Productos 100% originales", "desc": "Todo lo que vendemos es nuevo, sellado y original de fábrica. Sin réplicas, sin segunda mano. La calidad es nuestra prioridad."}
+      ]
+    },
+    "challenges": {
+      "badge": "Transparencia total",
+      "title": "Desafíos que debes conocer",
+      "subtitle": "No pintamos un mundo perfecto. Todo negocio tiene desafíos y queremos que los conozcas antes de empezar.",
+      "items": [
+        {"titulo": "Los tiempos pueden variar", "desc": "El estimado es 5–10 días hábiles, pero puede extenderse por demoras en vuelos, revisión física en aduana o feriados. Siempre comunicamos el estado."},
+        {"titulo": "No todos los productos se pueden enviar", "desc": "Líquidos inflamables, baterías sueltas de litio, alimentos perecibles y productos con homologación especial tienen restricciones. Consulta antes."},
+        {"titulo": "El éxito depende de ti", "desc": "TeVra da infraestructura y respaldo, pero los clientes los consigues tú. Si no te mueves, no vendes. Es una oportunidad, no un ingreso garantizado."},
+        {"titulo": "Manejo de dinero con responsabilidad", "desc": "Tu cliente te confía su dinero. Esa confianza es sagrada. Cada centavo debe manejarse con total transparencia y seriedad."}
+      ]
+    },
+    "joinCta": {
+      "title": "¿Quieres ser parte de la red?",
+      "subtitle": "Únete como agente TeVra. Sin inversión, sin jefe, sin límites. Empieza a generar ingresos conectando a tus contactos con productos de USA.",
+      "becomeAgent": "Quiero ser agente",
+      "trackOrder": "Seguir mi pedido"
+    }
+  },
+  "tracking": {
+    "hero": {
+      "badge": "Seguimiento en tiempo real",
+      "title": "¿Dónde está tu pedido?",
+      "subtitle": "Ingresa tu código de seguimiento y ve en qué etapa se encuentra tu producto en tiempo real.",
+      "placeholder": "Ej. TVR-2026-08541",
+      "trackBtn": "Rastrear",
+      "searching": "Buscando...",
+      "codeHint": "Ingresa el código de tracking que te proporcionó tu agente TeVra.",
+      "emptyError": "Ingresa tu código de pedido.",
+      "notFoundError": "No encontramos un pedido con ese código. Verifica que sea correcto o contacta a tu agente."
+    },
+    "detail": {
+      "title": "Detalle del pedido",
+      "code": "Código",
+      "product": "Producto",
+      "agent": "Tu agente",
+      "orderDate": "Fecha de pedido",
+      "estimatedDelivery": "Entrega estimada",
+      "doubts": "¿Tienes dudas?",
+      "doubtsDesc": "Escríbele directamente a tu agente para más información.",
+      "contactAgent": "Contactar agente"
+    },
+    "timeline": {
+      "title": "Seguimiento del envío",
+      "statesTitle": "Estados del seguimiento",
+      "statesSubtitle": "Así viaja tu producto desde USA hasta tu puerta.",
+      "currentStatus": "Estado actual",
+      "states": [
+        {"label": "Pedido confirmado", "sub": "Pago recibido — TeVra está procesando la compra en USA"},
+        {"label": "Producto comprado", "sub": "Tu producto fue comprado y está en Miami listo para embarcar"},
+        {"label": "En tránsito", "sub": "Tu producto está en vuelo hacia Perú — salida desde Miami"},
+        {"label": "En aduana", "sub": "Tu producto llegó a Perú y está en proceso de liberación aduanera"},
+        {"label": "Listo para entrega", "sub": "Tu producto fue liberado — coordina el recojo con tu agente"},
+        {"label": "Entregado", "sub": "Pedido completado exitosamente — ¡Gracias por tu compra!"}
+      ]
+    }
+  },
+  "footer": {
+    "tagline": "La plataforma líder en importaciones personales de Estados Unidos a Latinoamérica. Calidad ejecutiva en cada entrega.",
+    "newsletter": "Newsletter",
+    "newsletterDesc": "Recibe ofertas exclusivas y cupones de envío gratis.",
+    "emailPlaceholder": "Tu email",
+    "joinBtn": "Unirse",
+    "copyright": "© 2026 TeVra Marketplace LLC. All rights reserved.",
+    "terms": "Términos & Condiciones",
+    "privacy": "Privacidad",
+    "sections": {
+      "buy": {
+        "title": "Comprar",
+        "howItWorks": "Cómo funciona",
+        "quoter": "Cotizador Real",
+        "usaStores": "Tiendas USA"
+      },
+      "about": {
+        "title": "Nosotros",
+        "mission": "Misión",
+        "becomeAgent": "Ser Agente",
+        "contact": "Contacto"
+      }
+    }
+  },
+  "admin": {
+    "sidebar": {
+      "sections": {
+        "general": "General",
+        "management": "Gestión",
+        "engagement": "Engagement",
+        "system": "Sistema"
+      },
+      "nav": {
+        "dashboard": "Dashboard",
+        "analytics": "Analítica",
+        "users": "Usuarios",
+        "agents": "Agentes",
+        "products": "Productos",
+        "categories": "Categorías",
+        "brands": "Marcas",
+        "orders": "Pedidos",
+        "reviews": "Reseñas",
+        "campaigns": "Campañas",
+        "settings": "Configuración"
+      },
+      "admin": "Admin"
+    },
+    "header": {
+      "closeSession": "Cerrar sesión"
+    },
+    "dashboard": {
+      "title": "Dashboard",
+      "welcome": "Bienvenido, {{name}}. Resumen general de TeVra.",
+      "exportBtn": "Exportar",
+      "newAgent": "Nuevo Agente",
+      "stats": {
+        "totalCustomers": "Total Clientes",
+        "activeAgents": "Agentes Activos",
+        "totalOrders": "Total Pedidos",
+        "revenue": "Ingresos"
+      },
+      "salesPerformance": "Rendimiento de Ventas",
+      "monthlyRevenue": "Ingresos mensuales",
+      "topAgents": "Top Agentes",
+      "topAgentsDesc": "Por ingresos generados",
+      "noAgentData": "Sin datos de agentes aún",
+      "sales": "ventas",
+      "commission": "com.",
+      "recentOrders": "Pedidos Recientes",
+      "lastOrders": "Últimas órdenes del sistema",
+      "viewAll": "Ver todos",
+      "tableHeaders": {
+        "order": "Pedido",
+        "customer": "Cliente",
+        "agent": "Agente",
+        "amount": "Monto",
+        "status": "Estado"
+      },
+      "noOrders": "No hay pedidos aún",
+      "requests": "Solicitudes",
+      "pendingAgents": "Agentes pendientes",
+      "noPendingRequests": "No hay solicitudes pendientes",
+      "noName": "Sin nombre",
+      "noInfo": "Sin información",
+      "commissions": {
+        "tevra": "Comisión TeVra",
+        "agents": "Comisión Agentes",
+        "products": "Productos en Catálogo"
+      }
+    },
+    "users": {
+      "title": "Usuarios",
+      "subtitle": "Administra accesos y perfiles de la plataforma.",
+      "searchPlaceholder": "Buscar por nombre o correo...",
+      "stats": {
+        "total": "Total Usuarios",
+        "customers": "Clientes",
+        "agents": "Agentes",
+        "unverified": "Sin Verificar"
+      },
+      "table": {
+        "user": "Usuario",
+        "role": "Rol",
+        "status": "Estado",
+        "registered": "Registro",
+        "actions": "Acciones"
+      },
+      "noUsers": "No se encontraron usuarios",
+      "verified": "Verificado",
+      "unverified": "Pendiente",
+      "editTitle": "Editar Usuario",
+      "firstName": "Nombre",
+      "lastName": "Apellido",
+      "email": "Email",
+      "phone": "Teléfono",
+      "role": "Rol",
+      "isVerified": "Usuario Verificado",
+      "isVerifiedDesc": "Permitir acceso pleno a las funciones.",
+      "saveChanges": "Guardar Cambios",
+      "nameEmailRequired": "El nombre y correo son obligatorios",
+      "updateSuccess": "Usuario actualizado correctamente",
+      "updateError": "Error al actualizar el usuario"
+    }
+  },
+  "client": {
+    "header": {
+      "dashboard": "Inicio",
+      "orders": "Pedidos",
+      "addresses": "Direcciones",
+      "security": "Seguridad",
+      "myAccount": "Mi Cuenta",
+      "logout": "Cerrar sesión"
+    },
+    "dashboard": {
+      "greeting": "¡Hola, {{name}}! 👋",
+      "subtitle": "Bienvenido de nuevo a tu espacio en TeVra. Aquí tienes el estado de tus importaciones y compras.",
+      "yourAgent": "Tu Agente Asignado",
+      "noAgent": "Sin agente",
+      "askWhatsApp": "Preguntar por WhatsApp",
+      "loadingOrders": "Cargando tus pedidos...",
+      "stats": {
+        "inTransit": "Pedidos en camino",
+        "total": "Total Pedidos",
+        "completed": "Completados"
+      },
+      "activeOrder": "Pedido Activo",
+      "otherActiveOrders": "Otros Pedidos Activos",
+      "estimatedDelivery": "Entrega estimada:",
+      "orderItems": "Artículos del pedido",
+      "noActiveOrders": "No tienes pedidos activos",
+      "noActiveOrdersDesc": "Contacta a tu agente para hacer tu primera compra",
+      "writeAgent": "Escribir a mi agente",
+      "orderHistory": "Historial de Pedidos",
+      "totalOrders": "{{count}} pedidos en total",
+      "noOrdersYet": "Aún no tienes pedidos",
+      "tableHeaders": {
+        "order": "Pedido",
+        "date": "Fecha",
+        "amount": "Monto",
+        "status": "Estado"
+      },
+      "quickActions": {
+        "title": "Acciones Rápidas",
+        "addresses": "Mis Direcciones",
+        "addressesDesc": "Gestiona tus direcciones de envío",
+        "paymentMethods": "Métodos de Pago",
+        "paymentMethodsDesc": "Administra tus métodos de pago",
+        "security": "Seguridad",
+        "securityDesc": "Contraseña y verificación"
+      },
+      "tracking": {
+        "pending": "Pendiente",
+        "confirmed": "Confirmado",
+        "purchaseUSA": "Compra USA",
+        "inTransit": "En tránsito",
+        "customs": "Aduana",
+        "ready": "Listo",
+        "delivered": "Entregado"
+      }
+    },
+    "orders": {
+      "title": "Tus Importaciones",
+      "subtitle": "Supervisa en tiempo real el progreso de compra y envío de tus pedidos.",
+      "filters": {
+        "all": "Todos",
+        "active": "En proceso",
+        "completed": "Completados",
+        "cancelled": "Cancelados"
+      },
+      "noOrders": "Aún no tienes importaciones",
+      "noOrdersDesc": "Tus próximas compras y cotizaciones aparecerán ordenadas aquí.",
+      "progress": "Progreso",
+      "articles": "artículos",
+      "estimatedTotal": "Total Estimado",
+      "detail": {
+        "title": "Detalle de Importación",
+        "assignedAgent": "Tu Agente Asignado",
+        "managingOrder": "Administrando tu pedido",
+        "tracking": "Seguimiento",
+        "cancelled": "Pedido Cancelado",
+        "cancelledDesc": "Este trámite no continuó.",
+        "currentPhase": "Fase actual",
+        "productDetails": "Detalle de Productos",
+        "financialSummary": "Resumen Financiero",
+        "subtotal": "Subtotal de productos",
+        "shippingCost": "Costo de flete y aduanas",
+        "toCalculate": "Por calcular",
+        "tevraCost": "Tarifa de servicio TeVra",
+        "finalAmount": "Monto Final",
+        "timeline": {
+          "orderReceived": "Orden Recibida",
+          "purchasedUSA": "Comprado en USA",
+          "traveling": "Viajando a tu país",
+          "inCustoms": "En Aduana",
+          "readyDelivery": "Listo para entrega",
+          "delivered": "Entregado"
+        }
+      }
+    }
+  },
+  "agentDash": {
+    "header": {
+      "dashboard": "Dashboard",
+      "orders": "Pedidos",
+      "commissions": "Comisiones",
+      "clients": "Clientes",
+      "security": "Seguridad",
+      "agentLabel": "Agente"
+    },
+    "dashboard": {
+      "verifiedAgent": "Agente Verificado · Tevra",
+      "orders": "pedidos",
+      "commissions": "comisiones",
+      "createOrder": "Crear Pedido",
+      "referralLink": "Tu Link de Referido",
+      "referralDesc": "Comparte este enlace para que nuevos clientes se registren contigo",
+      "copyBtn": "Copiar",
+      "copiedBtn": "Copiado",
+      "shareWhatsApp": "WhatsApp",
+      "shareBtn": "Compartir",
+      "copiedAlt": "¡Copiado!",
+      "stats": {
+        "totalSales": "Ventas Totales",
+        "earned": "Comisiones Ganadas",
+        "totalOrders": "Total Pedidos",
+        "pending": "Comisiones Pendientes"
+      },
+      "myOrders": "Mis Pedidos",
+      "commissionsTitle": "Comisiones",
+      "noOrders": "No tienes pedidos aún",
+      "noCommissions": "Sin comisiones aún",
+      "tableHeaders": {
+        "order": "Pedido",
+        "client": "Cliente",
+        "amount": "Monto",
+        "status": "Estado"
+      },
+      "createOrderModal": {
+        "title": "Crear Pedido para Cliente",
+        "clientEmail": "Email del cliente",
+        "productName": "Nombre del producto",
+        "productLink": "Link del producto (opcional)",
+        "quantity": "Cantidad",
+        "unitPrice": "Precio unitario (USD)",
+        "notes": "Notas (opcional)",
+        "notesPlaceholder": "Talla, color, especificaciones...",
+        "cancelBtn": "Cancelar",
+        "createBtn": "Crear Pedido",
+        "errors": {
+          "emailRequired": "Email del cliente requerido",
+          "emailInvalid": "Email inválido",
+          "productRequired": "Nombre del producto requerido",
+          "priceRequired": "Precio válido requerido",
+          "quantityMin": "Cantidad mínima: 1",
+          "clientNotFound": "No se encontró un cliente con ese email. El cliente debe estar registrado."
+        }
+      }
+    }
+  }
+}

@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { agentsService } from '../services/agents.service'
 import productsService from '../services/products.service'
+import { useFieldAvailability } from '../../../core/hooks/useFieldAvailability'
 
 const STEPS = [
   { icon: 'person', label: 'Información Personal' },
@@ -31,6 +32,13 @@ export default function AgentRegistrationPage() {
 
   const set = (field, value) => setForm(prev => ({ ...prev, [field]: value }))
 
+  const availabilityFields = useMemo(() => ({
+    email: form.email,
+    whatsapp: form.whatsapp,
+  }), [form.email, form.whatsapp])
+
+  const { availabilityErrors, checking } = useFieldAvailability(availabilityFields)
+
   const generatedUsername = form.fullName.trim()
     ? form.fullName.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
     : ''
@@ -54,7 +62,7 @@ export default function AgentRegistrationPage() {
   }
 
   // Validation
-  const step1Valid = form.fullName.trim() && /^[0-9]{8}$/.test(form.dni.trim()) && form.email.includes('@') && form.whatsapp.trim().length >= 7 && form.city.trim() && form.password.length >= 8 && /[A-Z]/.test(form.password) && /[0-9]/.test(form.password) && form.password === form.confirmPassword
+  const step1Valid = form.fullName.trim() && /^[0-9]{8}$/.test(form.dni.trim()) && form.email.includes('@') && form.whatsapp.trim().length >= 7 && form.city.trim() && form.password.length >= 8 && /[A-Z]/.test(form.password) && /[0-9]/.test(form.password) && form.password === form.confirmPassword && !availabilityErrors.email && !availabilityErrors.whatsapp
   const step2Valid = form.categories.length > 0 && form.coverageAreas.length > 0
 
   const handleSubmit = async () => {
@@ -139,7 +147,7 @@ export default function AgentRegistrationPage() {
 
         {/* Main Content */}
         <main className="flex-1 px-6 md:px-12 py-12 max-w-4xl mx-auto">
-          {step === 0 && <Step1 form={form} set={set} onNext={() => setStep(1)} valid={step1Valid} generatedUsername={generatedUsername} />}
+          {step === 0 && <Step1 form={form} set={set} onNext={() => setStep(1)} valid={step1Valid} generatedUsername={generatedUsername} availabilityErrors={availabilityErrors} checking={checking} />}
           {step === 1 && !submitted && (
             <Step2
               form={form}
@@ -161,7 +169,7 @@ export default function AgentRegistrationPage() {
 }
 
 /* =========== STEP 1: Personal Info =========== */
-function Step1({ form, set, onNext, valid, generatedUsername }) {
+function Step1({ form, set, onNext, valid, generatedUsername, availabilityErrors, checking }) {
   return (
     <>
       <div className="mb-12">
@@ -222,23 +230,41 @@ function Step1({ form, set, onNext, valid, generatedUsername }) {
             <div className="space-y-5">
               <div className="space-y-1.5">
                 <label className="text-xs font-bold text-on-background uppercase tracking-wide">Correo Electrónico</label>
-                <input
-                  value={form.email}
-                  onChange={(e) => set('email', e.target.value)}
-                  className="w-full bg-white border-b-2 border-outline-variant focus:border-gray-900 focus:ring-0 px-4 py-3 rounded-t-lg transition-all outline-none"
-                  placeholder="email@ejemplo.com"
-                  type="email"
-                />
+                <div className="relative">
+                  <input
+                    value={form.email}
+                    onChange={(e) => set('email', e.target.value)}
+                    className={`w-full bg-white border-b-2 focus:ring-0 px-4 py-3 rounded-t-lg transition-all outline-none ${availabilityErrors.email ? 'border-red-400' : 'border-outline-variant focus:border-gray-900'}`}
+                    placeholder="email@ejemplo.com"
+                    type="email"
+                  />
+                  {checking.email && <span className="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 border-2 border-gray-300 border-t-gray-700 rounded-full animate-spin" />}
+                </div>
+                {availabilityErrors.email && (
+                  <p className="text-xs text-red-500 font-medium flex items-center gap-1">
+                    <span className="material-symbols-outlined text-[13px]">error</span>
+                    {availabilityErrors.email}
+                  </p>
+                )}
               </div>
               <div className="space-y-1.5">
                 <label className="text-xs font-bold text-on-background uppercase tracking-wide">WhatsApp</label>
-                <input
-                  value={form.whatsapp}
-                  onChange={(e) => set('whatsapp', e.target.value.replace(/[^0-9+\- ]/g, '').slice(0, 20))}
-                  className="w-full bg-white border-b-2 border-outline-variant focus:border-gray-900 focus:ring-0 px-4 py-3 rounded-t-lg transition-all outline-none"
-                  placeholder="+1 555 123 4567"
-                  type="tel"
-                />
+                <div className="relative">
+                  <input
+                    value={form.whatsapp}
+                    onChange={(e) => set('whatsapp', e.target.value.replace(/[^0-9+\- ]/g, '').slice(0, 20))}
+                    className={`w-full bg-white border-b-2 focus:ring-0 px-4 py-3 rounded-t-lg transition-all outline-none ${availabilityErrors.whatsapp ? 'border-red-400' : 'border-outline-variant focus:border-gray-900'}`}
+                    placeholder="+1 555 123 4567"
+                    type="tel"
+                  />
+                  {checking.whatsapp && <span className="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 border-2 border-gray-300 border-t-gray-700 rounded-full animate-spin" />}
+                </div>
+                {availabilityErrors.whatsapp && (
+                  <p className="text-xs text-red-500 font-medium flex items-center gap-1">
+                    <span className="material-symbols-outlined text-[13px]">error</span>
+                    {availabilityErrors.whatsapp}
+                  </p>
+                )}
               </div>
             </div>
           </div>

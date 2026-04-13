@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../../../core/contexts/AuthContext'
 import { getDashboardPath } from '../../../core/utils/roles'
+import { useFieldAvailability } from '../../../core/hooks/useFieldAvailability'
 
 export default function LoginPage() {
   const [isSignUp, setIsSignUp] = useState(false)
@@ -17,6 +18,12 @@ export default function LoginPage() {
   const { login, register } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
+
+  const availabilityFields = useMemo(() => (
+    isSignUp ? { email, phone, whatsapp: phone } : {}
+  ), [isSignUp, email, phone])
+
+  const { availabilityErrors, checking } = useFieldAvailability(availabilityFields)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -36,6 +43,11 @@ export default function LoginPage() {
     try {
       let loggedUser
       if (isSignUp) {
+        if (Object.keys(availabilityErrors).length > 0) {
+          setError(Object.values(availabilityErrors)[0])
+          setLoading(false)
+          return
+        }
         loggedUser = await register({ email, password, firstName, lastName, phone })
       } else {
         loggedUser = await login(email, password)
@@ -208,9 +220,16 @@ export default function LoginPage() {
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       placeholder="+51 999 123 456"
-                      className="w-full pl-9 sm:pl-11 pr-3 py-3 sm:py-3.5 bg-surface border border-outline-variant/30 rounded-xl text-xs sm:text-sm text-on-background placeholder:text-text-muted/40 focus:outline-none focus:ring-2 focus:ring-secondary/30 focus:border-secondary transition-all"
+                      className={`w-full pl-9 sm:pl-11 pr-3 py-3 sm:py-3.5 bg-surface border rounded-xl text-xs sm:text-sm text-on-background placeholder:text-text-muted/40 focus:outline-none focus:ring-2 focus:ring-secondary/30 focus:border-secondary transition-all ${availabilityErrors.phone || availabilityErrors.whatsapp ? 'border-red-400' : 'border-outline-variant/30'}`}
                     />
+                    {checking.phone && <span className="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 border-2 border-secondary/40 border-t-secondary rounded-full animate-spin" />}
                   </div>
+                  {(availabilityErrors.phone || availabilityErrors.whatsapp) && (
+                    <p className="text-[10px] text-red-500 font-semibold flex items-center gap-1">
+                      <span className="material-symbols-outlined text-[12px]">error</span>
+                      {availabilityErrors.phone || availabilityErrors.whatsapp}
+                    </p>
+                  )}
                 </div>
               </>
             )}
@@ -228,9 +247,16 @@ export default function LoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="correo@ejemplo.com"
-                  className="w-full pl-9 sm:pl-11 pr-3 py-3 sm:py-3.5 bg-surface border border-outline-variant/30 rounded-xl text-xs sm:text-sm text-on-background placeholder:text-text-muted/40 focus:outline-none focus:ring-2 focus:ring-secondary/30 focus:border-secondary transition-all"
+                  className={`w-full pl-9 sm:pl-11 pr-3 py-3 sm:py-3.5 bg-surface border rounded-xl text-xs sm:text-sm text-on-background placeholder:text-text-muted/40 focus:outline-none focus:ring-2 focus:ring-secondary/30 focus:border-secondary transition-all ${isSignUp && availabilityErrors.email ? 'border-red-400' : 'border-outline-variant/30'}`}
                 />
+                {isSignUp && checking.email && <span className="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 border-2 border-secondary/40 border-t-secondary rounded-full animate-spin" />}
               </div>
+              {isSignUp && availabilityErrors.email && (
+                <p className="text-[10px] text-red-500 font-semibold flex items-center gap-1">
+                  <span className="material-symbols-outlined text-[12px]">error</span>
+                  {availabilityErrors.email}
+                </p>
+              )}
             </div>
 
             <div className="space-y-1">

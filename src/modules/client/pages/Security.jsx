@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useAuth } from '../../../core/contexts/AuthContext'
 import api from '../../../core/services/api'
 import AvatarUpload from '../../../core/components/AvatarUpload'
+import { useFieldAvailability } from '../../../core/hooks/useFieldAvailability'
 
 export default function ClientSecurity() {
   const { user, refreshUser } = useAuth()
@@ -11,6 +12,9 @@ export default function ClientSecurity() {
   const [profileSaving, setProfileSaving] = useState(false)
   const [profileMsg, setProfileMsg] = useState(null)
   const [profileErrors, setProfileErrors] = useState({})
+
+  const availabilityFields = useMemo(() => ({ phone: profile.phone, whatsapp: profile.whatsapp }), [profile.phone, profile.whatsapp])
+  const { availabilityErrors, checking } = useFieldAvailability(availabilityFields, user?.id)
 
   const [passwords, setPasswords] = useState({ currentPassword: '', newPassword: '', confirmPassword: '' })
   const [pwSaving, setPwSaving] = useState(false)
@@ -40,6 +44,10 @@ export default function ClientSecurity() {
 
   const handleProfileSave = async () => {
     if (!validateProfile()) return
+    if (availabilityErrors.phone || availabilityErrors.whatsapp) {
+      setProfileMsg({ type: 'error', text: availabilityErrors.phone || availabilityErrors.whatsapp })
+      return
+    }
     setProfileSaving(true)
     setProfileMsg(null)
     try {
@@ -162,8 +170,14 @@ export default function ClientSecurity() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <InputModern label="Nombres" icon="badge" value={profile.firstName} onChange={e => setProfile({ ...profile, firstName: e.target.value })} error={profileErrors.firstName} />
             <InputModern label="Apellidos" icon="badge" value={profile.lastName} onChange={e => setProfile({ ...profile, lastName: e.target.value })} error={profileErrors.lastName} />
-            <InputModern label="Línea Telefónica Móvil" icon="phone_iphone" value={profile.phone} onChange={e => setProfile({ ...profile, phone: e.target.value })} placeholder="+51 999 999 999" />
-            <InputModern label="Línea WhatsApp" icon="chat" value={profile.whatsapp} onChange={e => setProfile({ ...profile, whatsapp: e.target.value })} placeholder="+51 999 999 999" />
+            <div>
+              <InputModern label="Línea Telefónica Móvil" icon="phone_iphone" value={profile.phone} onChange={e => setProfile({ ...profile, phone: e.target.value })} placeholder="+51 999 999 999" error={availabilityErrors.phone} />
+              {checking.phone && <p className="text-[11px] text-slate-400 mt-1 flex items-center gap-1"><span className="w-3 h-3 border-2 border-slate-300 border-t-slate-600 rounded-full animate-spin inline-block" /> Verificando...</p>}
+            </div>
+            <div>
+              <InputModern label="Línea WhatsApp" icon="chat" value={profile.whatsapp} onChange={e => setProfile({ ...profile, whatsapp: e.target.value })} placeholder="+51 999 999 999" error={availabilityErrors.whatsapp} />
+              {checking.whatsapp && <p className="text-[11px] text-slate-400 mt-1 flex items-center gap-1"><span className="w-3 h-3 border-2 border-slate-300 border-t-slate-600 rounded-full animate-spin inline-block" /> Verificando...</p>}
+            </div>
           </div>
 
           <div className="flex justify-end mt-10">
