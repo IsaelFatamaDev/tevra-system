@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../../../core/contexts/AuthContext'
 import { getDashboardPath } from '../../../core/utils/roles'
 
@@ -16,6 +16,7 @@ export default function LoginPage() {
 
   const { login, register } = useAuth()
   const navigate = useNavigate()
+  const location = useLocation()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -39,7 +40,15 @@ export default function LoginPage() {
       } else {
         loggedUser = await login(email, password)
       }
-      navigate(getDashboardPath(loggedUser?.role), { replace: true })
+      
+      const searchParams = new URLSearchParams(location.search)
+      const redirectTo = searchParams.get('redirect')
+      
+      if (redirectTo) {
+        navigate(redirectTo, { replace: true })
+      } else {
+        navigate(getDashboardPath(loggedUser?.role), { replace: true })
+      }
     } catch (err) {
       setError(err.message || 'Error al procesar tu solicitud')
     } finally {

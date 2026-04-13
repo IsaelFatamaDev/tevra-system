@@ -20,14 +20,15 @@ export default function AgentProfilePage() {
 
   const handleSelectAgent = () => {
     if (!agent) return
-    const user = agent.user || {}
+    const user = agent.user || agent || {}
+    const avatarUrl = agent.avatarUrl || user.avatar || user.avatarUrl || null;
     setSelectedAgent({
       id: agent.id,
       code: agent.referralCode || code,
       name: `${user.firstName || ''} ${user.lastName || ''}`.trim(),
       city: agent.city,
       whatsapp: user.phone || agent.whatsapp || '',
-      avatar: user.avatar || null,
+      avatar: avatarUrl,
     })
     navigate(items.length > 0 ? '/cotizar' : '/catalogo')
   }
@@ -50,9 +51,10 @@ export default function AgentProfilePage() {
     )
   }
 
-  const user = agent.user || {}
+  const user = agent.user || agent || {}
   const name = `${user.firstName || ''} ${user.lastName || ''}`.trim() || 'Agente TeVra'
   const initials = `${(user.firstName || 'A')[0]}${(user.lastName || '')[0] || ''}`.toUpperCase()
+  const avatarUrl = agent.avatarUrl || user.avatar || user.avatarUrl || null;
 
   return (
     <main className="min-h-screen bg-background-cream" style={{ paddingTop: 'clamp(3.5rem, 8vh, 5rem)' }}>
@@ -75,8 +77,8 @@ export default function AgentProfilePage() {
             <div className="bg-surface-container-lowest rounded-2xl p-8 shadow-soft">
               <div className="flex items-center gap-6 mb-6">
                 <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                  {user.avatar ? (
-                    <img src={user.avatar} alt={name} className="w-full h-full object-cover rounded-full" />
+                  {avatarUrl ? (
+                    <img src={avatarUrl} alt={name} className="w-full h-full object-cover rounded-full" />
                   ) : (
                     <span className="font-headline font-bold text-2xl text-primary">{initials}</span>
                   )}

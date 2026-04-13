@@ -62,8 +62,13 @@ function ProtectedRoute({ roles, children }) {
 
 function RedirectIfAuthenticated({ children }) {
   const { isAuthenticated, user, loading } = useAuth()
+  const location = useLocation()
   if (loading) return null
-  if (isAuthenticated) return <Navigate to={getDashboardPath(user?.role)} replace />
+  if (isAuthenticated) {
+    const searchParams = new URLSearchParams(location.search)
+    const redirectTo = searchParams.get('redirect')
+    return <Navigate to={redirectTo || getDashboardPath(user?.role)} replace />
+  }
   return children
 }
 

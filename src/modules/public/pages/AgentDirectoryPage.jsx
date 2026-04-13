@@ -5,16 +5,17 @@ import agentsService from '../services/agents.service'
 
 function AgentCard({ agent }) {
   const { ref, isVisible } = useScrollReveal(0.05)
-  const user = agent.user || {}
+  const user = agent.user || agent || {}
   const name = `${user.firstName || ''} ${user.lastName || ''}`.trim() || 'Agente TeVra'
   const initials = `${(user.firstName || 'A')[0]}${(user.lastName || '')[0] || ''}`.toUpperCase()
+  const avatar = agent.avatarUrl || user.avatar || user.avatarUrl;
 
   return (
     <div ref={ref} className={`bg-surface-container-lowest rounded-2xl p-6 shadow-soft hover:shadow-premium hover:-translate-y-1 transition-all duration-300 flex flex-col reveal ${isVisible ? 'visible' : ''}`}>
       <div className="flex items-center gap-4 mb-4">
         <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-          {user.avatar ? (
-            <img src={user.avatar} alt={name} className="w-full h-full object-cover rounded-full" />
+          {avatar ? (
+            <img src={avatar} alt={name} className="w-full h-full object-cover rounded-full" />
           ) : (
             <span className="font-headline font-bold text-lg text-primary">{initials}</span>
           )}
@@ -105,7 +106,8 @@ export default function AgentDirectoryPage() {
     if (cityFilter && a.city?.toLowerCase() !== cityFilter.toLowerCase()) return false
     if (search) {
       const q = search.toLowerCase()
-      const name = `${a.user?.firstName || ''} ${a.user?.lastName || ''}`.toLowerCase()
+      const userSource = a.user || a || {}
+      const name = `${userSource.firstName || ''} ${userSource.lastName || ''}`.toLowerCase()
       const cats = (a.specializationCategories || []).join(' ').toLowerCase()
       if (!name.includes(q) && !cats.includes(q) && !(a.city || '').toLowerCase().includes(q)) return false
     }

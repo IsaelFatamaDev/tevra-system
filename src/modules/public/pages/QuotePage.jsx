@@ -1,9 +1,14 @@
+import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useCart } from '../../../core/hooks/useCart'
+import { useAuth } from '../../../core/contexts/AuthContext'
+import ordersService from '../services/orders.service'
 
 export default function QuotePage() {
   const { items, selectedAgent, getSubtotal, getCount, clearCart } = useCart()
   const navigate = useNavigate()
+  const { isAuthenticated, user } = useAuth()
+  const [loading, setLoading] = useState(false)
 
   if (items.length === 0) {
     return (
@@ -36,9 +41,13 @@ export default function QuotePage() {
     )
   }
 
-  const buildWhatsAppMessage = () => {
-    let msg = `¡Hola ${selectedAgent.name}! 👋\n\n`
-    msg += `Quiero cotizar estos productos de TeVra:\n`
+  const buildWhatsAppMessage = (orderNumber) => {
+    let msg = `¡Hola ${selectedAgent.name}!\n\n`
+    if (orderNumber) {
+      msg += `Acabo de registrar el pedido *${orderNumber}* en la plataforma de TeVra.\n`
+    } else {
+      msg += `Quiero cotizar estos productos de TeVra:\n`
+    }
     msg += `━━━━━━━━━━━━━━━━\n\n`
 
     items.forEach((item, i) => {
@@ -51,21 +60,51 @@ export default function QuotePage() {
     })
 
     msg += `━━━━━━━━━━━━━━━━\n`
-    msg += `📦 *${getCount()} producto${getCount() > 1 ? 's' : ''}*\n`
-    msg += `💰 *Subtotal: $${getSubtotal().toFixed(0)} USD*\n\n`
-    msg += `¿Me pueden dar el costo total con envío? 🙏`
+    msg += `*${getCount()} producto${getCount() > 1 ? 's' : ''}*\n`
+    msg += `*Subtotal: $${getSubtotal().toFixed(0)} USD*\n\n`
+    msg += `¿Me pueden dar el costo total con envío?`
 
     return msg
   }
 
-  const handleSendWhatsApp = () => {
+  const handleSendWhatsApp = async () => {
     const phone = (selectedAgent.whatsapp || '').replace(/[^0-9]/g, '')
     if (!phone) {
       alert('Este agente no tiene número de WhatsApp registrado. Intenta con otro agente.')
       return
     }
-    const msg = encodeURIComponent(buildWhatsAppMessage())
+
+    let orderNumber = null;
+    try {
+      setLoading(true);
+      const dto = {
+        agentId: selectedAgent.id,
+        items: items.map(i => ({
+          productId: i.productId,
+          productName: i.name,
+          productImage: i.image,
+          quantity: i.qty,
+          unitPrice: i.price,
+        })),
+        notes: "Cotización iniciada vía WhatsApp",
+      };
+      
+      const res = await ordersService.create(dto);
+      orderNumber = res.orderNumber;
+    } catch (error) {
+       console.error("Error al crear el pedido", error);
+       alert("Hubo un error al registrar el pedido en el sistema. Puedes intentar de nuevo.");
+       setLoading(false);
+       return;
+    } finally {
+       setLoading(false);
+    }
+
+    const msg = encodeURIComponent(buildWhatsAppMessage(orderNumber))
     window.open(`https://wa.me/${phone}?text=${msg}`, '_blank')
+    clearCart();
+    // Redirect to the client's active orders
+    navigate('/mi-cuenta/pedidos')
   }
 
   return (
@@ -144,13 +183,28 @@ export default function QuotePage() {
                 </div>
               </div>
 
-              <button
-                onClick={handleSendWhatsApp}
-                className="w-full bg-[#25D366] hover:bg-[#1ebd5e] text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-lg shadow-green-200 text-lg"
-              >
-                <span className="material-symbols-outlined">chat</span>
-                Enviar por WhatsApp 💬
-              </button>
+              {isAuthenticated ? (
+                <button
+                  onClick={handleSendWhatsApp}
+                  disabled={loading}
+                  className="w-full bg-[#25D366] hover:bg-[#1ebd5e] text-white py-3.5 px-4 rounded-xl font-bold flex flex-wrap items-center justify-center gap-2 transition-all shadow-lg shadow-green-200 text-base sm:text-lg disabled:opacity-50"
+                >
+                  <span className="material-symbols-outlined shrink-0">
+                    {loading ? 'hourglass_empty' : 'chat'}
+                  </span>
+                  <span className="text-center">
+                    {loading ? 'Procesando...' : 'Confirmar por WhatsApp'}
+                  </span>
+                </button>
+              ) : (
+                <Link
+                  to="/login?redirect=/cotizar"
+                  className="w-full bg-primary hover:bg-primary-dark text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-lg text-lg"
+                >
+                  <span className="material-symbols-outlined">login</span>
+                  Iniciar sesión para cotizar
+                </Link>
+              )}
 
               <div className="text-center">
                 <Link to="/directorio-agentes" className="text-xs text-secondary font-bold hover:underline">

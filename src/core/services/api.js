@@ -3,7 +3,7 @@ const DEFAULT_TENANT = import.meta.env.VITE_DEFAULT_TENANT_ID || '';
 
 function getTenantId() {
   try {
-    const stored = localStorage.getItem('tevra_user');
+    const stored = sessionStorage.getItem('tevra_user');
     if (stored) {
       const user = JSON.parse(stored);
       if (user?.tenantId) return user.tenantId;
@@ -13,7 +13,7 @@ function getTenantId() {
 }
 
 async function request(endpoint, options = {}) {
-  const token = localStorage.getItem('tevra_token');
+  const token = sessionStorage.getItem('tevra_token');
   const tenantId = getTenantId();
 
   const headers = {

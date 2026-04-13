@@ -3,25 +3,15 @@ import { useAuth } from '../../../core/contexts/AuthContext'
 import dashboardService from '../../admin/services/dashboard.service'
 import api from '../../../core/services/api'
 
-const statusColors = {
-  pending: 'bg-amber-100 text-amber-700',
-  confirmed: 'bg-primary/10 text-primary',
-  purchased_in_usa: 'bg-blue-100 text-blue-700',
-  in_transit: 'bg-violet-100 text-violet-700',
-  in_customs: 'bg-orange-100 text-orange-700',
-  ready_for_delivery: 'bg-teal-100 text-teal-700',
-  delivered: 'bg-emerald-100 text-emerald-700',
-  cancelled: 'bg-red-100 text-red-700',
-}
-const statusLabels = {
-  pending: 'Pendiente',
-  confirmed: 'Confirmado',
-  purchased_in_usa: 'Comprado USA',
-  in_transit: 'En tránsito',
-  in_customs: 'Aduana',
-  ready_for_delivery: 'Listo entrega',
-  delivered: 'Entregado',
-  cancelled: 'Cancelado',
+const statusTags = {
+  pending: { label: 'Pendiente', classes: 'bg-amber-50 text-amber-700 border-amber-200' },
+  confirmed: { label: 'Confirmado', classes: 'bg-blue-50 text-blue-700 border-blue-200' },
+  purchased_in_usa: { label: 'Comprado USA', classes: 'bg-cyan-50 text-cyan-700 border-cyan-200' },
+  in_transit: { label: 'En Tránsito', classes: 'bg-violet-50 text-violet-700 border-violet-200' },
+  in_customs: { label: 'Aduana', classes: 'bg-orange-50 text-orange-700 border-orange-200' },
+  ready_for_delivery: { label: 'Listo Entrega', classes: 'bg-teal-50 text-teal-700 border-teal-200' },
+  delivered: { label: 'Entregado', classes: 'bg-emerald-50 text-emerald-700 border-emerald-200' },
+  cancelled: { label: 'Cancelado', classes: 'bg-red-50 text-red-700 border-red-200' },
 }
 
 export default function AgentDashboard() {
@@ -65,11 +55,11 @@ export default function AgentDashboard() {
 
   const validateOrder = () => {
     const e = {}
-    if (!orderForm.customerEmail.trim()) e.customerEmail = 'Email del cliente requerido'
+    if (!orderForm.customerEmail.trim()) e.customerEmail = 'Email requerido'
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(orderForm.customerEmail)) e.customerEmail = 'Email inválido'
-    if (!orderForm.productName.trim()) e.productName = 'Nombre del producto requerido'
-    if (!orderForm.unitPrice || isNaN(orderForm.unitPrice) || Number(orderForm.unitPrice) <= 0) e.unitPrice = 'Precio válido requerido'
-    if (!orderForm.quantity || Number(orderForm.quantity) < 1) e.quantity = 'Cantidad mínima: 1'
+    if (!orderForm.productName.trim()) e.productName = 'Nombre requerido'
+    if (!orderForm.unitPrice || isNaN(orderForm.unitPrice) || Number(orderForm.unitPrice) <= 0) e.unitPrice = 'Precio inválido'
+    if (!orderForm.quantity || Number(orderForm.quantity) < 1) e.quantity = 'Mín. 1'
     setOrderErrors(e)
     return Object.keys(e).length === 0
   }
@@ -83,7 +73,7 @@ export default function AgentDashboard() {
       const customerList = users?.items || (Array.isArray(users) ? users : [])
       const customer = customerList.find(u => u.email === orderForm.customerEmail)
       if (!customer) {
-        setOrderMsg({ type: 'error', text: 'No se encontró un cliente con ese email. El cliente debe estar registrado.' })
+        setOrderMsg({ type: 'error', text: 'El email proveído no pertenece a un cliente registrado.' })
         setOrderSaving(false)
         return
       }
@@ -105,7 +95,7 @@ export default function AgentDashboard() {
       const orderList = ordersRes?.data || (Array.isArray(ordersRes) ? ordersRes : [])
       setOrders(orderList)
     } catch (err) {
-      setOrderMsg({ type: 'error', text: err.message || 'Error al crear pedido' })
+      setOrderMsg({ type: 'error', text: err.message || 'Error grave al registrar pedido.' })
     } finally {
       setOrderSaving(false)
     }
@@ -114,137 +104,144 @@ export default function AgentDashboard() {
   const totalRevenue = orders.reduce((sum, o) => sum + parseFloat(o.total || 0), 0)
 
   return (
-    <div className="space-y-6 platform-enter">
-      {/* Hero / Profile Header */}
-      <div className="relative overflow-hidden rounded-2xl p-6 sm:p-8 text-white"
-        style={{ background: 'linear-gradient(135deg, #0a2540 0%, #1a1a2e 50%, #0d2137 100%)' }}>
+    <div className="space-y-8 platform-enter max-w-7xl mx-auto pb-10">
+      
+      {/* Hero / Profile Header - Premium */}
+      <div className="relative overflow-hidden rounded-[2rem] p-8 sm:p-10 text-white shadow-[0_8px_30px_rgba(0,0,0,0.12)] border border-slate-800"
+        style={{ background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)' }}>
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(0,214,143,0.12)_0%,transparent_50%)]" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,rgba(255,107,107,0.08)_0%,transparent_50%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(56,189,248,0.15)_0%,transparent_60%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,rgba(16,185,129,0.1)_0%,transparent_60%)]" />
         </div>
-        <div className="relative flex flex-col sm:flex-row items-start sm:items-center gap-5">
-          <div className="w-20 h-20 rounded-full bg-white/10 backdrop-blur-md border-2 border-white/20 flex items-center justify-center text-3xl font-bold">
+        <div className="relative flex flex-col md:flex-row items-center md:items-start gap-8 z-10 text-center md:text-left">
+          
+          <div className="w-24 h-24 rounded-[2rem] bg-white/5 backdrop-blur-md border border-white/10 flex items-center justify-center text-4xl font-extrabold shadow-[0_0_40px_rgba(255,255,255,0.1)]">
             {user?.firstName?.[0]}{user?.lastName?.[0]}
           </div>
+          
           <div className="flex-1">
-            <h1 className="text-2xl sm:text-3xl font-bold">
+            <h1 className="text-3xl sm:text-4xl font-headline font-extrabold tracking-tight mb-1">
               {user?.firstName} {user?.lastName}
             </h1>
-            <p className="text-white/60 mt-1">Agente Verificado · Tevra</p>
-            <div className="flex items-center gap-4 mt-3">
-              <div className="flex items-center gap-1">
-                <span className="material-symbols-outlined text-amber-400 text-[18px]">package_2</span>
-                <span className="font-semibold">{orders.length}</span>
-                <span className="text-white/50 text-sm">pedidos</span>
+            <p className="text-slate-400 font-medium tracking-wide flex items-center justify-center md:justify-start gap-2 mb-4">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              Socio TeVra Oficial
+            </p>
+            <div className="flex items-center justify-center md:justify-start gap-5">
+              <div className="flex items-center gap-2 px-4 py-2 bg-white/5 rounded-xl border border-white/10 backdrop-blur-sm">
+                <span className="material-symbols-outlined text-sky-400 text-[20px]">package_2</span>
+                <span className="font-bold">{orders.length} <span className="text-slate-400 font-medium ml-1">pedidos</span></span>
               </div>
-              <div className="text-white/30">·</div>
-              <span className="text-white/60 text-sm">{commissions.length} comisiones</span>
+              <div className="flex items-center gap-2 px-4 py-2 bg-white/5 rounded-xl border border-white/10 backdrop-blur-sm">
+                <span className="material-symbols-outlined text-emerald-400 text-[20px]">account_balance_wallet</span>
+                <span className="font-bold">{commissions.length} <span className="text-slate-400 font-medium ml-1">ganancias</span></span>
+              </div>
             </div>
           </div>
-          <div className="flex gap-2">
+          
+          <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
             <button onClick={() => { setShowOrderModal(true); setOrderMsg(null); setOrderErrors({}) }}
-              className="flex items-center gap-2 px-4 py-2.5 bg-secondary hover:bg-secondary/90 rounded-xl font-medium text-sm transition-colors text-white">
-              <span className="material-symbols-outlined text-[18px]">add_shopping_cart</span>
-              Crear Pedido
+              className="flex items-center justify-center gap-2 px-6 py-3.5 bg-white text-slate-900 rounded-2xl font-bold transition-all hover:bg-slate-100 shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+              <span className="material-symbols-outlined text-[20px]">add_shopping_cart</span>
+              Nuevo Pedido
             </button>
             <a href="https://wa.me/50370001234" target="_blank" rel="noopener noreferrer"
-              className="flex items-center gap-2 px-4 py-2.5 bg-[#25d366] hover:bg-[#20bd5a] rounded-xl font-medium text-sm transition-colors">
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" /><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492l4.624-1.467A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818c-2.168 0-4.19-.588-5.932-1.609l-.425-.253-2.744.87.884-2.685-.276-.44A9.77 9.77 0 012.182 12c0-5.423 4.395-9.818 9.818-9.818S21.818 6.577 21.818 12s-4.395 9.818-9.818 9.818z" /></svg>
-              WhatsApp
+              className="flex items-center justify-center gap-2 px-6 py-3.5 bg-[#25d366]/20 text-[#25d366] hover:bg-[#25d366] hover:text-white rounded-2xl font-bold transition-all border border-[#25d366]/30">
+              <span className="material-symbols-outlined text-[20px]">chat</span>
+               Chat Sorporte
             </a>
           </div>
         </div>
       </div>
 
-      {/* Referral Link */}
-      <div className="bg-white rounded-2xl p-5 border border-outline-variant/10 shadow-sm">
-        <div className="flex items-center gap-2 mb-3">
-          <span className="material-symbols-outlined text-primary">link</span>
-          <h3 className="font-semibold text-on-background">Tu Link de Referido</h3>
-        </div>
-        <p className="text-sm text-text-muted mb-3">Comparte este enlace para que nuevos clientes se registren contigo</p>
-        <div className="flex gap-2">
-          <div className="flex-1 bg-surface-container-low rounded-xl px-4 py-2.5 text-sm text-on-background font-mono truncate border border-outline-variant/10">
-            {referralLink}
-          </div>
-          <button onClick={handleCopyLink}
-            className="px-4 py-2.5 bg-primary rounded-xl text-white text-sm font-medium hover:bg-primary/90 transition-colors flex items-center gap-2">
-            <span className="material-symbols-outlined text-[18px]">{copied ? 'check' : 'content_copy'}</span>
-            {copied ? 'Copiado' : 'Copiar'}
-          </button>
-        </div>
-        <div className="flex gap-2 mt-3">
-          <button onClick={() => {
-            const url = `https://wa.me/?text=${encodeURIComponent(`¡Mira estos productos increíbles! Compra a través de mi enlace: ${referralLink}`)}`
-            window.open(url, '_blank')
-          }} className="flex items-center gap-1.5 px-3 py-1.5 bg-[#25d366]/10 text-[#25d366] rounded-lg text-xs font-medium hover:bg-[#25d366]/20 transition-colors">
-            <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" /></svg>
-            WhatsApp
-          </button>
-          <button onClick={() => {
-            if (navigator.share) {
-              navigator.share({ title: 'TeVra - Compra conmigo', text: '¡Descubre productos increíbles!', url: referralLink })
-            } else {
-              navigator.clipboard.writeText(referralLink)
-              setCopied(true); setTimeout(() => setCopied(false), 2000)
-            }
-          }} className="flex items-center gap-1.5 px-3 py-1.5 bg-primary/10 text-primary rounded-lg text-xs font-medium hover:bg-primary/20 transition-colors">
-            <span className="material-symbols-outlined text-[14px]">share</span>
-            {copied ? '¡Copiado!' : 'Compartir'}
-          </button>
-        </div>
-      </div>
+      {/* Analytics & Referral Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+         
+         <div className="lg:col-span-2 grid grid-cols-2 gap-4 sm:gap-6">
+            {[
+              { label: 'Ventas Globales', value: `$${totalRevenue.toLocaleString()}`, icon: 'monitoring', color: 'text-indigo-600', bg: 'bg-indigo-50 border-indigo-100' },
+              { label: 'Ingresos Netos', value: `$${Number(commissionSummary.totalEarned || 0).toLocaleString()}`, icon: 'account_balance_wallet', color: 'text-emerald-600', bg: 'bg-emerald-50 border-emerald-100' },
+              { label: 'Importaciones', value: orders.length, icon: 'inventory_2', color: 'text-sky-600', bg: 'bg-sky-50 border-sky-100' },
+              { label: 'Por Cobrar', value: `$${Number(commissionSummary.totalPending || 0).toLocaleString()}`, icon: 'schedule', color: 'text-amber-600', bg: 'bg-amber-50 border-amber-100' },
+            ].map((s) => (
+              <div key={s.label} className="bg-white rounded-[2rem] p-6 border border-slate-100 shadow-[0_2px_15px_rgba(0,0,0,0.02)] flex flex-col justify-between hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition-all">
+                <div className={`w-12 h-12 rounded-2xl ${s.bg} border flex items-center justify-center mb-4`}>
+                  <span className={`material-symbols-outlined text-2xl ${s.color}`}>{s.icon}</span>
+                </div>
+                <p className="text-3xl font-extrabold text-slate-900 font-headline tracking-tight">{s.value}</p>
+                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">{s.label}</p>
+              </div>
+            ))}
+         </div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        {[
-          { label: 'Ventas Totales', value: `$${totalRevenue.toLocaleString()}`, icon: 'payments', color: 'text-emerald-600 bg-emerald-50' },
-          { label: 'Comisiones Ganadas', value: `$${Number(commissionSummary.totalEarned || 0).toLocaleString()}`, icon: 'account_balance_wallet', color: 'text-amber-600 bg-amber-50' },
-          { label: 'Total Pedidos', value: orders.length, icon: 'package_2', color: 'text-purple-600 bg-purple-50' },
-          { label: 'Comisiones Pendientes', value: `$${Number(commissionSummary.totalPending || 0).toLocaleString()}`, icon: 'pending', color: 'text-primary bg-primary/10' },
-        ].map((s) => (
-          <div key={s.label} className="bg-white rounded-xl p-4 border border-outline-variant/10 shadow-sm">
-            <div className={`w-9 h-9 rounded-lg ${s.color} flex items-center justify-center mb-2`}>
-              <span className="material-symbols-outlined text-[18px]">{s.icon}</span>
+         <div className="bg-white rounded-[2rem] p-6 sm:p-8 border border-slate-100 shadow-[0_2px_15px_rgba(0,0,0,0.02)] flex flex-col">
+            <div className="flex items-center gap-3 mb-4">
+              <span className="w-10 h-10 bg-slate-50 border border-slate-100 rounded-xl flex items-center justify-center">
+                 <span className="material-symbols-outlined text-slate-800">share</span>
+              </span>
+              <h3 className="font-headline font-bold text-slate-900 text-lg">Crecimiento</h3>
             </div>
-            <p className="text-xl font-bold text-on-background">{s.value}</p>
-            <p className="text-xs text-text-muted mt-0.5">{s.label}</p>
-          </div>
-        ))}
+            <p className="text-sm text-slate-500 font-medium mb-6">Comparte tu clave de afiliado exclusiva y aumenta tus clientes pasivos cada mes.</p>
+            
+            <div className="bg-slate-50 rounded-2xl p-4 border border-slate-100 mb-6 flex-1 flex items-center justify-center">
+               <span className="font-mono text-slate-800 font-bold overflow-hidden text-ellipsis whitespace-nowrap px-2 text-sm">{referralLink}</span>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3 mt-auto">
+               <button onClick={handleCopyLink} className="flex flex-col items-center justify-center gap-1.5 p-3 rounded-2xl bg-slate-900 text-white font-bold text-xs hover:bg-slate-800 transition-colors">
+                  <span className="material-symbols-outlined text-[18px]">{copied ? 'check_circle' : 'content_copy'}</span>
+                  {copied ? 'Copiado' : 'Copiar'}
+               </button>
+               <button onClick={() => { window.open(`https://wa.me/?text=${encodeURIComponent(`¡Importa seguro conmigo en TeVra! 👉 ${referralLink}`)}`, '_blank') }} 
+                   className="flex flex-col items-center justify-center gap-1.5 p-3 rounded-2xl bg-[#25d366]/10 text-[#1da851] font-bold text-xs hover:bg-[#25d366]/20 transition-colors">
+                  <span className="material-symbols-outlined text-[18px]">chat</span>
+                  WhatsApp
+               </button>
+            </div>
+         </div>
       </div>
 
+      {/* Orders List & Recent Commissions */}
       {loading ? (
-        <div className="flex justify-center py-8"><div className="animate-spin w-8 h-8 rounded-full border-4 border-primary border-t-transparent" /></div>
+        <div className="flex justify-center py-20"><div className="animate-spin w-10 h-10 rounded-full border-4 border-slate-200 border-t-slate-800" /></div>
       ) : (
-        <div className="grid lg:grid-cols-3 gap-6">
-          {/* Orders Table */}
-          <div className="lg:col-span-2 bg-white rounded-2xl border border-outline-variant/10 shadow-sm overflow-hidden">
-            <div className="flex items-center justify-between px-5 py-4 border-b border-outline-variant/10">
-              <h3 className="font-semibold text-on-background">Mis Pedidos</h3>
-              <span className="text-xs text-text-muted bg-surface-container-low px-2.5 py-1 rounded-full">{orders.length} pedidos</span>
+        <div className="grid lg:grid-cols-3 gap-6 pt-4">
+          
+          {/* Active Orders Quick-View */}
+          <div className="lg:col-span-2 bg-white rounded-[2rem] border border-slate-100 shadow-[0_2px_15px_rgba(0,0,0,0.02)] overflow-hidden">
+            <div className="flex items-center justify-between px-8 py-6 border-b border-slate-100 bg-white">
+              <div>
+                 <h3 className="font-headline font-extrabold text-slate-900 text-lg">En Operación</h3>
+                 <p className="text-xs text-slate-400 font-medium mt-1">Registros de pedidos para tus clientes</p>
+              </div>
             </div>
             <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="text-text-muted text-xs bg-surface-container-low/50">
-                    <th className="text-left px-5 py-3 font-medium">Pedido</th>
-                    <th className="text-left px-3 py-3 font-medium">Cliente</th>
-                    <th className="text-right px-3 py-3 font-medium">Monto</th>
-                    <th className="text-center px-3 py-3 font-medium">Estado</th>
+              <table className="w-full text-sm text-left">
+                <thead className="bg-slate-50/80">
+                  <tr>
+                    <th className="px-8 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Pedido ID</th>
+                    <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest hidden sm:table-cell">Comprador</th>
+                    <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-right">Monto</th>
+                    <th className="px-8 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-center">Progreso</th>
                   </tr>
                 </thead>
-                <tbody>
-                  {orders.length === 0 && (
-                    <tr><td colSpan="4" className="px-5 py-6 text-center text-text-muted text-sm">No tienes pedidos aún</td></tr>
-                  )}
-                  {orders.map((o) => (
-                    <tr key={o.id} className="border-t border-outline-variant/5 hover:bg-surface-container-low/30 transition-colors">
-                      <td className="px-5 py-3 font-mono text-xs text-primary font-medium">{o.orderNumber || o.id?.slice(0, 8)}</td>
-                      <td className="px-3 py-3 text-on-background">{o.customer?.firstName || 'Cliente'} {o.customer?.lastName || ''}</td>
-                      <td className="px-3 py-3 text-right font-semibold text-on-background">${parseFloat(o.total || 0).toLocaleString()}</td>
-                      <td className="text-center px-3 py-3">
-                        <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${statusColors[o.status] || 'bg-surface-container-high text-text-muted'}`}>
-                          {statusLabels[o.status] || o.status}
+                <tbody className="divide-y divide-slate-100">
+                  {orders.length === 0 ? (
+                    <tr><td colSpan="4" className="px-8 py-10 text-center text-slate-400">Todo limpio. No hay importaciones.</td></tr>
+                  ) : orders.slice(0, 6).map((o) => (
+                    <tr key={o.id} className="hover:bg-slate-50/50 transition-colors">
+                      <td className="px-8 py-4 font-headline text-sm font-bold text-slate-900">
+                         {o.orderNumber || o.id?.slice(0, 8)}
+                      </td>
+                      <td className="px-6 py-4 hidden sm:table-cell">
+                         <p className="font-bold text-slate-800">{o.customer?.firstName} {o.customer?.lastName}</p>
+                      </td>
+                      <td className="px-6 py-4 text-right">
+                         <span className="font-extrabold text-slate-900">${parseFloat(o.total || 0).toLocaleString()}</span>
+                      </td>
+                      <td className="px-8 py-4 flex justify-center">
+                        <span className={`inline-flex items-center justify-center px-3 py-1.5 rounded-full text-[10px] font-bold border ${statusTags[o.status]?.classes || 'bg-slate-50 border-slate-200 text-slate-500'}`}>
+                          {statusTags[o.status]?.label || o.status}
                         </span>
                       </td>
                     </tr>
@@ -254,25 +251,33 @@ export default function AgentDashboard() {
             </div>
           </div>
 
-          {/* Commissions Summary */}
-          <div className="bg-white rounded-2xl border border-outline-variant/10 shadow-sm">
-            <div className="flex items-center justify-between px-5 py-4 border-b border-outline-variant/10">
-              <h3 className="font-semibold text-on-background">Comisiones</h3>
-              <span className="text-xs text-text-muted bg-surface-container-low px-2.5 py-1 rounded-full">{commissionSummary.count || commissions.length}</span>
+          {/* Quick Commissions Viewer */}
+          <div className="bg-white rounded-[2rem] border border-slate-100 shadow-[0_2px_15px_rgba(0,0,0,0.02)] flex flex-col">
+            <div className="px-8 py-6 border-b border-slate-100 flex items-center justify-between">
+              <h3 className="font-headline font-extrabold text-slate-900 text-lg">Comisiones</h3>
+              <span className="w-8 h-8 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-500 text-xs font-bold">{commissions.length}</span>
             </div>
-            <div className="p-4 space-y-3">
-              {commissions.length === 0 && <p className="text-sm text-text-muted text-center py-4">Sin comisiones aún</p>}
+            <div className="p-6 space-y-3 flex-1 overflow-y-auto">
+              {commissions.length === 0 && (
+                 <div className="h-full flex flex-col items-center justify-center text-center text-slate-400 py-10">
+                    <span className="material-symbols-outlined text-4xl mb-2 opacity-50">receipt_long</span>
+                    <p className="text-sm">Tus registros aparecerán aquí.</p>
+                 </div>
+              )}
               {commissions.slice(0, 5).map((c, i) => (
-                <div key={c.id || i} className="flex items-center justify-between p-3 rounded-xl bg-surface-container-low/50">
+                <div key={c.id || i} className="flex items-center justify-between p-4 rounded-2xl bg-slate-50 border border-slate-100">
                   <div>
-                    <p className="text-sm font-semibold text-on-background">${parseFloat(c.amount || 0).toLocaleString()}</p>
-                    <p className="text-xs text-text-muted">{c.createdAt ? new Date(c.createdAt).toLocaleDateString() : '—'}</p>
+                    <p className="text-lg font-extrabold text-slate-900">${parseFloat(c.amount || 0).toLocaleString()}</p>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mt-1">{c.createdAt ? new Date(c.createdAt).toLocaleDateString() : '—'}</p>
                   </div>
-                  <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${c.status === 'paid' ? 'bg-emerald-50 text-emerald-700' :
-                    c.status === 'approved' ? 'bg-blue-50 text-blue-700' :
-                      c.status === 'cancelled' ? 'bg-red-50 text-red-700' :
-                        'bg-amber-50 text-amber-700'
-                    }`}>{c.status === 'paid' ? 'Pagada' : c.status === 'approved' ? 'Aprobada' : c.status === 'cancelled' ? 'Cancelada' : 'Pendiente'}</span>
+                  <span className={`text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider ${
+                      c.status === 'paid' ? 'bg-emerald-100 text-emerald-800' :
+                      c.status === 'approved' ? 'bg-sky-100 text-sky-800' :
+                      c.status === 'cancelled' ? 'bg-red-100 text-red-800' :
+                      'bg-amber-100 text-amber-800'
+                    }`}>
+                    {c.status === 'paid' ? 'Pagada' : c.status === 'approved' ? 'Aprobada' : c.status === 'cancelled' ? 'Anulada' : 'Espera'}
+                  </span>
                 </div>
               ))}
             </div>
@@ -281,99 +286,77 @@ export default function AgentDashboard() {
       )}
 
       {showOrderModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={() => setShowOrderModal(false)}>
-          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
-          <div className="relative bg-white rounded-2xl w-full max-w-lg p-6 shadow-2xl" onClick={e => e.stopPropagation()}>
-            <div className="flex items-center justify-between mb-5">
-              <h3 className="text-lg font-bold text-on-background">Crear Pedido para Cliente</h3>
-              <button onClick={() => setShowOrderModal(false)} className="w-8 h-8 rounded-full bg-surface-container-low flex items-center justify-center hover:bg-surface-container-high">
-                <span className="material-symbols-outlined text-[18px]">close</span>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" onClick={() => setShowOrderModal(false)} />
+          <div className="relative bg-white rounded-[2rem] w-full max-w-xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            
+            <div className="px-8 py-6 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+              <div>
+                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Cierre de Venta</p>
+                 <h3 className="text-xl font-extrabold text-slate-900 font-headline">Nueva Cotización</h3>
+              </div>
+              <button onClick={() => setShowOrderModal(false)} className="w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center hover:bg-slate-100 text-slate-400">
+                <span className="material-symbols-outlined text-[20px]">close</span>
               </button>
             </div>
-            {orderMsg && (
-              <div className={`mb-4 p-3 rounded-xl text-sm font-medium ${orderMsg.type === 'success' ? 'bg-emerald-50 text-emerald-700' : 'bg-red-50 text-red-700'}`}>
-                {orderMsg.text}
-              </div>
-            )}
-            <div className="space-y-4">
-              <div>
-                <label className="block text-xs font-semibold text-text-muted mb-1">Email del cliente</label>
-                <input
-                  value={orderForm.customerEmail}
-                  onChange={e => setOrderForm({ ...orderForm, customerEmail: e.target.value })}
-                  className={`w-full px-3 py-2.5 rounded-xl border ${orderErrors.customerEmail ? 'border-red-400' : 'border-outline-variant/20'} text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none`}
-                  placeholder="cliente@email.com"
-                />
-                {orderErrors.customerEmail && <p className="text-xs text-red-500 mt-1">{orderErrors.customerEmail}</p>}
-              </div>
-              <div>
-                <label className="block text-xs font-semibold text-text-muted mb-1">Nombre del producto</label>
-                <input
-                  value={orderForm.productName}
-                  onChange={e => setOrderForm({ ...orderForm, productName: e.target.value })}
-                  className={`w-full px-3 py-2.5 rounded-xl border ${orderErrors.productName ? 'border-red-400' : 'border-outline-variant/20'} text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none`}
-                  placeholder="Nike Air Max 90"
-                />
-                {orderErrors.productName && <p className="text-xs text-red-500 mt-1">{orderErrors.productName}</p>}
-              </div>
-              <div>
-                <label className="block text-xs font-semibold text-text-muted mb-1">Link del producto (opcional)</label>
-                <input
-                  value={orderForm.productLink}
-                  onChange={e => setOrderForm({ ...orderForm, productLink: e.target.value })}
-                  className="w-full px-3 py-2.5 rounded-xl border border-outline-variant/20 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
-                  placeholder="https://www.amazon.com/..."
-                />
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-semibold text-text-muted mb-1">Cantidad</label>
-                  <input
-                    type="number"
-                    min="1"
-                    value={orderForm.quantity}
-                    onChange={e => setOrderForm({ ...orderForm, quantity: e.target.value })}
-                    className={`w-full px-3 py-2.5 rounded-xl border ${orderErrors.quantity ? 'border-red-400' : 'border-outline-variant/20'} text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none`}
-                  />
-                  {orderErrors.quantity && <p className="text-xs text-red-500 mt-1">{orderErrors.quantity}</p>}
-                </div>
-                <div>
-                  <label className="block text-xs font-semibold text-text-muted mb-1">Precio unitario (USD)</label>
-                  <input
-                    type="number"
-                    min="0"
-                    step="0.01"
-                    value={orderForm.unitPrice}
-                    onChange={e => setOrderForm({ ...orderForm, unitPrice: e.target.value })}
-                    className={`w-full px-3 py-2.5 rounded-xl border ${orderErrors.unitPrice ? 'border-red-400' : 'border-outline-variant/20'} text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none`}
-                    placeholder="0.00"
-                  />
-                  {orderErrors.unitPrice && <p className="text-xs text-red-500 mt-1">{orderErrors.unitPrice}</p>}
-                </div>
-              </div>
-              <div>
-                <label className="block text-xs font-semibold text-text-muted mb-1">Notas (opcional)</label>
-                <textarea
-                  value={orderForm.notes}
-                  onChange={e => setOrderForm({ ...orderForm, notes: e.target.value })}
-                  className="w-full px-3 py-2.5 rounded-xl border border-outline-variant/20 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none resize-none"
-                  rows={2}
-                  placeholder="Talla, color, especificaciones..."
-                />
-              </div>
+            
+            <div className="p-8 overflow-y-auto no-scrollbar">
+               {orderMsg && (
+                 <div className={`mb-6 p-4 rounded-2xl text-sm font-bold flex items-center gap-3 border ${orderMsg.type === 'success' ? 'bg-emerald-50 text-emerald-700 border-emerald-100' : 'bg-red-50 text-red-700 border-red-100'}`}>
+                   <span className="material-symbols-outlined">{orderMsg.type === 'success' ? 'check_circle' : 'gpp_bad'}</span>
+                   {orderMsg.text}
+                 </div>
+               )}
+               <div className="space-y-5">
+                 <div>
+                   <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">Correo del Cliente</label>
+                   <input value={orderForm.customerEmail} onChange={e => setOrderForm({ ...orderForm, customerEmail: e.target.value })}
+                     className={`w-full px-4 py-3 bg-slate-50 border rounded-2xl text-sm font-medium ${orderErrors.customerEmail ? 'border-red-300 focus:ring-red-100' : 'border-slate-200 focus:ring-slate-900/5 focus:border-slate-900'} outline-none focus:ring-4 transition-all`} placeholder="usuario@email.com" />
+                   {orderErrors.customerEmail && <p className="text-[11px] text-red-500 font-bold mt-1.5">{orderErrors.customerEmail}</p>}
+                 </div>
+                 
+                 <div>
+                   <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">Artículo</label>
+                   <input value={orderForm.productName} onChange={e => setOrderForm({ ...orderForm, productName: e.target.value })}
+                     className={`w-full px-4 py-3 bg-slate-50 border rounded-2xl text-sm font-medium ${orderErrors.productName ? 'border-red-300 focus:ring-red-100' : 'border-slate-200 focus:ring-slate-900/5 focus:border-slate-900'} outline-none focus:ring-4 transition-all`} placeholder="MacBook Pro M3..." />
+                   {orderErrors.productName && <p className="text-[11px] text-red-500 font-bold mt-1.5">{orderErrors.productName}</p>}
+                 </div>
+
+                 <div className="grid grid-cols-2 gap-5">
+                   <div>
+                     <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">Cantidad</label>
+                     <input type="number" min="1" value={orderForm.quantity} onChange={e => setOrderForm({ ...orderForm, quantity: e.target.value })}
+                       className={`w-full px-4 py-3 bg-slate-50 border rounded-2xl text-sm font-medium ${orderErrors.quantity ? 'border-red-300 focus:ring-red-100' : 'border-slate-200 focus:ring-slate-900/5 focus:border-slate-900'} outline-none focus:ring-4 transition-all`} />
+                     {orderErrors.quantity && <p className="text-[11px] text-red-500 font-bold mt-1.5">{orderErrors.quantity}</p>}
+                   </div>
+                   <div>
+                     <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">P. Unitario USD</label>
+                     <input type="number" min="0" step="0.01" value={orderForm.unitPrice} onChange={e => setOrderForm({ ...orderForm, unitPrice: e.target.value })}
+                       className={`w-full px-4 py-3 bg-slate-50 border rounded-2xl text-sm font-medium ${orderErrors.unitPrice ? 'border-red-300 focus:ring-red-100' : 'border-slate-200 focus:ring-slate-900/5 focus:border-slate-900'} outline-none focus:ring-4 transition-all`} placeholder="0.00" />
+                     {orderErrors.unitPrice && <p className="text-[11px] text-red-500 font-bold mt-1.5">{orderErrors.unitPrice}</p>}
+                   </div>
+                 </div>
+                 
+                 <div>
+                   <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">Enlace de Compra Alterno</label>
+                   <input value={orderForm.productLink} onChange={e => setOrderForm({ ...orderForm, productLink: e.target.value })}
+                     className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-medium focus:ring-slate-900/5 focus:border-slate-900 outline-none focus:ring-4 transition-all" placeholder="https://amazon.com/..." />
+                 </div>
+                 
+                 <div>
+                   <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">Contexto o Notas</label>
+                   <textarea value={orderForm.notes} onChange={e => setOrderForm({ ...orderForm, notes: e.target.value })}
+                     className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-medium focus:ring-slate-900/5 focus:border-slate-900 outline-none focus:ring-4 transition-all resize-none" rows="2" placeholder="Especificaciones, color exacto..."></textarea>
+                 </div>
+               </div>
             </div>
-            <div className="flex justify-end gap-2 mt-6">
-              <button onClick={() => setShowOrderModal(false)} className="px-4 py-2.5 rounded-xl text-sm font-medium text-text-muted hover:bg-surface-container-low transition-colors">
-                Cancelar
-              </button>
-              <button
-                onClick={handleCreateOrder}
-                disabled={orderSaving}
-                className="px-5 py-2.5 bg-primary text-white rounded-xl text-sm font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50 flex items-center gap-2"
-              >
-                {orderSaving && <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />}
-                Crear Pedido
-              </button>
+            
+            <div className="p-6 border-t border-slate-100 flex gap-4 bg-white shrink-0">
+               <button onClick={() => setShowOrderModal(false)} className="flex-1 py-4 text-sm font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-2xl transition-colors">Cancelar</button>
+               <button onClick={handleCreateOrder} disabled={orderSaving} className="flex-1 py-4 bg-slate-900 hover:bg-slate-800 disabled:opacity-50 text-white rounded-2xl font-bold text-sm transition-all flex items-center justify-center gap-2 shadow-[0_4px_20px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.2)]">
+                 {orderSaving ? <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <span className="material-symbols-outlined text-[20px]">add_task</span>}
+                 Generar Factura
+               </button>
             </div>
           </div>
         </div>
