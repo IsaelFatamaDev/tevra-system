@@ -1,19 +1,21 @@
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { useCart } from '../../../core/hooks/useCart'
 
 export default function CartPage() {
   const { items, removeItem, updateQty, getSubtotal, getCount, selectedAgent } = useCart()
+  const { t } = useTranslation()
 
   if (items.length === 0) {
     return (
       <main className="min-h-screen bg-background-cream flex items-center justify-center" style={{ paddingTop: 'clamp(3.5rem, 8vh, 5rem)' }}>
         <div className="text-center space-y-6">
           <span className="material-symbols-outlined text-7xl text-outline-variant/40 block">shopping_cart</span>
-          <h1 className="font-headline font-extrabold text-3xl text-primary">Tu carrito está vacío</h1>
-          <p className="text-text-muted max-w-md">Agrega productos desde nuestro catálogo y luego cotiza con un agente TeVra.</p>
+          <h1 className="font-headline font-extrabold text-3xl text-primary">{t('cart.emptyTitle')}</h1>
+          <p className="text-text-muted max-w-md">{t('cart.emptyDesc')}</p>
           <Link to="/catalogo" className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-white rounded-2xl font-headline font-bold hover:bg-primary-dark transition-colors shadow-lg">
             <span className="material-symbols-outlined">storefront</span>
-            Ir al catálogo
+            {t('cart.goToCatalog')}
           </Link>
         </div>
       </main>
@@ -26,12 +28,12 @@ export default function CartPage() {
         {/* Header */}
         <div className="flex items-center justify-between mb-10">
           <div>
-            <h1 className="font-headline font-extrabold text-3xl text-primary">Mi Carrito</h1>
-            <p className="text-text-muted text-sm mt-1">{getCount()} {getCount() === 1 ? 'producto' : 'productos'}</p>
+            <h1 className="font-headline font-extrabold text-3xl text-primary">{t('cart.title')}</h1>
+            <p className="text-text-muted text-sm mt-1">{getCount()} {getCount() === 1 ? t('cart.product') : t('cart.products')}</p>
           </div>
           <Link to="/catalogo" className="flex items-center gap-2 text-sm font-bold text-secondary hover:text-primary transition-colors">
             <span className="material-symbols-outlined text-base">arrow_back</span>
-            Seguir comprando
+            {t('cart.continueShopping')}
           </Link>
         </div>
 
@@ -88,19 +90,19 @@ export default function CartPage() {
           {/* Summary */}
           <div className="lg:col-span-1">
             <div className="bg-surface-container-lowest rounded-2xl p-6 shadow-soft sticky top-28 space-y-6">
-              <h2 className="font-headline font-bold text-lg text-primary">Resumen</h2>
+              <h2 className="font-headline font-bold text-lg text-primary">{t('cart.summary')}</h2>
 
               <div className="space-y-3 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-text-muted">Subtotal ({getCount()} items)</span>
+                  <span className="text-text-muted">{t('cart.subtotal')} ({getCount()} {t('cart.items')})</span>
                   <span className="font-bold text-primary">${getSubtotal().toFixed(0)} USD</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-text-muted">Envío estimado</span>
-                  <span className="text-xs font-bold text-mint">Cotizar con agente</span>
+                  <span className="text-text-muted">{t('cart.estimatedShipping')}</span>
+                  <span className="text-xs font-bold text-mint">{t('cart.quoteWithAgent')}</span>
                 </div>
                 <div className="border-t border-outline-variant/20 pt-3 flex justify-between">
-                  <span className="font-bold text-primary">Total estimado</span>
+                  <span className="font-bold text-primary">{t('cart.estimatedTotal')}</span>
                   <span className="font-black text-xl text-secondary">${getSubtotal().toFixed(0)}</span>
                 </div>
               </div>
@@ -115,7 +117,7 @@ export default function CartPage() {
                     <p className="text-xs font-bold text-primary truncate">{selectedAgent.name}</p>
                     <p className="text-[10px] text-text-muted">{selectedAgent.city}</p>
                   </div>
-                  <Link to="/directorio-agentes" className="text-[10px] text-secondary font-bold ml-auto shrink-0">Cambiar</Link>
+                  <Link to="/directorio-agentes" className="text-[10px] text-secondary font-bold ml-auto shrink-0">{t('cart.changeAgent')}</Link>
                 </div>
               )}
 
@@ -126,12 +128,12 @@ export default function CartPage() {
                 <span className="material-symbols-outlined text-base">
                   {selectedAgent ? 'send' : 'group'}
                 </span>
-                {selectedAgent ? 'Cotizar por WhatsApp' : 'Elegir un agente'}
+                {selectedAgent ? t('cart.quoteWhatsApp') : t('cart.chooseAgent')}
               </Link>
 
               <div className="flex items-start gap-2 text-xs text-text-muted">
                 <span className="material-symbols-outlined text-sm text-mint shrink-0">verified_user</span>
-                <p>Todos los productos son 100% originales importados desde USA.</p>
+                <p>{t('cart.originalsGuarantee')}</p>
               </div>
             </div>
           </div>

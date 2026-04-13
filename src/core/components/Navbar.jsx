@@ -1,14 +1,9 @@
 import { useState, useCallback } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import PageTransition from './PageTransition'
+import LanguageSwitcher from './LanguageSwitcher'
 import { useCart } from '../hooks/useCart'
-
-const navLinks = [
-  { label: 'Comprar', href: '/catalogo' },
-  { label: 'Agentes', href: '/agentes' },
-  { label: 'Empresa', href: '/empresa' },
-  { label: 'Seguimiento', href: '/tracking' },
-]
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -16,6 +11,14 @@ export default function Navbar() {
   const navigate = useNavigate()
   const { getCount } = useCart()
   const cartCount = getCount()
+  const { t } = useTranslation()
+
+  const navLinks = [
+    { label: t('nav.buy'), href: '/catalogo' },
+    { label: t('nav.agents'), href: '/agentes' },
+    { label: t('nav.company'), href: '/empresa' },
+    { label: t('nav.tracking'), href: '/tracking' },
+  ]
 
   const handleLoginClick = useCallback((e) => {
     e.preventDefault()
@@ -50,15 +53,17 @@ export default function Navbar() {
             ))}
           </div>
 
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-4">
             <div className="hidden lg:flex items-center bg-surface-container-low px-4 py-2 rounded-full border border-outline-variant/20">
               <span className="material-symbols-outlined text-text-muted text-sm mr-2">search</span>
               <input
                 className="bg-transparent border-none focus:ring-0 focus:outline-none text-xs w-40 text-on-background placeholder:text-text-muted"
-                placeholder="Buscar producto..."
+                placeholder={t('nav.searchPlaceholder')}
                 type="text"
               />
             </div>
+
+            <LanguageSwitcher variant="dark" />
 
             <div className="flex gap-4">
               <span className="material-symbols-outlined text-primary cursor-pointer hover:text-secondary transition-colors">favorite</span>
@@ -98,6 +103,9 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
+            <div className="pt-2">
+              <LanguageSwitcher variant="dark" />
+            </div>
           </div>
         )}
       </nav>

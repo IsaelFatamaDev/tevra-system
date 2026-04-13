@@ -1,18 +1,13 @@
 import { useState, useEffect, useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
 import usersService from '../services/users.service'
 import Pagination from '../../../core/components/Pagination'
 import { useToast } from '../../../core/contexts/ToastContext'
 
 const ITEMS_PER_PAGE = 10
 
-const ROLE_CONFIG = {
-  super_admin: { bg: 'bg-violet-50', text: 'text-violet-700', label: 'Super Admin' },
-  admin: { bg: 'bg-blue-50', text: 'text-blue-700', label: 'Admin' },
-  agent: { bg: 'bg-zinc-100', text: 'text-zinc-700', label: 'Agente' },
-  customer: { bg: 'bg-emerald-50', text: 'text-emerald-700', label: 'Cliente' },
-}
-
 export default function AdminUsers() {
+  const { t } = useTranslation()
   const [users, setUsers] = useState([])
   const [total, setTotal] = useState(0)
   const [loading, setLoading] = useState(true)
@@ -23,6 +18,13 @@ export default function AdminUsers() {
   const [editForm, setEditForm] = useState({})
   const [saving, setSaving] = useState(false)
   const { addToast } = useToast()
+
+  const ROLE_CONFIG = {
+    super_admin: { bg: 'bg-violet-50', text: 'text-violet-700', label: t('common.roles.super_admin') },
+    admin: { bg: 'bg-blue-50', text: 'text-blue-700', label: t('common.roles.admin') },
+    agent: { bg: 'bg-zinc-100', text: 'text-zinc-700', label: t('common.roles.agent') },
+    customer: { bg: 'bg-emerald-50', text: 'text-emerald-700', label: t('common.roles.customer') },
+  }
 
   const fetchUsers = useCallback(() => {
     setLoading(true)
@@ -38,8 +40,8 @@ export default function AdminUsers() {
 
   useEffect(() => {
     setPage(1)
-    const t = setTimeout(fetchUsers, search ? 350 : 0)
-    return () => clearTimeout(t)
+    const timer = setTimeout(fetchUsers, search ? 350 : 0)
+    return () => clearTimeout(timer)
   }, [search, roleFilter])
 
   const totalPages = Math.ceil(total / ITEMS_PER_PAGE)
@@ -52,7 +54,7 @@ export default function AdminUsers() {
 
   const handleSaveUser = async () => {
     if (!editForm.firstName?.trim() || !editForm.email?.trim()) {
-      addToast('El nombre y correo son obligatorios', 'error')
+      addToast(t('admin.users.nameEmailRequired'), 'error')
       return
     }
     setSaving(true)
@@ -60,10 +62,10 @@ export default function AdminUsers() {
       await usersService.update(editUser.id, editForm)
       fetchUsers()
       setEditUser(null)
-      addToast('Usuario actualizado correctamente')
-    } catch (err) { 
+      addToast(t('admin.users.updateSuccess'))
+    } catch (err) {
       console.error(err)
-      addToast('Error al actualizar el usuario', 'error')
+      addToast(t('admin.users.updateError'), 'error')
     }
     finally { setSaving(false) }
   }
@@ -74,17 +76,17 @@ export default function AdminUsers() {
   const unverified = users.filter(u => !u.isVerified).length
 
   const metrics = [
-    { title: 'Total Usuarios', value: totalUsers, icon: 'group' },
-    { title: 'Clientes', value: totalCustomers, icon: 'person' },
-    { title: 'Agentes', value: totalAgents, icon: 'support_agent' },
-    { title: 'Sin Verificar', value: unverified, icon: 'warning' },
+    { title: t('admin.users.stats.total'), value: totalUsers, icon: 'group' },
+    { title: t('admin.users.stats.customers'), value: totalCustomers, icon: 'person' },
+    { title: t('admin.users.stats.agents'), value: totalAgents, icon: 'support_agent' },
+    { title: t('admin.users.stats.unverified'), value: unverified, icon: 'warning' },
   ]
 
   return (
     <div className="max-w-7xl mx-auto space-y-5 platform-enter">
       <div>
-        <h2 className="text-xl font-semibold text-zinc-900">Usuarios</h2>
-        <p className="text-sm text-zinc-500 mt-0.5">Administra accesos y perfiles de la plataforma.</p>
+        <h2 className="text-xl font-semibold text-zinc-900">{t('admin.users.title')}</h2>
+        <p className="text-sm text-zinc-500 mt-0.5">{t('admin.users.subtitle')}</p>
       </div>
 
       {/* Metrics */}
@@ -107,13 +109,13 @@ export default function AdminUsers() {
         <div className="p-4 border-b border-zinc-100 flex flex-col sm:flex-row gap-3">
           <div className="relative flex-1">
             <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 text-[18px]">search</span>
-            <input type="text" value={search} onChange={e => setSearch(e.target.value)} placeholder="Buscar por nombre o correo..."
+            <input type="text" value={search} onChange={e => setSearch(e.target.value)} placeholder={t('admin.users.searchPlaceholder')}
               className="w-full pl-9 pr-4 py-2 bg-zinc-50 border border-zinc-200 rounded-lg text-sm focus:ring-2 focus:ring-zinc-900/10 focus:border-zinc-400 outline-none transition-all" />
           </div>
           <div className="flex gap-1.5 flex-wrap">
             <button onClick={() => setRoleFilter('')}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${!roleFilter ? 'bg-zinc-900 text-white' : 'bg-zinc-50 text-zinc-600 hover:bg-zinc-100 border border-zinc-200'}`}>
-              Todos
+              {t('common.all')}
             </button>
             {Object.entries(ROLE_CONFIG).map(([key, cfg]) => (
               <button key={key} onClick={() => setRoleFilter(roleFilter === key ? '' : key)}
@@ -129,18 +131,18 @@ export default function AdminUsers() {
         ) : users.length === 0 ? (
           <div className="text-center py-16">
             <span className="material-symbols-outlined text-3xl text-zinc-300">person_off</span>
-            <p className="text-sm text-zinc-500 mt-2">No se encontraron usuarios</p>
+            <p className="text-sm text-zinc-500 mt-2">{t('admin.users.noUsers')}</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left min-w-[650px]">
               <thead>
                 <tr className="bg-zinc-50 text-[11px] font-medium text-zinc-500 uppercase tracking-wider border-b border-zinc-100">
-                  <th className="px-5 py-3">Usuario</th>
-                  <th className="px-5 py-3">Rol</th>
-                  <th className="px-5 py-3">Estado</th>
-                  <th className="px-5 py-3">Registro</th>
-                  <th className="px-5 py-3 text-right">Acciones</th>
+                  <th className="px-5 py-3">{t('admin.users.table.user')}</th>
+                  <th className="px-5 py-3">{t('admin.users.table.role')}</th>
+                  <th className="px-5 py-3">{t('admin.users.table.status')}</th>
+                  <th className="px-5 py-3">{t('admin.users.table.registered')}</th>
+                  <th className="px-5 py-3 text-right">{t('admin.users.table.actions')}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-zinc-100">
@@ -170,19 +172,19 @@ export default function AdminUsers() {
                         {user.isVerified ? (
                           <span className="inline-flex items-center gap-1 text-emerald-600 text-xs">
                             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                            Verificado
+                            {t('admin.users.verified')}
                           </span>
                         ) : (
                           <span className="inline-flex items-center gap-1 text-amber-600 text-xs">
                             <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-                            Pendiente
+                            {t('admin.users.unverified')}
                           </span>
                         )}
                       </td>
                       <td className="px-5 py-3 text-sm text-zinc-500">{new Date(user.createdAt).toLocaleDateString('es-PE', { day: '2-digit', month: 'short', year: 'numeric' })}</td>
                       <td className="px-5 py-3 text-right">
                         <div className="flex justify-end gap-1 opacity-60 group-hover:opacity-100 transition-opacity">
-                          <button onClick={() => openEdit(user)} title="Editar"
+                          <button onClick={() => openEdit(user)} title={t('common.edit')}
                             className="p-1.5 rounded-md hover:bg-zinc-100 text-zinc-400 hover:text-zinc-700 transition-colors">
                             <span className="material-symbols-outlined text-[18px]">edit</span>
                           </button>
@@ -198,7 +200,7 @@ export default function AdminUsers() {
 
         <div className="px-5 py-3 border-t border-zinc-100 flex flex-col sm:flex-row justify-between items-center gap-3">
           <span className="text-xs text-zinc-500">
-            Mostrando <span className="font-medium">{Math.min((page - 1) * ITEMS_PER_PAGE + 1, total)}-{Math.min(page * ITEMS_PER_PAGE, total)}</span> de <span className="font-medium">{total}</span> usuarios
+            {t('admin.pagination.showing')} <span className="font-medium">{Math.min((page - 1) * ITEMS_PER_PAGE + 1, total)}-{Math.min(page * ITEMS_PER_PAGE, total)}</span> {t('admin.pagination.of')} <span className="font-medium">{total}</span> {t('admin.pagination.users')}
           </span>
           <Pagination page={page} totalPages={totalPages} onPageChange={p => setPage(p)} />
         </div>
@@ -210,12 +212,12 @@ export default function AdminUsers() {
           <div className="absolute inset-0 bg-zinc-900/40 backdrop-blur-sm transition-opacity" onClick={() => setEditUser(null)} />
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden relative z-10 transform transition-all animate-in fade-in zoom-in-95 duration-200">
             <div className="px-6 py-5 border-b border-zinc-100 flex justify-between items-center bg-zinc-50/50">
-              <h3 className="text-lg font-semibold text-zinc-900">Editar Usuario</h3>
+              <h3 className="text-lg font-semibold text-zinc-900">{t('admin.users.editTitle')}</h3>
               <button onClick={() => setEditUser(null)} className="p-2 hover:bg-zinc-100 rounded-full transition-colors -mr-2">
                 <span className="material-symbols-outlined text-zinc-400 text-[20px]">close</span>
               </button>
             </div>
-            
+
             <div className="p-6 space-y-4">
               <div className="flex items-center gap-4 p-4 bg-zinc-50 border border-zinc-100 rounded-xl">
                 <div className="w-12 h-12 rounded-full bg-white ring-1 ring-zinc-200 flex items-center justify-center text-zinc-600 font-bold text-lg shadow-sm">
@@ -226,65 +228,65 @@ export default function AdminUsers() {
                   <p className="text-xs text-zinc-500 mt-0.5 font-medium">{editUser.email}</p>
                 </div>
               </div>
-              
+
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[11px] font-bold text-zinc-600 uppercase tracking-widest mb-1.5">Nombre</label>
+                  <label className="block text-[11px] font-bold text-zinc-600 uppercase tracking-widest mb-1.5">{t('admin.users.firstName')}</label>
                   <input type="text" value={editForm.firstName} onChange={e => setEditForm({ ...editForm, firstName: e.target.value })}
                     className="w-full px-4 py-2.5 bg-white border border-zinc-200 rounded-xl text-sm focus:ring-2 focus:ring-zinc-900/10 focus:border-zinc-400 outline-none transition-all" />
                 </div>
                 <div>
-                  <label className="block text-[11px] font-bold text-zinc-600 uppercase tracking-widest mb-1.5">Apellido</label>
+                  <label className="block text-[11px] font-bold text-zinc-600 uppercase tracking-widest mb-1.5">{t('admin.users.lastName')}</label>
                   <input type="text" value={editForm.lastName} onChange={e => setEditForm({ ...editForm, lastName: e.target.value })}
                     className="w-full px-4 py-2.5 bg-white border border-zinc-200 rounded-xl text-sm focus:ring-2 focus:ring-zinc-900/10 focus:border-zinc-400 outline-none transition-all" />
                 </div>
               </div>
-              
+
               <div>
-                <label className="block text-[11px] font-bold text-zinc-600 uppercase tracking-widest mb-1.5">Email</label>
+                <label className="block text-[11px] font-bold text-zinc-600 uppercase tracking-widest mb-1.5">{t('admin.users.email')}</label>
                 <input type="email" value={editForm.email} onChange={e => setEditForm({ ...editForm, email: e.target.value })}
                   className="w-full px-4 py-2.5 bg-white border border-zinc-200 rounded-xl text-sm focus:ring-2 focus:ring-zinc-900/10 focus:border-zinc-400 outline-none transition-all" />
               </div>
-              
+
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[11px] font-bold text-zinc-600 uppercase tracking-widest mb-1.5">Teléfono</label>
+                  <label className="block text-[11px] font-bold text-zinc-600 uppercase tracking-widest mb-1.5">{t('admin.users.phone')}</label>
                   <input type="tel" value={editForm.phone} onChange={e => setEditForm({ ...editForm, phone: e.target.value })} placeholder="+51 999 999 999"
                     className="w-full px-4 py-2.5 bg-white border border-zinc-200 rounded-xl text-sm focus:ring-2 focus:ring-zinc-900/10 focus:border-zinc-400 outline-none transition-all leading-normal" />
                 </div>
                 <div>
-                  <label className="block text-[11px] font-bold text-zinc-600 uppercase tracking-widest mb-1.5">Rol</label>
+                  <label className="block text-[11px] font-bold text-zinc-600 uppercase tracking-widest mb-1.5">{t('admin.users.role')}</label>
                   <div className="relative border border-zinc-200 rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-zinc-900/10 focus-within:border-zinc-400 transition-all">
                     <select value={editForm.role} onChange={e => setEditForm({ ...editForm, role: e.target.value })}
                       className="w-full px-4 py-2.5 bg-white text-sm appearance-none outline-none text-zinc-900 cursor-pointer">
-                      <option value="customer">Cliente</option>
-                      <option value="agent">Agente</option>
-                      <option value="admin">Admin</option>
-                      <option value="super_admin">Super Admin</option>
+                      <option value="customer">{t('common.roles.customer')}</option>
+                      <option value="agent">{t('common.roles.agent')}</option>
+                      <option value="admin">{t('common.roles.admin')}</option>
+                      <option value="super_admin">{t('common.roles.super_admin')}</option>
                     </select>
                     <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none text-[18px]">expand_content</span>
                   </div>
                 </div>
               </div>
-              
+
               <label className="flex items-center gap-3 p-3 pt-2 mt-2 cursor-pointer hover:bg-emerald-50/50 rounded-xl transition-colors border border-transparent hover:border-emerald-100 group">
                 <input type="checkbox" checked={editForm.isVerified} onChange={e => setEditForm({ ...editForm, isVerified: e.target.checked })}
                   className="w-5 h-5 rounded border-zinc-300 text-emerald-500 focus:ring-emerald-500/20 transition-all cursor-pointer" />
                 <div>
-                  <span className="text-sm font-semibold text-zinc-800 group-hover:text-emerald-800 transition-colors">Usuario Verificado</span>
-                  <span className="text-[11px] text-zinc-500 block leading-tight font-medium">Permitir acceso pleno a las funciones.</span>
+                  <span className="text-sm font-semibold text-zinc-800 group-hover:text-emerald-800 transition-colors">{t('admin.users.isVerified')}</span>
+                  <span className="text-[11px] text-zinc-500 block leading-tight font-medium">{t('admin.users.isVerifiedDesc')}</span>
                 </div>
               </label>
             </div>
-            
+
             <div className="px-6 py-4 border-t border-zinc-100 flex justify-end gap-3 bg-zinc-50/50">
               <button onClick={() => setEditUser(null)} className="px-4 py-2 bg-white border border-zinc-200 text-sm font-medium text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 rounded-xl transition-colors shadow-sm">
-                Cancelar
+                {t('common.cancel')}
               </button>
               <button onClick={handleSaveUser} disabled={saving}
                 className="px-6 py-2 bg-zinc-900 text-white rounded-xl text-sm font-semibold hover:bg-zinc-800 hover:-translate-y-0.5 shadow-md hover:shadow-lg transition-all disabled:opacity-50 disabled:translate-y-0 disabled:shadow-none flex items-center gap-2">
                 {saving && <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />}
-                {saving ? 'Guardando...' : 'Guardar Cambios'}
+                {saving ? t('common.saving') : t('admin.users.saveChanges')}
               </button>
             </div>
           </div>

@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../../../core/contexts/AuthContext'
 import { getDashboardPath } from '../../../core/utils/roles'
 import { useFieldAvailability } from '../../../core/hooks/useFieldAvailability'
+import { useTranslation } from 'react-i18next'
 
 export default function LoginPage() {
   const [isSignUp, setIsSignUp] = useState(false)
@@ -18,6 +19,7 @@ export default function LoginPage() {
   const { login, register } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
+  const { t } = useTranslation()
 
   const availabilityFields = useMemo(() => (
     isSignUp ? { email, phone, whatsapp: phone } : {}
@@ -29,14 +31,13 @@ export default function LoginPage() {
     e.preventDefault()
     setError('')
 
-    // Validations
-    if (!email.trim()) return setError('El correo electrónico es obligatorio.')
-    if (!/\S+@\S+\.\S+/.test(email)) return setError('Ingresa un correo electrónico válido.')
-    if (!password) return setError('La contraseña es obligatoria.')
-    if (password.length < 6) return setError('La contraseña debe tener al menos 6 caracteres.')
+    if (!email.trim()) return setError(t('auth.errors.emailRequired'))
+    if (!/\S+@\S+\.\S+/.test(email)) return setError(t('auth.errors.emailInvalid'))
+    if (!password) return setError(t('auth.errors.passwordRequired'))
+    if (password.length < 6) return setError(t('auth.errors.passwordLength'))
     if (isSignUp) {
-      if (!firstName.trim()) return setError('El nombre es obligatorio.')
-      if (!lastName.trim()) return setError('El apellido es obligatorio.')
+      if (!firstName.trim()) return setError(t('auth.errors.firstNameRequired'))
+      if (!lastName.trim()) return setError(t('auth.errors.lastNameRequired'))
     }
 
     setLoading(true)
@@ -52,17 +53,17 @@ export default function LoginPage() {
       } else {
         loggedUser = await login(email, password)
       }
-      
+
       const searchParams = new URLSearchParams(location.search)
       const redirectTo = searchParams.get('redirect')
-      
+
       if (redirectTo) {
         navigate(redirectTo, { replace: true })
       } else {
         navigate(getDashboardPath(loggedUser?.role), { replace: true })
       }
     } catch (err) {
-      setError(err.message || 'Error al procesar tu solicitud')
+      setError(err.message || t('auth.errors.generic'))
     } finally {
       setLoading(false)
     }
@@ -111,7 +112,7 @@ export default function LoginPage() {
             <div className="flex items-center justify-center gap-2 mt-2 lg:mt-4">
               <div className="w-6 lg:w-10 h-px bg-gradient-to-r from-transparent to-white/15" />
               <p className="text-white/30 text-[8px] sm:text-[9px] lg:text-[11px] font-bold uppercase tracking-[0.3em] lg:tracking-[0.4em]">
-                Importaciones Premium desde USA
+                {t('auth.premiumImports')}
               </p>
               <div className="w-6 lg:w-10 h-px bg-gradient-to-l from-transparent to-white/15" />
             </div>
@@ -119,9 +120,9 @@ export default function LoginPage() {
 
           <div className="hidden lg:flex flex-col gap-3 w-full mt-2">
             {[
-              { icon: 'verified', bg: 'rgba(255,107,107,0.1)', color: 'text-secondary', text: 'Productos 100% originales importados desde Estados Unidos' },
-              { icon: 'local_shipping', bg: 'rgba(46,213,115,0.1)', color: 'text-mint', text: 'Seguimiento en tiempo real de puerta a puerta' },
-              { icon: 'support_agent', bg: 'rgba(255,215,0,0.1)', color: 'text-accent-gold', text: 'Red de agentes certificados con atención personalizada' },
+              { icon: 'verified', bg: 'rgba(255,107,107,0.1)', color: 'text-secondary', text: t('auth.features.originals') },
+              { icon: 'local_shipping', bg: 'rgba(46,213,115,0.1)', color: 'text-mint', text: t('auth.features.tracking') },
+              { icon: 'support_agent', bg: 'rgba(255,215,0,0.1)', color: 'text-accent-gold', text: t('auth.features.agents') },
             ].map((f, i) => (
               <div key={i} className="flex items-center gap-4 text-left bg-white/[0.03] backdrop-blur-sm border border-white/[0.05] rounded-xl px-5 py-3.5 hover:bg-white/[0.06] transition-all duration-300 group">
                 <div
@@ -141,12 +142,10 @@ export default function LoginPage() {
         <div className="w-full max-w-[420px] space-y-5 sm:space-y-6">
           <div className="text-center lg:text-left">
             <h2 className="font-headline text-xl sm:text-2xl lg:text-3xl font-bold text-on-background leading-tight">
-              {isSignUp ? 'Crea tu cuenta' : 'Bienvenido de vuelta'}
+              {isSignUp ? t('auth.createAccount') : t('auth.welcome')}
             </h2>
             <p className="mt-1 text-text-muted text-xs sm:text-sm">
-              {isSignUp
-                ? 'Regístrate para acceder a productos exclusivos'
-                : 'Ingresa tus credenciales para continuar'}
+              {isSignUp ? t('auth.registerSubtitle') : t('auth.loginSubtitle')}
             </p>
           </div>
 
@@ -158,7 +157,7 @@ export default function LoginPage() {
                 : 'text-text-muted hover:text-primary'
                 }`}
             >
-              Ingresar
+              {t('auth.signIn')}
             </button>
             <button
               onClick={() => { setIsSignUp(true); setError('') }}
@@ -167,7 +166,7 @@ export default function LoginPage() {
                 : 'text-text-muted hover:text-primary'
                 }`}
             >
-              Crear cuenta
+              {t('auth.register')}
             </button>
           </div>
 
@@ -183,7 +182,7 @@ export default function LoginPage() {
               <>
                 <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
                   <div className="space-y-1">
-                    <label className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-text-muted">Nombre</label>
+                    <label className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-text-muted">{t('auth.firstName')}</label>
                     <div className="relative">
                       <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-muted/60 text-[16px] sm:text-[18px]">person</span>
                       <input
@@ -197,7 +196,7 @@ export default function LoginPage() {
                     </div>
                   </div>
                   <div className="space-y-1">
-                    <label className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-text-muted">Apellido</label>
+                    <label className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-text-muted">{t('auth.lastName')}</label>
                     <div className="relative">
                       <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-muted/60 text-[16px] sm:text-[18px]">badge</span>
                       <input
@@ -212,7 +211,7 @@ export default function LoginPage() {
                   </div>
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-text-muted">Teléfono / WhatsApp</label>
+                  <label className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-text-muted">{t('auth.phone')}</label>
                   <div className="relative">
                     <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-muted/60 text-[16px] sm:text-[18px]">phone</span>
                     <input
@@ -236,7 +235,7 @@ export default function LoginPage() {
 
             <div className="space-y-1">
               <label className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-text-muted">
-                Correo electrónico
+                {t('auth.email')}
               </label>
               <div className="relative">
                 <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-muted/60 text-[16px] sm:text-[18px]">mail</span>
@@ -261,7 +260,7 @@ export default function LoginPage() {
 
             <div className="space-y-1">
               <label className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-text-muted">
-                Contraseña
+                {t('auth.password')}
               </label>
               <div className="relative">
                 <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-muted/60 text-[16px] sm:text-[18px]">lock</span>
@@ -290,13 +289,13 @@ export default function LoginPage() {
               <div className="flex items-center justify-between">
                 <label className="flex items-center gap-1.5 cursor-pointer">
                   <input type="checkbox" className="w-3.5 h-3.5 rounded border-outline-variant accent-secondary" />
-                  <span className="text-[10px] sm:text-xs text-text-muted">Recordarme</span>
+                  <span className="text-[10px] sm:text-xs text-text-muted">{t('auth.rememberMe')}</span>
                 </label>
                 <Link
                   to="/forgot-password"
                   className="text-[10px] sm:text-xs font-semibold text-secondary hover:text-secondary/80 transition-colors"
                 >
-                  ¿Olvidaste tu contraseña?
+                  {t('auth.forgotPassword')}
                 </Link>
               </div>
             )}
@@ -311,20 +310,18 @@ export default function LoginPage() {
                   {isSignUp ? 'person_add' : 'login'}
                 </span>
                 {loading
-                  ? (isSignUp ? 'Creando cuenta...' : 'Ingresando...')
-                  : (isSignUp ? 'Crear cuenta' : 'Iniciar sesión')}
+                  ? (isSignUp ? t('auth.creatingAccount') : t('auth.signingIn'))
+                  : (isSignUp ? t('auth.createFree') : t('auth.login'))}
               </>
             </button>
           </form>
 
-          {/* Divider */}
           <div className="flex items-center gap-3">
             <div className="flex-1 h-px bg-outline-variant/25" />
-            <span className="text-[10px] sm:text-xs text-text-muted font-medium whitespace-nowrap">o continúa con</span>
+            <span className="text-[10px] sm:text-xs text-text-muted font-medium whitespace-nowrap">{t('auth.orContinueWith')}</span>
             <div className="flex-1 h-px bg-outline-variant/25" />
           </div>
 
-          {/* Social login */}
           <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
             <button className="flex items-center justify-center gap-2 py-2.5 sm:py-3 bg-surface border border-outline-variant/25 rounded-xl hover:bg-surface-container-low hover:border-outline-variant/40 transition-all text-xs sm:text-sm font-medium text-on-background">
               <svg className="w-4 h-4" viewBox="0 0 24 24">
@@ -343,26 +340,24 @@ export default function LoginPage() {
             </button>
           </div>
 
-          {/* Toggle link */}
           <p className="text-center text-xs sm:text-sm text-text-muted">
-            {isSignUp ? '¿Ya tienes cuenta?' : '¿No tienes cuenta?'}{' '}
+            {isSignUp ? t('auth.alreadyHaveAccount') : t('auth.dontHaveAccount')}{' '}
             <button
               type="button"
               onClick={() => { setIsSignUp(!isSignUp); setError('') }}
               className="font-semibold text-secondary hover:text-secondary/80 transition-colors"
             >
-              {isSignUp ? 'Inicia sesión' : 'Crear cuenta gratis'}
+              {isSignUp ? t('auth.signIn') : t('auth.createFree')}
             </button>
           </p>
 
-          {/* Volver al inicio */}
           <div className="pt-2 border-t border-outline-variant/15">
             <Link
               to="/"
               className="w-full flex items-center justify-center gap-1.5 text-text-muted hover:text-primary font-medium text-[10px] sm:text-xs py-1.5 transition-colors"
             >
               <span className="material-symbols-outlined text-sm">arrow_back</span>
-              Volver al inicio
+              {t('auth.backToHome')}
             </Link>
           </div>
         </div>

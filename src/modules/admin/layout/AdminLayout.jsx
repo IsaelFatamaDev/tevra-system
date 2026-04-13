@@ -1,27 +1,30 @@
 import { useState } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import AdminSidebar from './AdminSidebar'
 import { useAuth } from '../../../core/contexts/AuthContext'
-
-const pageMeta = {
-  '/admin': { title: 'Dashboard', icon: 'space_dashboard' },
-  '/admin/users': { title: 'Usuarios', icon: 'group' },
-  '/admin/agents': { title: 'Agentes', icon: 'handshake' },
-  '/admin/products': { title: 'Productos', icon: 'inventory_2' },
-  '/admin/categories': { title: 'Categorías', icon: 'category' },
-  '/admin/brands': { title: 'Marcas', icon: 'storefront' },
-  '/admin/orders': { title: 'Pedidos', icon: 'receipt_long' },
-  '/admin/reviews': { title: 'Reseñas', icon: 'star_rate' },
-  '/admin/reports': { title: 'Analítica', icon: 'query_stats' },
-  '/admin/communications': { title: 'Campañas', icon: 'campaign' },
-  '/admin/settings': { title: 'Configuración', icon: 'tune' },
-}
 
 export default function AdminLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const { user, logout } = useAuth()
   const location = useLocation()
   const navigate = useNavigate()
+  const { t } = useTranslation()
+
+  const pageMeta = {
+    '/admin': { title: t('admin.sidebar.nav.dashboard'), icon: 'space_dashboard' },
+    '/admin/users': { title: t('admin.sidebar.nav.users'), icon: 'group' },
+    '/admin/agents': { title: t('admin.sidebar.nav.agents'), icon: 'handshake' },
+    '/admin/products': { title: t('admin.sidebar.nav.products'), icon: 'inventory_2' },
+    '/admin/categories': { title: t('admin.sidebar.nav.categories'), icon: 'category' },
+    '/admin/brands': { title: t('admin.sidebar.nav.brands'), icon: 'storefront' },
+    '/admin/orders': { title: t('admin.sidebar.nav.orders'), icon: 'receipt_long' },
+    '/admin/reviews': { title: t('admin.sidebar.nav.reviews'), icon: 'star_rate' },
+    '/admin/reports': { title: t('admin.sidebar.nav.analytics'), icon: 'query_stats' },
+    '/admin/communications': { title: t('admin.sidebar.nav.campaigns'), icon: 'campaign' },
+    '/admin/settings': { title: t('admin.sidebar.nav.settings'), icon: 'tune' },
+  }
+
   const meta = pageMeta[location.pathname] || { title: '', icon: 'home' }
 
   const handleLogout = () => {
@@ -34,10 +37,8 @@ export default function AdminLayout() {
       <AdminSidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
       <div className="lg:pl-60">
-        {/* Header */}
         <header className="sticky top-0 z-30 bg-white border-b border-zinc-200">
           <div className="h-14 flex items-center justify-between px-4 lg:px-6">
-            {/* Left: hamburger + breadcrumb */}
             <div className="flex items-center gap-3">
               <button
                 onClick={() => setSidebarOpen(true)}
@@ -53,7 +54,6 @@ export default function AdminLayout() {
               )}
             </div>
 
-            {/* Right: notifications + user */}
             <div className="flex items-center gap-1">
               <button className="relative p-2 rounded-lg text-zinc-500 hover:bg-zinc-100 hover:text-zinc-700 transition-colors">
                 <span className="material-symbols-outlined text-[20px]">notifications</span>
@@ -79,7 +79,7 @@ export default function AdminLayout() {
               <button
                 onClick={handleLogout}
                 className="ml-1 p-2 rounded-lg text-zinc-400 hover:text-red-500 hover:bg-red-50 transition-colors"
-                title="Cerrar sesión"
+                title={t('common.logout')}
               >
                 <span className="material-symbols-outlined text-[18px]">logout</span>
               </button>

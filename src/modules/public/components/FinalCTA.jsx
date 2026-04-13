@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import useScrollReveal from '../../../core/hooks/useScrollReveal'
 
 export default function FinalCTA() {
   const { ref, isVisible } = useScrollReveal(0.2)
+  const { t } = useTranslation()
 
   return (
     <section className="max-w-7xl mx-auto px-8 mb-32">
@@ -12,21 +14,21 @@ export default function FinalCTA() {
 
         <div className="relative z-10 max-w-3xl mx-auto">
           <h2 className="font-headline text-4xl md:text-6xl font-black text-white mb-8 leading-tight tracking-tighter">
-            Listo para traer tus deseos de USA?
+            {t('home.cta.title')}
           </h2>
           <p className="text-white/90 text-xl mb-12 font-medium">
-            Unite a los miles de usuarios que ya ahorran comprando original sin salir de casa.
+            {t('home.cta.subtitle')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               to="/catalogo"
               className="bg-primary text-white px-12 py-6 rounded-2xl font-headline font-extrabold text-xl flex items-center justify-center gap-3 hover:scale-105 transition-all duration-300 shadow-xl"
             >
-              Explorar Catalogo
+              {t('home.cta.exploreCatalog')}
               <span className="material-symbols-outlined">arrow_forward</span>
             </Link>
             <button className="bg-white/20 backdrop-blur-md text-white px-12 py-6 rounded-2xl font-headline font-extrabold text-xl hover:bg-white/30 transition-all duration-300">
-              Hablar con un Agente
+              {t('home.cta.talkToAgent')}
             </button>
           </div>
         </div>

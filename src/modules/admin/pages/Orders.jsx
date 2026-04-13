@@ -1,22 +1,24 @@
 import { useState, useEffect, useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
 import ordersService from '../services/orders.service'
 import Pagination from '../../../core/components/Pagination'
 import generateBoleta from '../../../core/utils/generateBoleta'
 
 const ITEMS_PER_PAGE = 10
 
-const STATUS_CONFIG = {
-  delivered: { bg: 'bg-emerald-50', text: 'text-emerald-700', dot: 'bg-emerald-500', label: 'Entregado' },
-  in_transit: { bg: 'bg-blue-50', text: 'text-blue-700', dot: 'bg-blue-500', label: 'En Tránsito' },
-  purchased_in_usa: { bg: 'bg-indigo-50', text: 'text-indigo-700', dot: 'bg-indigo-500', label: 'Comprado USA' },
-  confirmed: { bg: 'bg-amber-50', text: 'text-amber-700', dot: 'bg-amber-500', label: 'Confirmado' },
-  pending: { bg: 'bg-zinc-100', text: 'text-zinc-600', dot: 'bg-zinc-400', label: 'Pendiente' },
-  in_customs: { bg: 'bg-orange-50', text: 'text-orange-700', dot: 'bg-orange-500', label: 'En Aduana' },
-  ready_for_delivery: { bg: 'bg-violet-50', text: 'text-violet-700', dot: 'bg-violet-500', label: 'Listo Entrega' },
-  cancelled: { bg: 'bg-red-50', text: 'text-red-700', dot: 'bg-red-500', label: 'Cancelado' },
-}
-
 export default function AdminOrders() {
+  const { t } = useTranslation()
+
+  const STATUS_CONFIG = {
+    delivered: { bg: 'bg-emerald-50', text: 'text-emerald-700', dot: 'bg-emerald-500', label: t('common.status.delivered') },
+    in_transit: { bg: 'bg-blue-50', text: 'text-blue-700', dot: 'bg-blue-500', label: t('common.status.in_transit') },
+    purchased_in_usa: { bg: 'bg-indigo-50', text: 'text-indigo-700', dot: 'bg-indigo-500', label: t('common.status.purchased_in_usa') },
+    confirmed: { bg: 'bg-amber-50', text: 'text-amber-700', dot: 'bg-amber-500', label: t('common.status.confirmed') },
+    pending: { bg: 'bg-zinc-100', text: 'text-zinc-600', dot: 'bg-zinc-400', label: t('common.status.pending') },
+    in_customs: { bg: 'bg-orange-50', text: 'text-orange-700', dot: 'bg-orange-500', label: t('common.status.in_customs') },
+    ready_for_delivery: { bg: 'bg-violet-50', text: 'text-violet-700', dot: 'bg-violet-500', label: t('common.status.ready_for_delivery') },
+    cancelled: { bg: 'bg-red-50', text: 'text-red-700', dot: 'bg-red-500', label: t('common.status.cancelled') },
+  }
   const [orders, setOrders] = useState([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
@@ -42,8 +44,8 @@ export default function AdminOrders() {
 
   useEffect(() => {
     setPage(1)
-    const t = setTimeout(fetchOrders, search ? 350 : 0)
-    return () => clearTimeout(t)
+    const timer = setTimeout(fetchOrders, search ? 350 : 0)
+    return () => clearTimeout(timer)
   }, [search, statusFilter])
 
   const totalPages = Math.ceil(total / ITEMS_PER_PAGE)
@@ -63,12 +65,12 @@ export default function AdminOrders() {
   const totalRevenue = orders.reduce((s, o) => s + Number(o.total || 0), 0)
 
   const handleExportCSV = () => {
-    const headers = ['Pedido', 'Cliente', 'Email', 'Agente', 'Fecha', 'Estado', 'Total']
+    const headers = [t('admin.table.order'), t('admin.table.customer'), 'Email', t('admin.table.agent'), t('admin.table.date'), t('admin.table.status'), t('admin.table.total')]
     const rows = orders.map(o => [
       o.orderNumber || '',
       `${o.customer?.firstName || ''} ${o.customer?.lastName || ''}`.trim(),
       o.customer?.email || '',
-      o.agent ? `${o.agent.user?.firstName || ''} ${o.agent.user?.lastName || ''}`.trim() : 'Directo',
+      o.agent ? `${o.agent.user?.firstName || ''} ${o.agent.user?.lastName || ''}`.trim() : t('admin.orders.direct'),
       new Date(o.createdAt).toLocaleDateString(),
       o.status || '',
       Number(o.total || 0).toFixed(2),
@@ -83,10 +85,10 @@ export default function AdminOrders() {
   }
 
   const metrics = [
-    { label: 'Total Pedidos', value: orders.length, icon: 'shopping_cart' },
-    { label: 'Ingresos', value: `$${totalRevenue.toLocaleString('en-US', { minimumFractionDigits: 2 })}`, icon: 'payments' },
-    { label: 'Entregados', value: orders.filter(o => o.status === 'delivered').length, icon: 'check_circle' },
-    { label: 'En Camino', value: orders.filter(o => ['in_transit', 'in_customs', 'purchased_in_usa'].includes(o.status)).length, icon: 'local_shipping' },
+    { label: t('admin.orders.totalOrders'), value: orders.length, icon: 'shopping_cart' },
+    { label: t('admin.orders.revenue'), value: `$${totalRevenue.toLocaleString('en-US', { minimumFractionDigits: 2 })}`, icon: 'payments' },
+    { label: t('admin.orders.delivered'), value: orders.filter(o => o.status === 'delivered').length, icon: 'check_circle' },
+    { label: t('admin.orders.inTransit'), value: orders.filter(o => ['in_transit', 'in_customs', 'purchased_in_usa'].includes(o.status)).length, icon: 'local_shipping' },
   ]
 
   return (
@@ -94,11 +96,11 @@ export default function AdminOrders() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4">
         <div>
-          <h2 className="text-xl font-semibold text-zinc-900">Gestión de Pedidos</h2>
-          <p className="text-sm text-zinc-500 mt-0.5">Monitorea el ciclo de vida de los envíos.</p>
+          <h2 className="text-xl font-semibold text-zinc-900">{t('admin.orders.title')}</h2>
+          <p className="text-sm text-zinc-500 mt-0.5">{t('admin.orders.subtitle')}</p>
         </div>
         <button onClick={handleExportCSV} className="bg-zinc-900 hover:bg-zinc-800 text-white px-4 py-2 rounded-lg font-medium flex items-center gap-1.5 transition-colors text-sm">
-          <span className="material-symbols-outlined text-[16px]">download</span> Exportar
+          <span className="material-symbols-outlined text-[16px]">download</span> {t('common.export')}
         </button>
       </div>
 
@@ -122,13 +124,13 @@ export default function AdminOrders() {
         <div className="p-4 border-b border-zinc-100 flex flex-col sm:flex-row gap-3">
           <div className="relative flex-1">
             <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 text-[18px]">search</span>
-            <input type="text" value={search} onChange={e => setSearch(e.target.value)} placeholder="Buscar por # pedido o cliente..."
+            <input type="text" value={search} onChange={e => setSearch(e.target.value)} placeholder={t('admin.orders.searchPlaceholder')}
               className="w-full pl-9 pr-4 py-2 bg-zinc-50 border border-zinc-200 rounded-lg text-sm focus:ring-2 focus:ring-zinc-900/10 focus:border-zinc-400 outline-none transition-all" />
           </div>
           <div className="flex gap-1.5 flex-wrap">
             <button onClick={() => setStatusFilter('')}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${!statusFilter ? 'bg-zinc-900 text-white' : 'bg-zinc-50 text-zinc-600 hover:bg-zinc-100 border border-zinc-200'}`}>
-              Todos
+              {t('common.all')}
             </button>
             {Object.entries(STATUS_CONFIG).map(([key, cfg]) => (
               <button key={key} onClick={() => setStatusFilter(statusFilter === key ? '' : key)}
@@ -144,19 +146,19 @@ export default function AdminOrders() {
         ) : orders.length === 0 ? (
           <div className="text-center py-16">
             <span className="material-symbols-outlined text-3xl text-zinc-300">inbox</span>
-            <p className="text-sm text-zinc-500 mt-2">No se encontraron pedidos</p>
+            <p className="text-sm text-zinc-500 mt-2">{t('admin.orders.noOrdersFound')}</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left min-w-[700px]">
               <thead>
                 <tr className="bg-zinc-50 text-[11px] font-medium text-zinc-500 uppercase tracking-wider border-b border-zinc-100">
-                  <th className="px-5 py-3">Pedido</th>
-                  <th className="px-5 py-3">Cliente</th>
-                  <th className="px-5 py-3">Fecha</th>
-                  <th className="px-5 py-3">Total</th>
-                  <th className="px-5 py-3">Estado</th>
-                  <th className="px-5 py-3 text-right">Acciones</th>
+                  <th className="px-5 py-3">{t('admin.table.order')}</th>
+                  <th className="px-5 py-3">{t('admin.table.customer')}</th>
+                  <th className="px-5 py-3">{t('admin.table.date')}</th>
+                  <th className="px-5 py-3">{t('admin.table.total')}</th>
+                  <th className="px-5 py-3">{t('admin.table.status')}</th>
+                  <th className="px-5 py-3 text-right">{t('admin.table.actions')}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-zinc-100">
@@ -180,11 +182,11 @@ export default function AdminOrders() {
                       </td>
                       <td className="px-5 py-3 text-right">
                         <div className="flex justify-end gap-1 opacity-60 group-hover:opacity-100 transition-opacity">
-                          <button onClick={() => setViewOrder(ord)} title="Ver detalle"
+                          <button onClick={() => setViewOrder(ord)} title={t('admin.orders.orderDetail')}
                             className="p-1.5 rounded-md hover:bg-zinc-100 text-zinc-400 hover:text-zinc-700 transition-colors">
                             <span className="material-symbols-outlined text-[18px]">visibility</span>
                           </button>
-                          <button onClick={() => { setStatusModal(ord); setNewStatus(ord.status) }} title="Cambiar estado"
+                          <button onClick={() => { setStatusModal(ord); setNewStatus(ord.status) }} title={t('admin.orders.changeStatus')}
                             className="p-1.5 rounded-md hover:bg-zinc-100 text-zinc-400 hover:text-amber-600 transition-colors">
                             <span className="material-symbols-outlined text-[18px]">sync</span>
                           </button>
@@ -200,7 +202,7 @@ export default function AdminOrders() {
 
         <div className="px-5 py-3 border-t border-zinc-100 flex flex-col sm:flex-row justify-between items-center gap-3">
           <span className="text-xs text-zinc-500">
-            Mostrando <span className="font-medium">{Math.min((page - 1) * ITEMS_PER_PAGE + 1, total)}-{Math.min(page * ITEMS_PER_PAGE, total)}</span> de <span className="font-medium">{total}</span> pedidos
+            {t('admin.pagination.showing')} <span className="font-medium">{Math.min((page - 1) * ITEMS_PER_PAGE + 1, total)}-{Math.min(page * ITEMS_PER_PAGE, total)}</span> {t('admin.pagination.of')} <span className="font-medium">{total}</span> {t('admin.pagination.orders')}
           </span>
           <Pagination page={page} totalPages={totalPages} onPageChange={p => setPage(p)} />
         </div>
@@ -213,29 +215,29 @@ export default function AdminOrders() {
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-xl max-h-[85vh] overflow-hidden relative z-10 flex flex-col transform transition-all animate-in fade-in zoom-in-95 duration-200">
             <div className="px-6 py-5 border-b border-zinc-100 flex justify-between items-center bg-zinc-50/50">
               <div>
-                <h3 className="text-lg font-semibold text-zinc-900">Detalle del Pedido</h3>
+                <h3 className="text-lg font-semibold text-zinc-900">{t('admin.orders.orderDetail')}</h3>
                 <p className="text-sm font-mono text-zinc-500 mt-0.5">{viewOrder.orderNumber}</p>
               </div>
               <button onClick={() => setViewOrder(null)} className="p-2 hover:bg-zinc-100 rounded-full transition-colors">
                 <span className="material-symbols-outlined text-zinc-400 text-[20px]">close</span>
               </button>
             </div>
-            
+
             <div className="p-6 overflow-y-auto">
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 text-sm mb-8 bg-zinc-50 p-5 rounded-xl border border-zinc-100">
-                <div><p className="text-[11px] font-medium uppercase tracking-wider text-zinc-500 mb-1">Cliente</p><p className="font-medium text-zinc-900">{viewOrder.customer?.firstName} {viewOrder.customer?.lastName}</p></div>
-                <div><p className="text-[11px] font-medium uppercase tracking-wider text-zinc-500 mb-1">Agente</p><p className="font-medium text-zinc-900">{viewOrder.agent?.firstName || '—'} {viewOrder.agent?.lastName || ''}</p></div>
-                <div><p className="text-[11px] font-medium uppercase tracking-wider text-zinc-500 mb-1">Entrega Est.</p><p className="font-medium text-zinc-900">{viewOrder.estimatedDeliveryDate ? new Date(viewOrder.estimatedDeliveryDate).toLocaleDateString('es-PE') : '—'}</p></div>
-                <div><p className="text-[11px] font-medium uppercase tracking-wider text-zinc-500 mb-1">Subtotal</p><p className="font-medium text-zinc-900">${Number(viewOrder.subtotal || 0).toFixed(2)}</p></div>
-                <div><p className="text-[11px] font-medium uppercase tracking-wider text-zinc-500 mb-1">Envío</p><p className="font-medium text-zinc-900">${Number(viewOrder.shippingCost || 0).toFixed(2)}</p></div>
-                <div><p className="text-[11px] font-medium uppercase tracking-wider text-zinc-500 mb-1">Total</p><p className="font-semibold text-tevra-coral text-lg">${Number(viewOrder.total || 0).toFixed(2)}</p></div>
+                <div><p className="text-[11px] font-medium uppercase tracking-wider text-zinc-500 mb-1">{t('admin.table.customer')}</p><p className="font-medium text-zinc-900">{viewOrder.customer?.firstName} {viewOrder.customer?.lastName}</p></div>
+                <div><p className="text-[11px] font-medium uppercase tracking-wider text-zinc-500 mb-1">{t('admin.table.agent')}</p><p className="font-medium text-zinc-900">{viewOrder.agent?.firstName || '—'} {viewOrder.agent?.lastName || ''}</p></div>
+                <div><p className="text-[11px] font-medium uppercase tracking-wider text-zinc-500 mb-1">{t('admin.orders.estimatedDelivery')}</p><p className="font-medium text-zinc-900">{viewOrder.estimatedDeliveryDate ? new Date(viewOrder.estimatedDeliveryDate).toLocaleDateString('es-PE') : '—'}</p></div>
+                <div><p className="text-[11px] font-medium uppercase tracking-wider text-zinc-500 mb-1">{t('admin.orders.subtotal')}</p><p className="font-medium text-zinc-900">${Number(viewOrder.subtotal || 0).toFixed(2)}</p></div>
+                <div><p className="text-[11px] font-medium uppercase tracking-wider text-zinc-500 mb-1">{t('admin.orders.shipping')}</p><p className="font-medium text-zinc-900">${Number(viewOrder.shippingCost || 0).toFixed(2)}</p></div>
+                <div><p className="text-[11px] font-medium uppercase tracking-wider text-zinc-500 mb-1">{t('admin.orders.total')}</p><p className="font-semibold text-tevra-coral text-lg">${Number(viewOrder.total || 0).toFixed(2)}</p></div>
               </div>
-              
+
               {viewOrder.items?.length > 0 && (
                 <div>
                   <p className="text-sm font-semibold text-zinc-900 mb-3 flex items-center gap-2">
                     <span className="material-symbols-outlined text-zinc-400 text-[18px]">inventory_2</span>
-                    Productos ({viewOrder.items.length})
+                    {t('admin.orders.products')} ({viewOrder.items.length})
                   </p>
                   <div className="space-y-2">
                     {viewOrder.items.map((item, idx) => (
@@ -247,7 +249,7 @@ export default function AdminOrders() {
                         )}
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-medium text-zinc-900 truncate">{item.productName}</p>
-                          <p className="text-xs font-medium text-zinc-500 bg-zinc-100 w-fit px-2 py-0.5 rounded-full mt-1">Cant: {item.quantity}</p>
+                          <p className="text-xs font-medium text-zinc-500 bg-zinc-100 w-fit px-2 py-0.5 rounded-full mt-1">{t('admin.orders.quantity')} {item.quantity}</p>
                         </div>
                         <p className="text-sm font-semibold text-zinc-900">${Number(item.totalPrice || 0).toFixed(2)}</p>
                       </div>
@@ -256,14 +258,14 @@ export default function AdminOrders() {
                 </div>
               )}
             </div>
-            
+
             <div className="px-6 py-4 border-t border-zinc-100 flex justify-end gap-3 bg-zinc-50/50">
               <button onClick={() => setViewOrder(null)} className="px-4 py-2 bg-white border border-zinc-200 text-sm font-medium text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 rounded-xl transition-colors shadow-sm">
-                Cerrar
+                {t('common.close')}
               </button>
               <button onClick={() => generateBoleta(viewOrder)}
                 className="px-5 py-2 text-sm font-semibold text-white bg-zinc-900 hover:bg-zinc-800 rounded-xl shadow-md transition-all flex items-center gap-2">
-                <span className="material-symbols-outlined text-[18px]">receipt_long</span> Generar Boleta
+                <span className="material-symbols-outlined text-[18px]">receipt_long</span> {t('admin.orders.generateReceipt')}
               </button>
             </div>
           </div>
@@ -277,14 +279,14 @@ export default function AdminOrders() {
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden relative z-10 transform transition-all animate-in fade-in zoom-in-95 duration-200">
             <div className="px-6 py-5 border-b border-zinc-100 flex justify-between items-start bg-zinc-50/50">
               <div>
-                <h3 className="text-lg font-semibold text-zinc-900">Cambiar Estado</h3>
+                <h3 className="text-lg font-semibold text-zinc-900">{t('admin.orders.changeStatus')}</h3>
                 <p className="text-sm font-mono text-zinc-500 mt-0.5">{statusModal.orderNumber}</p>
               </div>
               <button onClick={() => setStatusModal(null)} className="p-2 hover:bg-zinc-100 rounded-full transition-colors -mr-2">
                 <span className="material-symbols-outlined text-zinc-400 text-[20px]">close</span>
               </button>
             </div>
-            
+
             <div className="p-6">
               <div className="grid grid-cols-1 gap-2.5">
                 {Object.entries(STATUS_CONFIG).map(([key, cfg]) => (
@@ -296,14 +298,14 @@ export default function AdminOrders() {
                 ))}
               </div>
             </div>
-            
+
             <div className="px-6 py-4 border-t border-zinc-100 flex justify-end gap-3 bg-zinc-50/50">
               <button onClick={() => setStatusModal(null)} className="px-4 py-2 bg-white border border-zinc-200 text-sm font-medium text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 rounded-xl transition-colors shadow-sm">
-                Cancelar
+                {t('common.cancel')}
               </button>
               <button onClick={handleUpdateStatus} disabled={saving || newStatus === statusModal.status}
                 className="px-5 py-2 text-sm font-semibold bg-tevra-coral text-white rounded-xl shadow-md hover:-translate-y-0.5 hover:shadow-lg transition-all disabled:opacity-40 disabled:hover:translate-y-0 disabled:shadow-none">
-                {saving ? 'Guardando...' : 'Actualizar'}
+                {saving ? t('common.saving') : t('common.confirm')}
               </button>
             </div>
           </div>

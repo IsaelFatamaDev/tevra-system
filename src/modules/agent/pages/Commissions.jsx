@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import dashboardService from '../../admin/services/dashboard.service'
 import Pagination from '../../../core/components/Pagination'
 
 const ITEMS_PER_PAGE = 10
 
 export default function AgentCommissions() {
+  const { t } = useTranslation()
   const [commissions, setCommissions] = useState([])
   const [summary, setSummary] = useState({ totalEarned: 0, totalPaid: 0, totalPending: 0, count: 0 })
   const [loading, setLoading] = useState(true)
@@ -31,17 +33,17 @@ export default function AgentCommissions() {
   return (
     <div className="space-y-6 platform-enter">
       <div>
-        <h1 className="font-headline text-2xl font-bold text-on-background">Mis Comisiones</h1>
-        <p className="text-sm text-text-muted mt-1">Resumen y detalle de tus ganancias</p>
+        <h1 className="font-headline text-2xl font-bold text-on-background">{t('agentDash.commissions.title')}</h1>
+        <p className="text-sm text-text-muted mt-1">{t('agentDash.commissions.subtitle')}</p>
       </div>
 
       {/* Summary cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         {[
-          { label: 'Total Ganado', value: `$${Number(summary.totalEarned || 0).toLocaleString()}`, icon: 'account_balance_wallet', color: 'text-emerald-600 bg-emerald-50' },
-          { label: 'Pagado', value: `$${Number(summary.totalPaid || 0).toLocaleString()}`, icon: 'check_circle', color: 'text-blue-600 bg-blue-50' },
-          { label: 'Pendiente', value: `$${Number(summary.totalPending || 0).toLocaleString()}`, icon: 'pending', color: 'text-amber-600 bg-amber-50' },
-          { label: 'Movimientos', value: summary.count || commissions.length, icon: 'receipt', color: 'text-primary bg-primary/10' },
+          { label: t('agentDash.commissions.totalEarned'), value: `$${Number(summary.totalEarned || 0).toLocaleString()}`, icon: 'account_balance_wallet', color: 'text-emerald-600 bg-emerald-50' },
+          { label: t('agentDash.commissions.paid'), value: `$${Number(summary.totalPaid || 0).toLocaleString()}`, icon: 'check_circle', color: 'text-blue-600 bg-blue-50' },
+          { label: t('agentDash.commissions.pending'), value: `$${Number(summary.totalPending || 0).toLocaleString()}`, icon: 'pending', color: 'text-amber-600 bg-amber-50' },
+          { label: t('agentDash.commissions.movements'), value: summary.count || commissions.length, icon: 'receipt', color: 'text-primary bg-primary/10' },
         ].map(s => (
           <div key={s.label} className="bg-white rounded-2xl p-5 border border-outline-variant/15 shadow-[0_1px_3px_rgba(0,0,0,0.04)] stat-card">
             <div className={`w-10 h-10 rounded-xl ${s.color} flex items-center justify-center mb-3`}>
@@ -55,10 +57,10 @@ export default function AgentCommissions() {
 
       <div className="flex gap-2 flex-wrap">
         {[
-          { value: 'all', label: 'Todas' },
-          { value: 'pending', label: 'Pendientes' },
-          { value: 'approved', label: 'Aprobadas' },
-          { value: 'paid', label: 'Pagadas' },
+          { value: 'all', label: t('agentDash.commissions.filterAll') },
+          { value: 'pending', label: t('agentDash.commissions.filterPending') },
+          { value: 'approved', label: t('agentDash.commissions.filterApproved') },
+          { value: 'paid', label: t('agentDash.commissions.filterPaid') },
         ].map(f => (
           <button
             key={f.value}
@@ -77,8 +79,8 @@ export default function AgentCommissions() {
       ) : filtered.length === 0 ? (
         <div className="bg-white rounded-2xl shadow-sm border border-outline-variant/30 p-12 text-center">
           <span className="material-symbols-outlined text-5xl text-outline-variant block mb-3">account_balance_wallet</span>
-          <h3 className="font-headline text-lg font-bold text-on-background mb-1">Sin comisiones</h3>
-          <p className="text-sm text-text-muted">Aún no tienes comisiones registradas</p>
+          <h3 className="font-headline text-lg font-bold text-on-background mb-1">{t('agentDash.commissions.noCommissions')}</h3>
+          <p className="text-sm text-text-muted">{t('agentDash.commissions.noCommissionsDesc')}</p>
         </div>
       ) : (
         <div className="bg-white rounded-2xl border border-outline-variant/30 shadow-sm overflow-hidden">
@@ -86,12 +88,12 @@ export default function AgentCommissions() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="text-text-muted text-xs bg-surface-container-low">
-                  <th className="text-left px-5 py-3 font-medium">Fecha</th>
-                  <th className="text-left px-3 py-3 font-medium">Pedido</th>
-                  <th className="text-right px-3 py-3 font-medium">Monto</th>
-                  <th className="text-right px-3 py-3 font-medium">Tasa</th>
-                  <th className="text-center px-3 py-3 font-medium">Estado</th>
-                  <th className="text-center px-3 py-3 font-medium">Detalle</th>
+                  <th className="text-left px-5 py-3 font-medium">{t('agentDash.commissions.thDate')}</th>
+                  <th className="text-left px-3 py-3 font-medium">{t('agentDash.commissions.thOrder')}</th>
+                  <th className="text-right px-3 py-3 font-medium">{t('agentDash.commissions.thAmount')}</th>
+                  <th className="text-right px-3 py-3 font-medium">{t('agentDash.commissions.thRate')}</th>
+                  <th className="text-center px-3 py-3 font-medium">{t('agentDash.commissions.thState')}</th>
+                  <th className="text-center px-3 py-3 font-medium">{t('agentDash.commissions.thDetail')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -107,7 +109,7 @@ export default function AgentCommissions() {
                           c.status === 'cancelled' ? 'bg-red-50 text-red-700' :
                             'bg-amber-50 text-amber-700'
                         }`}>
-                        {c.status === 'paid' ? 'Pagada' : c.status === 'approved' ? 'Aprobada' : c.status === 'cancelled' ? 'Cancelada' : 'Pendiente'}
+                        {t(`common.status.${c.status}`, c.status)}
                       </span>
                     </td>
                     <td className="px-3 py-3 text-center">
@@ -129,45 +131,45 @@ export default function AgentCommissions() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
           <div className="bg-white rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.15)] w-full max-w-sm">
             <div className="p-5 border-b border-gray-100 flex justify-between items-center">
-              <h3 className="text-lg font-bold text-on-background font-headline">Detalle de Comisión</h3>
+              <h3 className="text-lg font-bold text-on-background font-headline">{t('agentDash.commissions.detailTitle')}</h3>
               <button onClick={() => setViewCommission(null)} className="p-1 hover:bg-gray-100 rounded-lg"><span className="material-symbols-outlined text-text-muted">close</span></button>
             </div>
             <div className="p-5 space-y-4">
               <div className="flex items-center justify-between">
                 <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${viewCommission.status === 'paid' ? 'bg-emerald-50 text-emerald-700' : viewCommission.status === 'approved' ? 'bg-blue-50 text-blue-700' : viewCommission.status === 'cancelled' ? 'bg-red-50 text-red-700' : 'bg-amber-50 text-amber-700'}`}>
-                  {viewCommission.status === 'paid' ? 'Pagada' : viewCommission.status === 'approved' ? 'Aprobada' : viewCommission.status === 'cancelled' ? 'Cancelada' : 'Pendiente'}
+                  {t(`common.status.${viewCommission.status}`, viewCommission.status)}
                 </span>
                 <span className="text-xs text-text-muted">{viewCommission.createdAt ? new Date(viewCommission.createdAt).toLocaleDateString('es-PE', { year: 'numeric', month: 'long', day: 'numeric' }) : '—'}</span>
               </div>
               <div className="text-center py-3">
                 <p className="text-3xl font-black text-on-background">${parseFloat(viewCommission.amount || 0).toLocaleString()}</p>
-                <p className="text-sm text-text-muted mt-1">Comisión ganada</p>
+                <p className="text-sm text-text-muted mt-1">{t('agentDash.commissions.earned')}</p>
               </div>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between py-2 border-b border-outline-variant/30">
-                  <span className="text-text-muted">Pedido</span>
+                  <span className="text-text-muted">{t('agentDash.commissions.thOrder')}</span>
                   <span className="font-mono font-bold text-on-background">{viewCommission.orderId?.slice(0, 8) || '—'}</span>
                 </div>
                 <div className="flex justify-between py-2 border-b border-outline-variant/30">
-                  <span className="text-text-muted">Tasa de comisión</span>
+                  <span className="text-text-muted">{t('agentDash.commissions.commissionRate')}</span>
                   <span className="font-bold text-on-background">{viewCommission.rate ? `${viewCommission.rate}%` : '—'}</span>
                 </div>
                 {viewCommission.orderTotal && (
                   <div className="flex justify-between py-2 border-b border-outline-variant/30">
-                    <span className="text-text-muted">Total del pedido</span>
+                    <span className="text-text-muted">{t('agentDash.commissions.orderTotal')}</span>
                     <span className="font-bold text-on-background">${parseFloat(viewCommission.orderTotal).toLocaleString()}</span>
                   </div>
                 )}
                 {viewCommission.paidAt && (
                   <div className="flex justify-between py-2 border-b border-outline-variant/30">
-                    <span className="text-text-muted">Fecha de pago</span>
+                    <span className="text-text-muted">{t('agentDash.commissions.paymentDate')}</span>
                     <span className="font-bold text-on-background">{new Date(viewCommission.paidAt).toLocaleDateString('es-PE')}</span>
                   </div>
                 )}
               </div>
             </div>
             <div className="p-4 border-t border-gray-100 flex justify-end">
-              <button onClick={() => setViewCommission(null)} className="px-4 py-2 text-sm font-medium text-text-muted hover:bg-gray-50 rounded-lg transition-colors">Cerrar</button>
+              <button onClick={() => setViewCommission(null)} className="px-4 py-2 text-sm font-medium text-text-muted hover:bg-gray-50 rounded-lg transition-colors">{t('common.close')}</button>
             </div>
           </div>
         </div>

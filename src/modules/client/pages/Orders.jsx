@@ -1,27 +1,19 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import dashboardService from '../../admin/services/dashboard.service'
 
-const statusTags = {
-  pending: { label: 'Pendiente', classes: 'bg-amber-50 text-amber-700 border-amber-200' },
-  confirmed: { label: 'Confirmado', classes: 'bg-blue-50 text-blue-700 border-blue-200' },
-  processing: { label: 'Procesando', classes: 'bg-indigo-50 text-indigo-700 border-indigo-200' },
-  shipped: { label: 'Enviado', classes: 'bg-purple-50 text-purple-700 border-purple-200' },
-  purchased_in_usa: { label: 'Comprado USA', classes: 'bg-cyan-50 text-cyan-700 border-cyan-200' },
-  in_transit: { label: 'En Tránsito', classes: 'bg-violet-50 text-violet-700 border-violet-200' },
-  in_customs: { label: 'En Aduana', classes: 'bg-orange-50 text-orange-700 border-orange-200' },
-  ready_for_delivery: { label: 'Listo Entrega', classes: 'bg-teal-50 text-teal-700 border-teal-200' },
-  delivered: { label: 'Entregado', classes: 'bg-emerald-50 text-emerald-700 border-emerald-200' },
-  cancelled: { label: 'Cancelado', classes: 'bg-red-50 text-red-700 border-red-200' },
+const statusClasses = {
+  pending: 'bg-amber-50 text-amber-700 border-amber-200',
+  confirmed: 'bg-blue-50 text-blue-700 border-blue-200',
+  processing: 'bg-indigo-50 text-indigo-700 border-indigo-200',
+  shipped: 'bg-purple-50 text-purple-700 border-purple-200',
+  purchased_in_usa: 'bg-cyan-50 text-cyan-700 border-cyan-200',
+  in_transit: 'bg-violet-50 text-violet-700 border-violet-200',
+  in_customs: 'bg-orange-50 text-orange-700 border-orange-200',
+  ready_for_delivery: 'bg-teal-50 text-teal-700 border-teal-200',
+  delivered: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+  cancelled: 'bg-red-50 text-red-700 border-red-200',
 }
-
-const timelineSteps = [
-  { id: 'pending', label: 'Orden Recibida', icon: 'receipt_long' },
-  { id: 'purchased_in_usa', label: 'Comprado en USA', icon: 'shopping_cart_checkout' },
-  { id: 'in_transit', label: 'Viajando a tu país', icon: 'flight_takeoff' },
-  { id: 'in_customs', label: 'En Aduana', icon: 'inventory' },
-  { id: 'ready_for_delivery', label: 'Listo para entrega', icon: 'local_shipping' },
-  { id: 'delivered', label: 'Entregado', icon: 'check_circle' },
-]
 
 function getTimelineProgress(currentStatus) {
   if (currentStatus === 'cancelled') return -1;
@@ -39,10 +31,33 @@ function getTimelineProgress(currentStatus) {
 }
 
 export default function ClientOrders() {
+  const { t } = useTranslation()
   const [orders, setOrders] = useState([])
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState('all')
   const [selectedOrder, setSelectedOrder] = useState(null)
+
+  const statusTags = {
+    pending: { label: t('client.orders.status.pending'), classes: statusClasses.pending },
+    confirmed: { label: t('client.orders.status.confirmed'), classes: statusClasses.confirmed },
+    processing: { label: t('client.orders.status.processing'), classes: statusClasses.processing },
+    shipped: { label: t('client.orders.status.shipped'), classes: statusClasses.shipped },
+    purchased_in_usa: { label: t('client.orders.status.purchasedUSA'), classes: statusClasses.purchased_in_usa },
+    in_transit: { label: t('client.orders.status.inTransit'), classes: statusClasses.in_transit },
+    in_customs: { label: t('client.orders.status.inCustoms'), classes: statusClasses.in_customs },
+    ready_for_delivery: { label: t('client.orders.status.readyForDelivery'), classes: statusClasses.ready_for_delivery },
+    delivered: { label: t('client.orders.status.delivered'), classes: statusClasses.delivered },
+    cancelled: { label: t('client.orders.status.cancelled'), classes: statusClasses.cancelled },
+  }
+
+  const timelineSteps = [
+    { id: 'pending', label: t('client.orders.detail.timeline.orderReceived'), icon: 'receipt_long' },
+    { id: 'purchased_in_usa', label: t('client.orders.detail.timeline.purchasedUSA'), icon: 'shopping_cart_checkout' },
+    { id: 'in_transit', label: t('client.orders.detail.timeline.traveling'), icon: 'flight_takeoff' },
+    { id: 'in_customs', label: t('client.orders.detail.timeline.inCustoms'), icon: 'inventory' },
+    { id: 'ready_for_delivery', label: t('client.orders.detail.timeline.readyDelivery'), icon: 'local_shipping' },
+    { id: 'delivered', label: t('client.orders.detail.timeline.delivered'), icon: 'check_circle' },
+  ]
 
   useEffect(() => {
     dashboardService.getMyOrders()
@@ -64,17 +79,17 @@ export default function ClientOrders() {
   return (
     <div className="space-y-8 platform-enter max-w-6xl mx-auto pb-10">
       <div>
-        <h1 className="font-headline text-3xl font-extrabold text-slate-900 tracking-tight">Tus Importaciones</h1>
-        <p className="text-slate-500 mt-1">Supervisa en tiempo real el progreso de compra y envío de tus pedidos.</p>
+        <h1 className="font-headline text-3xl font-extrabold text-slate-900 tracking-tight">{t('client.orders.title')}</h1>
+        <p className="text-slate-500 mt-1">{t('client.orders.subtitle')}</p>
       </div>
 
       {/* Tabs / Filters */}
       <div className="flex gap-2 p-1 bg-slate-100/50 border border-slate-200 rounded-2xl w-max max-w-full overflow-x-auto">
         {[
-          { value: 'all', label: 'Todos' },
-          { value: 'active', label: 'En proceso' },
-          { value: 'completed', label: 'Completados' },
-          { value: 'cancelled', label: 'Cancelados' },
+          { value: 'all', label: t('client.orders.filters.all') },
+          { value: 'active', label: t('client.orders.filters.active') },
+          { value: 'completed', label: t('client.orders.filters.completed') },
+          { value: 'cancelled', label: t('client.orders.filters.cancelled') },
         ].map(f => (
           <button
             key={f.value}
@@ -98,8 +113,8 @@ export default function ClientOrders() {
           <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4">
             <span className="material-symbols-outlined text-4xl text-slate-300">inventory_2</span>
           </div>
-          <h3 className="font-headline text-xl font-bold text-slate-800 mb-2">Aún no tienes importaciones</h3>
-          <p className="text-slate-500 max-w-sm mx-auto">Tus próximas compras y cotizaciones aparecerán ordenadas aquí.</p>
+          <h3 className="font-headline text-xl font-bold text-slate-800 mb-2">{t('client.orders.noOrders')}</h3>
+          <p className="text-slate-500 max-w-sm mx-auto">{t('client.orders.noOrdersDesc')}</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -130,16 +145,16 @@ export default function ClientOrders() {
               {/* Progress Mini-bar */}
               {order.status !== 'cancelled' && (
                 <div className="mb-6 bg-slate-50 rounded-xl p-3 border border-slate-100/50">
-                   <div className="flex justify-between items-center text-[10px] uppercase font-bold tracking-wider text-slate-400 mb-2">
-                     <span>Progreso</span>
-                     <span className="text-slate-600">{Math.round((getTimelineProgress(order.status) + 1) / 6 * 100)}%</span>
-                   </div>
-                   <div className="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
-                     <div
-                       className="h-full bg-slate-800 transition-all duration-1000 rounded-full"
-                       style={{ width: `${Math.max(5, (getTimelineProgress(order.status) + 1) / 6 * 100)}%` }}
-                     ></div>
-                   </div>
+                  <div className="flex justify-between items-center text-[10px] uppercase font-bold tracking-wider text-slate-400 mb-2">
+                    <span>{t('client.orders.progress')}</span>
+                    <span className="text-slate-600">{Math.round((getTimelineProgress(order.status) + 1) / 6 * 100)}%</span>
+                  </div>
+                  <div className="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-slate-800 transition-all duration-1000 rounded-full"
+                      style={{ width: `${Math.max(5, (getTimelineProgress(order.status) + 1) / 6 * 100)}%` }}
+                    ></div>
+                  </div>
                 </div>
               )}
 
@@ -161,14 +176,14 @@ export default function ClientOrders() {
                     </div>
                   )}
                   <div className="ml-3 text-xs text-slate-500 font-medium">
-                    {order.items.reduce((a, b) => a + (b.quantity || 1), 0)} artículos
+                    {order.items.reduce((a, b) => a + (b.quantity || 1), 0)} {t('client.orders.articles')}
                   </div>
                 </div>
               )}
 
               <div className="mt-auto border-t border-slate-100 pt-4 flex items-center justify-between">
                 <div>
-                  <p className="text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-0.5">Total Estimado</p>
+                  <p className="text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-0.5">{t('client.orders.estimatedTotal')}</p>
                   <p className="font-extrabold text-slate-900">${parseFloat(order.total || 0).toLocaleString()} <span className="text-xs text-slate-500 font-medium tracking-normal">USD</span></p>
                 </div>
                 <div className="w-8 h-8 rounded-full bg-slate-50 text-slate-400 flex items-center justify-center group-hover:bg-slate-900 group-hover:text-white transition-colors">
@@ -197,7 +212,7 @@ export default function ClientOrders() {
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-slate-100 bg-white z-10">
             <div>
-              <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Detalle de Importación</p>
+              <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">{t('client.orders.detail.title')}</p>
               <h2 className="font-headline text-xl font-extrabold text-slate-900">
                 {selectedOrder?.orderNumber || 'Pedido'}
               </h2>
@@ -216,7 +231,7 @@ export default function ClientOrders() {
 
               {/* Agent contact */}
               <div className="p-6 bg-slate-50 border-b border-slate-100">
-                <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">Tu Agente Asignado</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">{t('client.orders.detail.assignedAgent')}</p>
                 <div className="flex items-center gap-4 bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
                   <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center shrink-0">
                     <span className="material-symbols-outlined text-slate-400">person</span>
@@ -225,16 +240,16 @@ export default function ClientOrders() {
                     <p className="font-bold text-slate-900 truncate">
                       {selectedOrder.agent ? `${selectedOrder.agent.user?.firstName || selectedOrder.agent.firstName || ''} ${selectedOrder.agent.user?.lastName || selectedOrder.agent.lastName || ''}`.trim() || 'Agente TeVra' : 'Agente TeVra'}
                     </p>
-                    <p className="text-xs text-slate-500 truncate">Administrando tu pedido</p>
+                    <p className="text-xs text-slate-500 truncate">{t('client.orders.detail.managingOrder')}</p>
                   </div>
                   <button
                     onClick={() => {
-                       const phone = (selectedOrder.agent?.whatsapp || selectedOrder.agent?.user?.whatsapp || '').replace(/[^0-9]/g, '');
-                       const text = encodeURIComponent(`Hola, te escribo sobre mi pedido ${selectedOrder.orderNumber}`);
-                       if(phone) window.open(`https://wa.me/${phone}?text=${text}`, '_blank');
+                      const phone = (selectedOrder.agent?.whatsapp || selectedOrder.agent?.user?.whatsapp || '').replace(/[^0-9]/g, '');
+                      const text = encodeURIComponent(`Hola, te escribo sobre mi pedido ${selectedOrder.orderNumber}`);
+                      if (phone) window.open(`https://wa.me/${phone}?text=${text}`, '_blank');
                     }}
                     className="w-10 h-10 rounded-full bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366] hover:text-white border border-[#25D366]/20 flex items-center justify-center shrink-0 transition-all"
-                    title="Contactar al agente por WhatsApp"
+                    title="WhatsApp"
                   >
                     <span className="material-symbols-outlined text-[20px]">chat</span>
                   </button>
@@ -243,18 +258,18 @@ export default function ClientOrders() {
 
               {/* Advanced Timeline */}
               <div className="px-8 py-8">
-                <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-6">Seguimiento</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-6">{t('client.orders.detail.tracking')}</p>
                 <div className="relative">
                   {selectedOrder.status === 'cancelled' ? (
-                     <div className="flex items-start gap-4">
-                       <div className="w-8 h-8 rounded-full bg-red-100 text-red-600 flex items-center justify-center shrink-0 z-10 shadow-sm border border-white">
-                         <span className="material-symbols-outlined text-[16px]">cancel</span>
-                       </div>
-                       <div className="pt-1.5">
-                         <p className="font-bold text-slate-900">Pedido Cancelado</p>
-                         <p className="text-xs text-slate-500 mt-1">Este trámite no continuó.</p>
-                       </div>
-                     </div>
+                    <div className="flex items-start gap-4">
+                      <div className="w-8 h-8 rounded-full bg-red-100 text-red-600 flex items-center justify-center shrink-0 z-10 shadow-sm border border-white">
+                        <span className="material-symbols-outlined text-[16px]">cancel</span>
+                      </div>
+                      <div className="pt-1.5">
+                        <p className="font-bold text-slate-900">{t('client.orders.detail.cancelled')}</p>
+                        <p className="text-xs text-slate-500 mt-1">{t('client.orders.detail.cancelledDesc')}</p>
+                      </div>
+                    </div>
                   ) : (
                     <>
                       <div className="absolute left-4 top-4 bottom-4 w-px bg-slate-100"></div>
@@ -279,7 +294,7 @@ export default function ClientOrders() {
                               <div className="pt-1">
                                 <p className={`font-bold ${isCurrent ? 'text-slate-900' : 'text-slate-700'}`}>{step.label}</p>
                                 {isCurrent && (
-                                  <p className="text-[11px] font-medium text-slate-500 mt-1">Fase actual</p>
+                                  <p className="text-[11px] font-medium text-slate-500 mt-1">{t('client.orders.detail.currentPhase')}</p>
                                 )}
                               </div>
                             </div>
@@ -293,7 +308,7 @@ export default function ClientOrders() {
 
               {/* Items */}
               <div className="px-6 py-4 bg-slate-50/50">
-                <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4 px-2">Detalle de Productos</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4 px-2">{t('client.orders.detail.productDetails')}</p>
                 <div className="space-y-3">
                   {selectedOrder.items?.map((item, i) => (
                     <div key={i} className="bg-white p-3 rounded-2xl border border-slate-100 flex gap-4 items-center shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
@@ -318,29 +333,29 @@ export default function ClientOrders() {
 
               {/* Summary */}
               <div className="px-8 py-8 border-t border-slate-100 bg-white">
-                <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-5">Resumen Financiero</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-5">{t('client.orders.detail.financialSummary')}</p>
                 <div className="space-y-3 text-sm">
                   <div className="flex justify-between items-center text-slate-600">
-                    <span>Subtotal de productos</span>
+                    <span>{t('client.orders.detail.subtotal')}</span>
                     <span className="font-semibold">${parseFloat(selectedOrder.subtotal || 0).toLocaleString()}</span>
                   </div>
                   <div className="flex justify-between items-center text-slate-600">
-                    <span>Costo de flete y aduanas</span>
+                    <span>{t('client.orders.detail.shippingCost')}</span>
                     {parseFloat(selectedOrder.shippingCost || 0) > 0 ? (
-                       <span className="font-semibold">${parseFloat(selectedOrder.shippingCost).toLocaleString()}</span>
+                      <span className="font-semibold">${parseFloat(selectedOrder.shippingCost).toLocaleString()}</span>
                     ) : (
-                       <span className="font-medium text-amber-600 bg-amber-50 px-2 py-0.5 rounded text-xs border border-amber-100">Por calcular</span>
+                      <span className="font-medium text-amber-600 bg-amber-50 px-2 py-0.5 rounded text-xs border border-amber-100">{t('client.orders.detail.toCalculate')}</span>
                     )}
                   </div>
                   <div className="flex justify-between items-center text-slate-600">
-                    <span>Tarifa de servicio TeVra</span>
+                    <span>{t('client.orders.detail.tevraCost')}</span>
                     <span className="font-semibold">${parseFloat(selectedOrder.tevraCommission || 0).toLocaleString()}</span>
                   </div>
                   <div className="pt-4 mt-2 border-t border-slate-100 border-dashed flex justify-between items-center">
-                    <span className="font-bold text-slate-900">Monto Final</span>
+                    <span className="font-bold text-slate-900">{t('client.orders.detail.finalAmount')}</span>
                     <div className="text-right">
-                       <span className="font-extrabold text-2xl text-slate-900 tracking-tight">${parseFloat(selectedOrder.total || 0).toLocaleString()}</span>
-                       <span className="text-xs font-bold text-slate-400 ml-1">USD</span>
+                      <span className="font-extrabold text-2xl text-slate-900 tracking-tight">${parseFloat(selectedOrder.total || 0).toLocaleString()}</span>
+                      <span className="text-xs font-bold text-slate-400 ml-1">USD</span>
                     </div>
                   </div>
                 </div>

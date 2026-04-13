@@ -1,26 +1,20 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import useScrollReveal from '../../../core/hooks/useScrollReveal'
 import { useCart } from '../../../core/hooks/useCart'
 import productsService from '../services/products.service'
-
-const SORT_OPTIONS = [
-  { value: '', label: 'Destacados' },
-  { value: 'newest', label: 'Más recientes' },
-  { value: 'price_asc', label: 'Menor precio' },
-  { value: 'price_desc', label: 'Mayor precio' },
-  { value: 'popular', label: 'Más populares' },
-]
-
-const DEMAND_BADGES = {
-  very_high: { label: 'Top ventas', bg: 'bg-secondary text-white' },
-  high: { label: 'Más pedido', bg: 'bg-mint text-primary' },
-}
 
 function ProductCard({ producto, onClick }) {
   const { ref, isVisible } = useScrollReveal(0.05)
   const { addItem } = useCart()
   const [added, setAdded] = useState(false)
+  const { t } = useTranslation()
+
+  const DEMAND_BADGES = {
+    very_high: { label: t('catalog.badges.topSales'), bg: 'bg-secondary text-white' },
+    high: { label: t('catalog.badges.mostOrdered'), bg: 'bg-mint text-primary' },
+  }
   const imgUrl = producto.images?.[0]
   const badge = DEMAND_BADGES[producto.demandLevel]
 
@@ -61,7 +55,7 @@ function ProductCard({ producto, onClick }) {
         )}
         {producto.isFeatured && !badge && (
           <span className="absolute top-3 left-3 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full bg-accent-gold text-primary">
-            Destacado
+            {t('catalog.badges.featured')}
           </span>
         )}
         <div className="absolute top-3 right-3 w-8 h-8 bg-white/90 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer">
@@ -85,19 +79,19 @@ function ProductCard({ producto, onClick }) {
             {producto.priceRefLocal && (
               <div className="text-right">
                 <span className="text-[10px] text-text-muted line-through block">~S/ {Number(producto.priceRefLocal).toLocaleString()}</span>
-                <span className="text-[10px] font-bold text-mint">en Perú</span>
+                <span className="text-[10px] font-bold text-mint">{t('catalog.card.savingsIn')}</span>
               </div>
             )}
           </div>
           {producto.marginPct && (
             <div className="flex items-center gap-1 mb-3">
               <span className="material-symbols-outlined text-mint text-xs">savings</span>
-              <span className="text-[10px] font-bold text-mint">Ahorras ~{producto.marginPct}%</span>
+              <span className="text-[10px] font-bold text-mint">{t('catalog.card.saves')}{producto.marginPct}%</span>
             </div>
           )}
           <button onClick={handleAddToCart} className={`w-full py-3 rounded-2xl font-headline font-bold text-sm transition-colors flex items-center justify-center gap-2 ${added ? 'bg-mint text-primary' : 'bg-primary text-white hover:bg-secondary group-hover:bg-secondary'}`}>
             <span className="material-symbols-outlined text-base">{added ? 'check_circle' : 'add_shopping_cart'}</span>
-            {added ? '¡Agregado!' : 'Agregar al carrito'}
+            {added ? t('catalog.card.added') : t('catalog.card.addToCart')}
           </button>
         </div>
       </div>
@@ -117,6 +111,15 @@ export default function CatalogoPage() {
   const [totalPages, setTotalPages] = useState(1)
   const [searchTimeout, setSearchTimeout] = useState(null)
   const navigate = useNavigate()
+  const { t } = useTranslation()
+
+  const SORT_OPTIONS = [
+    { value: '', label: t('catalog.sort.featured') },
+    { value: 'newest', label: t('catalog.sort.newest') },
+    { value: 'price_asc', label: t('catalog.sort.priceAsc') },
+    { value: 'price_desc', label: t('catalog.sort.priceDesc') },
+    { value: 'popular', label: t('catalog.sort.popular') },
+  ]
 
   useEffect(() => {
     productsService.getCategories()
@@ -124,7 +127,7 @@ export default function CatalogoPage() {
       .catch(() => { })
   }, [])
 
-  const fetchProducts = useCallback(() => {
+  useEffect(() => {
     setLoading(true)
     const query = {
       category: catActiva || undefined,
@@ -148,8 +151,6 @@ export default function CatalogoPage() {
       .finally(() => setLoading(false))
   }, [catActiva, busqueda, sortBy, page])
 
-  useEffect(() => { fetchProducts() }, [fetchProducts])
-
   const handleSearch = (value) => {
     setBusqueda(value)
     if (searchTimeout) clearTimeout(searchTimeout)
@@ -169,19 +170,19 @@ export default function CatalogoPage() {
           <div className="hero-enter">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 rounded-full border border-white/20 mb-5">
               <span className="w-2 h-2 bg-tevra-coral rounded-full animate-pulse" />
-              <span className="text-white text-[11px] font-bold uppercase tracking-widest">Productos desde USA</span>
+              <span className="text-white text-[11px] font-bold uppercase tracking-widest">{t('catalog.badge')}</span>
             </div>
             <h1 className="font-headline font-extrabold text-white tracking-tight mb-4" style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)' }}>
-              Catálogo TeVra
+              {t('catalog.title')}
             </h1>
             <p className="text-white/70 max-w-xl mb-8" style={{ fontSize: 'clamp(0.9rem, 1.8vw, 1.1rem)' }}>
-              Elige cualquier producto, cotiza con tu agente y recíbelo en 5–10 días hábiles. Originales garantizados.
+              {t('catalog.subtitle')}
             </p>
             <div className="flex items-center bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl px-5 py-3 max-w-md">
               <span className="material-symbols-outlined text-white/50 mr-3">search</span>
               <input
                 className="bg-transparent border-none focus:outline-none text-white placeholder:text-white/40 text-sm w-full"
-                placeholder="Busca tu producto (Nike, iPhone, Coach...)"
+                placeholder={t('catalog.searchPlaceholder')}
                 type="text"
                 value={busqueda}
                 onChange={(e) => handleSearch(e.target.value)}
@@ -200,7 +201,7 @@ export default function CatalogoPage() {
                 }`}
             >
               <span className="material-symbols-outlined text-sm">apps</span>
-              Todo
+              {t('catalog.allCategories')}
             </button>
             {categories.map((cat) => (
               <button
@@ -220,17 +221,17 @@ export default function CatalogoPage() {
         {!loading && products.length === 0 ? (
           <div className="text-center py-24">
             <span className="material-symbols-outlined text-6xl text-outline-variant mb-4 block">search_off</span>
-            <p className="font-headline font-bold text-xl text-primary mb-2">Sin resultados</p>
-            <p className="text-text-muted">Intenta con otro término o envíanos el link del producto que buscas.</p>
+            <p className="font-headline font-bold text-xl text-primary mb-2">{t('catalog.noResults')}</p>
+            <p className="text-text-muted">{t('catalog.noResultsDesc')}</p>
             <button onClick={() => { setBusqueda(''); setCatActiva(''); setPage(1) }} className="mt-6 px-6 py-3 bg-primary text-white rounded-2xl font-bold text-sm hover:bg-secondary transition-colors">
-              Ver todo el catálogo
+              {t('catalog.seeAll')}
             </button>
           </div>
         ) : (
           <>
             <div className="flex items-center justify-between mb-8 flex-wrap gap-4">
               <p className="text-text-muted text-sm">
-                <span className="font-bold text-primary">{total}</span> productos encontrados
+                <span className="font-bold text-primary">{total}</span> {t('catalog.productsFound')}
               </p>
               <div className="flex items-center gap-4">
                 <select
@@ -244,7 +245,7 @@ export default function CatalogoPage() {
                 </select>
                 <div className="flex items-center gap-2 text-xs text-text-muted">
                   <span className="material-symbols-outlined text-mint text-sm">verified</span>
-                  100% originales desde USA
+                  {t('catalog.originals')}
                 </div>
               </div>
             </div>
@@ -258,17 +259,17 @@ export default function CatalogoPage() {
                   onClick={() => setPage(p => p - 1)}
                   className="px-4 py-2 rounded-xl bg-surface-container text-text-muted font-bold text-sm disabled:opacity-40 hover:bg-surface-container-high transition-colors"
                 >
-                  Anterior
+                  {t('common.previous')}
                 </button>
                 <span className="text-sm text-text-muted px-4">
-                  Página <span className="font-bold text-primary">{page}</span> de {totalPages}
+                  {t('common.page')} <span className="font-bold text-primary">{page}</span> {t('common.of')} {totalPages}
                 </span>
                 <button
                   disabled={page >= totalPages}
                   onClick={() => setPage(p => p + 1)}
                   className="px-4 py-2 rounded-xl bg-surface-container text-text-muted font-bold text-sm disabled:opacity-40 hover:bg-surface-container-high transition-colors"
                 >
-                  Siguiente
+                  {t('common.next')}
                 </button>
               </div>
             )}
@@ -280,14 +281,14 @@ export default function CatalogoPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-8 flex flex-col sm:flex-row items-center justify-between gap-8">
           <div className="text-white">
             <h3 className="font-headline font-extrabold text-2xl sm:text-3xl mb-2">
-              ¿No encontraste lo que buscas?
+              {t('catalog.ctaTitle')}
             </h3>
-            <p className="text-white/60">Envíanos el link de cualquier tienda de USA y te cotizamos en minutos.</p>
+            <p className="text-white/60">{t('catalog.ctaDesc')}</p>
           </div>
           <div className="flex gap-3 shrink-0">
             <Link to="/agentes" className="flex items-center gap-2 px-6 py-4 bg-secondary text-white rounded-2xl font-headline font-bold hover:-translate-y-0.5 hover:shadow-xl transition-all shadow-lg shadow-secondary/30">
               <span className="material-symbols-outlined">link</span>
-              Cotizar por link
+              {t('catalog.quoteByLink')}
             </Link>
           </div>
         </div>

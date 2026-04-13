@@ -1,38 +1,22 @@
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import useScrollReveal from '../../../core/hooks/useScrollReveal'
 
-const stats = [
-  { valor: '2', label: 'Hubs en USA', sub: 'California & Miami', icon: 'location_on' },
-  { valor: '12+', label: 'Años de socio logístico', sub: 'Experiencia probada', icon: 'workspace_premium' },
-  { valor: '2', label: 'Vuelos/semana a Perú', sub: 'Salidas garantizadas', icon: 'flight' },
-  { valor: 'LLC', label: 'Registro legal USA', sub: 'California, EIN federal', icon: 'gavel' },
+const statIcons = ['location_on', 'workspace_premium', 'flight', 'gavel']
+
+const stepMeta = [
+  { n: '01', icon: 'person' },
+  { n: '02', icon: 'receipt_long' },
+  { n: '03', icon: 'send' },
+  { n: '04', icon: 'storefront' },
+  { n: '05', icon: 'flight_takeoff' },
+  { n: '06', icon: 'fact_check' },
+  { n: '07', icon: 'home_pin' },
 ]
 
-const pasos = [
-  { n: '01', icon: 'person', titulo: 'Tu cliente quiere un producto', desc: 'Un amigo, familiar o seguidor te dice qué quiere: Nike, iPhone, perfume, ropa de marca... cualquier producto disponible en tiendas de Estados Unidos.' },
-  { n: '02', icon: 'receipt_long', titulo: 'Tú tomas el pedido', desc: 'Le indicas el precio (producto + tu comisión + envío). Si acepta, el cliente te paga a ti directamente. Él es TU cliente, no de TeVra.' },
-  { n: '03', icon: 'send', titulo: 'Reportas el pedido a TeVra', desc: 'Nos envías el detalle: producto, talla/color/modelo y comprobante de pago. Nosotros nos encargamos del resto.' },
-  { n: '04', icon: 'storefront', titulo: 'TeVra compra en USA', desc: 'Vamos a la tienda, outlet o proveedor mayorista y compramos exactamente lo que tu cliente pidió. Tomamos foto como comprobante.' },
-  { n: '05', icon: 'flight_takeoff', titulo: 'TeVra envía a Perú', desc: 'El producto va a nuestro socio logístico en Miami. Lo embarcan en el próximo vuelo a Perú, 2 salidas por semana. Viaja asegurado.' },
-  { n: '06', icon: 'fact_check', titulo: 'Llega a Perú y pasa aduana', desc: 'Nuestro socio logístico tiene oficina en Lima y se encarga del desaduanaje. Tú no haces ningún trámite con aduanas ni SUNAT.' },
-  { n: '07', icon: 'home_pin', titulo: 'Tú entregas al cliente', desc: 'El producto llega a la oficina en Lima. Tú lo recoges y lo entregas. Pedido completado. Tiempo estimado: 5 a 10 días hábiles.' },
-]
+const ventajaIcons = ['route', 'location_city', 'balance', 'security', 'verified_user', 'new_releases']
 
-const ventajas = [
-  { icon: 'route', titulo: 'Acceso directo sin intermediarios', desc: 'Trabajamos con un socio logístico en Miami con licencias propias para embarcar carga. Sin intermediarios de por medio — vamos directo a la fuente.' },
-  { icon: 'location_city', titulo: 'Dos hubs en Estados Unidos', desc: 'Operamos desde California y Miami. Siempre buscamos el mejor precio disponible en ambas costas para tu cliente.' },
-  { icon: 'balance', titulo: 'Empresa legal registrada', desc: 'TeVra es una LLC registrada en California con número EIN federal. No somos informales — esto le da confianza a ti y a tus clientes.' },
-  { icon: 'security', titulo: 'Envío asegurado', desc: 'Cada envío viaja con seguro de carga. Si algo se pierde o daña, está cubierto. Tu reputación y la del cliente están protegidas.' },
-  { icon: 'verified_user', titulo: 'Aduana resuelta', desc: 'Nuestro socio tiene 12+ años manejando aduana peruana. Ellos se encargan de todo el proceso de liberación. Tú no tramitas nada.' },
-  { icon: 'new_releases', titulo: 'Productos 100% originales', desc: 'Todo lo que vendemos es nuevo, sellado y original de fábrica. Sin réplicas, sin segunda mano. La calidad es nuestra prioridad.' },
-]
-
-const desafios = [
-  { icon: 'schedule', titulo: 'Los tiempos pueden variar', desc: 'El estimado es 5–10 días hábiles, pero puede extenderse por demoras en vuelos, revisión física en aduana o feriados. Siempre comunicamos el estado.' },
-  { icon: 'block', titulo: 'No todos los productos se pueden enviar', desc: 'Líquidos inflamables, baterías sueltas de litio, alimentos perecibles y productos con homologación especial tienen restricciones. Consulta antes.' },
-  { icon: 'person_raised_hand', titulo: 'El éxito depende de ti', desc: 'TeVra da infraestructura y respaldo, pero los clientes los consigues tú. Si no te mueves, no vendes. Es una oportunidad, no un ingreso garantizado.' },
-  { icon: 'currency_exchange', titulo: 'Manejo de dinero con responsabilidad', desc: 'Tu cliente te confía su dinero. Esa confianza es sagrada. Cada centavo debe manejarse con total transparencia y seriedad.' },
-]
+const desafioIcons = ['schedule', 'block', 'person_raised_hand', 'currency_exchange']
 
 function StatCard({ stat, i }) {
   const { ref, isVisible } = useScrollReveal(0.05)
@@ -52,6 +36,12 @@ export default function EmpresaPage() {
   const { ref: ventajasRef, isVisible: ventajasVisible } = useScrollReveal(0.01)
   const { ref: desafiosRef, isVisible: desafiosVisible } = useScrollReveal(0.01)
 
+  const { t } = useTranslation()
+  const stats = t('empresa.stats', { returnObjects: true }).map((s, i) => ({ ...s, icon: statIcons[i] }))
+  const pasos = t('empresa.process.steps', { returnObjects: true }).map((s, i) => ({ ...s, ...stepMeta[i] }))
+  const ventajas = t('empresa.advantages.items', { returnObjects: true }).map((v, i) => ({ ...v, icon: ventajaIcons[i] }))
+  const desafios = t('empresa.challenges.items', { returnObjects: true }).map((d, i) => ({ ...d, icon: desafioIcons[i] }))
+
   return (
     <main className="min-h-screen bg-background-cream" style={{ paddingTop: 'clamp(3.5rem, 8vh, 5rem)' }}>
       <section className="tevra-hero-gradient py-20 sm:py-28 overflow-hidden">
@@ -61,13 +51,13 @@ export default function EmpresaPage() {
           <div className="max-w-3xl hero-enter">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 rounded-full border border-white/20 mb-6">
               <span className="w-2 h-2 bg-mint rounded-full animate-pulse" />
-              <span className="text-white text-[11px] font-bold uppercase tracking-widest">TeVra LLC · California, USA</span>
+              <span className="text-white text-[11px] font-bold uppercase tracking-widest">{t('empresa.hero.badge')}</span>
             </div>
             <h1 className="font-headline font-extrabold text-white leading-tight tracking-tight mb-6" style={{ fontSize: 'clamp(2.2rem, 5.5vw, 4rem)' }}>
-              Tu puente hacia<br /><span className="text-tevra-coral">Estados Unidos</span>
+              {t('empresa.hero.title')}
             </h1>
             <p className="text-white/70 leading-relaxed max-w-2xl" style={{ fontSize: 'clamp(1rem, 2vw, 1.2rem)' }}>
-              Somos una empresa legalmente registrada en California dedicada a la compra, venta y distribución de productos tecnológicos y de marca original desde USA hacia Latinoamérica.
+              {t('empresa.hero.subtitle')}
             </p>
           </div>
         </div>
@@ -84,30 +74,30 @@ export default function EmpresaPage() {
           <div ref={misionRef} className={`grid lg:grid-cols-2 gap-8 lg:gap-12 reveal ${misionVisible ? 'visible' : ''}`}>
             <div className="bg-primary rounded-3xl p-10 sm:p-14 relative overflow-hidden">
               <div className="absolute top-0 right-0 w-48 h-48 bg-secondary/10 blur-[80px] rounded-full" />
-              <span className="inline-block px-3 py-1 bg-secondary/20 text-secondary text-xs font-bold uppercase tracking-widest rounded-full mb-6">Misión</span>
+              <span className="inline-block px-3 py-1 bg-secondary/20 text-secondary text-xs font-bold uppercase tracking-widest rounded-full mb-6">{t('empresa.mission.badge')}</span>
               <h2 className="font-headline font-extrabold text-white text-2xl sm:text-3xl mb-6 leading-tight">
-                Conectar Latinoamérica con lo mejor de USA
+                {t('empresa.mission.title')}
               </h2>
               <p className="text-white/70 leading-relaxed">
-                Conectar a consumidores y emprendedores de Latinoamérica con productos tecnológicos y de marca originales desde Estados Unidos, a través de una red confiable de agentes comerciales independientes, ofreciendo precios accesibles, envíos seguros y un servicio transparente que genera valor para todos.
+                {t('empresa.mission.desc')}
               </p>
               <div className="mt-8 pt-8 border-t border-white/10">
                 <p className="text-white/50 text-sm italic">
-                  "En palabras simples: hacemos que cualquier persona en Perú pueda comprar productos de USA a precios justos, de manera segura, a través de alguien de confianza."
+                  {t('empresa.mission.quote')}
                 </p>
               </div>
             </div>
             <div className="bg-surface-container-lowest rounded-3xl p-10 sm:p-14 border border-outline-variant/20">
-              <span className="inline-block px-3 py-1 bg-mint/20 text-mint text-xs font-bold uppercase tracking-widest rounded-full mb-6">Visión</span>
+              <span className="inline-block px-3 py-1 bg-mint/20 text-mint text-xs font-bold uppercase tracking-widest rounded-full mb-6">{t('empresa.vision.badge')}</span>
               <h2 className="font-headline font-extrabold text-primary text-2xl sm:text-3xl mb-6 leading-tight">
-                La red de importación más grande de América
+                {t('empresa.vision.title')}
               </h2>
               <p className="text-text-muted leading-relaxed">
-                Ser la red de importación y distribución más grande y confiable entre Estados Unidos y Latinoamérica, potenciada por tecnología propia, donde cada agente tenga la oportunidad de construir su propio negocio con el respaldo de una empresa sólida en USA.
+                {t('empresa.vision.desc')}
               </p>
               <div className="mt-8 p-6 bg-surface-container rounded-2xl">
                 <p className="text-primary font-medium text-sm leading-relaxed">
-                  <span className="font-black">Piensa en el modelo Uber, pero para importaciones.</span> Uber no tiene autos propios — conecta conductores con pasajeros. TeVra conecta agentes locales con el mercado de USA.
+                  <span className="font-black">{t('empresa.vision.uber')}</span>{t('empresa.vision.uberDesc')}
                 </p>
               </div>
             </div>
@@ -119,9 +109,9 @@ export default function EmpresaPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-8">
           <div className="text-center max-w-2xl mx-auto mb-16">
             <h2 className="font-headline font-extrabold text-primary tracking-tight mb-4" style={{ fontSize: 'clamp(1.8rem, 4vw, 2.8rem)' }}>
-              Cómo funciona el proceso
+              {t('empresa.process.title')}
             </h2>
-            <p className="text-text-muted">7 pasos simples desde que tu cliente pide hasta que recibe en casa.</p>
+            <p className="text-text-muted">{t('empresa.process.subtitle')}</p>
           </div>
           <div ref={pasosRef} className={`relative reveal ${pasosVisible ? 'visible' : ''}`}>
             <div className="hidden lg:block absolute left-8 top-8 bottom-8 w-0.5 bg-outline-variant/30" />
@@ -144,7 +134,7 @@ export default function EmpresaPage() {
                   {paso.n === '07' && (
                     <div className="flex-shrink-0 hidden lg:flex items-center gap-2 px-4 py-2 bg-mint/15 rounded-full border border-mint/30">
                       <span className="w-2 h-2 bg-mint rounded-full" />
-                      <span className="text-xs font-bold text-mint">5–10 días hábiles</span>
+                      <span className="text-xs font-bold text-mint">{t('empresa.process.businessDays')}</span>
                     </div>
                   )}
                 </div>
@@ -158,9 +148,9 @@ export default function EmpresaPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-8">
           <div className="text-center max-w-2xl mx-auto mb-16">
             <h2 className="font-headline font-extrabold text-primary tracking-tight mb-4" style={{ fontSize: 'clamp(1.8rem, 4vw, 2.8rem)' }}>
-              Ventajas del modelo TeVra
+              {t('empresa.advantages.title')}
             </h2>
-            <p className="text-text-muted">Lo que nos diferencia de cualquier otro courier o personal shopper.</p>
+            <p className="text-text-muted">{t('empresa.advantages.subtitle')}</p>
           </div>
           <div ref={ventajasRef} className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 reveal ${ventajasVisible ? 'visible' : ''}`}>
             {ventajas.map((v, i) => (
@@ -179,11 +169,11 @@ export default function EmpresaPage() {
       <section className="py-20 sm:py-28 bg-surface-container-low">
         <div className="max-w-7xl mx-auto px-4 sm:px-8">
           <div className="max-w-2xl mb-14">
-            <span className="inline-block px-3 py-1 bg-accent-gold/20 text-accent-gold text-xs font-bold uppercase tracking-widest rounded-full mb-5">Transparencia total</span>
+            <span className="inline-block px-3 py-1 bg-accent-gold/20 text-accent-gold text-xs font-bold uppercase tracking-widest rounded-full mb-5">{t('empresa.challenges.badge')}</span>
             <h2 className="font-headline font-extrabold text-primary tracking-tight mb-4" style={{ fontSize: 'clamp(1.8rem, 4vw, 2.8rem)' }}>
-              Desafíos que debes conocer
+              {t('empresa.challenges.title')}
             </h2>
-            <p className="text-text-muted">No pintamos un mundo perfecto. Todo negocio tiene desafíos y queremos que los conozcas antes de empezar.</p>
+            <p className="text-text-muted">{t('empresa.challenges.subtitle')}</p>
           </div>
           <div ref={desafiosRef} className={`grid grid-cols-1 sm:grid-cols-2 gap-6 reveal ${desafiosVisible ? 'visible' : ''}`}>
             {desafios.map((d, i) => (
@@ -207,17 +197,17 @@ export default function EmpresaPage() {
         <div className="absolute inset-0 bg-grid-pattern opacity-20" />
         <div className="max-w-4xl mx-auto px-4 sm:px-8 text-center relative z-10">
           <h2 className="font-headline font-extrabold text-white tracking-tight mb-5" style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)' }}>
-            ¿Quieres ser parte de la red?
+            {t('empresa.joinCta.title')}
           </h2>
           <p className="text-white/70 mb-10 max-w-xl mx-auto" style={{ fontSize: 'clamp(0.95rem, 1.8vw, 1.1rem)' }}>
-            Únete como agente TeVra. Sin inversión, sin jefe, sin límites. Empieza a generar ingresos conectando a tus contactos con productos de USA.
+            {t('empresa.joinCta.subtitle')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/agentes" className="px-10 py-4 bg-secondary text-white rounded-2xl font-headline font-bold text-lg shadow-xl shadow-secondary/30 hover:-translate-y-1 transition-all">
-              Quiero ser agente
+              {t('empresa.joinCta.becomeAgent')}
             </Link>
             <Link to="/tracking" className="px-10 py-4 glass-card text-white rounded-2xl font-headline font-bold text-lg hover:bg-white/10 transition-all">
-              Seguir mi pedido
+              {t('empresa.joinCta.trackOrder')}
             </Link>
           </div>
         </div>

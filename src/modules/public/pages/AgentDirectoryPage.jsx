@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import useScrollReveal from '../../../core/hooks/useScrollReveal'
 import agentsService from '../services/agents.service'
 
 function AgentCard({ agent }) {
+  const { t } = useTranslation()
   const { ref, isVisible } = useScrollReveal(0.05)
   const user = agent.user || agent || {}
   const name = `${user.firstName || ''} ${user.lastName || ''}`.trim() || 'Agente TeVra'
@@ -24,7 +26,7 @@ function AgentCard({ agent }) {
           <h3 className="font-headline font-bold text-primary truncate">{name}</h3>
           <div className="flex items-center gap-1 text-xs text-text-muted">
             <span className="material-symbols-outlined text-xs">location_on</span>
-            {agent.city || 'Sin ciudad'}
+            {agent.city || t('agentDirectory.noCity')}
           </div>
         </div>
         {agent.isVerified && (
@@ -63,12 +65,12 @@ function AgentCard({ agent }) {
       <div className="flex items-center gap-4 text-xs text-text-muted mb-5 mt-auto">
         <div className="flex items-center gap-1">
           <span className="material-symbols-outlined text-sm text-mint">shopping_bag</span>
-          <span>{agent.totalSales || 0} ventas</span>
+          <span>{agent.totalSales || 0} {t('agentDirectory.sales')}</span>
         </div>
         {agent.coverageAreas?.length > 0 && (
           <div className="flex items-center gap-1">
             <span className="material-symbols-outlined text-sm text-secondary">map</span>
-            <span>{agent.coverageAreas.length} zonas</span>
+            <span>{agent.coverageAreas.length} {t('agentDirectory.zones')}</span>
           </div>
         )}
       </div>
@@ -79,13 +81,14 @@ function AgentCard({ agent }) {
         className="w-full bg-primary text-white py-3 rounded-xl font-headline font-bold text-sm flex items-center justify-center gap-2 hover:bg-secondary transition-colors"
       >
         <span className="material-symbols-outlined text-base">person</span>
-        Ver perfil
+        {t('agentDirectory.viewProfile')}
       </Link>
     </div>
   )
 }
 
 export default function AgentDirectoryPage() {
+  const { t } = useTranslation()
   const [agents, setAgents] = useState([])
   const [loading, setLoading] = useState(true)
   const [cityFilter, setCityFilter] = useState('')
@@ -125,19 +128,19 @@ export default function AgentDirectoryPage() {
           <div className="hero-enter">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 rounded-full border border-white/20 mb-5">
               <span className="w-2 h-2 bg-tevra-coral rounded-full animate-pulse" />
-              <span className="text-white text-[11px] font-bold uppercase tracking-widest">Red de Agentes</span>
+              <span className="text-white text-[11px] font-bold uppercase tracking-widest">{t('agentDirectory.badge')}</span>
             </div>
             <h1 className="font-headline font-extrabold text-white tracking-tight mb-4" style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)' }}>
-              Encuentra tu Agente
+              {t('agentDirectory.title')}
             </h1>
             <p className="text-white/70 max-w-xl mb-8" style={{ fontSize: 'clamp(0.9rem, 1.8vw, 1.1rem)' }}>
-              Elige un agente verificado en tu ciudad. Ellos gestionan tu pedido, te asesoran y te acompañan hasta la entrega.
+              {t('agentDirectory.subtitle')}
             </p>
             <div className="flex items-center bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl px-5 py-3 max-w-md">
               <span className="material-symbols-outlined text-white/50 mr-3">search</span>
               <input
                 className="bg-transparent border-none focus:outline-none text-white placeholder:text-white/30 text-sm w-full"
-                placeholder="Buscar agente por nombre, ciudad..."
+                placeholder={t('agentDirectory.searchPlaceholder')}
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
@@ -155,19 +158,19 @@ export default function AgentDirectoryPage() {
               <button
                 onClick={() => setCityFilter('')}
                 className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wide transition-all whitespace-nowrap ${!cityFilter
-                    ? 'bg-primary text-white shadow-md'
-                    : 'bg-surface-container text-text-muted hover:bg-surface-container-high'
+                  ? 'bg-primary text-white shadow-md'
+                  : 'bg-surface-container text-text-muted hover:bg-surface-container-high'
                   }`}
               >
-                Todas
+                {t('agentDirectory.allCities')}
               </button>
               {availableCities.map(city => (
                 <button
                   key={city}
                   onClick={() => setCityFilter(city)}
                   className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wide transition-all whitespace-nowrap ${cityFilter === city
-                      ? 'bg-primary text-white shadow-md'
-                      : 'bg-surface-container text-text-muted hover:bg-surface-container-high'
+                    ? 'bg-primary text-white shadow-md'
+                    : 'bg-surface-container text-text-muted hover:bg-surface-container-high'
                     }`}
                 >
                   {city}
@@ -183,16 +186,16 @@ export default function AgentDirectoryPage() {
         {!loading && filtered.length === 0 ? (
           <div className="text-center py-24">
             <span className="material-symbols-outlined text-6xl text-outline-variant mb-4 block">person_search</span>
-            <p className="font-headline font-bold text-xl text-primary mb-2">No encontramos agentes</p>
-            <p className="text-text-muted">Intenta con otra ciudad o término de búsqueda.</p>
+            <p className="font-headline font-bold text-xl text-primary mb-2">{t('agentDirectory.noAgentsFound')}</p>
+            <p className="text-text-muted">{t('agentDirectory.noAgentsFoundDesc')}</p>
             <button onClick={() => { setSearch(''); setCityFilter('') }} className="mt-6 px-6 py-3 bg-primary text-white rounded-2xl font-bold text-sm hover:bg-secondary transition-colors">
-              Ver todos los agentes
+              {t('agentDirectory.viewAllAgents')}
             </button>
           </div>
         ) : (
           <>
             <p className="text-text-muted text-sm mb-8">
-              <span className="font-bold text-primary">{filtered.length}</span> agentes disponibles
+              <span className="font-bold text-primary">{filtered.length}</span> {t('agentDirectory.agentsAvailable')}
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {filtered.map(agent => <AgentCard key={agent.id} agent={agent} />)}
@@ -205,12 +208,12 @@ export default function AgentDirectoryPage() {
       <section className="bg-primary py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-8 flex flex-col sm:flex-row items-center justify-between gap-8">
           <div className="text-white">
-            <h3 className="font-headline font-extrabold text-2xl sm:text-3xl mb-2">¿Quieres ser agente?</h3>
-            <p className="text-white/60">Únete a la red de agentes TeVra y genera ingresos sin inversión.</p>
+            <h3 className="font-headline font-extrabold text-2xl sm:text-3xl mb-2">{t('agentDirectory.wantToBeAgent')}</h3>
+            <p className="text-white/60">{t('agentDirectory.joinNetwork')}</p>
           </div>
           <Link to="/registro-agente" className="flex items-center gap-2 px-6 py-4 bg-secondary text-white rounded-2xl font-headline font-bold hover:-translate-y-0.5 hover:shadow-xl transition-all shadow-lg shadow-secondary/30">
             <span className="material-symbols-outlined">person_add</span>
-            Quiero ser agente
+            {t('agentDirectory.wantToBeAgentBtn')}
           </Link>
         </div>
       </section>

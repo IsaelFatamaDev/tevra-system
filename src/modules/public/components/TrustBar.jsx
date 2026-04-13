@@ -1,12 +1,16 @@
+import { useTranslation } from 'react-i18next'
+
 const brands = ['AMAZON', 'APPLE', 'EBAY', 'WALMART', 'NIKE', 'BEST BUY', 'TARGET', 'COSTCO']
 
-const badges = [
-  { icon: 'verified_user', label: 'LLC REGISTERED IN CALIFORNIA' },
-  { icon: 'local_shipping', label: 'ENVIO 100% GARANTIZADO' },
-  { icon: 'payments', label: 'PAGO SEGURO' },
-]
-
 export default function TrustBar() {
+  const { t } = useTranslation()
+
+  const badges = [
+    { icon: 'verified_user', label: t('home.trust.registered') },
+    { icon: 'local_shipping', label: t('home.trust.shipping') },
+    { icon: 'payments', label: t('home.trust.payment') },
+  ]
+
   return (
     <div className="bg-surface-container-lowest py-12 border-b border-outline-variant/10 overflow-hidden">
       <div className="max-w-7xl mx-auto px-8">

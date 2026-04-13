@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { useCart } from '../../../core/hooks/useCart'
 import agentsService from '../services/agents.service'
 
 export default function AgentProfilePage() {
   const { code } = useParams()
   const navigate = useNavigate()
+  const { t } = useTranslation()
   const { setSelectedAgent, items } = useCart()
   const [agent, setAgent] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -44,8 +46,8 @@ export default function AgentProfilePage() {
       <main className="min-h-screen bg-background-cream flex items-center justify-center" style={{ paddingTop: 'clamp(3.5rem, 8vh, 5rem)' }}>
         <div className="text-center space-y-4">
           <span className="material-symbols-outlined text-6xl text-outline-variant block">person_off</span>
-          <p className="font-headline font-bold text-xl text-primary">Agente no encontrado</p>
-          <Link to="/directorio-agentes" className="text-secondary font-semibold hover:underline">Ver directorio de agentes</Link>
+          <p className="font-headline font-bold text-xl text-primary">{t('agentProfile.notFound')}</p>
+          <Link to="/directorio-agentes" className="text-secondary font-semibold hover:underline">{t('agentProfile.viewDirectory')}</Link>
         </div>
       </main>
     )
@@ -61,9 +63,9 @@ export default function AgentProfilePage() {
       {/* Breadcrumbs */}
       <div className="max-w-5xl mx-auto px-4 sm:px-8 pt-8 pb-4">
         <nav className="flex items-center gap-2 text-xs text-on-surface-variant">
-          <Link to="/" className="hover:text-primary transition-colors">Home</Link>
+          <Link to="/" className="hover:text-primary transition-colors">{t('agentProfile.breadcrumbHome')}</Link>
           <span className="material-symbols-outlined text-xs">chevron_right</span>
-          <Link to="/directorio-agentes" className="hover:text-primary transition-colors">Agentes</Link>
+          <Link to="/directorio-agentes" className="hover:text-primary transition-colors">{t('agentProfile.breadcrumbAgents')}</Link>
           <span className="material-symbols-outlined text-xs">chevron_right</span>
           <span className="text-primary font-semibold truncate max-w-[200px]">{name}</span>
         </nav>
@@ -93,7 +95,7 @@ export default function AgentProfilePage() {
                   <div className="flex items-center gap-3 mt-1">
                     <div className="flex items-center gap-1 text-sm text-text-muted">
                       <span className="material-symbols-outlined text-sm">location_on</span>
-                      {agent.city || 'Sin ciudad'}
+                      {agent.city || t('agentProfile.noCity')}
                     </div>
                     <div className="flex items-center gap-1">
                       <div className="flex text-amber-400">
@@ -111,15 +113,15 @@ export default function AgentProfilePage() {
               <div className="grid grid-cols-3 gap-4">
                 <div className="bg-surface-container rounded-xl p-4 text-center">
                   <span className="block text-2xl font-black text-primary">{agent.totalSales || 0}</span>
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-text-muted">Ventas</span>
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-text-muted">{t('agentProfile.sales')}</span>
                 </div>
                 <div className="bg-surface-container rounded-xl p-4 text-center">
                   <span className="block text-2xl font-black text-primary">{agent.ratingCount || 0}</span>
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-text-muted">Reseñas</span>
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-text-muted">{t('agentProfile.reviews')}</span>
                 </div>
                 <div className="bg-surface-container rounded-xl p-4 text-center">
                   <span className="block text-2xl font-black text-primary">{agent.coverageAreas?.length || 0}</span>
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-text-muted">Zonas</span>
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-text-muted">{t('agentProfile.zones')}</span>
                 </div>
               </div>
             </div>
@@ -127,7 +129,7 @@ export default function AgentProfilePage() {
             {/* Bio */}
             {agent.bio && (
               <div className="bg-surface-container-lowest rounded-2xl p-8 shadow-soft space-y-4">
-                <h2 className="font-headline font-bold text-lg text-primary">Sobre mí</h2>
+                <h2 className="font-headline font-bold text-lg text-primary">{t('agentProfile.aboutMe')}</h2>
                 <p className="text-on-surface-variant leading-relaxed">{agent.bio}</p>
               </div>
             )}
@@ -135,7 +137,7 @@ export default function AgentProfilePage() {
             {/* Specializations */}
             {agent.specializationCategories?.length > 0 && (
               <div className="bg-surface-container-lowest rounded-2xl p-8 shadow-soft space-y-4">
-                <h2 className="font-headline font-bold text-lg text-primary">Especialidades</h2>
+                <h2 className="font-headline font-bold text-lg text-primary">{t('agentProfile.specialties')}</h2>
                 <div className="flex flex-wrap gap-2">
                   {agent.specializationCategories.map(cat => (
                     <span key={cat} className="px-4 py-2 bg-primary/5 text-primary text-sm font-bold rounded-xl">{cat}</span>
@@ -147,7 +149,7 @@ export default function AgentProfilePage() {
             {/* Coverage areas */}
             {agent.coverageAreas?.length > 0 && (
               <div className="bg-surface-container-lowest rounded-2xl p-8 shadow-soft space-y-4">
-                <h2 className="font-headline font-bold text-lg text-primary">Zonas de cobertura</h2>
+                <h2 className="font-headline font-bold text-lg text-primary">{t('agentProfile.coverageAreas')}</h2>
                 <div className="flex flex-wrap gap-2">
                   {agent.coverageAreas.map(zone => (
                     <span key={zone} className="flex items-center gap-1 px-4 py-2 bg-surface-container text-text-muted text-sm font-medium rounded-xl">
@@ -163,11 +165,11 @@ export default function AgentProfilePage() {
           {/* Right: Action card */}
           <div className="lg:col-span-1">
             <div className="bg-surface-container-lowest rounded-2xl p-6 shadow-soft sticky top-28 space-y-5">
-              <h3 className="font-headline font-bold text-lg text-primary">¿Cotizar con {(user.firstName || 'este agente')}?</h3>
+              <h3 className="font-headline font-bold text-lg text-primary">{t('agentProfile.quoteWith', { name: user.firstName || 'este agente' })}</h3>
               <p className="text-sm text-text-muted">
                 {items.length > 0
-                  ? `Tienes ${items.length} producto${items.length > 1 ? 's' : ''} en tu carrito. Selecciona a ${user.firstName || 'este agente'} para enviar tu cotización.`
-                  : 'Selecciona a este agente y luego agrega productos a tu carrito para cotizar.'}
+                  ? t('agentProfile.hasItemsDesc', { count: items.length, name: user.firstName || 'este agente' })
+                  : t('agentProfile.noItemsDesc')}
               </p>
 
               <button
@@ -177,27 +179,27 @@ export default function AgentProfilePage() {
                 <span className="material-symbols-outlined text-base">
                   {items.length > 0 ? 'send' : 'person_add'}
                 </span>
-                {items.length > 0 ? 'Cotizar mi carrito' : 'Seleccionar agente'}
+                {items.length > 0 ? t('agentProfile.quoteCart') : t('agentProfile.selectAgent')}
               </button>
 
               <div className="border-t border-outline-variant/20 pt-4 space-y-3">
                 <div className="flex items-center gap-3 text-sm">
                   <span className="material-symbols-outlined text-mint text-lg">verified_user</span>
-                  <span className="text-text-muted">Agente verificado por TeVra</span>
+                  <span className="text-text-muted">{t('agentProfile.verifiedByTevra')}</span>
                 </div>
                 <div className="flex items-center gap-3 text-sm">
                   <span className="material-symbols-outlined text-secondary text-lg">local_shipping</span>
-                  <span className="text-text-muted">Envío desde Miami, FL</span>
+                  <span className="text-text-muted">{t('agentProfile.shippingFromMiami')}</span>
                 </div>
                 <div className="flex items-center gap-3 text-sm">
                   <span className="material-symbols-outlined text-primary text-lg">schedule</span>
-                  <span className="text-text-muted">Respuesta en menos de 1 hora</span>
+                  <span className="text-text-muted">{t('agentProfile.responseTime')}</span>
                 </div>
               </div>
 
               {agent.referralCode && (
                 <div className="bg-surface-container rounded-xl p-4 text-center">
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-text-muted mb-1">Código de agente</p>
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-text-muted mb-1">{t('agentProfile.agentCode')}</p>
                   <p className="font-mono font-bold text-primary text-lg">{agent.referralCode}</p>
                 </div>
               )}

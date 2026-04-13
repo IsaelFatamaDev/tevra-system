@@ -1,4 +1,8 @@
+import { useTranslation } from 'react-i18next'
+
 export default function WhatsAppButton() {
+  const { t } = useTranslation()
+
   return (
     <a
       href="https://wa.me/1234567890"
@@ -8,7 +12,7 @@ export default function WhatsAppButton() {
     >
       <span className="material-symbols-outlined text-3xl fill-icon">chat</span>
       <span className="absolute right-20 bg-surface-container-lowest text-primary px-4 py-2 rounded-xl text-xs font-bold shadow-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
-        Necesitas ayuda?
+        {t('whatsapp.needHelp')}
       </span>
     </a>
   )

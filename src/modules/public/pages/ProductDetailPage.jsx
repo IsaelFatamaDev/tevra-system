@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { useCart } from '../../../core/hooks/useCart'
 import productsService from '../services/products.service'
 import api from '../../../core/services/api'
@@ -13,6 +14,7 @@ export default function ProductDetailPage() {
   const [activeImg, setActiveImg] = useState(0)
   const [addedToCart, setAddedToCart] = useState(false)
   const { addItem } = useCart()
+  const { t } = useTranslation()
 
   useEffect(() => {
     setLoading(true)
@@ -61,8 +63,8 @@ export default function ProductDetailPage() {
       <main className="min-h-screen bg-background-cream flex items-center justify-center" style={{ paddingTop: 'clamp(3.5rem, 8vh, 5rem)' }}>
         <div className="text-center">
           <span className="material-symbols-outlined text-6xl text-outline-variant mb-4 block">error</span>
-          <p className="font-headline font-bold text-xl text-primary mb-2">Producto no encontrado</p>
-          <Link to="/catalogo" className="text-secondary font-semibold hover:underline">Volver al catálogo</Link>
+          <p className="font-headline font-bold text-xl text-primary mb-2">{t('product.notFound')}</p>
+          <Link to="/catalogo" className="text-secondary font-semibold hover:underline">{t('product.backToCatalog')}</Link>
         </div>
       </main>
     )
@@ -79,7 +81,7 @@ export default function ProductDetailPage() {
         <nav className="flex items-center gap-2 text-xs text-on-surface-variant">
           <Link to="/" className="hover:text-primary transition-colors">Home</Link>
           <span className="material-symbols-outlined text-xs">chevron_right</span>
-          <Link to="/catalogo" className="hover:text-primary transition-colors">Catálogo</Link>
+          <Link to="/catalogo" className="hover:text-primary transition-colors">{t('nav.buy')}</Link>
           {product.category && (
             <>
               <span className="material-symbols-outlined text-xs">chevron_right</span>
@@ -140,7 +142,7 @@ export default function ProductDetailPage() {
                   <span key={i} className="material-symbols-outlined text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
                 ))}
               </div>
-              <span className="text-xs text-text-muted">({reviews.length} opiniones)</span>
+              <span className="text-xs text-text-muted">({reviews.length} {t('product.reviews')})</span>
             </div>
 
             {/* Price */}
@@ -153,7 +155,7 @@ export default function ProductDetailPage() {
               </div>
               {savingsAmount && savingsAmount > 0 && (
                 <div className="inline-flex items-center px-3 py-1 bg-[#d1fadf] text-[#027a48] rounded-full text-xs font-bold gap-1">
-                  Ahorras hasta S/ {savingsAmount.toLocaleString()} 💰
+                  {t('product.savingsUpTo')} S/ {savingsAmount.toLocaleString()} 💰
                 </div>
               )}
             </div>
@@ -164,7 +166,7 @@ export default function ProductDetailPage() {
             {/* Specifications */}
             {specs.length > 0 && (
               <div className="space-y-3">
-                <p className="text-xs font-bold text-primary uppercase tracking-wider">Especificaciones Clave</p>
+                <p className="text-xs font-bold text-primary uppercase tracking-wider">{t('product.specs')}</p>
                 <ul className="grid grid-cols-2 gap-y-2 gap-x-4 text-xs font-medium text-on-surface">
                   {specs.map(([key, val]) => (
                     <li key={key} className="flex items-center gap-2">
@@ -195,7 +197,7 @@ export default function ProductDetailPage() {
                 className={`w-full py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-lg text-lg ${addedToCart ? 'bg-mint text-primary shadow-green-100' : 'bg-primary text-white hover:bg-secondary'}`}
               >
                 <span className="material-symbols-outlined">{addedToCart ? 'check_circle' : 'add_shopping_cart'}</span>
-                {addedToCart ? '¡Agregado al carrito!' : 'Agregar al carrito'}
+                {addedToCart ? t('product.addedToCart') : t('product.addToCart')}
               </button>
 
               <Link
@@ -203,7 +205,7 @@ export default function ProductDetailPage() {
                 className="w-full bg-[#25D366] hover:bg-[#1ebd5e] text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-lg shadow-green-200"
               >
                 <span className="material-symbols-outlined">chat</span>
-                Cotizar con un agente 💬
+                {t('product.quoteWithAgent')}
               </Link>
             </div>
 
@@ -213,17 +215,17 @@ export default function ProductDetailPage() {
                   <span className="material-symbols-outlined text-primary text-xl">support_agent</span>
                 </div>
                 <div>
-                  <p className="text-sm font-bold text-primary">Red de Agentes TeVra</p>
-                  <p className="text-xs text-text-muted">Asesores verificados en tu ciudad</p>
+                  <p className="text-sm font-bold text-primary">{t('product.agentNetwork')}</p>
+                  <p className="text-xs text-text-muted">{t('product.agentNetworkDesc')}</p>
                 </div>
               </div>
               <Link to="/directorio-agentes" className="flex items-center gap-2 text-sm font-bold text-secondary hover:text-primary transition-colors">
                 <span className="material-symbols-outlined text-base">group</span>
-                Encuentra tu agente →
+                {t('product.findAgent')}
               </Link>
               <div className="flex items-start gap-2 text-xs text-on-surface-variant font-medium">
                 <span className="material-symbols-outlined text-sm">verified_user</span>
-                <p>Envío asegurado desde Miami. 5-10 días hábiles.</p>
+                <p>{t('product.shippingFrom')}</p>
               </div>
             </div>
           </div>
@@ -235,8 +237,8 @@ export default function ProductDetailPage() {
         <section className="max-w-7xl mx-auto px-4 sm:px-8 pb-16 space-y-8">
           <div className="flex justify-between items-end">
             <div>
-              <h2 className="text-3xl font-bold font-headline text-primary">Opiniones de clientes</h2>
-              <p className="text-on-surface-variant text-sm mt-1">Lo que dicen los usuarios sobre su experiencia.</p>
+              <h2 className="text-3xl font-bold font-headline text-primary">{t('product.customerReviews')}</h2>
+              <p className="text-on-surface-variant text-sm mt-1">{t('product.reviewsDesc')}</p>
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -269,7 +271,7 @@ export default function ProductDetailPage() {
       {/* Related Products */}
       {related.length > 0 && (
         <section className="max-w-7xl mx-auto px-4 sm:px-8 pb-20 space-y-8">
-          <h2 className="text-3xl font-bold font-headline text-primary">También te puede interesar</h2>
+          <h2 className="text-3xl font-bold font-headline text-primary">{t('product.relatedProducts')}</h2>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {related.map((p) => (
               <Link key={p.id} to={`/catalogo/${p.slug || p.id}`} className="bg-white rounded-xl overflow-hidden group border border-transparent hover:border-outline-variant/20 transition-all hover:shadow-md">

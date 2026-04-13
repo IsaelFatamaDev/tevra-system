@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 
 export default function SplashScreen({ onFinish }) {
+     const { t } = useTranslation()
      const [phase, setPhase] = useState('loading')
 
      useEffect(() => {
@@ -71,7 +73,7 @@ export default function SplashScreen({ onFinish }) {
                          <div className="flex items-center gap-3">
                               <div className="w-8 h-px bg-gradient-to-r from-transparent to-white/20" />
                               <p className="text-white/40 text-[10px] md:text-xs font-bold uppercase tracking-[0.4em]">
-                                   Importaciones Premium desde USA
+                                   {t('splash.tagline')}
                               </p>
                               <div className="w-8 h-px bg-gradient-to-l from-transparent to-white/20" />
                          </div>

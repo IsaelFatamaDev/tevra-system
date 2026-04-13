@@ -1,18 +1,19 @@
+import { useTranslation } from 'react-i18next'
 import useScrollReveal from '../../../core/hooks/useScrollReveal'
 
 const recentSales = [
   {
     name: 'iPad Pro M4',
-    location: 'Enviado a Lima, Miraflores',
+    location: 'Lima, Miraflores',
     price: '$999',
-    time: 'Hace 2 horas',
+    time: '2h',
     image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDHFHCEIufTnLk9BLdwapoU9_pvCaEo5SMJpqw8gcVmLHOnBlhmFEYEZeJ5RQxaHSSFlxnlYIiHfN11sAvw0qv9-MRkTP0e3B4rjz97-r1QAIYx5F1XDw_8yHMYopgWroWqbXW0KhIkGz7tFmktAL8lYuxlmG_nbSRX3lykZQNwdN9qWAWHKfyYLBP8G3twonk6dhxfEjXNgpLZ5_WnZO_RDSskhSyZIumTSSyo_FI0YG1TJkClQZbcsf_C7Zr6vV_BME84n1zJPgk7',
   },
   {
     name: 'Nike Air Force 1',
-    location: 'Enviado a Arequipa',
+    location: 'Arequipa',
     price: '$110',
-    time: 'Hace 5 horas',
+    time: '5h',
     image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD47Pc4QhdiDw6ZiT41e0erq82c30co7oSp3XO1_hAs0ceKqDK7xtOSYMjSoMrMQMstGdfv3MHKqg4AIbHqRU_87UZ_aQGxZuZsKRWfZt6su6bv7Tvvp3_CBaG73XqLh_r8HnvOFDR-wUwZSHQIVH-VwAbg5Bfm4Kuit-wmpAWZ1f02A8y4TNt2Z2EywtuTrBYu05pgdVzkRBLEHrc0L0cgQOGT0dOzIiACiEvNlNj0kFORfS-cQlOSLDOojTNoDuNPpvkn6w9_RizW',
   },
 ]
@@ -21,20 +22,23 @@ const agents = [
   {
     initials: 'AV',
     name: 'Andrea Valdivia',
-    info: 'Lima · 1,240 gestiones exitosas',
+    city: 'Lima',
+    mgmt: 1240,
     stars: 5,
     color: 'bg-secondary/20 border-secondary',
   },
   {
     initials: 'CM',
     name: 'Carlos Mendez',
-    info: 'Trujillo · 850 gestiones exitosas',
+    city: 'Trujillo',
+    mgmt: 850,
     stars: 4,
     color: 'bg-blue-500/20 border-blue-500',
   },
 ]
 
 export default function SocialProof() {
+  const { t } = useTranslation()
   const { ref: titleRef, isVisible: titleVisible } = useScrollReveal()
   const { ref: leftRef, isVisible: leftVisible } = useScrollReveal(0.1)
   const { ref: rightRef, isVisible: rightVisible } = useScrollReveal(0.1)
@@ -43,15 +47,15 @@ export default function SocialProof() {
     <section className="py-32 bg-background-cream">
       <div className="max-w-7xl mx-auto px-8">
         <div ref={titleRef} className={`text-center mb-20 reveal ${titleVisible ? 'visible' : ''}`}>
-          <h2 className="font-headline text-4xl font-extrabold text-primary mb-4">Comunidad TeVra</h2>
-          <p className="text-text-muted">Cientos de usuarios y agentes conectando cada dia.</p>
+          <h2 className="font-headline text-4xl font-extrabold text-primary mb-4">{t('home.social.title')}</h2>
+          <p className="text-text-muted">{t('home.social.subtitle')}</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
           <div ref={leftRef} className={`bg-surface-container-lowest p-10 rounded-3xl shadow-soft reveal-left ${leftVisible ? 'visible' : ''}`}>
             <h3 className="font-headline font-extrabold text-xl mb-8 flex items-center gap-2">
               <span className="material-symbols-outlined text-secondary">flash_on</span>
-              Ventas Recientes
+              {t('home.social.recentSales')}
             </h3>
             <div className="space-y-6">
               {recentSales.map((sale) => (
@@ -64,7 +68,7 @@ export default function SocialProof() {
                   </div>
                   <div className="flex-grow">
                     <div className="font-bold text-primary">{sale.name}</div>
-                    <div className="text-xs text-text-muted">{sale.location}</div>
+                    <div className="text-xs text-text-muted">{t('home.social.sentTo')} {sale.location}</div>
                   </div>
                   <div className="text-right">
                     <div className="text-secondary font-black text-lg">{sale.price}</div>
@@ -81,7 +85,7 @@ export default function SocialProof() {
             </div>
             <h3 className="font-headline font-extrabold text-xl mb-8 flex items-center gap-2">
               <span className="material-symbols-outlined text-secondary">stars</span>
-              Agentes Certificados
+              {t('home.social.certifiedAgents')}
             </h3>
             <div className="space-y-6 relative z-10">
               {agents.map((agent) => (
@@ -94,7 +98,7 @@ export default function SocialProof() {
                   </div>
                   <div>
                     <div className="font-bold text-lg">{agent.name}</div>
-                    <div className="text-white/60 text-sm">{agent.info}</div>
+                    <div className="text-white/60 text-sm">{agent.city} · {agent.mgmt.toLocaleString()} {t('home.social.successfulMgmt')}</div>
                     <div className="flex gap-1 mt-1">
                       {Array.from({ length: 5 }).map((_, i) => (
                         <span

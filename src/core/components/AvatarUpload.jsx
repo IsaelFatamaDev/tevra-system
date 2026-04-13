@@ -1,7 +1,9 @@
 import { useState, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import api from '../services/api'
 
 export default function AvatarUpload({ currentUrl, name, onUploaded, size = 'md' }) {
+  const { t } = useTranslation()
   const [uploading, setUploading] = useState(false)
   const [preview, setPreview] = useState(null)
   const inputRef = useRef(null)
@@ -21,11 +23,11 @@ export default function AvatarUpload({ currentUrl, name, onUploaded, size = 'md'
     if (!file) return
 
     if (!file.type.startsWith('image/')) {
-      alert('Solo se permiten imágenes')
+      alert(t('avatar.onlyImages'))
       return
     }
     if (file.size > 5 * 1024 * 1024) {
-      alert('El archivo no debe superar 5MB')
+      alert(t('avatar.max5mb'))
       return
     }
 

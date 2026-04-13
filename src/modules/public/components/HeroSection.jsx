@@ -1,9 +1,12 @@
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import useScrollReveal from '../../../core/hooks/useScrollReveal'
 
 export default function HeroSection() {
+  const { t } = useTranslation()
+
   return (
-      <section className="tevra-hero-gradient flex items-center overflow-hidden" style={{ minHeight: '100svh', paddingTop: 'clamp(4rem, 10vh, 6rem)' }}>
+    <section className="tevra-hero-gradient flex items-center overflow-hidden" style={{ minHeight: '100svh', paddingTop: 'clamp(4rem, 10vh, 6rem)' }}>
       <div className="tevra-hero-overlay" />
 
       <div className="w-full h-full max-w-7xl mx-auto px-4 sm:px-8 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center relative z-10 py-8 lg:py-0" style={{ minHeight: 'inherit' }}>
@@ -14,17 +17,21 @@ export default function HeroSection() {
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 rounded-full border border-white/20">
               <span className="w-2 h-2 bg-tevra-coral rounded-full animate-pulse" />
               <span className="text-white text-[10px] sm:text-[11px] font-bold uppercase tracking-widest">
-                Servicio Premium 2026
+                {t('home.hero.badge')}
               </span>
             </div>
           </div>
 
           <h1 className="font-headline font-extrabold text-white leading-[1.1] tracking-tight" style={{ fontSize: 'clamp(2rem, 6vw, 4.5rem)' }}>
-            Lo que quieras de <span className="text-tevra-coral">USA</span>, en la puerta de tu casa.
+            {t('home.hero.title').split('<coral>')[0]}
+            <span className="text-tevra-coral">
+              {t('home.hero.title').split('<coral>')[1]?.split('</coral>')[0]}
+            </span>
+            {t('home.hero.title').split('</coral>')[1]}
           </h1>
 
           <p className="text-white/70 leading-relaxed max-w-lg" style={{ fontSize: 'clamp(0.95rem, 2vw, 1.25rem)' }}>
-            Accede a las mejores tiendas del mundo sin complicaciones. Productos 100% originales con logistica asegurada de puerta a puerta.
+            {t('home.hero.subtitle')}
           </p>
 
           <div className="flex flex-wrap gap-3 sm:gap-5 pt-2">
@@ -33,25 +40,25 @@ export default function HeroSection() {
               className="bg-tevra-coral text-white rounded-2xl font-headline font-bold shadow-tevra-coral transition-all duration-300 hover:-translate-y-1"
               style={{ padding: 'clamp(0.75rem, 2vh, 1.25rem) clamp(1.5rem, 3vw, 2.5rem)', fontSize: 'clamp(0.875rem, 1.5vw, 1.125rem)' }}
             >
-              Explorar Catalogo
+              {t('home.hero.exploreCatalog')}
             </Link>
             <button
               className="glass-card text-white rounded-2xl font-headline font-bold hover:bg-white/10 transition-all duration-300"
               style={{ padding: 'clamp(0.75rem, 2vh, 1.25rem) clamp(1.5rem, 3vw, 2.5rem)', fontSize: 'clamp(0.875rem, 1.5vw, 1.125rem)' }}
             >
-              Cotizar Link
+              {t('home.hero.quoteLink')}
             </button>
           </div>
 
           <div className="flex gap-8 sm:gap-10 pt-4 sm:pt-8 items-center">
             <div className="flex flex-col">
               <span className="text-white font-black" style={{ fontSize: 'clamp(1.25rem, 3vw, 1.75rem)' }}>10k+</span>
-              <span className="text-white/50 text-[10px] sm:text-xs uppercase tracking-widest">Envios Exitosos</span>
+              <span className="text-white/50 text-[10px] sm:text-xs uppercase tracking-widest">{t('home.hero.shipments')}</span>
             </div>
             <div className="w-px h-10 bg-white/10" />
             <div className="flex flex-col">
               <span className="text-white font-black" style={{ fontSize: 'clamp(1.25rem, 3vw, 1.75rem)' }}>4.9/5</span>
-              <span className="text-white/50 text-[10px] sm:text-xs uppercase tracking-widest">Calificacion</span>
+              <span className="text-white/50 text-[10px] sm:text-xs uppercase tracking-widest">{t('home.hero.rating')}</span>
             </div>
           </div>
         </div>
@@ -69,7 +76,7 @@ export default function HeroSection() {
           </div>
           <div className="absolute bottom-6 left-6 right-6 z-20 bg-white/10 backdrop-blur-md rounded-2xl px-5 py-3 border border-white/15 flex items-center gap-3">
             <span className="w-3 h-3 bg-mint rounded-full animate-pulse flex-shrink-0" />
-            <span className="text-white text-xs font-bold uppercase tracking-widest">Envío garantizado puerta a puerta</span>
+            <span className="text-white text-xs font-bold uppercase tracking-widest">{t('home.hero.guarantee')}</span>
           </div>
         </div>
       </div>

@@ -1,10 +1,12 @@
 import { useState, useEffect, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useAuth } from '../../../core/contexts/AuthContext'
 import api from '../../../core/services/api'
 import AvatarUpload from '../../../core/components/AvatarUpload'
 import { useFieldAvailability } from '../../../core/hooks/useFieldAvailability'
 
 export default function ClientSecurity() {
+  const { t } = useTranslation()
   const { user, refreshUser } = useAuth()
   const [tab, setTab] = useState('profile')
 
@@ -36,8 +38,8 @@ export default function ClientSecurity() {
 
   const validateProfile = () => {
     const e = {}
-    if (!profile.firstName.trim()) e.firstName = 'Requerido'
-    if (!profile.lastName.trim()) e.lastName = 'Requerido'
+    if (!profile.firstName.trim()) e.firstName = t('client.security.required')
+    if (!profile.lastName.trim()) e.lastName = t('client.security.required')
     setProfileErrors(e)
     return Object.keys(e).length === 0
   }
@@ -52,10 +54,10 @@ export default function ClientSecurity() {
     setProfileMsg(null)
     try {
       await api.put('/users/me', profile)
-      setProfileMsg({ type: 'success', text: 'Tus datos se guardaron correctamente.' })
+      setProfileMsg({ type: 'success', text: t('client.security.profileSaved') })
       if (refreshUser) refreshUser()
     } catch (err) {
-      setProfileMsg({ type: 'error', text: err.message || 'Error al guardar. Intenta de nuevo.' })
+      setProfileMsg({ type: 'error', text: err.message || t('client.security.profileSaveError') })
     } finally {
       setProfileSaving(false)
     }
@@ -63,10 +65,10 @@ export default function ClientSecurity() {
 
   const validatePasswords = () => {
     const e = {}
-    if (!passwords.currentPassword) e.currentPassword = 'Debes ingresar tu clave actual'
-    if (!passwords.newPassword) e.newPassword = 'Crea una clave nueva'
-    else if (passwords.newPassword.length < 6) e.newPassword = 'Mínimo 6 caracteres requeridos'
-    if (passwords.newPassword !== passwords.confirmPassword) e.confirmPassword = 'Las contraseñas no coinciden'
+    if (!passwords.currentPassword) e.currentPassword = t('client.security.enterCurrentPassword')
+    if (!passwords.newPassword) e.newPassword = t('client.security.createNewPassword')
+    else if (passwords.newPassword.length < 6) e.newPassword = t('client.security.min6Chars')
+    if (passwords.newPassword !== passwords.confirmPassword) e.confirmPassword = t('client.security.passwordsDontMatch')
     setPwErrors(e)
     return Object.keys(e).length === 0
   }
@@ -80,10 +82,10 @@ export default function ClientSecurity() {
         currentPassword: passwords.currentPassword,
         newPassword: passwords.newPassword,
       })
-      setPwMsg({ type: 'success', text: 'Tu contraseña ha sido actualizada y asegurada.' })
+      setPwMsg({ type: 'success', text: t('client.security.passwordUpdated') })
       setPasswords({ currentPassword: '', newPassword: '', confirmPassword: '' })
     } catch (err) {
-      setPwMsg({ type: 'error', text: err.message || 'Error al cambiar contraseña' })
+      setPwMsg({ type: 'error', text: err.message || t('client.security.passwordChangeError') })
     } finally {
       setPwSaving(false)
     }
@@ -109,31 +111,31 @@ export default function ClientSecurity() {
   )
 
   const tabs = [
-    { id: 'profile', label: 'Información Personal', icon: 'manage_accounts' },
-    { id: 'password', label: 'Seguridad y Accesos', icon: 'shield_lock' },
+    { id: 'profile', label: t('client.security.tabPersonalInfo'), icon: 'manage_accounts' },
+    { id: 'password', label: t('client.security.tabSecurityAccess'), icon: 'shield_lock' },
   ]
 
   return (
     <div className="space-y-8 platform-enter max-w-4xl mx-auto pb-10">
-      
+
       {/* Header */}
       <div>
-        <h1 className="font-headline text-3xl font-extrabold text-slate-900 tracking-tight">Privacidad y Seguridad</h1>
-        <p className="text-slate-500 mt-1">Administra tu identidad, foto de perfil y credenciales de acceso a TeVra.</p>
+        <h1 className="font-headline text-3xl font-extrabold text-slate-900 tracking-tight">{t('client.security.title')}</h1>
+        <p className="text-slate-500 mt-1">{t('client.security.subtitle')}</p>
       </div>
 
       {/* Tabs */}
       <div className="flex gap-2 p-1 bg-slate-100/50 border border-slate-200 rounded-2xl w-max max-w-full overflow-x-auto">
-        {tabs.map(t => (
+        {tabs.map(tb => (
           <button
-            key={t.id}
-            onClick={() => { setTab(t.id); setProfileMsg(null); setPwMsg(null); }}
-            className={`flex items-center gap-2 px-5 py-3 rounded-xl text-sm font-bold transition-all whitespace-nowrap ${tab === t.id 
-              ? 'bg-white text-slate-900 shadow-[0_2px_10px_rgba(0,0,0,0.06)]' 
+            key={tb.id}
+            onClick={() => { setTab(tb.id); setProfileMsg(null); setPwMsg(null); }}
+            className={`flex items-center gap-2 px-5 py-3 rounded-xl text-sm font-bold transition-all whitespace-nowrap ${tab === tb.id
+              ? 'bg-white text-slate-900 shadow-[0_2px_10px_rgba(0,0,0,0.06)]'
               : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'}`}
           >
-            <span className="material-symbols-outlined text-[18px]">{t.icon}</span>
-            {t.label}
+            <span className="material-symbols-outlined text-[18px]">{tb.icon}</span>
+            {tb.label}
           </button>
         ))}
       </div>
@@ -141,7 +143,7 @@ export default function ClientSecurity() {
       {/* Tab Content: Profile */}
       {tab === 'profile' && (
         <div className="bg-white rounded-[2rem] p-8 shadow-[0_2px_20px_rgba(0,0,0,0.02)] border border-slate-100">
-          
+
           <div className="flex flex-col md:flex-row items-center md:items-start gap-8 mb-8 pb-8 border-b border-slate-100">
             <div className="shrink-0 relative group cursor-pointer">
               <AvatarUpload
@@ -155,7 +157,7 @@ export default function ClientSecurity() {
               <h2 className="font-headline text-2xl font-extrabold text-slate-900">{user?.firstName} {user?.lastName}</h2>
               <p className="text-slate-500 font-medium mb-3">{user?.email}</p>
               <span className="px-3 py-1 bg-indigo-50 border border-indigo-100 text-indigo-600 rounded-lg text-[10px] font-bold uppercase tracking-widest inline-block">
-                Rol: {user?.role === 'customer' ? 'Cuenta de Cliente' : user?.role}
+                {t('client.security.roleLabel')}: {user?.role === 'customer' ? t('client.security.customerAccount') : user?.role}
               </span>
             </div>
           </div>
@@ -168,15 +170,15 @@ export default function ClientSecurity() {
           )}
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <InputModern label="Nombres" icon="badge" value={profile.firstName} onChange={e => setProfile({ ...profile, firstName: e.target.value })} error={profileErrors.firstName} />
-            <InputModern label="Apellidos" icon="badge" value={profile.lastName} onChange={e => setProfile({ ...profile, lastName: e.target.value })} error={profileErrors.lastName} />
+            <InputModern label={t('client.security.firstName')} icon="badge" value={profile.firstName} onChange={e => setProfile({ ...profile, firstName: e.target.value })} error={profileErrors.firstName} />
+            <InputModern label={t('client.security.lastName')} icon="badge" value={profile.lastName} onChange={e => setProfile({ ...profile, lastName: e.target.value })} error={profileErrors.lastName} />
             <div>
-              <InputModern label="Línea Telefónica Móvil" icon="phone_iphone" value={profile.phone} onChange={e => setProfile({ ...profile, phone: e.target.value })} placeholder="+51 999 999 999" error={availabilityErrors.phone} />
-              {checking.phone && <p className="text-[11px] text-slate-400 mt-1 flex items-center gap-1"><span className="w-3 h-3 border-2 border-slate-300 border-t-slate-600 rounded-full animate-spin inline-block" /> Verificando...</p>}
+              <InputModern label={t('client.security.mobilePhone')} icon="phone_iphone" value={profile.phone} onChange={e => setProfile({ ...profile, phone: e.target.value })} placeholder="+51 999 999 999" error={availabilityErrors.phone} />
+              {checking.phone && <p className="text-[11px] text-slate-400 mt-1 flex items-center gap-1"><span className="w-3 h-3 border-2 border-slate-300 border-t-slate-600 rounded-full animate-spin inline-block" /> {t('client.security.verifying')}</p>}
             </div>
             <div>
-              <InputModern label="Línea WhatsApp" icon="chat" value={profile.whatsapp} onChange={e => setProfile({ ...profile, whatsapp: e.target.value })} placeholder="+51 999 999 999" error={availabilityErrors.whatsapp} />
-              {checking.whatsapp && <p className="text-[11px] text-slate-400 mt-1 flex items-center gap-1"><span className="w-3 h-3 border-2 border-slate-300 border-t-slate-600 rounded-full animate-spin inline-block" /> Verificando...</p>}
+              <InputModern label={t('client.security.whatsappLine')} icon="chat" value={profile.whatsapp} onChange={e => setProfile({ ...profile, whatsapp: e.target.value })} placeholder="+51 999 999 999" error={availabilityErrors.whatsapp} />
+              {checking.whatsapp && <p className="text-[11px] text-slate-400 mt-1 flex items-center gap-1"><span className="w-3 h-3 border-2 border-slate-300 border-t-slate-600 rounded-full animate-spin inline-block" /> {t('client.security.verifying')}</p>}
             </div>
           </div>
 
@@ -187,7 +189,7 @@ export default function ClientSecurity() {
               className="px-8 py-3.5 bg-slate-900 text-white rounded-2xl font-bold text-sm hover:bg-slate-800 transition-all shadow-[0_4px_20px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] disabled:opacity-50 flex items-center gap-2"
             >
               {profileSaving ? <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <span className="material-symbols-outlined text-[20px]">save</span>}
-              Guardar todos los cambios
+              {t('client.security.saveAllChanges')}
             </button>
           </div>
         </div>
@@ -198,12 +200,12 @@ export default function ClientSecurity() {
         <div className="bg-white rounded-[2rem] p-8 shadow-[0_2px_20px_rgba(0,0,0,0.02)] border border-slate-100 max-w-2xl">
           <div className="flex items-center gap-4 mb-6">
             <div className="w-12 h-12 bg-slate-50 border border-slate-100 flex items-center justify-center rounded-2xl shrink-0">
-               <span className="material-symbols-outlined text-slate-400">password</span>
+              <span className="material-symbols-outlined text-slate-400">password</span>
             </div>
-             <div>
-               <h3 className="font-headline text-xl font-extrabold text-slate-900">Credenciales de Acceso</h3>
-               <p className="text-sm text-slate-500 font-medium">Blinda tu cuenta utilizando una contraseña de alta complejidad.</p>
-             </div>
+            <div>
+              <h3 className="font-headline text-xl font-extrabold text-slate-900">{t('client.security.accessCredentials')}</h3>
+              <p className="text-sm text-slate-500 font-medium">{t('client.security.credentialsDesc')}</p>
+            </div>
           </div>
 
           {pwMsg && (
@@ -214,10 +216,10 @@ export default function ClientSecurity() {
           )}
 
           <div className="space-y-6">
-            <InputModern type="password" label="Contraseña Actual" icon="key" value={passwords.currentPassword} onChange={e => setPasswords({ ...passwords, currentPassword: e.target.value })} error={pwErrors.currentPassword} />
+            <InputModern type="password" label={t('client.security.currentPassword')} icon="key" value={passwords.currentPassword} onChange={e => setPasswords({ ...passwords, currentPassword: e.target.value })} error={pwErrors.currentPassword} />
             <div className="pt-4 border-t border-slate-100 border-dashed"></div>
-            <InputModern type="password" label="Nueva Contraseña" icon="lock_reset" value={passwords.newPassword} onChange={e => setPasswords({ ...passwords, newPassword: e.target.value })} error={pwErrors.newPassword} placeholder="Mínimo 6 caracteres" />
-            <InputModern type="password" label="Repite Nueva Contraseña" icon="lock_person" value={passwords.confirmPassword} onChange={e => setPasswords({ ...passwords, confirmPassword: e.target.value })} error={pwErrors.confirmPassword} />
+            <InputModern type="password" label={t('client.security.newPassword')} icon="lock_reset" value={passwords.newPassword} onChange={e => setPasswords({ ...passwords, newPassword: e.target.value })} error={pwErrors.newPassword} placeholder={t('client.security.newPasswordPlaceholder')} />
+            <InputModern type="password" label={t('client.security.repeatPassword')} icon="lock_person" value={passwords.confirmPassword} onChange={e => setPasswords({ ...passwords, confirmPassword: e.target.value })} error={pwErrors.confirmPassword} />
           </div>
 
           <div className="flex justify-end mt-10">
@@ -227,7 +229,7 @@ export default function ClientSecurity() {
               className="px-8 py-3.5 bg-slate-900 text-white rounded-2xl font-bold text-sm hover:bg-slate-800 transition-all shadow-[0_4px_20px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] disabled:opacity-50 flex items-center gap-2"
             >
               {pwSaving ? <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <span className="material-symbols-outlined text-[20px]">enhanced_encryption</span>}
-              Asegurar Cuenta
+              {t('client.security.secureAccount')}
             </button>
           </div>
         </div>

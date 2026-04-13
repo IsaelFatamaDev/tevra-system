@@ -1,11 +1,14 @@
 import { useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { useAuth } from '../../../core/contexts/AuthContext'
+import LanguageSwitcher from '../../../core/components/LanguageSwitcher'
 
 export default function ClientHeader() {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
   const [mobileOpen, setMobileOpen] = useState(false)
+  const { t } = useTranslation()
 
   const handleLogout = () => {
     logout()
@@ -15,30 +18,27 @@ export default function ClientHeader() {
   const isAgent = user?.role === 'agent'
 
   const navItems = isAgent ? [
-    { to: '/agente', label: 'Dashboard', icon: 'space_dashboard', end: true },
-    { to: '/agente/pedidos', label: 'Pedidos', icon: 'receipt_long' },
-    { to: '/agente/comisiones', label: 'Comisiones', icon: 'payments' },
-    { to: '/agente/clientes', label: 'Clientes', icon: 'group' },
-    { to: '/agente/seguridad', label: 'Seguridad', icon: 'shield' },
+    { to: '/agente', label: t('agentDash.header.dashboard'), icon: 'space_dashboard', end: true },
+    { to: '/agente/pedidos', label: t('agentDash.header.orders'), icon: 'receipt_long' },
+    { to: '/agente/comisiones', label: t('agentDash.header.commissions'), icon: 'payments' },
+    { to: '/agente/clientes', label: t('agentDash.header.clients'), icon: 'group' },
+    { to: '/agente/seguridad', label: t('agentDash.header.security'), icon: 'shield' },
   ] : [
-    { to: '/mi-cuenta', label: 'Inicio', icon: 'space_dashboard', end: true },
-    { to: '/mi-cuenta/pedidos', label: 'Pedidos', icon: 'receipt_long' },
-    { to: '/mi-cuenta/direcciones', label: 'Direcciones', icon: 'location_on' },
-    { to: '/mi-cuenta/seguridad', label: 'Seguridad', icon: 'shield' },
+    { to: '/mi-cuenta', label: t('client.header.dashboard'), icon: 'space_dashboard', end: true },
+    { to: '/mi-cuenta/pedidos', label: t('client.header.orders'), icon: 'receipt_long' },
+    { to: '/mi-cuenta/direcciones', label: t('client.header.addresses'), icon: 'location_on' },
+    { to: '/mi-cuenta/seguridad', label: t('client.header.security'), icon: 'shield' },
   ]
 
-  const roleLabel = isAgent ? 'Agente' : 'Mi Cuenta'
+  const roleLabel = isAgent ? t('agentDash.header.agentLabel') : t('client.header.myAccount')
   const roleColor = isAgent ? 'from-emerald-500 to-teal-600' : 'from-primary to-primary-dark'
 
   return (
     <header className="sticky top-0 z-30 bg-white shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
-      {/* Top accent bar */}
       <div className={`h-[3px] w-full bg-gradient-to-r ${roleColor}`} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-15 flex items-center justify-between gap-4">
-        {/* Left: Logo + Nav */}
         <div className="flex items-center gap-6">
-          {/* Logo */}
           <NavLink to={isAgent ? '/agente' : '/mi-cuenta'} className="flex items-center gap-2 flex-shrink-0">
             <div className={`w-7 h-7 rounded-lg flex items-center justify-center bg-gradient-to-br ${roleColor} shadow-sm`}>
               <span className="text-white font-black text-[11px]">TV</span>
@@ -48,7 +48,6 @@ export default function ClientHeader() {
             </span>
           </NavLink>
 
-          {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-0.5">
             {navItems.map((item) => (
               <NavLink
@@ -82,16 +81,15 @@ export default function ClientHeader() {
           </nav>
         </div>
 
-        {/* Right: User area */}
         <div className="flex items-center gap-2">
-          {/* Role badge */}
           <span className={`hidden sm:inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold text-white bg-gradient-to-r ${roleColor}`}>
             {roleLabel}
           </span>
 
+          <LanguageSwitcher variant="dark" />
+
           <div className="w-px h-5 bg-outline-variant/20 mx-0.5" />
 
-          {/* User avatar + name */}
           <div className="flex items-center gap-2">
             {user?.avatarUrl ? (
               <img src={user.avatarUrl} alt={user.firstName} className="w-8 h-8 rounded-full object-cover ring-2 ring-outline-variant/20" />
@@ -103,16 +101,14 @@ export default function ClientHeader() {
             <span className="hidden lg:block text-sm font-semibold text-on-background">{user?.firstName}</span>
           </div>
 
-          {/* Logout */}
           <button
             onClick={handleLogout}
             className="p-2 rounded-xl text-text-muted hover:text-red-500 hover:bg-red-50 transition-colors"
-            title="Cerrar sesión"
+            title={t('common.logout')}
           >
             <span className="material-symbols-outlined text-[18px]">logout</span>
           </button>
 
-          {/* Mobile hamburger */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
             className="md:hidden p-2 rounded-xl text-text-muted hover:bg-surface-container-low transition-colors"
@@ -122,7 +118,6 @@ export default function ClientHeader() {
         </div>
       </div>
 
-      {/* Mobile Nav Dropdown */}
       {mobileOpen && (
         <div className="md:hidden border-t border-outline-variant/10 bg-white px-4 py-3 space-y-1">
           {navItems.map((item) => (
@@ -158,7 +153,7 @@ export default function ClientHeader() {
               className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-red-500 hover:bg-red-50 transition-all w-full"
             >
               <span className="material-symbols-outlined text-[18px]">logout</span>
-              Cerrar sesión
+              {t('common.logout')}
             </button>
           </div>
         </div>

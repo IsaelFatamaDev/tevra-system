@@ -1,10 +1,12 @@
 import { useState, useEffect, useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
 import reviewsService from '../../public/services/reviews.service'
 import Pagination from '../../../core/components/Pagination'
 
 const ITEMS_PER_PAGE = 10
 
 export default function AdminReviews() {
+  const { t } = useTranslation()
   const [reviews, setReviews] = useState([])
   const [total, setTotal] = useState(0)
   const [loading, setLoading] = useState(true)
@@ -28,8 +30,8 @@ export default function AdminReviews() {
 
   useEffect(() => {
     setPage(1)
-    const t = setTimeout(fetchReviews, search ? 350 : 0)
-    return () => clearTimeout(t)
+    const timer = setTimeout(fetchReviews, search ? 350 : 0)
+    return () => clearTimeout(timer)
   }, [search, ratingFilter])
 
   const verifiedFiltered = verifiedFilter === ''
@@ -40,7 +42,7 @@ export default function AdminReviews() {
   const paginated = verifiedFiltered.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE)
 
   const handleDeleteReview = async (id) => {
-    if (!confirm('¿Eliminar esta reseña permanentemente?')) return
+    if (!confirm(t('admin.reviews.deleteConfirm'))) return
     try {
       await reviewsService.remove(id)
       setViewReview(null)
@@ -72,8 +74,8 @@ export default function AdminReviews() {
     <div className="max-w-7xl mx-auto space-y-5 platform-enter">
       {/* Header */}
       <div>
-        <h2 className="text-xl font-semibold text-zinc-900">Moderación de Reseñas</h2>
-        <p className="text-sm text-zinc-500 mt-0.5">Supervisa la retroalimentación de los clientes sobre los productos.</p>
+        <h2 className="text-xl font-semibold text-zinc-900">{t('admin.reviews.title')}</h2>
+        <p className="text-sm text-zinc-500 mt-0.5">{t('admin.reviews.subtitle')}</p>
       </div>
 
       {/* Metrics */}
@@ -83,7 +85,7 @@ export default function AdminReviews() {
             <span className="material-symbols-outlined text-[18px]">star</span>
           </div>
           <div>
-            <p className="text-xs text-zinc-500">Rating Promedio</p>
+            <p className="text-xs text-zinc-500">{t('admin.reviews.avgRating')}</p>
             <p className="text-lg font-semibold text-zinc-900">{avgRating.toFixed(1)}</p>
           </div>
         </div>
@@ -92,7 +94,7 @@ export default function AdminReviews() {
             <span className="material-symbols-outlined text-[18px]">reviews</span>
           </div>
           <div>
-            <p className="text-xs text-zinc-500">Total Reseñas</p>
+            <p className="text-xs text-zinc-500">{t('admin.reviews.totalReviews')}</p>
             <p className="text-lg font-semibold text-zinc-900">{reviews.length}</p>
           </div>
         </div>
@@ -101,12 +103,12 @@ export default function AdminReviews() {
             <span className="material-symbols-outlined text-[18px]">verified</span>
           </div>
           <div>
-            <p className="text-xs text-zinc-500">Verificadas</p>
+            <p className="text-xs text-zinc-500">{t('admin.reviews.verified')}</p>
             <p className="text-lg font-semibold text-zinc-900">{verifiedCount}</p>
           </div>
         </div>
         <div className="bg-white p-4 rounded-xl border border-zinc-200">
-          <p className="text-xs text-zinc-500 mb-2">Distribución</p>
+          <p className="text-xs text-zinc-500 mb-2">{t('admin.reviews.distribution')}</p>
           <div className="space-y-1">
             {ratingDist.map(d => (
               <div key={d.star} className="flex items-center gap-1.5">
@@ -126,7 +128,7 @@ export default function AdminReviews() {
         <div className="p-4 border-b border-zinc-100 flex flex-col sm:flex-row gap-3">
           <div className="relative flex-1">
             <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 text-[18px]">search</span>
-            <input type="text" value={search} onChange={e => setSearch(e.target.value)} placeholder="Buscar por usuario, título o comentario..."
+            <input type="text" value={search} onChange={e => setSearch(e.target.value)} placeholder={t('admin.reviews.searchPlaceholder')}
               className="w-full pl-9 pr-4 py-2 bg-zinc-50 border border-zinc-200 rounded-lg text-sm focus:ring-2 focus:ring-zinc-900/10 focus:border-zinc-400 outline-none transition-all" />
           </div>
           <div className="flex gap-1.5 flex-wrap">
@@ -138,7 +140,7 @@ export default function AdminReviews() {
             ))}
             <button onClick={() => setVerifiedFilter(verifiedFilter === 'yes' ? '' : 'yes')}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${verifiedFilter === 'yes' ? 'bg-zinc-900 text-white' : 'bg-zinc-50 text-zinc-600 hover:bg-zinc-100 border border-zinc-200'}`}>
-              Verificadas
+              {t('admin.reviews.verifiedFilter')}
             </button>
           </div>
         </div>
@@ -148,24 +150,24 @@ export default function AdminReviews() {
         ) : reviews.length === 0 ? (
           <div className="text-center py-16">
             <span className="material-symbols-outlined text-3xl text-zinc-300">rate_review</span>
-            <p className="text-sm text-zinc-500 mt-2">No se encontraron reseñas</p>
+            <p className="text-sm text-zinc-500 mt-2">{t('admin.reviews.noReviewsFound')}</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left min-w-[650px]">
               <thead>
                 <tr className="bg-zinc-50 text-[11px] font-medium text-zinc-500 uppercase tracking-wider border-b border-zinc-100">
-                  <th className="px-5 py-3">Usuario</th>
-                  <th className="px-5 py-3">Calificación</th>
-                  <th className="px-5 py-3">Comentario</th>
-                  <th className="px-5 py-3">Fecha</th>
-                  <th className="px-5 py-3">Estado</th>
-                  <th className="px-5 py-3 text-right">Acciones</th>
+                  <th className="px-5 py-3">{t('admin.table.user')}</th>
+                  <th className="px-5 py-3">{t('admin.table.rating')}</th>
+                  <th className="px-5 py-3">{t('admin.table.comment')}</th>
+                  <th className="px-5 py-3">{t('admin.table.date')}</th>
+                  <th className="px-5 py-3">{t('admin.table.status')}</th>
+                  <th className="px-5 py-3 text-right">{t('admin.table.actions')}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-zinc-100">
                 {paginated.map(rev => {
-                  const reviewerName = rev.reviewer ? `${rev.reviewer.firstName} ${rev.reviewer.lastName}` : 'Anónimo'
+                  const reviewerName = rev.reviewer ? `${rev.reviewer.firstName} ${rev.reviewer.lastName}` : t('admin.reviews.anonymous')
                   return (
                     <tr key={rev.id} className="hover:bg-zinc-50 transition-colors group">
                       <td className="px-5 py-3">
@@ -189,16 +191,16 @@ export default function AdminReviews() {
                       <td className="px-5 py-3">
                         {rev.isVerifiedPurchase ? (
                           <span className="inline-flex items-center gap-1.5 px-2 py-0.5 bg-emerald-50 text-emerald-700 text-[11px] font-medium rounded-md">
-                            <span className="material-symbols-outlined text-[12px]">check_circle</span> Verificada
+                            <span className="material-symbols-outlined text-[12px]">check_circle</span> {t('admin.reviews.verifiedBadge')}
                           </span>
                         ) : (
                           <span className="inline-flex items-center gap-1.5 px-2 py-0.5 bg-zinc-100 text-zinc-500 text-[11px] font-medium rounded-md">
-                            <span className="material-symbols-outlined text-[12px]">schedule</span> Pendiente
+                            <span className="material-symbols-outlined text-[12px]">schedule</span> {t('admin.reviews.pendingBadge')}
                           </span>
                         )}
                       </td>
                       <td className="px-5 py-3 text-right">
-                        <button onClick={() => setViewReview(rev)} title="Ver detalle"
+                        <button onClick={() => setViewReview(rev)} title={t('admin.reviews.reviewDetail')}
                           className="p-1.5 rounded-md hover:bg-zinc-100 text-zinc-400 hover:text-zinc-700 transition-colors opacity-60 group-hover:opacity-100">
                           <span className="material-symbols-outlined text-[18px]">visibility</span>
                         </button>
@@ -213,7 +215,7 @@ export default function AdminReviews() {
 
         <div className="px-5 py-3 border-t border-zinc-100 flex flex-col sm:flex-row justify-between items-center gap-3">
           <span className="text-xs text-zinc-500">
-            Mostrando <span className="font-medium">{Math.min((page - 1) * ITEMS_PER_PAGE + 1, total)}-{Math.min(page * ITEMS_PER_PAGE, total)}</span> de <span className="font-medium">{total}</span> reseñas
+            {t('admin.pagination.showing')} <span className="font-medium">{Math.min((page - 1) * ITEMS_PER_PAGE + 1, total)}-{Math.min(page * ITEMS_PER_PAGE, total)}</span> {t('admin.pagination.of')} <span className="font-medium">{total}</span> {t('admin.pagination.reviews')}
           </span>
           <Pagination page={page} totalPages={totalPages} onPageChange={p => setPage(p)} />
         </div>
@@ -224,7 +226,7 @@ export default function AdminReviews() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 p-4">
           <div className="bg-white rounded-xl shadow-lg w-full max-w-md max-h-[90vh] overflow-y-auto">
             <div className="p-4 border-b border-zinc-100 flex justify-between items-center">
-              <h3 className="text-base font-semibold text-zinc-900">Detalle de Reseña</h3>
+              <h3 className="text-base font-semibold text-zinc-900">{t('admin.reviews.reviewDetail')}</h3>
               <button onClick={() => setViewReview(null)} className="p-1 hover:bg-zinc-100 rounded-md"><span className="material-symbols-outlined text-zinc-400 text-[18px]">close</span></button>
             </div>
             <div className="p-4 space-y-3">
@@ -233,7 +235,7 @@ export default function AdminReviews() {
                   {(viewReview.reviewer?.firstName?.[0] || 'A') + (viewReview.reviewer?.lastName?.[0] || '')}
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-zinc-900">{viewReview.reviewer ? `${viewReview.reviewer.firstName} ${viewReview.reviewer.lastName}` : 'Anónimo'}</p>
+                  <p className="text-sm font-medium text-zinc-900">{viewReview.reviewer ? `${viewReview.reviewer.firstName} ${viewReview.reviewer.lastName}` : t('admin.reviews.anonymous')}</p>
                   <p className="text-xs text-zinc-500">{viewReview.createdAt ? new Date(viewReview.createdAt).toLocaleDateString('es-PE', { year: 'numeric', month: 'long', day: 'numeric' }) : '—'}</p>
                 </div>
               </div>
@@ -242,7 +244,7 @@ export default function AdminReviews() {
                 <span className="text-sm font-medium text-zinc-500">{viewReview.rating}/5</span>
                 {viewReview.isVerifiedPurchase && (
                   <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-emerald-50 text-emerald-700 text-[10px] font-medium rounded-md">
-                    <span className="material-symbols-outlined text-[11px]">verified</span> Compra Verificada
+                    <span className="material-symbols-outlined text-[11px]">verified</span> {t('admin.reviews.verifiedPurchase')}
                   </span>
                 )}
               </div>
@@ -250,27 +252,27 @@ export default function AdminReviews() {
               <p className="text-sm text-zinc-500 leading-relaxed">{viewReview.body}</p>
               {viewReview.helpfulCount > 0 && (
                 <p className="text-xs text-zinc-500 flex items-center gap-1">
-                  <span className="material-symbols-outlined text-[14px]">thumb_up</span> {viewReview.helpfulCount} personas encontraron esto útil
+                  <span className="material-symbols-outlined text-[14px]">thumb_up</span> {viewReview.helpfulCount} {t('admin.reviews.helpfulCount')}
                 </p>
               )}
             </div>
             <div className="p-4 border-t border-zinc-100 flex justify-between gap-2">
               <button onClick={() => handleDeleteReview(viewReview.id)}
                 className="px-3.5 py-2 text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded-lg flex items-center gap-1.5 transition-colors">
-                <span className="material-symbols-outlined text-[18px]">delete</span> Eliminar
+                <span className="material-symbols-outlined text-[18px]">delete</span> {t('common.delete')}
               </button>
               <div className="flex gap-2">
                 {!viewReview.isVerifiedPurchase && (
                   <button onClick={() => handleModerateReview(viewReview.id, 'approve')}
                     className="px-3.5 py-2 text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg flex items-center gap-1.5 transition-colors">
-                    <span className="material-symbols-outlined text-[18px]">check_circle</span> Aprobar
+                    <span className="material-symbols-outlined text-[18px]">check_circle</span> {t('common.approve')}
                   </button>
                 )}
                 <button onClick={() => handleModerateReview(viewReview.id, 'reject')}
                   className="px-3.5 py-2 text-sm font-medium text-white bg-zinc-900 hover:bg-zinc-800 rounded-lg flex items-center gap-1.5 transition-colors">
-                  <span className="material-symbols-outlined text-[18px]">block</span> Rechazar
+                  <span className="material-symbols-outlined text-[18px]">block</span> {t('common.reject')}
                 </button>
-                <button onClick={() => setViewReview(null)} className="px-4 py-2 text-sm font-medium text-zinc-500 hover:bg-zinc-50 rounded-lg transition-colors">Cerrar</button>
+                <button onClick={() => setViewReview(null)} className="px-4 py-2 text-sm font-medium text-zinc-500 hover:bg-zinc-50 rounded-lg transition-colors">{t('common.close')}</button>
               </div>
             </div>
           </div>

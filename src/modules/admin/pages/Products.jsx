@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
 import productsService from '../../public/services/products.service'
 import Pagination from '../../../core/components/Pagination'
 import { useToast } from '../../../core/contexts/ToastContext'
@@ -6,16 +7,18 @@ import { useToast } from '../../../core/contexts/ToastContext'
 const API_BASE = import.meta.env.VITE_API_URL?.replace('/api/v1', '') || 'http://localhost:3001'
 const ITEMS_PER_PAGE = 10
 
-const STOCK_CONFIG = {
-  available: { bg: 'bg-emerald-50', text: 'text-emerald-700', label: 'Disponible' },
-  in_stock: { bg: 'bg-emerald-50', text: 'text-emerald-700', label: 'En Stock' },
-  low_stock: { bg: 'bg-amber-50', text: 'text-amber-700', label: 'Bajo Stock' },
-  out_of_stock: { bg: 'bg-red-50', text: 'text-red-700', label: 'Agotado' },
-}
-
 const EMPTY_FORM = { name: '', description: '', priceUsd: '', priceRefLocal: '', stockStatus: 'available', marginPct: '', isFeatured: false, categoryId: '', brandId: '' }
 
 export default function AdminProducts() {
+  const { t } = useTranslation()
+
+  const STOCK_CONFIG = {
+    available: { bg: 'bg-emerald-50', text: 'text-emerald-700', label: t('admin.products.stockAvailable') },
+    in_stock: { bg: 'bg-emerald-50', text: 'text-emerald-700', label: t('admin.products.stockInStock') },
+    low_stock: { bg: 'bg-amber-50', text: 'text-amber-700', label: t('admin.products.stockLow') },
+    out_of_stock: { bg: 'bg-red-50', text: 'text-red-700', label: t('admin.products.stockOut') },
+  }
+
   const [products, setProducts] = useState([])
   const [total, setTotal] = useState(0)
   const [categories, setCategories] = useState([])
@@ -56,8 +59,8 @@ export default function AdminProducts() {
 
   useEffect(() => {
     setPage(1)
-    const t = setTimeout(fetchData, search ? 350 : 0)
-    return () => clearTimeout(t)
+    const timer = setTimeout(fetchData, search ? 350 : 0)
+    return () => clearTimeout(timer)
   }, [search, catFilter])
 
   const totalPages = Math.ceil(total / ITEMS_PER_PAGE)
@@ -98,17 +101,17 @@ export default function AdminProducts() {
 
   const handleSave = async () => {
     const e = {}
-    if (!form.name.trim()) e.name = 'El nombre es obligatorio'
-    if (!form.priceUsd || isNaN(form.priceUsd) || Number(form.priceUsd) <= 0) e.priceUsd = 'Ingresa un precio válido'
-    if (!form.categoryId) e.categoryId = 'Selecciona una categoría'
-    
+    if (!form.name.trim()) e.name = t('admin.products.nameRequired')
+    if (!form.priceUsd || isNaN(form.priceUsd) || Number(form.priceUsd) <= 0) e.priceUsd = t('admin.products.validPrice')
+    if (!form.categoryId) e.categoryId = t('admin.products.selectCategory')
+
     setFormErrors(e)
-    
+
     if (Object.keys(e).length > 0) {
-      addToast('Por favor, completa los campos requeridos.', 'error')
+      addToast(t('admin.products.fillRequired'), 'error')
       return
     }
-    
+
     setSaving(true)
     try {
       let product
@@ -126,25 +129,25 @@ export default function AdminProducts() {
       }
       fetchData()
       setModal(null)
-      addToast(modal === 'create' ? 'Producto creado exitosamente' : 'Producto actualizado exitosamente')
-    } catch (err) { 
+      addToast(modal === 'create' ? t('admin.products.created') : t('admin.products.updated'))
+    } catch (err) {
       console.error(err)
-      addToast('Ocurrió un error al procesar la solicitud', 'error')
+      addToast(t('admin.products.processError'), 'error')
     }
     finally { setSaving(false); setUploading(false) }
   }
 
   const handleDelete = async () => {
     setSaving(true)
-    try { 
+    try {
       await productsService.delete(selected.id)
       fetchData()
       setModal(null)
-      addToast('Producto eliminado permanentemente', 'success')
+      addToast(t('admin.products.deleted'), 'success')
     }
-    catch (err) { 
+    catch (err) {
       console.error(err)
-      addToast('Error al eliminar el producto', 'error')
+      addToast(t('admin.products.deleteError'), 'error')
     }
     finally { setSaving(false) }
   }
@@ -153,10 +156,10 @@ export default function AdminProducts() {
     try {
       await productsService.toggleActive(prod.id)
       fetchData()
-      addToast(`Producto ${prod.isActive ? 'despublicado' : 'publicado'} correctamente`)
-    } catch (err) { 
+      addToast(prod.isActive ? t('admin.products.unpublished') : t('admin.products.published'))
+    } catch (err) {
       console.error(err)
-      addToast('Error al cambiar el estado del producto', 'error')
+      addToast(t('admin.products.toggleError'), 'error')
     }
   }
 
@@ -169,20 +172,20 @@ export default function AdminProducts() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4">
         <div>
-          <h2 className="text-xl font-semibold text-zinc-900">Productos</h2>
-          <p className="text-sm text-zinc-500 mt-0.5">Gestiona inventario, precios y estados.</p>
+          <h2 className="text-xl font-semibold text-zinc-900">{t('admin.products.title')}</h2>
+          <p className="text-sm text-zinc-500 mt-0.5">{t('admin.products.subtitle')}</p>
         </div>
         <button onClick={openCreate} className="bg-zinc-900 hover:bg-zinc-800 text-white px-4 py-2 rounded-lg font-medium flex items-center gap-1.5 transition-colors text-sm">
-          <span className="material-symbols-outlined text-[16px]">add</span> Nuevo Producto
+          <span className="material-symbols-outlined text-[16px]">add</span> {t('admin.products.newProduct')}
         </button>
       </div>
 
       {/* Metrics */}
       <div className="grid grid-cols-3 gap-3">
         {[
-          { label: 'Total Productos', value: totalProducts, icon: 'inventory_2' },
-          { label: 'Destacados', value: featured, icon: 'star' },
-          { label: 'Precio Promedio', value: `$${avgPrice.toFixed(0)}`, icon: 'attach_money' },
+          { label: t('admin.products.totalProducts'), value: totalProducts, icon: 'inventory_2' },
+          { label: t('admin.products.featured'), value: featured, icon: 'star' },
+          { label: t('admin.products.avgPrice'), value: `$${avgPrice.toFixed(0)}`, icon: 'attach_money' },
         ].map((m, i) => (
           <div key={i} className="bg-white p-4 rounded-xl border border-zinc-200 flex items-center gap-3 stat-card">
             <div className="w-9 h-9 rounded-lg bg-zinc-100 text-zinc-600 flex items-center justify-center shrink-0">
@@ -201,13 +204,13 @@ export default function AdminProducts() {
         <div className="p-4 border-b border-zinc-100 flex flex-col sm:flex-row gap-3">
           <div className="relative flex-1">
             <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 text-[18px]">search</span>
-            <input type="text" value={search} onChange={e => setSearch(e.target.value)} placeholder="Buscar productos..."
+            <input type="text" value={search} onChange={e => setSearch(e.target.value)} placeholder={t('admin.products.searchPlaceholder')}
               className="w-full pl-9 pr-4 py-2 bg-zinc-50 border border-zinc-200 rounded-lg text-sm focus:ring-2 focus:ring-zinc-900/10 focus:border-zinc-400 outline-none transition-all" />
           </div>
           <div className="flex gap-1.5 flex-wrap">
             <button onClick={() => setCatFilter('')}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${!catFilter ? 'bg-zinc-900 text-white' : 'bg-zinc-50 text-zinc-600 hover:bg-zinc-100 border border-zinc-200'}`}>
-              Todas
+              {t('common.all')}
             </button>
             {categories.slice(0, 6).map(cat => (
               <button key={cat.id} onClick={() => setCatFilter(catFilter === cat.id ? '' : cat.id)}
@@ -223,20 +226,20 @@ export default function AdminProducts() {
         ) : products.length === 0 ? (
           <div className="text-center py-16">
             <span className="material-symbols-outlined text-3xl text-zinc-300">inventory_2</span>
-            <p className="text-sm text-zinc-500 mt-2">No se encontraron productos</p>
+            <p className="text-sm text-zinc-500 mt-2">{t('admin.products.noProductsFound')}</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left min-w-195">
               <thead>
                 <tr className="bg-zinc-50 text-[11px] font-medium text-zinc-500 uppercase tracking-wider border-b border-zinc-100">
-                  <th className="px-5 py-3">Producto</th>
-                  <th className="px-5 py-3">Categoría</th>
-                  <th className="px-5 py-3">Precio USD</th>
-                  <th className="px-5 py-3">Margen</th>
-                  <th className="px-5 py-3">Estado</th>
-                  <th className="px-5 py-3">Publicado</th>
-                  <th className="px-5 py-3 text-right">Acciones</th>
+                  <th className="px-5 py-3">{t('admin.table.product')}</th>
+                  <th className="px-5 py-3">{t('admin.table.category')}</th>
+                  <th className="px-5 py-3">{t('admin.table.priceUsd')}</th>
+                  <th className="px-5 py-3">{t('admin.table.margin')}</th>
+                  <th className="px-5 py-3">{t('admin.table.status')}</th>
+                  <th className="px-5 py-3">{t('admin.table.published')}</th>
+                  <th className="px-5 py-3 text-right">{t('admin.table.actions')}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-zinc-100">
@@ -268,7 +271,7 @@ export default function AdminProducts() {
                         <span className={`inline-flex px-2 py-0.5 ${st.bg} ${st.text} text-[11px] font-medium rounded-md`}>{st.label}</span>
                       </td>
                       <td className="px-5 py-3">
-                        <button onClick={() => handleToggleActive(prod)} title={prod.isActive ? 'Despublicar' : 'Publicar'}
+                        <button onClick={() => handleToggleActive(prod)} title={prod.isActive ? t('admin.products.unpublished') : t('admin.products.published')}
                           className="relative inline-flex items-center cursor-pointer">
                           <div className={`w-9 h-5 rounded-full transition-colors ${prod.isActive !== false ? 'bg-emerald-500' : 'bg-zinc-300'}`}>
                             <div className={`absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform ${prod.isActive !== false ? 'translate-x-4' : ''}`} />
@@ -277,11 +280,11 @@ export default function AdminProducts() {
                       </td>
                       <td className="px-5 py-3 text-right">
                         <div className="flex justify-end gap-1 opacity-60 group-hover:opacity-100 transition-opacity">
-                          <button onClick={() => openEdit(prod)} title="Editar"
+                          <button onClick={() => openEdit(prod)} title={t('common.edit')}
                             className="p-1.5 rounded-md hover:bg-zinc-100 text-zinc-400 hover:text-zinc-700 transition-colors">
                             <span className="material-symbols-outlined text-[18px]">edit</span>
                           </button>
-                          <button onClick={() => openDelete(prod)} title="Eliminar"
+                          <button onClick={() => openDelete(prod)} title={t('common.delete')}
                             className="p-1.5 rounded-md hover:bg-red-50 text-zinc-400 hover:text-red-500 transition-colors">
                             <span className="material-symbols-outlined text-[18px]">delete</span>
                           </button>
@@ -297,7 +300,7 @@ export default function AdminProducts() {
 
         <div className="px-5 py-3 border-t border-zinc-100 flex flex-col sm:flex-row justify-between items-center gap-3">
           <span className="text-xs text-zinc-500">
-            Mostrando <span className="font-medium">{Math.min((page - 1) * ITEMS_PER_PAGE + 1, total)}-{Math.min(page * ITEMS_PER_PAGE, total)}</span> de <span className="font-medium">{total}</span> productos
+            {t('admin.pagination.showing')} <span className="font-medium">{Math.min((page - 1) * ITEMS_PER_PAGE + 1, total)}-{Math.min(page * ITEMS_PER_PAGE, total)}</span> {t('admin.pagination.of')} <span className="font-medium">{total}</span> {t('admin.pagination.products')}
           </span>
           <Pagination page={page} totalPages={totalPages} onPageChange={p => setPage(p)} />
         </div>
@@ -310,14 +313,14 @@ export default function AdminProducts() {
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-xl max-h-[85vh] flex flex-col relative z-10 transform transition-all animate-in fade-in zoom-in-95 duration-200">
             <div className="px-6 py-5 border-b border-zinc-100 flex justify-between items-center bg-zinc-50/50 rounded-t-2xl">
               <div>
-                <h3 className="text-lg font-semibold text-zinc-900">{modal === 'create' ? 'Nuevo Producto' : 'Editar Producto'}</h3>
-                <p className="text-sm font-medium text-zinc-500 mt-0.5">Completa la información del inventario</p>
+                <h3 className="text-lg font-semibold text-zinc-900">{modal === 'create' ? t('admin.products.newProduct') : t('admin.products.editProduct')}</h3>
+                <p className="text-sm font-medium text-zinc-500 mt-0.5">{t('admin.products.inventoryInfo')}</p>
               </div>
               <button onClick={() => setModal(null)} className="p-2 hover:bg-zinc-100 rounded-full transition-colors -mr-2 text-zinc-400 hover:text-zinc-700">
                 <span className="material-symbols-outlined text-[20px]">close</span>
               </button>
             </div>
-            
+
             <div className="p-6 overflow-y-auto space-y-5">
               {/* Image Upload */}
               <div className="bg-zinc-50 p-4 rounded-xl border border-zinc-100 flex items-center gap-5">
@@ -332,20 +335,20 @@ export default function AdminProducts() {
                   )}
                 </div>
                 <div className="flex-1">
-                  <h4 className="text-sm font-semibold text-zinc-900">Imagen Principal</h4>
-                  <p className="text-[11px] text-zinc-500 mt-0.5 mb-2">Resolución recomendada: 800x800px. JPG o PNG hasta 5MB.</p>
+                  <h4 className="text-sm font-semibold text-zinc-900">{t('admin.products.mainImage')}</h4>
+                  <p className="text-[11px] text-zinc-500 mt-0.5 mb-2">{t('admin.products.imageHint')}</p>
                   <button onClick={() => fileRef.current?.click()} className="text-[11px] font-bold text-tevra-coral hover:underline uppercase tracking-wide">
-                    {imagePreview ? 'Cambiar imagen' : 'Seleccionar imagen'}
+                    {imagePreview ? t('admin.products.changeImage') : t('admin.products.selectImage')}
                   </button>
                   <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleFileChange} />
                 </div>
               </div>
 
               <div>
-                <label className="block text-[11px] font-bold text-zinc-600 uppercase tracking-widest mb-1.5">Nombre comercial *</label>
+                <label className="block text-[11px] font-bold text-zinc-600 uppercase tracking-widest mb-1.5">{t('admin.products.commercialName')}</label>
                 <div className={`relative flex items-center transition-all rounded-xl border ${formErrors.name ? 'border-red-300 ring-2 ring-red-100' : 'border-zinc-200 focus-within:border-zinc-400 focus-within:ring-2 focus-within:ring-zinc-100'}`}>
-                  <input value={form.name} onChange={e => { setForm({ ...form, name: e.target.value }); setFormErrors({...formErrors, name: ''}) }}
-                    placeholder="Ej. iPhone 15 Pro Max 256GB"
+                  <input value={form.name} onChange={e => { setForm({ ...form, name: e.target.value }); setFormErrors({ ...formErrors, name: '' }) }}
+                    placeholder={t('admin.products.namePlaceholder')}
                     className="w-full px-4 py-2.5 bg-transparent text-sm text-zinc-900 outline-none placeholder:text-zinc-400" />
                   {formErrors.name && <span className="material-symbols-outlined text-red-500 text-[18px] pr-3">error</span>}
                 </div>
@@ -353,19 +356,19 @@ export default function AdminProducts() {
               </div>
 
               <div>
-                <label className="block text-[11px] font-bold text-zinc-600 uppercase tracking-widest mb-1.5">Descripción</label>
+                <label className="block text-[11px] font-bold text-zinc-600 uppercase tracking-widest mb-1.5">{t('admin.products.description')}</label>
                 <textarea value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} rows={3}
-                  placeholder="Detalles técnicos, incluye características principales..."
+                  placeholder={t('admin.products.descriptionPlaceholder')}
                   className="w-full px-4 py-2.5 bg-white border border-zinc-200 rounded-xl text-sm focus:ring-2 focus:ring-zinc-100 focus:border-zinc-400 outline-none transition-all resize-none placeholder:text-zinc-400" />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[11px] font-bold text-zinc-600 uppercase tracking-widest mb-1.5">Categoría *</label>
+                  <label className="block text-[11px] font-bold text-zinc-600 uppercase tracking-widest mb-1.5">{t('admin.products.categoryLabel')}</label>
                   <div className={`relative transition-all rounded-xl border ${formErrors.categoryId ? 'border-red-300 ring-2 ring-red-100' : 'border-zinc-200 focus-within:border-zinc-400 focus-within:ring-2 focus-within:ring-zinc-100'}`}>
-                    <select value={form.categoryId} onChange={e => { setForm({ ...form, categoryId: e.target.value }); setFormErrors({...formErrors, categoryId: ''}) }}
+                    <select value={form.categoryId} onChange={e => { setForm({ ...form, categoryId: e.target.value }); setFormErrors({ ...formErrors, categoryId: '' }) }}
                       className="w-full px-4 py-2.5 bg-transparent text-sm appearance-none outline-none text-zinc-900">
-                      <option value="" disabled>Selecciona...</option>
+                      <option value="" disabled>{t('admin.products.selectOption')}</option>
                       {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                     </select>
                     <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none">expand_content</span>
@@ -373,11 +376,11 @@ export default function AdminProducts() {
                   {formErrors.categoryId && <p className="text-xs text-red-500 font-medium mt-1.5 ml-1 flex items-center gap-1"><span className="material-symbols-outlined text-[14px]">info</span>{formErrors.categoryId}</p>}
                 </div>
                 <div>
-                  <label className="block text-[11px] font-bold text-zinc-600 uppercase tracking-widest mb-1.5">Marca</label>
+                  <label className="block text-[11px] font-bold text-zinc-600 uppercase tracking-widest mb-1.5">{t('admin.products.brandLabel')}</label>
                   <div className="relative border border-zinc-200 rounded-xl focus-within:border-zinc-400 focus-within:ring-2 focus-within:ring-zinc-100 transition-all">
                     <select value={form.brandId} onChange={e => setForm({ ...form, brandId: e.target.value })}
                       className="w-full px-4 py-2.5 bg-transparent text-sm appearance-none outline-none text-zinc-900">
-                      <option value="">Sin marca</option>
+                      <option value="">{t('admin.products.noBrand')}</option>
                       {brands.map(b => <option key={b.id} value={b.id}>{b.name}</option>)}
                     </select>
                     <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none">expand_content</span>
@@ -387,16 +390,16 @@ export default function AdminProducts() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[11px] font-bold text-zinc-600 uppercase tracking-widest mb-1.5">Precio USD *</label>
+                  <label className="block text-[11px] font-bold text-zinc-600 uppercase tracking-widest mb-1.5">{t('admin.products.priceUsdLabel')}</label>
                   <div className={`relative flex items-center transition-all rounded-xl border ${formErrors.priceUsd ? 'border-red-300 ring-2 ring-red-100' : 'border-zinc-200 focus-within:border-zinc-400 focus-within:ring-2 focus-within:ring-zinc-100'}`}>
                     <span className="pl-4 text-zinc-500 font-semibold">$</span>
-                    <input type="number" step="0.01" value={form.priceUsd} onChange={e => { setForm({ ...form, priceUsd: e.target.value }); setFormErrors({...formErrors, priceUsd: ''}) }}
+                    <input type="number" step="0.01" value={form.priceUsd} onChange={e => { setForm({ ...form, priceUsd: e.target.value }); setFormErrors({ ...formErrors, priceUsd: '' }) }}
                       className="w-full pl-2 pr-4 py-2.5 bg-transparent text-sm font-semibold text-zinc-900 outline-none" placeholder="0.00" />
                   </div>
                   {formErrors.priceUsd && <p className="text-xs text-red-500 font-medium mt-1.5 ml-1 flex items-center gap-1"><span className="material-symbols-outlined text-[14px]">info</span>{formErrors.priceUsd}</p>}
                 </div>
                 <div>
-                  <label className="block text-[11px] font-bold text-zinc-600 uppercase tracking-widest mb-1.5">Precio Local</label>
+                  <label className="block text-[11px] font-bold text-zinc-600 uppercase tracking-widest mb-1.5">{t('admin.products.priceLocal')}</label>
                   <div className="relative flex items-center border border-zinc-200 rounded-xl focus-within:border-zinc-400 focus-within:ring-2 focus-within:ring-zinc-100 transition-all">
                     <span className="pl-4 text-zinc-400 font-semibold">S/</span>
                     <input type="number" step="0.01" value={form.priceRefLocal} onChange={e => setForm({ ...form, priceRefLocal: e.target.value })}
@@ -407,7 +410,7 @@ export default function AdminProducts() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[11px] font-bold text-zinc-600 uppercase tracking-widest mb-1.5">Comisión (%)</label>
+                  <label className="block text-[11px] font-bold text-zinc-600 uppercase tracking-widest mb-1.5">{t('admin.products.commissionPct')}</label>
                   <div className="relative flex items-center border border-zinc-200 rounded-xl focus-within:border-zinc-400 focus-within:ring-2 focus-within:ring-zinc-100 transition-all">
                     <input type="number" step="0.1" value={form.marginPct} onChange={e => setForm({ ...form, marginPct: e.target.value })}
                       className="w-full pl-4 pr-8 py-2.5 bg-transparent text-sm font-semibold text-zinc-900 outline-none" placeholder="10.0" />
@@ -415,31 +418,31 @@ export default function AdminProducts() {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-[11px] font-bold text-zinc-600 uppercase tracking-widest mb-1.5">Estado Stock</label>
+                  <label className="block text-[11px] font-bold text-zinc-600 uppercase tracking-widest mb-1.5">{t('admin.products.stockStatus')}</label>
                   <div className="relative border border-zinc-200 rounded-xl focus-within:border-zinc-400 focus-within:ring-2 focus-within:ring-zinc-100 transition-all">
                     <select value={form.stockStatus} onChange={e => setForm({ ...form, stockStatus: e.target.value })}
                       className="w-full px-4 py-2.5 bg-transparent text-sm appearance-none outline-none text-zinc-900 font-medium">
-                      <option value="available">Disponible</option>
-                      <option value="low_stock">Bajo Stock</option>
-                      <option value="out_of_stock">Agotado</option>
+                      <option value="available">{t('admin.products.stockAvailable')}</option>
+                      <option value="low_stock">{t('admin.products.stockLow')}</option>
+                      <option value="out_of_stock">{t('admin.products.stockOut')}</option>
                     </select>
                     <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none">expand_content</span>
                   </div>
                 </div>
               </div>
-              
+
               <label className="flex items-center gap-3 p-4 border border-zinc-200 rounded-xl cursor-pointer hover:bg-zinc-50 transition-colors">
                 <input type="checkbox" checked={form.isFeatured} onChange={e => setForm({ ...form, isFeatured: e.target.checked })}
                   className="w-5 h-5 rounded border-zinc-300 text-tevra-coral focus:ring-tevra-coral/20 transition-all cursor-pointer" />
                 <div>
-                  <span className="text-sm font-bold text-zinc-900 block">Marcar como Destacado</span>
-                  <span className="text-xs text-zinc-500 block">Mostrar este producto en carruseles principales y hot-sales.</span>
+                  <span className="text-sm font-bold text-zinc-900 block">{t('admin.products.markFeatured')}</span>
+                  <span className="text-xs text-zinc-500 block">{t('admin.products.featuredHint')}</span>
                 </div>
               </label>
             </div>
-            
+
             <div className="px-6 py-4 border-t border-zinc-100 flex justify-end gap-3 bg-zinc-50/50 rounded-b-2xl">
-              <button type="button" onClick={() => setModal(null)} className="px-5 py-2.5 bg-white border border-zinc-200 text-sm font-medium text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 rounded-xl transition-colors shadow-sm">Cancelar</button>
+              <button type="button" onClick={() => setModal(null)} className="px-5 py-2.5 bg-white border border-zinc-200 text-sm font-medium text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 rounded-xl transition-colors shadow-sm">{t('common.cancel')}</button>
               <button type="submit" onClick={handleSave} disabled={saving}
                 className="px-6 py-2.5 bg-zinc-900 hover:bg-zinc-800 focus:ring-4 focus:ring-zinc-900/20 disabled:opacity-50 disabled:hover:translate-y-0 text-white rounded-xl font-semibold text-sm transition-all shadow-md hover:-translate-y-0.5 flex items-center gap-2">
                 {(saving || uploading) ? (
@@ -447,7 +450,7 @@ export default function AdminProducts() {
                 ) : (
                   <span className="material-symbols-outlined text-[18px]">save</span>
                 )}
-                {uploading ? 'Subiendo...' : saving ? 'Guardando...' : modal === 'create' ? 'Crear Producto' : 'Guardar Cambios'}
+                {uploading ? t('common.uploading') : saving ? t('common.saving') : modal === 'create' ? t('admin.products.createProduct') : t('admin.users.saveChanges')}
               </button>
             </div>
           </div>
@@ -463,16 +466,16 @@ export default function AdminProducts() {
               <div className="w-14 h-14 mx-auto mb-4 bg-red-50 rounded-full flex items-center justify-center ring-4 ring-red-50/50">
                 <span className="material-symbols-outlined text-red-500 text-[26px]">delete_forever</span>
               </div>
-              <h3 className="text-lg font-bold text-zinc-900 mb-1.5">Eliminar Producto</h3>
-              <p className="text-sm text-zinc-500 leading-relaxed">¿Estás seguro de que deseas eliminar permanentemente <strong className="text-zinc-800">{selected.name}</strong>? Esta acción no se puede deshacer.</p>
+              <h3 className="text-lg font-bold text-zinc-900 mb-1.5">{t('admin.products.deleteProduct')}</h3>
+              <p className="text-sm text-zinc-500 leading-relaxed">{t('admin.products.deleteConfirmation', { name: selected.name })}</p>
             </div>
             <div className="p-5 border-t border-zinc-100 flex flex-col gap-2 bg-zinc-50/50 rounded-b-2xl">
               <button onClick={handleDelete} disabled={saving}
                 className="w-full px-4 py-2.5 font-semibold bg-red-500 text-white rounded-xl hover:bg-red-600 shadow-md hover:shadow-lg hover:-translate-y-0.5 disabled:translate-y-0 disabled:shadow-none disabled:opacity-50 transition-all flex justify-center items-center gap-2">
                 {saving && <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />}
-                {saving ? 'Eliminando...' : 'Sí, Eliminar Producto'}
+                {saving ? t('common.deleting') : t('admin.products.confirmDelete')}
               </button>
-              <button onClick={() => setModal(null)} className="w-full px-4 py-2.5 font-semibold text-zinc-600 bg-white border border-zinc-200 hover:bg-zinc-50 hover:text-zinc-900 rounded-xl transition-colors">Cancelar</button>
+              <button onClick={() => setModal(null)} className="w-full px-4 py-2.5 font-semibold text-zinc-600 bg-white border border-zinc-200 hover:bg-zinc-50 hover:text-zinc-900 rounded-xl transition-colors">{t('common.cancel')}</button>
             </div>
           </div>
         </div>

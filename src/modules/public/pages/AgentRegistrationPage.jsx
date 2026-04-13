@@ -1,21 +1,23 @@
 import { useState, useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { agentsService } from '../services/agents.service'
 import productsService from '../services/products.service'
 import { useFieldAvailability } from '../../../core/hooks/useFieldAvailability'
 
-const STEPS = [
-  { icon: 'person', label: 'Información Personal' },
-  { icon: 'work', label: 'Perfil Profesional' },
-  { icon: 'check_circle', label: 'Confirmación' },
-]
-
 export default function AgentRegistrationPage() {
   const navigate = useNavigate()
+  const { t } = useTranslation()
   const [step, setStep] = useState(0)
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState('')
+
+  const STEPS = [
+    { icon: 'person', label: t('agentRegistration.step1Label') },
+    { icon: 'work', label: t('agentRegistration.step2Label') },
+    { icon: 'check_circle', label: t('agentRegistration.step3Label') },
+  ]
 
   const [form, setForm] = useState({
     fullName: '',
@@ -70,17 +72,17 @@ export default function AgentRegistrationPage() {
     setError('')
 
     // Validations
-    if (!form.fullName.trim()) { setError('El nombre completo es obligatorio.'); setSubmitting(false); return }
-    if (!/^[0-9]{8}$/.test(form.dni.trim())) { setError('El número de ID debe tener exactamente 8 dígitos.'); setSubmitting(false); return }
-    if (!form.email.trim() || !form.email.includes('@')) { setError('Ingresa un correo electr\u00f3nico v\u00e1lido.'); setSubmitting(false); return }
-    if (!form.whatsapp.trim() || form.whatsapp.trim().length < 7) { setError('Ingresa un n\u00famero de WhatsApp v\u00e1lido.'); setSubmitting(false); return }
-    if (!form.city.trim()) { setError('La ciudad de operaci\u00f3n es obligatoria.'); setSubmitting(false); return }
-    if (form.password.length < 8) { setError('La contrase\u00f1a debe tener al menos 8 caracteres.'); setSubmitting(false); return }
-    if (!/[A-Z]/.test(form.password)) { setError('La contrase\u00f1a debe tener al menos 1 may\u00fascula.'); setSubmitting(false); return }
-    if (!/[0-9]/.test(form.password)) { setError('La contrase\u00f1a debe tener al menos 1 n\u00famero.'); setSubmitting(false); return }
-    if (form.password !== form.confirmPassword) { setError('Las contrase\u00f1as no coinciden.'); setSubmitting(false); return }
-    if (form.categories.length === 0) { setError('Selecciona al menos una categor\u00eda.'); setSubmitting(false); return }
-    if (form.coverageAreas.length === 0) { setError('Agrega al menos una zona de cobertura.'); setSubmitting(false); return }
+    if (!form.fullName.trim()) { setError(t('agentRegistration.validationFullName')); setSubmitting(false); return }
+    if (!/^[0-9]{8}$/.test(form.dni.trim())) { setError(t('agentRegistration.validationId')); setSubmitting(false); return }
+    if (!form.email.trim() || !form.email.includes('@')) { setError(t('agentRegistration.validationEmail')); setSubmitting(false); return }
+    if (!form.whatsapp.trim() || form.whatsapp.trim().length < 7) { setError(t('agentRegistration.validationWhatsapp')); setSubmitting(false); return }
+    if (!form.city.trim()) { setError(t('agentRegistration.validationCity')); setSubmitting(false); return }
+    if (form.password.length < 8) { setError(t('agentRegistration.validationPassword8')); setSubmitting(false); return }
+    if (!/[A-Z]/.test(form.password)) { setError(t('agentRegistration.validationPasswordUpper')); setSubmitting(false); return }
+    if (!/[0-9]/.test(form.password)) { setError(t('agentRegistration.validationPasswordNumber')); setSubmitting(false); return }
+    if (form.password !== form.confirmPassword) { setError(t('agentRegistration.validationPasswordMatch')); setSubmitting(false); return }
+    if (form.categories.length === 0) { setError(t('agentRegistration.validationCategories')); setSubmitting(false); return }
+    if (form.coverageAreas.length === 0) { setError(t('agentRegistration.validationCoverage')); setSubmitting(false); return }
 
     try {
       const { confirmPassword, ...submitData } = form
@@ -88,7 +90,7 @@ export default function AgentRegistrationPage() {
       setSubmitted(true)
       setStep(2)
     } catch (err) {
-      setError(err.response?.data?.message || err.message || 'Error al enviar la solicitud')
+      setError(err.response?.data?.message || err.message || t('agentRegistration.submitError'))
     } finally {
       setSubmitting(false)
     }
@@ -102,7 +104,7 @@ export default function AgentRegistrationPage() {
       <header className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md shadow-sm">
         <div className="flex justify-between items-center px-6 py-4 max-w-full mx-auto">
           <button onClick={() => navigate('/')} className="text-2xl font-bold text-on-background tracking-tight">TeVra</button>
-          <span className="text-text-muted font-semibold text-sm">Paso {step + 1} de 3</span>
+          <span className="text-text-muted font-semibold text-sm">{t('agentRegistration.stepOf', { current: step + 1, total: 3 })}</span>
         </div>
       </header>
 
@@ -110,8 +112,8 @@ export default function AgentRegistrationPage() {
         {/* Sidebar */}
         <aside className="h-[calc(100vh-80px)] w-64 border-r border-outline-variant bg-white hidden lg:flex flex-col p-6 space-y-2 sticky top-20">
           <div className="mb-8">
-            <h2 className="font-bold text-on-background text-xl">Agent Portal</h2>
-            <p className="text-text-muted text-xs uppercase tracking-wider">Onboarding Progress</p>
+            <h2 className="font-bold text-on-background text-xl">{t('agentRegistration.agentPortal')}</h2>
+            <p className="text-text-muted text-xs uppercase tracking-wider">{t('agentRegistration.onboardingProgress')}</p>
           </div>
 
           <nav className="space-y-1">
@@ -136,7 +138,7 @@ export default function AgentRegistrationPage() {
 
           <div className="mt-auto p-4 bg-surface-container-low rounded-xl">
             <div className="flex justify-between items-center mb-2">
-              <span className="text-xs font-bold text-on-background">Progreso</span>
+              <span className="text-xs font-bold text-on-background">{t('agentRegistration.progress')}</span>
               <span className="text-xs font-bold text-on-background">{progress}%</span>
             </div>
             <div className="w-full bg-surface-container-high h-1.5 rounded-full overflow-hidden">
@@ -170,14 +172,16 @@ export default function AgentRegistrationPage() {
 
 /* =========== STEP 1: Personal Info =========== */
 function Step1({ form, set, onNext, valid, generatedUsername, availabilityErrors, checking }) {
+  const { t } = useTranslation()
+
   return (
     <>
       <div className="mb-12">
         <h1 className="text-4xl md:text-5xl font-extrabold text-on-background tracking-tight mb-4">
-          Información Personal
+          {t('agentRegistration.step1Title')}
         </h1>
         <p className="text-lg text-text-muted max-w-2xl leading-relaxed">
-          Comienza tu camino como Agente Verificado TeVra. Esta información nos permite crear un ecosistema de confianza para todos nuestros usuarios.
+          {t('agentRegistration.step1Subtitle')}
         </p>
       </div>
 
@@ -188,31 +192,31 @@ function Step1({ form, set, onNext, valid, generatedUsername, availabilityErrors
             <span className="p-2 bg-surface-container rounded-lg">
               <span className="material-symbols-outlined text-on-background">id_card</span>
             </span>
-            <h3 className="text-xl font-bold text-on-background">Identidad Básica</h3>
+            <h3 className="text-xl font-bold text-on-background">{t('agentRegistration.basicIdentity')}</h3>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-1.5">
-              <label className="text-sm font-bold text-on-background">Nombre Completo</label>
+              <label className="text-sm font-bold text-on-background">{t('agentRegistration.fullName')}</label>
               <input
                 value={form.fullName}
                 onChange={(e) => set('fullName', e.target.value)}
                 className="w-full bg-surface-container-low border-b-2 border-outline-variant focus:border-gray-900 focus:ring-0 px-4 py-3 rounded-t-lg transition-all outline-none"
-                placeholder="Ej. Juan Pérez"
+                placeholder={t('agentRegistration.fullNamePlaceholder')}
               />
             </div>
             <div className="space-y-1.5">
-              <label className="text-sm font-bold text-on-background">Número de ID (DNI)</label>
+              <label className="text-sm font-bold text-on-background">{t('agentRegistration.idNumber')}</label>
               <input
                 value={form.dni}
                 onChange={(e) => set('dni', e.target.value.replace(/[^0-9]/g, '').slice(0, 8))}
                 className="w-full bg-surface-container-low border-b-2 border-outline-variant focus:border-gray-900 focus:ring-0 px-4 py-3 rounded-t-lg transition-all outline-none"
-                placeholder="Exactamente 8 dígitos"
+                placeholder={t('agentRegistration.idPlaceholder')}
                 maxLength={8}
                 type="text"
                 inputMode="numeric"
               />
               {form.dni && form.dni.length !== 8 && (
-                <p className="text-xs text-red-500 font-medium mt-1">El ID debe tener 8 dígitos.</p>
+                <p className="text-xs text-red-500 font-medium mt-1">{t('agentRegistration.idError')}</p>
               )}
             </div>
           </div>
@@ -225,17 +229,17 @@ function Step1({ form, set, onNext, valid, generatedUsername, availabilityErrors
               <span className="p-2 bg-amber-50 rounded-lg">
                 <span className="material-symbols-outlined text-amber-700">contact_page</span>
               </span>
-              <h3 className="text-xl font-bold text-on-background">Contacto</h3>
+              <h3 className="text-xl font-bold text-on-background">{t('agentRegistration.contact')}</h3>
             </div>
             <div className="space-y-5">
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-on-background uppercase tracking-wide">Correo Electrónico</label>
+                <label className="text-xs font-bold text-on-background uppercase tracking-wide">{t('agentRegistration.emailLabel')}</label>
                 <div className="relative">
                   <input
                     value={form.email}
                     onChange={(e) => set('email', e.target.value)}
                     className={`w-full bg-white border-b-2 focus:ring-0 px-4 py-3 rounded-t-lg transition-all outline-none ${availabilityErrors.email ? 'border-red-400' : 'border-outline-variant focus:border-gray-900'}`}
-                    placeholder="email@ejemplo.com"
+                    placeholder={t('agentRegistration.emailPlaceholder')}
                     type="email"
                   />
                   {checking.email && <span className="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 border-2 border-gray-300 border-t-gray-700 rounded-full animate-spin" />}
@@ -248,7 +252,7 @@ function Step1({ form, set, onNext, valid, generatedUsername, availabilityErrors
                 )}
               </div>
               <div className="space-y-1.5">
-                <label className="text-xs font-bold text-on-background uppercase tracking-wide">WhatsApp</label>
+                <label className="text-xs font-bold text-on-background uppercase tracking-wide">{t('agentRegistration.whatsappLabel')}</label>
                 <div className="relative">
                   <input
                     value={form.whatsapp}
@@ -275,17 +279,17 @@ function Step1({ form, set, onNext, valid, generatedUsername, availabilityErrors
               <span className="p-2 bg-red-50 rounded-lg">
                 <span className="material-symbols-outlined text-red-500">location_on</span>
               </span>
-              <h3 className="text-xl font-bold text-on-background">Ciudad de Operación</h3>
+              <h3 className="text-xl font-bold text-on-background">{t('agentRegistration.operationCity')}</h3>
             </div>
             <div className="space-y-1.5">
               <input
                 value={form.city}
                 onChange={(e) => set('city', e.target.value)}
                 className="w-full bg-white border-b-2 border-outline-variant focus:border-gray-900 focus:ring-0 px-4 py-3 rounded-t-lg transition-all outline-none"
-                placeholder="Ej. Los Angeles, Miami, Lima..."
+                placeholder={t('agentRegistration.operationCityPlaceholder')}
               />
             </div>
-            <p className="mt-4 text-xs text-outline">Escribe la ciudad donde operarás como agente TeVra.</p>
+            <p className="mt-4 text-xs text-outline">{t('agentRegistration.operationCityHint')}</p>
           </div>
         </div>
 
@@ -295,45 +299,45 @@ function Step1({ form, set, onNext, valid, generatedUsername, availabilityErrors
             <span className="p-2 bg-indigo-50 rounded-lg">
               <span className="material-symbols-outlined text-indigo-700">lock</span>
             </span>
-            <h3 className="text-xl font-bold text-on-background">Credenciales de Acceso</h3>
+            <h3 className="text-xl font-bold text-on-background">{t('agentRegistration.accessCredentials')}</h3>
           </div>
           {generatedUsername && (
             <div className="mb-6 p-4 bg-surface-container-low rounded-xl border border-gray-100">
-              <p className="text-xs font-bold text-text-muted uppercase tracking-wide mb-1">Tu usuario será</p>
+              <p className="text-xs font-bold text-text-muted uppercase tracking-wide mb-1">{t('agentRegistration.yourUserWillBe')}</p>
               <p className="text-lg font-bold text-on-background font-mono">{form.email || generatedUsername}</p>
-              <p className="text-xs text-outline mt-1">Usarás tu correo electrónico para iniciar sesión</p>
+              <p className="text-xs text-outline mt-1">{t('agentRegistration.loginWithEmail')}</p>
             </div>
           )}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-1.5">
-              <label className="text-sm font-bold text-on-background">Contraseña</label>
+              <label className="text-sm font-bold text-on-background">{t('agentRegistration.password')}</label>
               <input
                 type="password"
                 value={form.password}
                 onChange={(e) => set('password', e.target.value)}
                 className="w-full bg-surface-container-low border-b-2 border-outline-variant focus:border-gray-900 focus:ring-0 px-4 py-3 rounded-t-lg transition-all outline-none"
-                placeholder="Mín. 8 caracteres"
+                placeholder={t('agentRegistration.passwordPlaceholder')}
               />
               <div className="flex gap-2 mt-2">
-                <span className={`text-xs ${form.password.length >= 8 ? 'text-emerald-600' : 'text-outline'}`}>✓ 8+ caracteres</span>
-                <span className={`text-xs ${/[A-Z]/.test(form.password) ? 'text-emerald-600' : 'text-outline'}`}>✓ 1 mayúscula</span>
-                <span className={`text-xs ${/[0-9]/.test(form.password) ? 'text-emerald-600' : 'text-outline'}`}>✓ 1 número</span>
+                <span className={`text-xs ${form.password.length >= 8 ? 'text-emerald-600' : 'text-outline'}`}>{t('agentRegistration.passwordReq8')}</span>
+                <span className={`text-xs ${/[A-Z]/.test(form.password) ? 'text-emerald-600' : 'text-outline'}`}>{t('agentRegistration.passwordReqUpper')}</span>
+                <span className={`text-xs ${/[0-9]/.test(form.password) ? 'text-emerald-600' : 'text-outline'}`}>{t('agentRegistration.passwordReqNumber')}</span>
               </div>
             </div>
             <div className="space-y-1.5">
-              <label className="text-sm font-bold text-on-background">Confirmar Contraseña</label>
+              <label className="text-sm font-bold text-on-background">{t('agentRegistration.confirmPassword')}</label>
               <input
                 type="password"
                 value={form.confirmPassword}
                 onChange={(e) => set('confirmPassword', e.target.value)}
                 className="w-full bg-surface-container-low border-b-2 border-outline-variant focus:border-gray-900 focus:ring-0 px-4 py-3 rounded-t-lg transition-all outline-none"
-                placeholder="Repite la contraseña"
+                placeholder={t('agentRegistration.confirmPasswordPlaceholder')}
               />
               {form.confirmPassword && form.password !== form.confirmPassword && (
-                <p className="text-xs text-red-500 mt-1">Las contraseñas no coinciden</p>
+                <p className="text-xs text-red-500 mt-1">{t('agentRegistration.passwordsDontMatch')}</p>
               )}
               {form.confirmPassword && form.password === form.confirmPassword && form.password.length >= 8 && (
-                <p className="text-xs text-emerald-600 mt-1">✓ Contraseñas coinciden</p>
+                <p className="text-xs text-emerald-600 mt-1">{t('agentRegistration.passwordsMatch')}</p>
               )}
             </div>
           </div>
@@ -343,9 +347,9 @@ function Step1({ form, set, onNext, valid, generatedUsername, availabilityErrors
         <div className="flex items-center gap-4 p-5 bg-white rounded-2xl border border-gray-100">
           <span className="material-symbols-outlined text-emerald-600 text-3xl" style={{ fontVariationSettings: "'FILL' 1" }}>verified</span>
           <div>
-            <h4 className="font-bold text-on-background">Tus datos están protegidos</h4>
+            <h4 className="font-bold text-on-background">{t('agentRegistration.dataProtected')}</h4>
             <p className="text-sm text-text-muted">
-              Utilizamos encriptación de grado bancario para tu información personal. Tu DNI solo se usa para verificación de identidad.
+              {t('agentRegistration.dataProtectedDesc')}
             </p>
           </div>
         </div>
@@ -353,7 +357,7 @@ function Step1({ form, set, onNext, valid, generatedUsername, availabilityErrors
         {/* Actions */}
         <div className="pt-8 flex justify-end items-center gap-6">
           <button type="button" onClick={() => window.history.back()} className="text-on-background font-bold hover:underline">
-            Cancelar
+            {t('agentRegistration.cancel')}
           </button>
           <button
             type="button"
@@ -361,7 +365,7 @@ function Step1({ form, set, onNext, valid, generatedUsername, availabilityErrors
             onClick={onNext}
             className="bg-primary text-white px-12 py-4 rounded-xl font-bold shadow-lg hover:bg-gray-800 transition-all flex items-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
           >
-            Siguiente
+            {t('agentRegistration.next')}
             <span className="material-symbols-outlined">arrow_forward</span>
           </button>
         </div>
@@ -372,6 +376,7 @@ function Step1({ form, set, onNext, valid, generatedUsername, availabilityErrors
 
 /* =========== STEP 2: Professional Profile =========== */
 function Step2({ form, toggleCategory, toggleCoverage, set, onBack, onSubmit, submitting, error, valid }) {
+  const { t } = useTranslation()
   const [apiCategories, setApiCategories] = useState([])
   const [zoneInput, setZoneInput] = useState('')
 
@@ -400,14 +405,14 @@ function Step2({ form, toggleCategory, toggleCoverage, set, onBack, onSubmit, su
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
       <div className="lg:col-span-7">
         <div className="mb-10">
-          <h1 className="text-4xl font-extrabold text-on-background tracking-tight mb-3">Perfil Profesional</h1>
-          <p className="text-text-muted text-lg leading-relaxed">Configura tu perfil comercial para conectar con los clientes adecuados.</p>
+          <h1 className="text-4xl font-extrabold text-on-background tracking-tight mb-3">{t('agentRegistration.step2Title')}</h1>
+          <p className="text-text-muted text-lg leading-relaxed">{t('agentRegistration.step2Subtitle')}</p>
         </div>
 
         <div className="space-y-10">
           {/* Categories */}
           <div className="space-y-4">
-            <label className="block font-bold text-on-background text-sm uppercase tracking-wider">Categorías que manejas</label>
+            <label className="block font-bold text-on-background text-sm uppercase tracking-wider">{t('agentRegistration.categoriesLabel')}</label>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
               {apiCategories.map((cat) => (
                 <label
@@ -429,16 +434,16 @@ function Step2({ form, toggleCategory, toggleCoverage, set, onBack, onSubmit, su
 
           {/* Coverage Zones — free text with tags */}
           <div className="space-y-4">
-            <label className="block font-bold text-on-background text-sm uppercase tracking-wider">Zonas de cobertura</label>
+            <label className="block font-bold text-on-background text-sm uppercase tracking-wider">{t('agentRegistration.coverageZones')}</label>
             <div className="flex gap-2">
               <input
                 value={zoneInput}
                 onChange={(e) => setZoneInput(e.target.value)}
                 onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addZone() } }}
                 className="flex-1 bg-white border-b-2 border-outline-variant focus:border-gray-900 focus:ring-0 px-4 py-3 rounded-t-lg transition-all outline-none text-sm"
-                placeholder="Escribe una zona y presiona Enter o Agregar"
+                placeholder={t('agentRegistration.zoneInputPlaceholder')}
               />
-              <button type="button" onClick={addZone} className="px-4 py-3 bg-primary text-white rounded-xl text-sm font-bold hover:bg-gray-800 transition-colors">Agregar</button>
+              <button type="button" onClick={addZone} className="px-4 py-3 bg-primary text-white rounded-xl text-sm font-bold hover:bg-gray-800 transition-colors">{t('agentRegistration.addZone')}</button>
             </div>
             {form.coverageAreas.length > 0 && (
               <div className="flex flex-wrap gap-2 mt-2">
@@ -452,21 +457,21 @@ function Step2({ form, toggleCategory, toggleCoverage, set, onBack, onSubmit, su
                 ))}
               </div>
             )}
-            <p className="text-xs text-outline">Agrega las áreas, barrios o ciudades donde puedes operar.</p>
+            <p className="text-xs text-outline">{t('agentRegistration.zonesHint')}</p>
           </div>
 
           {/* Bio */}
           <div className="space-y-4">
-            <label className="block font-bold text-on-background text-sm uppercase tracking-wider">Cuéntale a tus clientes quién eres</label>
+            <label className="block font-bold text-on-background text-sm uppercase tracking-wider">{t('agentRegistration.bioLabel')}</label>
             <textarea
               value={form.motivation}
               onChange={(e) => set('motivation', e.target.value.slice(0, 500))}
               className="w-full bg-surface-container-low border-b-2 border-outline-variant focus:border-gray-900 rounded-t-xl p-4 focus:ring-0 text-on-background placeholder:text-outline outline-none"
-              placeholder="Escribe una breve descripción sobre tu experiencia y cómo puedes ayudar..."
+              placeholder={t('agentRegistration.bioPlaceholder')}
               rows={5}
             />
             <div className="flex justify-end">
-              <span className="text-xs text-outline">{form.motivation.length} / 500 caracteres</span>
+              <span className="text-xs text-outline">{form.motivation.length} / 500 {t('agentRegistration.characters')}</span>
             </div>
           </div>
 
@@ -480,10 +485,10 @@ function Step2({ form, toggleCategory, toggleCoverage, set, onBack, onSubmit, su
               onClick={onSubmit}
               className="w-full sm:w-auto px-10 py-4 bg-primary text-white font-bold rounded-xl shadow-lg hover:bg-gray-800 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
             >
-              {submitting ? 'Enviando...' : 'Enviar Solicitud'}
+              {submitting ? t('agentRegistration.submitting') : t('agentRegistration.submitApplication')}
             </button>
             <button type="button" onClick={onBack} className="w-full sm:w-auto px-10 py-4 text-on-background font-bold hover:underline">
-              Volver
+              {t('agentRegistration.back')}
             </button>
           </div>
         </div>
@@ -496,27 +501,27 @@ function Step2({ form, toggleCategory, toggleCoverage, set, onBack, onSubmit, su
             <div className="w-12 h-12 bg-primary text-white flex items-center justify-center rounded-2xl mb-6">
               <span className="material-symbols-outlined">lightbulb</span>
             </div>
-            <h3 className="font-bold text-2xl text-on-background mb-4">Consejos para un perfil premium</h3>
+            <h3 className="font-bold text-2xl text-on-background mb-4">{t('agentRegistration.tipsTitle')}</h3>
             <ul className="space-y-6">
               <li className="flex gap-4">
                 <span className="text-red-500 font-bold text-xl">01</span>
                 <div>
-                  <p className="font-bold text-on-background mb-1">Sé específico</p>
-                  <p className="text-text-muted text-sm leading-relaxed">Menciona marcas específicas que conoces bien. La especialización transmite confianza inmediata.</p>
+                  <p className="font-bold text-on-background mb-1">{t('agentRegistration.tip1Title')}</p>
+                  <p className="text-text-muted text-sm leading-relaxed">{t('agentRegistration.tip1Desc')}</p>
                 </div>
               </li>
               <li className="flex gap-4">
                 <span className="text-red-500 font-bold text-xl">02</span>
                 <div>
-                  <p className="font-bold text-on-background mb-1">Tu experiencia local</p>
-                  <p className="text-text-muted text-sm leading-relaxed">Menciona por qué conoces bien tu zona de cobertura. Conocer los mejores accesos y horarios es clave.</p>
+                  <p className="font-bold text-on-background mb-1">{t('agentRegistration.tip2Title')}</p>
+                  <p className="text-text-muted text-sm leading-relaxed">{t('agentRegistration.tip2Desc')}</p>
                 </div>
               </li>
               <li className="flex gap-4">
                 <span className="text-red-500 font-bold text-xl">03</span>
                 <div>
-                  <p className="font-bold text-on-background mb-1">Tono profesional</p>
-                  <p className="text-text-muted text-sm leading-relaxed">Mantén un lenguaje amable pero profesional. Eres el embajador de las compras de tu cliente.</p>
+                  <p className="font-bold text-on-background mb-1">{t('agentRegistration.tip3Title')}</p>
+                  <p className="text-text-muted text-sm leading-relaxed">{t('agentRegistration.tip3Desc')}</p>
                 </div>
               </li>
             </ul>
@@ -529,6 +534,14 @@ function Step2({ form, toggleCategory, toggleCoverage, set, onBack, onSubmit, su
 
 /* =========== STEP 3: Confirmation =========== */
 function Step3({ onBack }) {
+  const { t } = useTranslation()
+
+  const nextSteps = [
+    t('agentRegistration.nextStep1'),
+    t('agentRegistration.nextStep2'),
+    t('agentRegistration.nextStep3'),
+  ]
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
       {/* Left — Celebration */}
@@ -537,14 +550,14 @@ function Step3({ onBack }) {
           <span className="material-symbols-outlined text-6xl lg:text-7xl text-emerald-600" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
         </div>
         <h1 className="text-4xl lg:text-5xl font-extrabold text-on-background leading-tight tracking-tight">
-          Solicitud Enviada con Éxito ✓
+          {t('agentRegistration.successTitle')}
         </h1>
         <p className="text-text-muted text-lg max-w-md mx-auto lg:mx-0">
-          Tu viaje como agente en TeVra ha comenzado. Hemos recibido tus datos y pronto estarás conectando con marcas premium.
+          {t('agentRegistration.successDesc')}
         </p>
         <div className="inline-flex items-center gap-3 px-4 py-2 bg-surface-container rounded-full border border-outline-variant">
           <span className="material-symbols-outlined text-blue-400 text-xl">verified</span>
-          <span className="text-sm font-medium text-on-background uppercase tracking-wide">Un Administrador revisará tu perfil personalmente.</span>
+          <span className="text-sm font-medium text-on-background uppercase tracking-wide">{t('agentRegistration.adminReview')}</span>
         </div>
       </div>
 
@@ -552,27 +565,27 @@ function Step3({ onBack }) {
       <div className="lg:col-span-7 space-y-6">
         <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold text-on-background">Estado de Solicitud</h2>
-            <span className="bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest">Pendiente</span>
+            <h2 className="text-xl font-bold text-on-background">{t('agentRegistration.applicationStatus')}</h2>
+            <span className="bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest">{t('agentRegistration.statusPending')}</span>
           </div>
 
           <div className="flex items-start gap-4 p-4 bg-surface-container-low rounded-xl border border-gray-100">
             <span className="material-symbols-outlined text-amber-500 mt-1">schedule</span>
             <div>
-              <p className="font-bold text-on-background">Estado: En Revisión</p>
-              <p className="text-sm text-text-muted">Aproximadamente 24-48 horas hábiles para la validación inicial.</p>
+              <p className="font-bold text-on-background">{t('agentRegistration.statusInReview')}</p>
+              <p className="text-sm text-text-muted">{t('agentRegistration.reviewTime')}</p>
             </div>
           </div>
 
-          {/* Próximos Pasos */}
+          {/* Next Steps */}
           <div className="mt-8 space-y-6">
-            <h3 className="text-lg font-bold text-on-background border-l-4 border-red-400 pl-4">Próximos Pasos</h3>
+            <h3 className="text-lg font-bold text-on-background border-l-4 border-red-400 pl-4">{t('agentRegistration.nextSteps')}</h3>
             <div className="space-y-4">
-              {['Verificación de identidad', 'Entrevista breve vía WhatsApp', 'Activación de perfil'].map((step, i) => (
+              {nextSteps.map((stepLabel, i) => (
                 <div key={i} className="flex items-center gap-4 group">
                   <div className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-sm font-bold shrink-0">{i + 1}</div>
                   <div className="flex-1 border-b border-gray-100 pb-2">
-                    <p className="text-gray-700 font-medium group-hover:text-on-background transition-colors">{step}</p>
+                    <p className="text-gray-700 font-medium group-hover:text-on-background transition-colors">{stepLabel}</p>
                   </div>
                   <span className="material-symbols-outlined text-gray-300">{i === 0 ? 'done' : 'hourglass_empty'}</span>
                 </div>
@@ -585,7 +598,7 @@ function Step3({ onBack }) {
               onClick={onBack}
               className="w-full py-4 border-2 border-gray-900 text-on-background font-bold rounded-xl hover:bg-primary hover:text-white transition-all flex items-center justify-center gap-2"
             >
-              Volver al Catálogo
+              {t('agentRegistration.backToCatalog')}
               <span className="material-symbols-outlined">arrow_forward</span>
             </button>
           </div>
