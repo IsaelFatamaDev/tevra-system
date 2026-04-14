@@ -13,7 +13,8 @@ export default function AdminCommunications() {
   const [page, setPage] = useState(1)
   const [showCreate, setShowCreate] = useState(false)
   const [saving, setSaving] = useState(false)
-  const [form, setForm] = useState({ name: '', type: 'email', message: '', audienceType: 'all', recipientCount: 100 })
+  const [isEstimating, setIsEstimating] = useState(false)
+  const [form, setForm] = useState({ name: '', type: 'email', message: '', audienceType: 'all', recipientCount: 0 })
 
   const fetchData = () => {
     setLoading(true)
@@ -27,22 +28,36 @@ export default function AdminCommunications() {
   }
   useEffect(() => { fetchData() }, [])
 
+  // Auto-estimate recipients when type or audience changes
+  useEffect(() => {
+    if (!showCreate) return
+    setIsEstimating(true)
+    campaignsService.estimate(form.type, form.audienceType)
+      .then(res => {
+        if (res?.count !== undefined) {
+          setForm(prev => ({ ...prev, recipientCount: res.count }))
+        }
+      })
+      .catch(err => console.error('Estimation error:', err))
+      .finally(() => setIsEstimating(false))
+  }, [form.type, form.audienceType, showCreate])
+
   const handleCreate = async () => {
     setSaving(true)
     try {
       await campaignsService.create(form)
       setShowCreate(false)
-      setForm({ name: '', type: 'email', message: '', audienceType: 'all', recipientCount: 100 })
+      setForm({ name: '', type: 'email', message: '', audienceType: 'all', recipientCount: 0 })
       fetchData()
     } catch (err) { console.error(err) }
     finally { setSaving(false) }
   }
 
   const TEMPLATES = {
-    Oferta: { name: t('admin.communications.templateOffer'), type: 'email', message: '🎉 ¡Aprovecha nuestra oferta exclusiva! Descuentos de hasta 50% en productos seleccionados. ¡Solo por tiempo limitado!', audienceType: 'all', recipientCount: 500 },
-    Bienvenida: { name: t('admin.communications.templateWelcome'), type: 'email', message: '👋 ¡Bienvenido a TeVra! Estamos encantados de tenerte. Explora nuestro catálogo y encuentra los mejores productos con la asesoría de nuestros agentes.', audienceType: 'all', recipientCount: 100 },
-    Envío: { name: t('admin.communications.templateShipping'), type: 'whatsapp', message: '📦 Tu pedido ha sido enviado y está en camino. Puedes rastrear tu paquete con el número de seguimiento adjunto. ¡Gracias por tu compra!', audienceType: 'all', recipientCount: 200 },
-    Reseña: { name: t('admin.communications.templateReview'), type: 'email', message: '⭐ ¿Qué te pareció tu compra? Tu opinión nos ayuda a mejorar. Déjanos una reseña y participa en nuestros sorteos mensuales.', audienceType: 'all', recipientCount: 300 },
+    Offer: { name: t('admin.communications.templateOffer'), type: 'email', message: '🎉 Take advantage of our exclusive offer! Discounts up to 50% on selected products. Limited time only!', audienceType: 'all', recipientCount: 500 },
+    Welcome: { name: t('admin.communications.templateWelcome'), type: 'email', message: '👋 Welcome to TeVra! We are thrilled to have you. Explore our catalog and find the best products with the help of our agents.', audienceType: 'all', recipientCount: 100 },
+    Shipping: { name: t('admin.communications.templateShipping'), type: 'whatsapp', message: '📦 Your order has been shipped and is on its way. You can track your package with the attached tracking number. Thank you for your purchase!', audienceType: 'all', recipientCount: 200 },
+    Review: { name: t('admin.communications.templateReview'), type: 'email', message: '⭐ How was your purchase? Your feedback helps us improve. Leave us a review and participate in our monthly giveaways.', audienceType: 'all', recipientCount: 300 },
   }
 
   const applyTemplate = (label) => {
@@ -152,10 +167,10 @@ export default function AdminCommunications() {
             <h3 className="text-sm font-semibold text-zinc-900 mb-3">{t('admin.communications.quickTemplates')}</h3>
             <div className="grid grid-cols-2 gap-2">
               {[
-                { icon: 'loyalty', key: 'Oferta', label: t('admin.communications.templateOffer') },
-                { icon: 'waving_hand', key: 'Bienvenida', label: t('admin.communications.templateWelcome') },
-                { icon: 'local_shipping', key: 'Envío', label: t('admin.communications.templateShipping') },
-                { icon: 'reviews', key: 'Reseña', label: t('admin.communications.templateReview') },
+                { icon: 'loyalty', key: 'Offer', label: t('admin.communications.templateOffer') },
+                { icon: 'waving_hand', key: 'Welcome', label: t('admin.communications.templateWelcome') },
+                { icon: 'local_shipping', key: 'Shipping', label: t('admin.communications.templateShipping') },
+                { icon: 'reviews', key: 'Review', label: t('admin.communications.templateReview') },
               ].map((tpl, i) => (
                 <button key={i} onClick={() => applyTemplate(tpl.key)} className="bg-zinc-50 border border-zinc-200 p-3 rounded-lg text-center hover:bg-zinc-100 transition-colors">
                   <span className="material-symbols-outlined text-xl mb-1 text-zinc-600">{tpl.icon}</span>
@@ -239,9 +254,12 @@ export default function AdminCommunications() {
                 </div>
               </div>
               <div>
-                <label className="block text-xs font-medium text-zinc-500 mb-1">{t('admin.communications.estimatedRecipients')}</label>
-                <input type="number" value={form.recipientCount} onChange={e => setForm({ ...form, recipientCount: Number(e.target.value) })}
-                  className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200 rounded-lg text-sm focus:ring-2 focus:ring-zinc-900/10 focus:border-zinc-400 outline-none" />
+                <label className="block text-xs font-medium text-zinc-500 mb-1">
+                  {t('admin.communications.estimatedRecipients')} 
+                  {isEstimating && <span className="ml-2 inline-flex h-3 w-3 border-2 border-zinc-200 border-t-zinc-600 rounded-full animate-spin"></span>}
+                </label>
+                <input type="number" readOnly value={form.recipientCount}
+                  className="w-full px-3 py-2 bg-zinc-100 border border-zinc-200 rounded-lg text-sm text-zinc-500 outline-none cursor-not-allowed" />
               </div>
               <div>
                 <label className="block text-xs font-medium text-zinc-500 mb-1">{t('admin.communications.message')}</label>

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import api from '../../../core/services/api'
 
@@ -11,6 +11,12 @@ export default function AdminSettings() {
   const [logoUrl, setLogoUrl] = useState(null)
   const [uploadingLogo, setUploadingLogo] = useState(false)
   const logoInputRef = useRef(null)
+
+  const [waStatus, setWaStatus] = useState('unknown')
+  const [waQrCode, setWaQrCode] = useState(null)
+  const [waLoading, setWaLoading] = useState(false)
+  const [waError, setWaError] = useState(null)
+  const waIntervalRef = useRef(null)
   const [form, setForm] = useState({
     name: '', supportEmail: '', supportPhone: '', whatsapp: '', currency: 'USD', commissionPct: '',
     stripeEnabled: false, paypalEnabled: false,
@@ -81,6 +87,67 @@ export default function AdminSettings() {
     } catch (err) { console.error(err) }
     finally { setSaving(false) }
   }
+
+  /* ── WhatsApp functions ── */
+  const checkWaStatus = useCallback(async () => {
+    try {
+      const data = await api.get('/whatsapp/status')
+      const state = data?.instance?.state || data?.state || 'close'
+      setWaStatus(state)
+      if (state === 'open') {
+        setWaQrCode(null)
+        if (waIntervalRef.current) { clearInterval(waIntervalRef.current); waIntervalRef.current = null }
+      }
+    } catch { setWaStatus('unknown') }
+  }, [])
+
+  const handleWaConnect = async () => {
+    setWaLoading(true)
+    setWaError(null)
+    try {
+      // Try to create instance first — v1.8.x may return QR directly on create
+      let qr = null
+      try {
+        const createData = await api.post('/whatsapp/instance')
+        // v1.8.x returns qrcode on creation
+        qr = createData?.qrcode?.base64 || createData?.base64 || createData?.qrcode || null
+      } catch { /* may already exist */ }
+
+      // If no QR from creation, get it from connect endpoint
+      if (!qr) {
+        const data = await api.get('/whatsapp/qrcode')
+        console.log('QR response:', data)
+        qr = data?.base64 || data?.qrcode?.base64 || data?.qrcode || data?.code || null
+      }
+
+      if (qr && typeof qr === 'string') {
+        setWaQrCode(qr.startsWith('data:') ? qr : `data:image/png;base64,${qr}`)
+        setWaStatus('connecting')
+        if (waIntervalRef.current) clearInterval(waIntervalRef.current)
+        waIntervalRef.current = setInterval(checkWaStatus, 5000)
+      } else {
+        setWaError(t('admin.settings.waQrError'))
+      }
+    } catch (err) {
+      setWaError(err?.response?.data?.message || err.message || 'Error connecting')
+    } finally { setWaLoading(false) }
+  }
+
+  const handleWaDisconnect = async () => {
+    setWaLoading(true)
+    try {
+      await api.delete('/whatsapp/logout')
+      setWaStatus('close')
+      setWaQrCode(null)
+    } catch (err) { setWaError(err.message) }
+    finally { setWaLoading(false) }
+  }
+
+  // Check WA status on mount + cleanup
+  useEffect(() => {
+    checkWaStatus()
+    return () => { if (waIntervalRef.current) clearInterval(waIntervalRef.current) }
+  }, [checkWaStatus])
 
   if (loading) {
     return (
@@ -324,6 +391,85 @@ export default function AdminSettings() {
           </div>
         </div>
       )}
+
+      {/* WhatsApp Connection */}
+      <div className="bg-white rounded-xl border border-zinc-200 overflow-hidden">
+        <div className="px-5 py-3.5 border-b border-zinc-100 flex items-center justify-between">
+          <div>
+            <h3 className="font-semibold text-zinc-900 text-sm">{t('admin.settings.waTitle')}</h3>
+            <p className="text-xs text-zinc-500 mt-0.5">{t('admin.settings.waSubtitle')}</p>
+          </div>
+          <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${
+            waStatus === 'open' ? 'bg-emerald-50 text-emerald-700' :
+            waStatus === 'connecting' ? 'bg-amber-50 text-amber-700' :
+            'bg-zinc-100 text-zinc-500'
+          }`}>
+            <span className={`w-2 h-2 rounded-full ${
+              waStatus === 'open' ? 'bg-emerald-500' :
+              waStatus === 'connecting' ? 'bg-amber-500 animate-pulse' :
+              'bg-zinc-400'
+            }`} />
+            {waStatus === 'open' ? t('admin.settings.waConnected') :
+             waStatus === 'connecting' ? t('admin.settings.waConnecting') :
+             t('admin.settings.waDisconnected')}
+          </div>
+        </div>
+        <div className="p-5">
+          {waError && (
+            <div className="mb-4 flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-xs font-medium">
+              <span className="material-symbols-outlined text-[16px]">error</span>
+              {waError}
+            </div>
+          )}
+
+          {waStatus === 'open' ? (
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center">
+                <span className="material-symbols-outlined text-emerald-600 text-2xl" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
+              </div>
+              <div className="flex-1">
+                <p className="font-semibold text-zinc-900 text-sm">{t('admin.settings.waActiveTitle')}</p>
+                <p className="text-xs text-zinc-500 mt-0.5">{t('admin.settings.waActiveDesc')}</p>
+              </div>
+              <button onClick={handleWaDisconnect} disabled={waLoading}
+                className="px-3.5 py-2 bg-red-50 text-red-600 text-xs font-medium rounded-lg hover:bg-red-100 transition-colors flex items-center gap-1.5 disabled:opacity-50">
+                <span className="material-symbols-outlined text-[16px]">link_off</span>
+                {t('admin.settings.waDisconnect')}
+              </button>
+            </div>
+          ) : waQrCode ? (
+            <div className="flex flex-col items-center gap-4 py-4">
+              <p className="text-sm text-zinc-600 font-medium text-center">{t('admin.settings.waScanQr')}</p>
+              <div className="p-3 bg-white rounded-xl border-2 border-zinc-200 shadow-sm">
+                <img src={waQrCode} alt="WhatsApp QR Code" className="w-56 h-56 object-contain" />
+              </div>
+              <p className="text-xs text-zinc-400 text-center max-w-sm">{t('admin.settings.waScanHint')}</p>
+              <button onClick={handleWaConnect} disabled={waLoading}
+                className="text-xs text-zinc-500 hover:text-zinc-700 underline transition-colors">
+                {t('admin.settings.waRefreshQr')}
+              </button>
+            </div>
+          ) : (
+            <div className="flex flex-col items-center gap-4 py-6">
+              <div className="w-16 h-16 bg-zinc-50 rounded-2xl flex items-center justify-center border border-zinc-200">
+                <span className="material-symbols-outlined text-zinc-400 text-3xl">qr_code_2</span>
+              </div>
+              <div className="text-center">
+                <p className="text-sm font-medium text-zinc-700">{t('admin.settings.waNotConnected')}</p>
+                <p className="text-xs text-zinc-400 mt-1 max-w-sm">{t('admin.settings.waNotConnectedDesc')}</p>
+              </div>
+              <button onClick={handleWaConnect} disabled={waLoading}
+                className="px-5 py-2.5 bg-[#25D366] hover:bg-[#20bd5a] text-white text-sm font-semibold rounded-xl transition-colors flex items-center gap-2 disabled:opacity-50 shadow-sm">
+                {waLoading ? (
+                  <><div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> {t('common.loading')}</>
+                ) : (
+                  <><span className="material-symbols-outlined text-[18px]">qr_code_scanner</span> {t('admin.settings.waConnect')}</>
+                )}
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
 
       {/* Save */}
       <div className="flex justify-end">

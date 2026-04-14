@@ -833,7 +833,22 @@
       "stripeDesc": "Card payment processing.",
       "paypal": "PayPal",
       "paypalDesc": "PayPal account payments.",
-      "currentPlan": "Current Plan"
+      "currentPlan": "Current Plan",
+      "waTitle": "WhatsApp Connection",
+      "waSubtitle": "Connect your WhatsApp to send notifications and campaigns.",
+      "waConnected": "Connected",
+      "waConnecting": "Connecting...",
+      "waDisconnected": "Disconnected",
+      "waConnect": "Connect WhatsApp",
+      "waDisconnect": "Disconnect",
+      "waActiveTitle": "WhatsApp is connected",
+      "waActiveDesc": "Notifications and campaigns will also be sent via WhatsApp.",
+      "waScanQr": "Scan this QR code with your WhatsApp",
+      "waScanHint": "Open WhatsApp on your phone → Settings → Linked devices → Link a device → Point your camera at this QR code.",
+      "waRefreshQr": "Refresh QR code",
+      "waNotConnected": "No WhatsApp account linked",
+      "waNotConnectedDesc": "Connect your WhatsApp account to send welcome messages, order updates, and campaign notifications automatically.",
+      "waQrError": "Could not generate QR code. Please try again."
     },
     "table": {
       "order": "Order",
@@ -1315,7 +1330,16 @@
     "validationPasswordMatch": "Passwords don't match.",
     "validationCategories": "Select at least one category.",
     "validationCoverage": "Add at least one coverage zone.",
-    "submitError": "Error submitting application"
+    "submitError": "Error submitting application",
+    "cancel": "Cancel",
+    "next": "Next",
+    "back": "Back",
+    "validationId": "ID number must be exactly 8 digits.",
+    "validationWhatsapp": "Enter a valid WhatsApp number.",
+    "validationPassword8": "Password must be at least 8 characters.",
+    "validationPasswordUpper": "Password must have at least 1 uppercase letter.",
+    "validationPasswordNumber": "Password must have at least 1 number.",
+    "validationPasswordMatch": "Passwords don't match."
   },
   "quote": {
     "emptyCart": "Your cart is empty",
