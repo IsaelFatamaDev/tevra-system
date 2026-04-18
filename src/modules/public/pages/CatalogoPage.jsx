@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import useScrollReveal from '../../../core/hooks/useScrollReveal'
 import { useCart } from '../../../core/hooks/useCart'
@@ -111,7 +111,13 @@ export default function CatalogoPage() {
   const [totalPages, setTotalPages] = useState(1)
   const [searchTimeout, setSearchTimeout] = useState(null)
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
   const { t } = useTranslation()
+
+  useEffect(() => {
+    const urlSearch = searchParams.get('search')
+    if (urlSearch) setBusqueda(urlSearch)
+  }, [])
 
   const SORT_OPTIONS = [
     { value: '', label: t('catalog.sort.featured') },
@@ -165,29 +171,43 @@ export default function CatalogoPage() {
 
   return (
     <main className="min-h-screen bg-background-cream" style={{ paddingTop: 'clamp(3.5rem, 8vh, 5rem)' }}>
-      <section className="tevra-hero-gradient py-16 sm:py-20 overflow-hidden">
+      <section className="tevra-hero-gradient py-14 sm:py-20 overflow-hidden">
         <div className="tevra-hero-overlay" />
         <div className="max-w-7xl mx-auto px-4 sm:px-8 relative z-10">
-          <div className="hero-enter">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 rounded-full border border-white/20 mb-5">
-              <span className="w-2 h-2 bg-tevra-coral rounded-full animate-pulse" />
-              <span className="text-white text-[11px] font-bold uppercase tracking-widest">{t('catalog.badge')}</span>
+          <div className="grid md:grid-cols-2 gap-8 items-center hero-enter">
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 rounded-full border border-white/20 mb-5">
+                <span className="w-2 h-2 bg-tevra-coral rounded-full animate-pulse" />
+                <span className="text-white text-[11px] font-bold uppercase tracking-widest">{t('catalog.badge')}</span>
+              </div>
+              <h1 className="font-headline font-extrabold text-white tracking-tight mb-4" style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)' }}>
+                {t('catalog.title')}
+              </h1>
+              <p className="text-white/70 max-w-xl mb-8" style={{ fontSize: 'clamp(0.9rem, 1.8vw, 1.1rem)' }}>
+                {t('catalog.subtitle')}
+              </p>
+              <div className="flex items-center bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl px-5 py-3 max-w-md">
+                <span className="material-symbols-outlined text-white/50 mr-3">search</span>
+                <input
+                  className="bg-transparent border-none focus:outline-none text-white placeholder:text-white/40 text-sm w-full"
+                  placeholder={t('catalog.searchPlaceholder')}
+                  type="text"
+                  value={busqueda}
+                  onChange={(e) => handleSearch(e.target.value)}
+                />
+              </div>
             </div>
-            <h1 className="font-headline font-extrabold text-white tracking-tight mb-4" style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)' }}>
-              {t('catalog.title')}
-            </h1>
-            <p className="text-white/70 max-w-xl mb-8" style={{ fontSize: 'clamp(0.9rem, 1.8vw, 1.1rem)' }}>
-              {t('catalog.subtitle')}
-            </p>
-            <div className="flex items-center bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl px-5 py-3 max-w-md">
-              <span className="material-symbols-outlined text-white/50 mr-3">search</span>
-              <input
-                className="bg-transparent border-none focus:outline-none text-white placeholder:text-white/40 text-sm w-full"
-                placeholder={t('catalog.searchPlaceholder')}
-                type="text"
-                value={busqueda}
-                onChange={(e) => handleSearch(e.target.value)}
-              />
+            <div className="hidden md:grid grid-cols-2 gap-3">
+              {[
+                { src: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300&h=300&fit=crop', alt: 'Relojes premium' },
+                { src: 'https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=300&h=300&fit=crop', alt: 'Productos de belleza' },
+                { src: 'https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=300&h=300&fit=crop', alt: 'Zapatillas' },
+                { src: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&h=300&fit=crop', alt: 'Auriculares' },
+              ].map((img, i) => (
+                <div key={i} className={`rounded-2xl overflow-hidden shadow-2xl border border-white/10 ${i % 2 === 1 ? 'mt-4' : ''}`} style={{ aspectRatio: '1/1' }}>
+                  <img src={img.src} alt={img.alt} className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+                </div>
+              ))}
             </div>
           </div>
         </div>

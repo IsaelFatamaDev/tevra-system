@@ -1,13 +1,11 @@
 import { useState, useCallback } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import PageTransition from './PageTransition'
 import LanguageSwitcher from './LanguageSwitcher'
 import { useCart } from '../hooks/useCart'
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
-  const [showTransition, setShowTransition] = useState(false)
   const navigate = useNavigate()
   const { getCount } = useCart()
   const cartCount = getCount()
@@ -22,17 +20,11 @@ export default function Navbar() {
 
   const handleLoginClick = useCallback((e) => {
     e.preventDefault()
-    setShowTransition(true)
-  }, [])
-
-  const handleTransitionDone = useCallback(() => {
-    setShowTransition(false)
     navigate('/login')
   }, [navigate])
 
   return (
     <>
-      {showTransition && <PageTransition onDone={handleTransitionDone} />}
       <nav className="fixed top-0 w-full z-50 bg-surface-container-lowest/80 backdrop-blur-md border-b border-outline-variant/20">
         <div className="flex justify-between items-center px-8 py-3 max-w-7xl mx-auto w-full">
           <Link to="/" className="flex items-center gap-2">
@@ -54,19 +46,9 @@ export default function Navbar() {
           </div>
 
           <div className="flex items-center gap-4">
-            <div className="hidden lg:flex items-center bg-surface-container-low px-4 py-2 rounded-full border border-outline-variant/20">
-              <span className="material-symbols-outlined text-text-muted text-sm mr-2">search</span>
-              <input
-                className="bg-transparent border-none focus:ring-0 focus:outline-none text-xs w-40 text-on-background placeholder:text-text-muted"
-                placeholder={t('nav.searchPlaceholder')}
-                type="text"
-              />
-            </div>
-
             <LanguageSwitcher variant="dark" />
 
             <div className="flex gap-4">
-              <span className="material-symbols-outlined text-primary cursor-pointer hover:text-secondary transition-colors">favorite</span>
               <button onClick={handleLoginClick}>
                 <span className="material-symbols-outlined text-primary cursor-pointer hover:text-secondary transition-colors">person</span>
               </button>

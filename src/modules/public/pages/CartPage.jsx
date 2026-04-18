@@ -1,10 +1,20 @@
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useCart } from '../../../core/hooks/useCart'
+import { useAuth } from '../../../core/contexts/AuthContext'
 
 export default function CartPage() {
   const { items, removeItem, updateQty, getSubtotal, getCount, selectedAgent } = useCart()
   const { t } = useTranslation()
+  const { isAuthenticated } = useAuth()
+  const navigate = useNavigate()
+
+  const handleCheckout = (e) => {
+    if (!isAuthenticated) {
+      e.preventDefault()
+      navigate('/login?redirect=' + encodeURIComponent(selectedAgent ? '/cotizar' : '/directorio-agentes'))
+    }
+  }
 
   if (items.length === 0) {
     return (
@@ -123,12 +133,13 @@ export default function CartPage() {
 
               <Link
                 to={selectedAgent ? '/cotizar' : '/directorio-agentes'}
+                onClick={handleCheckout}
                 className="w-full bg-primary text-white py-4 rounded-2xl font-headline font-bold text-sm flex items-center justify-center gap-2 hover:bg-secondary transition-colors shadow-lg"
               >
                 <span className="material-symbols-outlined text-base">
-                  {selectedAgent ? 'send' : 'group'}
+                  {!isAuthenticated ? 'login' : selectedAgent ? 'send' : 'group'}
                 </span>
-                {selectedAgent ? t('cart.quoteWhatsApp') : t('cart.chooseAgent')}
+                {!isAuthenticated ? 'Inicia sesión para continuar' : selectedAgent ? t('cart.quoteWhatsApp') : t('cart.chooseAgent')}
               </Link>
 
               <div className="flex items-start gap-2 text-xs text-text-muted">

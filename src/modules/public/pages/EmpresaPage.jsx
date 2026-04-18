@@ -96,9 +96,12 @@ export default function EmpresaPage() {
                 {t('empresa.vision.desc')}
               </p>
               <div className="mt-8 p-6 bg-surface-container rounded-2xl">
-                <p className="text-primary font-medium text-sm leading-relaxed">
-                  <span className="font-black">{t('empresa.vision.uber')}</span>{t('empresa.vision.uberDesc')}
-                </p>
+                <div className="flex items-start gap-3">
+                  <span className="material-symbols-outlined text-mint text-xl mt-0.5">verified</span>
+                  <p className="text-primary font-medium text-sm leading-relaxed">
+                    TeVra es una empresa registrada en California con cobertura en todo USA. Socios logísticos certificados, aduana resuelta, envío asegurado de puerta a puerta.
+                  </p>
+                </div>
               </div>
             </div>
           </div>

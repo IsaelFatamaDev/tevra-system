@@ -27,6 +27,13 @@ const tablaIngresos = [
   { clientes: 50, monto: '$1,260' },
 ]
 
+const trustIcons = [
+  { icon: 'handshake', color: 'bg-secondary/20 text-secondary' },
+  { icon: 'public', color: 'bg-mint/20 text-mint' },
+  { icon: 'gavel', color: 'bg-accent-gold/20 text-accent-gold' },
+  { icon: 'verified_user', color: 'bg-white/10 text-white' },
+]
+
 function HeroAgentes() {
   const { t } = useTranslation()
   return (
@@ -181,7 +188,7 @@ function HerramientasSection() {
               <div className="flex items-start justify-between mb-6">
                 <span className={`material-symbols-outlined text-4xl ${h.iconColor}`}>{h.icon}</span>
                 {h.pronto && (
-                  <span className="bg-primary/10 text-primary text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wide">Próximamente</span>
+                  <span className="bg-primary/10 text-primary text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wide">{t('common.comingSoon')}</span>
                 )}
               </div>
               <h4 className="font-headline font-bold text-xl text-primary mb-2">{h.title}</h4>
@@ -194,64 +201,35 @@ function HerramientasSection() {
   )
 }
 
-function VlapexSection() {
+function TrustSection() {
   const { t } = useTranslation()
   const { ref, isVisible } = useScrollReveal(0.05)
+  const trustItems = t('agentes.trust.items', { returnObjects: true }).map((item, i) => ({ ...trustIcons[i], ...item }))
+  
   return (
-    <section className="py-24 bg-primary overflow-hidden">
+    <section className="py-20 bg-primary overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-8">
-        <div ref={ref} className={`grid lg:grid-cols-2 items-center gap-16 reveal ${isVisible ? 'visible' : ''}`}>
-          <div className="relative flex justify-center">
-            <div className="relative w-64 h-[520px] bg-black rounded-[3rem] border-8 border-slate-800 shadow-2xl overflow-hidden">
-              <div className="absolute top-0 w-full h-6 bg-slate-800 flex justify-center items-end pb-1">
-                <div className="w-20 h-4 bg-black rounded-full" />
+        <div className="text-center mb-12">
+          <span className="inline-block px-4 py-1.5 rounded-full bg-white/10 text-white font-bold text-xs uppercase tracking-widest mb-4">
+            {t('agentes.trust.badge')}
+          </span>
+          <h2 className="font-headline font-extrabold text-white leading-tight" style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)' }}>
+            {t('agentes.trust.title')} <span className="text-secondary">{t('agentes.trust.titleHighlight')}</span>
+          </h2>
+          <p className="text-white/60 max-w-2xl mx-auto mt-4 text-lg">
+            {t('agentes.trust.subtitle')}
+          </p>
+        </div>
+        <div ref={ref} className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 reveal ${isVisible ? 'visible' : ''}`}>
+          {trustItems.map((item, i) => (
+            <div key={i} className={`bg-white/5 border border-white/10 rounded-3xl p-8 hover:bg-white/10 transition-all duration-300 stagger-${i + 1}`}>
+              <div className={`w-12 h-12 ${item.color} rounded-2xl flex items-center justify-center mb-5`}>
+                <span className="material-symbols-outlined text-xl">{item.icon}</span>
               </div>
-              <div className="p-5 pt-10 bg-white h-full">
-                <div className="flex justify-between items-center mb-6">
-                  <div className="w-8 h-8 rounded-full bg-slate-100" />
-                  <div className="w-24 h-3 bg-slate-100 rounded-full" />
-                </div>
-                <div className="space-y-4">
-                  <div className="p-4 bg-secondary/10 rounded-xl border border-secondary/20">
-                    <div className="w-20 h-2 bg-secondary/40 rounded-full mb-2" />
-                    <div className="w-12 h-4 bg-secondary rounded-full" />
-                  </div>
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="h-20 bg-slate-50 rounded-xl" />
-                    <div className="h-20 bg-slate-50 rounded-xl" />
-                  </div>
-                  <div className="space-y-2 mt-6">
-                    <div className="w-full h-2 bg-slate-100 rounded-full" />
-                    <div className="w-full h-2 bg-slate-100 rounded-full" />
-                    <div className="w-2/3 h-2 bg-slate-100 rounded-full" />
-                  </div>
-                </div>
-              </div>
+              <h4 className="font-headline font-bold text-white text-lg mb-2">{item.title}</h4>
+              <p className="text-white/60 text-sm leading-relaxed">{item.desc}</p>
             </div>
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-secondary/20 rounded-full blur-[100px] -z-10" />
-          </div>
-          <div className="text-white space-y-8">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 text-sm font-bold border border-white/20">
-              <span className="w-2 h-2 rounded-full bg-secondary animate-pulse" />
-              {t('agentes.vlapex.badge')}
-            </div>
-            <h2 className="font-headline font-extrabold leading-tight" style={{ fontSize: 'clamp(2rem, 4vw, 3.25rem)' }}>
-              {t('agentes.vlapex.title', { defaultValue: '' }).split('VLAPEX')[0]}<span className="text-secondary">VLAPEX</span>
-            </h2>
-            <p className="text-white/70 leading-relaxed max-w-xl" style={{ fontSize: 'clamp(0.95rem, 1.8vw, 1.1rem)' }}>
-              {t('agentes.vlapex.desc')}
-            </p>
-            <div className="grid grid-cols-2 gap-8 pt-4">
-              <div>
-                <span className="block text-3xl font-bold mb-1">RTD</span>
-                <span className="text-sm opacity-60 uppercase tracking-widest">{t('agentes.vlapex.rtd')}</span>
-              </div>
-              <div>
-                <span className="block text-3xl font-bold mb-1">100%</span>
-                <span className="text-sm opacity-60 uppercase tracking-widest">{t('agentes.vlapex.digitalNative')}</span>
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </section>
@@ -318,7 +296,7 @@ export default function AgentesPage() {
       <ValoresSection />
       <CalculadoraSection />
       <HerramientasSection />
-      <VlapexSection />
+      <TrustSection />
       <RegistroSection />
     </main>
   )

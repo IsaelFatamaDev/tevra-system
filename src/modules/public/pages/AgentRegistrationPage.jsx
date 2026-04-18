@@ -1,9 +1,29 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { agentsService } from '../services/agents.service'
 import productsService from '../services/products.service'
 import { useFieldAvailability } from '../../../core/hooks/useFieldAvailability'
+
+const COUNTRY_CODES = [
+  { code: '+51', flag: '🇵🇪', name: 'Perú' },
+  { code: '+1', flag: '🇺🇸', name: 'USA / Canadá' },
+  { code: '+52', flag: '🇲🇽', name: 'México' },
+  { code: '+57', flag: '🇨🇴', name: 'Colombia' },
+  { code: '+58', flag: '🇻🇪', name: 'Venezuela' },
+  { code: '+54', flag: '🇦🇷', name: 'Argentina' },
+  { code: '+56', flag: '🇨🇱', name: 'Chile' },
+  { code: '+593', flag: '🇪🇨', name: 'Ecuador' },
+  { code: '+591', flag: '🇧🇴', name: 'Bolivia' },
+]
+
+const PERU_CITIES = [
+  'Lima', 'Callao', 'Ventanilla', 'San Juan de Lurigancho', 'San Martín de Porres',
+  'Ate', 'Comas', 'Villa El Salvador', 'Villa María del Triunfo', 'Los Olivos',
+  'Puente Piedra', 'San Juan de Miraflores', 'Chorrillos', 'Carabayllo', 'Surco',
+  'Miraflores', 'San Isidro', 'Lince', 'La Molina', 'Arequipa', 'Trujillo',
+  'Chiclayo', 'Piura', 'Cusco', 'Iquitos', 'Huancayo', 'Tacna',
+]
 
 export default function AgentRegistrationPage() {
   const navigate = useNavigate()
@@ -23,6 +43,7 @@ export default function AgentRegistrationPage() {
     fullName: '',
     dni: '',
     email: '',
+    countryCode: '+51',
     whatsapp: '',
     city: '',
     password: '',
@@ -34,10 +55,11 @@ export default function AgentRegistrationPage() {
 
   const set = (field, value) => setForm(prev => ({ ...prev, [field]: value }))
 
+  const fullWhatsapp = form.countryCode + form.whatsapp.replace(/^0+/, '')
   const availabilityFields = useMemo(() => ({
     email: form.email,
-    whatsapp: form.whatsapp,
-  }), [form.email, form.whatsapp])
+    whatsapp: fullWhatsapp,
+  }), [form.email, fullWhatsapp])
 
   const { availabilityErrors, checking } = useFieldAvailability(availabilityFields)
 
@@ -64,7 +86,8 @@ export default function AgentRegistrationPage() {
   }
 
   // Validation
-  const step1Valid = form.fullName.trim() && /^[0-9]{8}$/.test(form.dni.trim()) && form.email.includes('@') && form.whatsapp.trim().length >= 7 && form.city.trim() && form.password.length >= 8 && /[A-Z]/.test(form.password) && /[0-9]/.test(form.password) && form.password === form.confirmPassword && !availabilityErrors.email && !availabilityErrors.whatsapp
+  const isChecking = checking.email || checking.whatsapp
+  const step1Valid = !isChecking && form.fullName.trim() && /^[0-9]{8,12}$/.test(form.dni.replace(/\s/g, '')) && form.email.includes('@') && form.whatsapp.trim().length >= 6 && form.city.trim() && form.password.length >= 8 && /[A-Z]/.test(form.password) && /[0-9]/.test(form.password) && form.password === form.confirmPassword && !availabilityErrors.email && !availabilityErrors.whatsapp
   const step2Valid = form.categories.length > 0 && form.coverageAreas.length > 0
 
   const handleSubmit = async () => {
@@ -73,9 +96,9 @@ export default function AgentRegistrationPage() {
 
     // Validations
     if (!form.fullName.trim()) { setError(t('agentRegistration.validationFullName')); setSubmitting(false); return }
-    if (!/^[0-9]{8}$/.test(form.dni.trim())) { setError(t('agentRegistration.validationId')); setSubmitting(false); return }
+    if (!/^[0-9]{8,12}$/.test(form.dni.replace(/\s/g, ''))) { setError(t('agentRegistration.validationId')); setSubmitting(false); return }
     if (!form.email.trim() || !form.email.includes('@')) { setError(t('agentRegistration.validationEmail')); setSubmitting(false); return }
-    if (!form.whatsapp.trim() || form.whatsapp.trim().length < 7) { setError(t('agentRegistration.validationWhatsapp')); setSubmitting(false); return }
+    if (!form.whatsapp.trim() || form.whatsapp.trim().length < 6) { setError(t('agentRegistration.validationWhatsapp')); setSubmitting(false); return }
     if (!form.city.trim()) { setError(t('agentRegistration.validationCity')); setSubmitting(false); return }
     if (form.password.length < 8) { setError(t('agentRegistration.validationPassword8')); setSubmitting(false); return }
     if (!/[A-Z]/.test(form.password)) { setError(t('agentRegistration.validationPasswordUpper')); setSubmitting(false); return }
@@ -85,7 +108,8 @@ export default function AgentRegistrationPage() {
     if (form.coverageAreas.length === 0) { setError(t('agentRegistration.validationCoverage')); setSubmitting(false); return }
 
     try {
-      const { confirmPassword, ...submitData } = form
+      const { confirmPassword, countryCode, ...rest } = form
+      const submitData = { ...rest, whatsapp: countryCode + form.whatsapp.replace(/^0+/, '') }
       await agentsService.submitApplication(submitData)
       setSubmitted(true)
       setStep(2)
@@ -149,7 +173,7 @@ export default function AgentRegistrationPage() {
 
         {/* Main Content */}
         <main className="flex-1 px-6 md:px-12 py-12 max-w-4xl mx-auto">
-          {step === 0 && <Step1 form={form} set={set} onNext={() => setStep(1)} valid={step1Valid} generatedUsername={generatedUsername} availabilityErrors={availabilityErrors} checking={checking} />}
+          {step === 0 && <Step1 form={form} set={set} onNext={() => setStep(1)} valid={step1Valid} generatedUsername={generatedUsername} availabilityErrors={availabilityErrors} checking={checking} isChecking={isChecking} />}
           {step === 1 && !submitted && (
             <Step2
               form={form}
@@ -171,8 +195,20 @@ export default function AgentRegistrationPage() {
 }
 
 /* =========== STEP 1: Personal Info =========== */
-function Step1({ form, set, onNext, valid, generatedUsername, availabilityErrors, checking }) {
+function Step1({ form, set, onNext, valid, generatedUsername, availabilityErrors, checking, isChecking }) {
   const { t } = useTranslation()
+  const [citySuggestions, setCitySuggestions] = useState([])
+  const cityRef = useRef(null)
+
+  const handleCityInput = (value) => {
+    set('city', value)
+    if (value.trim().length >= 1) {
+      const filtered = PERU_CITIES.filter(c => c.toLowerCase().includes(value.toLowerCase()))
+      setCitySuggestions(filtered.slice(0, 6))
+    } else {
+      setCitySuggestions([])
+    }
+  }
 
   return (
     <>
@@ -253,15 +289,27 @@ function Step1({ form, set, onNext, valid, generatedUsername, availabilityErrors
               </div>
               <div className="space-y-1.5">
                 <label className="text-xs font-bold text-on-background uppercase tracking-wide">{t('agentRegistration.whatsappLabel')}</label>
-                <div className="relative">
-                  <input
-                    value={form.whatsapp}
-                    onChange={(e) => set('whatsapp', e.target.value.replace(/[^0-9+\- ]/g, '').slice(0, 20))}
-                    className={`w-full bg-white border-b-2 focus:ring-0 px-4 py-3 rounded-t-lg transition-all outline-none ${availabilityErrors.whatsapp ? 'border-red-400' : 'border-outline-variant focus:border-gray-900'}`}
-                    placeholder="+1 555 123 4567"
-                    type="tel"
-                  />
-                  {checking.whatsapp && <span className="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 border-2 border-gray-300 border-t-gray-700 rounded-full animate-spin" />}
+                <div className="relative flex gap-2">
+                  <select
+                    value={form.countryCode}
+                    onChange={(e) => set('countryCode', e.target.value)}
+                    className="bg-white border-b-2 border-outline-variant focus:border-gray-900 focus:ring-0 px-2 py-3 rounded-t-lg transition-all outline-none text-sm font-bold text-on-background shrink-0"
+                    style={{ minWidth: '100px' }}
+                  >
+                    {COUNTRY_CODES.map(c => (
+                      <option key={c.code} value={c.code}>{c.flag} {c.code}</option>
+                    ))}
+                  </select>
+                  <div className="relative flex-1">
+                    <input
+                      value={form.whatsapp}
+                      onChange={(e) => set('whatsapp', e.target.value.replace(/[^0-9 ]/g, '').slice(0, 15))}
+                      className={`w-full bg-white border-b-2 focus:ring-0 px-4 py-3 rounded-t-lg transition-all outline-none ${availabilityErrors.whatsapp ? 'border-red-400' : 'border-outline-variant focus:border-gray-900'}`}
+                      placeholder="999 123 456"
+                      type="tel"
+                    />
+                    {checking.whatsapp && <span className="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 border-2 border-gray-300 border-t-gray-700 rounded-full animate-spin" />}
+                  </div>
                 </div>
                 {availabilityErrors.whatsapp && (
                   <p className="text-xs text-red-500 font-medium flex items-center gap-1">
@@ -281,13 +329,30 @@ function Step1({ form, set, onNext, valid, generatedUsername, availabilityErrors
               </span>
               <h3 className="text-xl font-bold text-on-background">{t('agentRegistration.operationCity')}</h3>
             </div>
-            <div className="space-y-1.5">
+            <div className="space-y-1.5 relative" ref={cityRef}>
               <input
                 value={form.city}
-                onChange={(e) => set('city', e.target.value)}
+                onChange={(e) => handleCityInput(e.target.value)}
+                onBlur={() => setTimeout(() => setCitySuggestions([]), 200)}
                 className="w-full bg-white border-b-2 border-outline-variant focus:border-gray-900 focus:ring-0 px-4 py-3 rounded-t-lg transition-all outline-none"
-                placeholder={t('agentRegistration.operationCityPlaceholder')}
+                placeholder="Ej: Lima, Callao, Ventanilla..."
+                autoComplete="off"
               />
+              {citySuggestions.length > 0 && (
+                <div className="absolute left-0 right-0 top-full z-50 bg-white border border-outline-variant rounded-xl shadow-xl overflow-hidden mt-1">
+                  {citySuggestions.map(city => (
+                    <button
+                      key={city}
+                      type="button"
+                      onMouseDown={() => { set('city', city); setCitySuggestions([]) }}
+                      className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-on-background hover:bg-surface-container-low transition-colors text-left"
+                    >
+                      <span className="material-symbols-outlined text-sm text-outline">location_on</span>
+                      {city}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
             <p className="mt-4 text-xs text-outline">{t('agentRegistration.operationCityHint')}</p>
           </div>
@@ -361,12 +426,21 @@ function Step1({ form, set, onNext, valid, generatedUsername, availabilityErrors
           </button>
           <button
             type="button"
-            disabled={!valid}
+            disabled={!valid || isChecking}
             onClick={onNext}
             className="bg-primary text-white px-12 py-4 rounded-xl font-bold shadow-lg hover:bg-gray-800 transition-all flex items-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
           >
-            {t('agentRegistration.next')}
-            <span className="material-symbols-outlined">arrow_forward</span>
+            {isChecking ? (
+              <>
+                <span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />
+                Verificando...
+              </>
+            ) : (
+              <>
+                {t('agentRegistration.next')}
+                <span className="material-symbols-outlined">arrow_forward</span>
+              </>
+            )}
           </button>
         </div>
       </div>

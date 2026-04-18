@@ -105,24 +105,15 @@ export default function AdminSettings() {
     setWaLoading(true)
     setWaError(null)
     try {
-      // Try to create instance first — v1.8.x may return QR directly on create
-      let qr = null
-      try {
-        const createData = await api.post('/whatsapp/instance')
-        // v1.8.x returns qrcode on creation
-        qr = createData?.qrcode?.base64 || createData?.base64 || createData?.qrcode || null
-      } catch { /* may already exist */ }
-
-      // If no QR from creation, get it from connect endpoint
-      if (!qr) {
-        const data = await api.get('/whatsapp/qrcode')
-        console.log('QR response:', data)
-        qr = data?.base64 || data?.qrcode?.base64 || data?.qrcode || data?.code || null
-      }
-
-      if (qr && typeof qr === 'string') {
+      // Try to create instance first (idempotent)
+      try { await api.post('/whatsapp/instance') } catch { /* may already exist */ }
+      // Get QR code
+      const data = await api.get('/whatsapp/qrcode')
+      const qr = data?.base64 || data?.qrcode?.base64 || data?.code || null
+      if (qr) {
         setWaQrCode(qr.startsWith('data:') ? qr : `data:image/png;base64,${qr}`)
         setWaStatus('connecting')
+        // Start polling for connection
         if (waIntervalRef.current) clearInterval(waIntervalRef.current)
         waIntervalRef.current = setInterval(checkWaStatus, 5000)
       } else {

@@ -10,6 +10,7 @@ const buildQs = (params) => {
 export const reviewsService = {
   findAll: (params = {}) => api.get(`/reviews${buildQs(params)}`),
   findOne: (id) => api.get(`/reviews/${id}`),
+  create: (data) => api.post('/reviews', data),
   remove: (id) => api.delete(`/reviews/${id}`),
   moderate: (id, action) => api.patch(`/reviews/${id}/moderate`, { action }),
 };

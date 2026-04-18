@@ -145,7 +145,7 @@
       "payment": "PAGO SEGURO"
     },
     "steps": {
-      "title": "Así de fácil es traer tus deseos",
+      "title": "Así de fácil comprar con TEVRA",
       "subtitle": "Olvídate de trámites complejos. Nosotros nos encargamos de todo el proceso logístico por ti.",
       "step": "Paso",
       "steps": [
@@ -314,6 +314,18 @@
       "step3": "Confirmación",
       "startBtn": "Comenzar registro",
       "disclaimer": "Proceso 100% online. Sin inversión inicial."
+    },
+    "trust": {
+      "badge": "Por qué confiar en TeVra",
+      "title": "Infraestructura real.",
+      "titleHighlight": "Resultados reales.",
+      "subtitle": "Somos una empresa registrada con socios logísticos en USA y cobertura operativa en toda Latinoamérica.",
+      "items": [
+        { "title": "Socios Logísticos", "desc": "Alianzas con operadores en Miami y California con más de 12 años de experiencia en aduana peruana." },
+        { "title": "Cobertura en todo USA", "desc": "Operamos desde ambas costas — California y Florida — para conseguir siempre el mejor precio." },
+        { "title": "Empresa Registrada", "desc": "LLC registrada en California con número EIN federal. Transparencia total para ti y tus clientes." },
+        { "title": "Transparencia Total", "desc": "Sin costos ocultos. Tu cliente sabe exactamente qué paga. Cada centavo se maneja con seriedad." }
+      ]
     }
   },
   "empresa": {
@@ -1375,5 +1387,175 @@
     "whatsappPrice": "Precio",
     "whatsappBrand": "Marca",
     "whatsappShippingQuestion": "¿Me pueden dar el costo total con envío?"
+  },
+  "contact": {
+    "badge": "Atención al cliente",
+    "title": "Contáctanos",
+    "subtitle": "¿Tienes dudas sobre un pedido, quieres ser agente o simplemente quieres saber más? Estamos aquí para ayudarte.",
+    "howToReach": "¿Cómo contactarnos?",
+    "methods": {
+      "email": { "title": "Email" },
+      "whatsapp": { "value": "Escríbenos por WhatsApp" },
+      "social": { "title": "Redes Sociales" }
+    },
+    "hours": {
+      "title": "Horario de atención",
+      "weekdays": "Lunes a Viernes: 9am – 7pm (Lima)",
+      "saturday": "Sábados: 9am – 2pm (Lima)",
+      "timezone": "Zona horaria: GMT-5 (Hora de Perú)"
+    },
+    "sent": {
+      "title": "¡Mensaje enviado!",
+      "desc": "Gracias por escribirnos. Te responderemos en un máximo de 24 horas hábiles.",
+      "another": "Enviar otro mensaje"
+    },
+    "form": {
+      "title": "Envíanos un mensaje",
+      "name": "Nombre completo",
+      "namePlaceholder": "Tu nombre",
+      "email": "Correo electrónico",
+      "subject": "Asunto",
+      "subjectPlaceholder": "Selecciona un asunto",
+      "subjects": {
+        "order": "Consulta sobre un pedido",
+        "agent": "Quiero ser agente",
+        "payment": "Problema con pago",
+        "tracking": "Seguimiento de envío",
+        "other": "Otro"
+      },
+      "message": "Mensaje",
+      "messagePlaceholder": "Cuéntanos en qué podemos ayudarte...",
+      "send": "Enviar mensaje"
+    }
+  },
+  "howItWorks": {
+    "badge": "Así funciona",
+    "title": "Comprar desde USA nunca fue tan fácil",
+    "subtitle": "Sin trámites complicados, sin viajes. Tu agente TeVra se encarga de todo el proceso logístico por ti.",
+    "exploreCta": "Ver catálogo",
+    "agentCta": "Hablar con un agente",
+    "trackCta": "Seguir mi pedido",
+    "stats": {
+      "days": "Días hábiles",
+      "originals": "Originales",
+      "registered": "Empresa legal",
+      "support": "Soporte",
+      "insured": "Envío asegurado",
+      "coverage": "Cobertura"
+    },
+    "steps": {
+      "title": "6 pasos del pedido al delivery",
+      "subtitle": "Desde que ves el producto hasta que lo tienes en casa.",
+      "items": [
+        { "title": "Explora el catálogo", "desc": "Navega por nuestro catálogo de productos originales desde USA o comparte el link de cualquier tienda con tu agente." },
+        { "title": "Comparte el link con tu agente", "desc": "Dile a tu agente qué quieres. Él cotiza el precio final (producto + envío + comisión) y te lo confirma antes de pagar." },
+        { "title": "Tu agente gestiona todo", "desc": "El agente reporta el pedido a TeVra. Nosotros compramos en USA y coordinamos el envío directo desde allá." },
+        { "title": "Realiza el pago", "desc": "Pagas directamente al agente. Él usa esos fondos para procesar el pedido con TeVra. Siempre pide tu comprobante." },
+        { "title": "Tu pedido viaja a Perú", "desc": "El producto sale desde Miami o California en vuelo directo a Lima. 2 salidas semanales. Viaja asegurado." },
+        { "title": "Recibe en tu puerta", "desc": "El agente coordina la entrega final. Tiempo total: 5–10 días hábiles. ¡Listo!" }
+      ]
+    },
+    "faq": {
+      "title": "Preguntas frecuentes",
+      "items": [
+        { "q": "¿Cuánto demora el envío?", "a": "El tiempo estimado es de 5 a 10 días hábiles desde la compra en USA. Puede variar por aduana o festivos." },
+        { "q": "¿Qué productos puedo pedir?", "a": "Ropa, zapatos, electrónicos, belleza, accesorios y más. No enviamos líquidos inflamables, baterías sueltas de litio ni alimentos perecibles." },
+        { "q": "¿Cómo pago?", "a": "Le pagas directamente a tu agente TeVra. Él coordina el pedido y te informa el costo total (producto + envío + comisión)." },
+        { "q": "¿Qué pasa si el producto llega dañado?", "a": "Todos los envíos viajan asegurados. Si el producto llega dañado, abrimos un reclamo con el seguro de carga y te compensamos." },
+        { "q": "¿Tengo que hacer trámites de aduana?", "a": "No. Nuestro socio logístico tiene más de 12 años manejando aduana peruana. Ellos se encargan de todo el proceso." },
+        { "q": "¿Puedo hacer seguimiento a mi pedido?", "a": "Sí. Una vez despachado, recibirás un código de tracking que puedes ingresar en nuestra sección de Seguimiento." }
+      ]
+    },
+    "cta": {
+      "title": "¿Listo para hacer tu primer pedido?",
+      "subtitle": "Únete a miles de clientes que ya importan desde USA con TeVra."
+    }
+  },
+  "stores": {
+    "badge": "Tiendas USA",
+    "title": "Accede a las mejores tiendas de USA",
+    "subtitle": "Más de 50 tiendas disponibles. Compra en Amazon, Nike, Apple, Sephora y más. Tu agente TeVra gestiona el pedido por ti.",
+    "originalsOnly": "Solo productos 100% originales",
+    "deliveryInDays": "Entrega en 5–10 días hábiles",
+    "storesAvailable": "tiendas disponibles",
+    "orderViaAgent": "Pedir con mi agente",
+    "anyStore": {
+      "title": "¿No encuentras la tienda?",
+      "desc": "Podemos comprar en prácticamente cualquier tienda de USA. Solo comparte el link del producto y tu agente lo cotiza.",
+      "cta": "Cotizar link de producto"
+    },
+    "categoryFilters": [
+      { "key": "all", "label": "Todas" },
+      { "key": "general", "label": "General" },
+      { "key": "electronics", "label": "Electrónicos" },
+      { "key": "clothing", "label": "Ropa y Calzado" },
+      { "key": "fashion", "label": "Ropa y Moda" },
+      { "key": "beauty", "label": "Belleza" },
+      { "key": "beautyHome", "label": "Belleza y Hogar" }
+    ],
+    "items": [
+      { "category": "General", "desc": "La tienda más grande del mundo. Electrónicos, ropa, hogar, libros y millones de productos más.", "tag": "Top 1" },
+      { "category": "Ropa y Calzado", "desc": "Ropa deportiva, zapatillas y accesorios Nike directamente desde la tienda oficial USA.", "tag": "Deportes" },
+      { "category": "Belleza", "desc": "Cosméticos, perfumes, skincare y maquillaje de las mejores marcas del mundo.", "tag": "Belleza" },
+      { "category": "Electrónicos", "desc": "iPhone, MacBook, iPad, AirPods y accesorios Apple originales con garantía internacional.", "tag": "Tech" },
+      { "category": "Ropa y Moda", "desc": "Moda contemporánea de temporada. Ropa, bolsos, calzado y accesorios de Zara USA.", "tag": "Moda" },
+      { "category": "Electrónicos", "desc": "La tienda de electrónicos más grande de USA. Laptops, TVs, cámaras y gadgets.", "tag": "Tech" },
+      { "category": "Belleza y Hogar", "desc": "Cremas, velas aromáticas, jabones y productos de cuidado personal de la marca favorita de USA.", "tag": "Hogar" },
+      { "category": "General", "desc": "Ropa, hogar, electrónicos, juguetes y más a precios competitivos desde la tienda icónica de USA.", "tag": "General" },
+      { "category": "Ropa y Calzado", "desc": "Calzado deportivo, ropa y accesorios Adidas y Yeezy directamente desde la tienda oficial.", "tag": "Deportes" }
+    ]
+  },
+  "teVraReviews": {
+    "badge": "Reseñas TeVra",
+    "title": "Lo que dicen nuestros clientes",
+    "subtitle": "Opiniones reales de personas que han comprado con TeVra",
+    "verified": "Verificado",
+    "formTitle": "¿Ya compraste con TeVra?",
+    "formSubtitle": "Comparte tu experiencia y ayuda a otros compradores",
+    "rating": "Tu calificación",
+    "titlePlaceholder": "Título (opcional)",
+    "commentPlaceholder": "¿Cómo fue tu experiencia comprando con TeVra?",
+    "submitBtn": "Publicar reseña",
+    "submitting": "Enviando...",
+    "submitted": {
+      "title": "¡Gracias por tu reseña!",
+      "desc": "Será revisada y publicada pronto."
+    },
+    "error": "No se pudo enviar la reseña. Intenta de nuevo.",
+    "guestTitle": "¿Ya compraste con TeVra?",
+    "guestDesc": "Inicia sesión para compartir tu experiencia",
+    "loginBtn": "Iniciar sesión"
+  },
+  "terminos": {
+    "badge": "Documento Legal",
+    "title": "Términos y Condiciones",
+    "lastUpdate": "Última actualización: Enero 2026 · TeVra LLC",
+    "s1": { "title": "1. Aceptación de los Términos", "content": "Al acceder y utilizar la plataforma TeVra, usted acepta cumplir y estar sujeto a estos Términos y Condiciones. Si no está de acuerdo con alguna parte de estos términos, no podrá acceder al servicio." },
+    "s2": { "title": "2. Descripción del Servicio", "content": "TeVra es una plataforma de intermediación que conecta compradores en Latinoamérica con productos disponibles en Estados Unidos. TeVra actúa como intermediario logístico y no es vendedor directo de los productos.", "items": ["Servicio de compra y consolidación en USA", "Transporte internacional asegurado", "Gestión de aduana en destino", "Red de agentes certificados para atención local"] },
+    "s3": { "title": "3. Registro y Cuentas", "content": "Para utilizar ciertos servicios, deberá registrarse y crear una cuenta. Usted es responsable de mantener la confidencialidad de sus credenciales y de todas las actividades que ocurran bajo su cuenta." },
+    "s4": { "title": "4. Restricciones de Productos", "content": "No todos los productos pueden ser enviados. Están prohibidos:", "items": ["Líquidos inflamables y materiales peligrosos", "Baterías de litio sueltas (sin dispositivo)", "Alimentos perecibles", "Productos que requieran homologación especial", "Artículos ilegales según las leyes de USA o el país de destino"] },
+    "s5": { "title": "5. Precios y Pagos", "content": "Los precios incluyen el costo del producto, tarifa de gestión y envío estimado. Las tarifas exactas se confirman antes del pago. TeVra no garantiza precios ante variaciones del tipo de cambio." },
+    "s6": { "title": "6. Tiempos de Entrega", "content": "El tiempo estimado de entrega es de 5 a 10 días hábiles desde la compra en USA. Este tiempo puede variar por factores fuera del control de TeVra (aduanas, feriados, eventos excepcionales)." },
+    "s7": { "title": "7. Agentes TeVra", "content": "Los agentes son colaboradores independientes que operan bajo su propia responsabilidad comercial. TeVra proporciona infraestructura y respaldo logístico, pero no es responsable de acuerdos directos entre agentes y sus clientes." },
+    "s8": { "title": "8. Limitación de Responsabilidad", "content": "TeVra no será responsable por daños indirectos, incidentales o consecuentes que resulten del uso o la imposibilidad de uso del servicio. La responsabilidad máxima de TeVra se limita al valor del pedido afectado." },
+    "s9": { "title": "9. Modificaciones", "content": "TeVra se reserva el derecho de modificar estos términos en cualquier momento. Los cambios entrarán en vigor al ser publicados en la plataforma. El uso continuado del servicio constituye la aceptación de los nuevos términos." },
+    "s10": { "title": "10. Contacto", "content": "Para consultas sobre estos términos, contacte a:" },
+    "privacyLink": "Política de Privacidad →",
+    "backHome": "Volver al inicio"
+  },
+  "privacidad": {
+    "badge": "Privacidad",
+    "title": "Política de Privacidad",
+    "lastUpdate": "Última actualización: Enero 2026 · TeVra LLC",
+    "s1": { "title": "1. Información que Recopilamos", "content": "TeVra recopila información para prestar sus servicios de forma efectiva:", "items": ["Datos de registro: nombre, correo electrónico, número de teléfono/WhatsApp", "Datos de pedidos: productos, direcciones de entrega, historial de compras", "Datos de agentes: DNI, ciudad, zonas de cobertura, categorías de interés", "Datos técnicos: dirección IP, tipo de navegador, páginas visitadas"] },
+    "s2": { "title": "2. Cómo Usamos su Información", "content": "Usamos su información para:", "items": ["Procesar y hacer seguimiento de sus pedidos", "Comunicarle el estado de sus envíos", "Conectarle con agentes de su zona", "Mejorar nuestra plataforma y servicios", "Cumplir con obligaciones legales y regulatorias"] },
+    "s3": { "title": "3. Compartición de Datos", "content": "TeVra no vende ni alquila sus datos personales a terceros. Podemos compartir datos con:", "items": ["Socios logísticos: para procesar el envío de su pedido", "Agentes TeVra: su nombre y contacto para coordinar la entrega", "Autoridades: cuando sea legalmente requerido"] },
+    "s4": { "title": "4. Seguridad de los Datos", "content": "Implementamos medidas de seguridad técnicas y organizativas para proteger su información. Las contraseñas se almacenan cifradas y los datos se transmiten mediante conexiones seguras (HTTPS/TLS)." },
+    "s5": { "title": "5. Sus Derechos", "content": "Usted tiene derecho a:", "items": ["Acceder a sus datos personales", "Rectificar datos incorrectos o incompletos", "Solicitar la eliminación de su cuenta y datos", "Oponerse al tratamiento de sus datos para fines de marketing"], "contactText": "Para ejercer estos derechos, contáctenos en" },
+    "s6": { "title": "6. Cookies", "content": "Usamos cookies esenciales para el funcionamiento de la plataforma (sesión de usuario, carrito de compras) y cookies analíticas para mejorar la experiencia. Puede configurar su navegador para rechazar cookies no esenciales." },
+    "s7": { "title": "7. Retención de Datos", "content": "Conservamos sus datos mientras su cuenta esté activa o sea necesario para prestar el servicio. Los datos de pedidos se conservan por 5 años por obligaciones fiscales y legales." },
+    "s8": { "title": "8. Contacto", "content": "Para cualquier consulta sobre privacidad:" },
+    "termsLink": "Términos y Condiciones →",
+    "backHome": "Volver al inicio"
   }
 }
