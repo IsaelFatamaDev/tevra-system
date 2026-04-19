@@ -17,6 +17,8 @@ export const agentsService = {
   submitApplication: (data) => api.post('/agents/applications', data),
   findAllApplications: (status) => api.get('/agents/applications/all' + (status ? `?status=${status}` : '')),
   reviewApplication: (id, decision, notes) => api.patch(`/agents/applications/${id}/review`, { decision, notes }),
+  approveApplication: (id) => api.patch(`/agents/applications/${id}/review`, { decision: 'approved' }),
+  rejectApplication: (id, notes) => api.patch(`/agents/applications/${id}/review`, { decision: 'rejected', notes }),
 };
 
 export default agentsService;

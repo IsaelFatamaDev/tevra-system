@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../../../core/contexts/AuthContext'
 import dashboardService from '../../admin/services/dashboard.service'
+import ReviewModal from '../../../core/components/ReviewModal'
 
 const statusClasses = {
   pending: 'bg-amber-50 text-amber-700 border-amber-200',
@@ -30,6 +31,7 @@ export default function ClientDashboard() {
   const [orders, setOrders] = useState([])
   const [agent, setAgent] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [reviewModal, setReviewModal] = useState(null)
 
   const statusTags = {
     pending: { label: t('client.dashboard.tracking.pending'), classes: statusClasses.pending },
@@ -94,8 +96,17 @@ export default function ClientDashboard() {
         <div className="lg:col-span-4">
           <div className="bg-white p-6 rounded-3xl flex flex-col items-center text-center shadow-[0_8px_30px_rgba(0,0,0,0.04)] border border-slate-100 hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] transition-all">
             <div className="relative mb-4">
-              <div className="w-16 h-16 rounded-full bg-slate-50 border-2 border-white shadow-sm flex items-center justify-center text-slate-400">
-                <span className="material-symbols-outlined text-3xl">support_agent</span>
+              <div className="w-16 h-16 rounded-full bg-slate-50 border-2 border-white shadow-sm overflow-hidden flex items-center justify-center text-slate-400">
+                {(agent?.profileImage || agent?.user?.avatarUrl || agent?.avatarUrl) ? (
+                  <img src={agent.profileImage || agent.user?.avatarUrl || agent.avatarUrl} alt="Agente" className="w-full h-full object-cover" />
+                ) : agent ? (
+                  <span className="text-xl font-bold text-slate-600">
+                    {(agent.user?.firstName || agent.firstName || 'A')[0]}
+                    {(agent.user?.lastName || agent.lastName || '')[0]}
+                  </span>
+                ) : (
+                  <span className="material-symbols-outlined text-3xl">support_agent</span>
+                )}
               </div>
               <span className="absolute bottom-0 right-0 bg-emerald-500 text-white p-1 rounded-full text-[10px] flex items-center justify-center border-2 border-white shadow-sm">
                 <span className="material-symbols-outlined text-[10px]" style={{ fontVariationSettings: "'FILL' 1" }}>check</span>
@@ -115,6 +126,15 @@ export default function ClientDashboard() {
               <button disabled className="w-full bg-slate-50 text-slate-400 py-3 px-6 rounded-2xl font-bold flex items-center justify-center gap-2 text-sm cursor-not-allowed">
                 <span className="material-symbols-outlined text-[20px]">chat</span>
                 {t('client.dashboard.noAgentAvailable')}
+              </button>
+            )}
+            {agent && (
+              <button
+                onClick={() => setReviewModal({ type: 'agent', targetId: agent.id, targetName: `${agent.user?.firstName || agent.firstName || ''} ${agent.user?.lastName || agent.lastName || ''}`.trim() })}
+                className="w-full mt-2 py-2 text-xs font-bold text-slate-400 hover:text-primary flex items-center justify-center gap-1 transition-colors"
+              >
+                <span className="material-symbols-outlined text-[14px]">star</span>
+                Calificar a mi agente
               </button>
             )}
           </div>
@@ -312,6 +332,15 @@ export default function ClientDashboard() {
           </div>
         </>
       )}
+
+      <ReviewModal
+        isOpen={!!reviewModal}
+        onClose={() => setReviewModal(null)}
+        type={reviewModal?.type}
+        targetId={reviewModal?.targetId}
+        targetName={reviewModal?.targetName}
+        onSubmitted={() => setTimeout(() => setReviewModal(null), 2000)}
+      />
     </div>
   )
 }

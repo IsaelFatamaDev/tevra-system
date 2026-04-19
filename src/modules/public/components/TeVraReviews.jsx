@@ -17,8 +17,16 @@ export default function TeVraReviews() {
   const { ref, isVisible } = useScrollReveal(0.05)
 
   useEffect(() => {
-    api.get('/reviews?type=tevra&limit=6')
-      .then(r => setReviews(Array.isArray(r) ? r : r?.items || []))
+    const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3001/api/v1'
+    const tenantId = import.meta.env.VITE_DEFAULT_TENANT_ID || ''
+    fetch(`${API_BASE}/reviews?type=tevra&limit=6&status=approved`, {
+      headers: { ...(tenantId && { 'x-tenant-id': tenantId }) },
+    })
+      .then(r => r.ok ? r.json() : { items: [] })
+      .then(body => {
+        const list = body?.data?.items || body?.data || body?.items || (Array.isArray(body) ? body : [])
+        setReviews(list)
+      })
       .catch(() => {})
   }, [])
 
@@ -75,7 +83,7 @@ export default function TeVraReviews() {
                   </span>
                 </div>
                 {review.title && <p className="font-bold text-primary text-sm mb-1">{review.title}</p>}
-                <p className="text-sm text-on-surface-variant leading-relaxed italic mb-4">"{review.comment}"</p>
+                <p className="text-sm text-on-surface-variant leading-relaxed italic mb-4">"{review.comment || review.body}"</p>
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary shrink-0">
                     {(review.user?.firstName?.[0] || 'U')}{(review.user?.lastName?.[0] || '')}

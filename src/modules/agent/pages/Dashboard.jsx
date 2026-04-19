@@ -117,8 +117,16 @@ export default function AgentDashboard() {
         </div>
         <div className="relative flex flex-col md:flex-row items-center md:items-start gap-8 z-10 text-center md:text-left">
 
-          <div className="w-24 h-24 rounded-[2rem] bg-white/5 backdrop-blur-md border border-white/10 flex items-center justify-center text-4xl font-extrabold shadow-[0_0_40px_rgba(255,255,255,0.1)]">
-            {user?.firstName?.[0]}{user?.lastName?.[0]}
+          <div className="w-24 h-24 rounded-[2rem] bg-white/5 backdrop-blur-md border border-white/10 overflow-hidden flex items-center justify-center text-4xl font-extrabold shadow-[0_0_40px_rgba(255,255,255,0.1)] shrink-0">
+            {(agentProfile?.profileImage || user?.avatar) ? (
+              <img
+                src={agentProfile?.profileImage || user?.avatar}
+                alt={`${user?.firstName} ${user?.lastName}`}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <span>{user?.firstName?.[0]}{user?.lastName?.[0]}</span>
+            )}
           </div>
 
           <div className="flex-1">

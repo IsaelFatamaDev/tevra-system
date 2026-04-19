@@ -63,10 +63,6 @@ function HeroAgentes() {
               >
                 {t('agentes.hero.joinBtn')}
               </Link>
-              <div className="text-white/80 text-sm font-medium leading-relaxed">
-                <span className="block">{t('agentes.hero.free')}</span>
-                <span className="block">{t('agentes.hero.noInvestment')}</span>
-              </div>
             </div>
           </div>
           <div className="hidden md:block md:col-span-5 relative">
@@ -205,7 +201,7 @@ function TrustSection() {
   const { t } = useTranslation()
   const { ref, isVisible } = useScrollReveal(0.05)
   const trustItems = t('agentes.trust.items', { returnObjects: true }).map((item, i) => ({ ...trustIcons[i], ...item }))
-  
+
   return (
     <section className="py-20 bg-primary overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-8">

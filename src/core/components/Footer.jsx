@@ -9,25 +9,33 @@ export default function Footer() {
     {
       title: t('footer.sections.buy.title'),
       links: [
-        { label: t('footer.sections.buy.howItWorks'), href: '/como-funciona' },
-        { label: t('footer.sections.buy.quoter'), href: '/cotizar' },
-        { label: t('footer.sections.buy.usaStores'), href: '/tiendas' },
+        { label: t('footer.sections.buy.catalog'), href: '/catalogo' },
+        { label: t('footer.sections.buy.quote'), href: '/cotizar-link' },
+        { label: t('footer.sections.buy.tracking'), href: '/seguimiento' },
       ],
     },
     {
-      title: t('footer.sections.about.title'),
+      title: t('footer.sections.sell.title'),
       links: [
-        { label: t('footer.sections.about.mission'), href: '/empresa' },
-        { label: t('footer.sections.about.becomeAgent'), href: '/agentes' },
-        { label: t('footer.sections.about.contact'), href: '/contacto' },
+        { label: t('footer.sections.sell.applyAgent'), href: '/agentes' },
+        { label: t('footer.sections.sell.agentProgram'), href: '/agentes#programa' },
+        { label: t('footer.sections.sell.aboutTevra'), href: '/empresa' },
+      ],
+    },
+    {
+      title: t('footer.sections.legal.title'),
+      links: [
+        { label: t('footer.sections.legal.terms'), href: '/terminos' },
+        { label: t('footer.sections.legal.privacy'), href: '/privacidad' },
+        { label: t('footer.sections.legal.support'), href: '/contacto' },
       ],
     },
   ]
 
   return (
     <footer className="bg-primary text-white pt-24 pb-12 w-full">
-      <div className="max-w-7xl mx-auto px-8 grid grid-cols-1 md:grid-cols-12 gap-16 border-b border-white/5 pb-20">
-        <div className="md:col-span-4">
+      <div className="max-w-7xl mx-auto px-8 grid grid-cols-1 md:grid-cols-12 gap-12 border-b border-white/5 pb-20">
+        <div className="md:col-span-3">
           <span className="font-headline font-extrabold text-3xl tracking-tight text-white select-none block mb-8">
             Te<span className="text-secondary">Vra</span>
           </span>
@@ -70,7 +78,7 @@ export default function Footer() {
           </div>
         ))}
 
-        <div className="md:col-span-4">
+        <div className="md:col-span-3">
           <h5 className="font-headline font-bold mb-8 uppercase tracking-widest text-[11px] text-secondary">
             {t('footer.newsletter')}
           </h5>

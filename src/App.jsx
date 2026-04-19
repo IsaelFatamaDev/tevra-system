@@ -27,6 +27,7 @@ import PrivacidadPage from './modules/public/pages/PrivacidadPage'
 import ContactoPage from './modules/public/pages/ContactoPage'
 import ComoFuncionaPage from './modules/public/pages/ComoFuncionaPage'
 import TiendasPage from './modules/public/pages/TiendasPage'
+import CotizarLinkPage from './modules/public/pages/CotizarLinkPage'
 
 // Admin module
 import AdminLayout from './modules/admin/layout/AdminLayout'
@@ -95,12 +96,14 @@ function PublicLayout() {
         <Route path="/carrito" element={<CartPage />} />
         <Route path="/directorio-agentes" element={<AgentDirectoryPage />} />
         <Route path="/agente/:code" element={<AgentProfilePage />} />
+        <Route path="/ref/:code" element={<AgentProfilePage />} />
         <Route path="/cotizar" element={<QuotePage />} />
         <Route path="/terminos" element={<TerminosPage />} />
         <Route path="/privacidad" element={<PrivacidadPage />} />
         <Route path="/contacto" element={<ContactoPage />} />
         <Route path="/como-funciona" element={<ComoFuncionaPage />} />
         <Route path="/tiendas" element={<TiendasPage />} />
+        <Route path="/cotizar-link" element={<CotizarLinkPage />} />
       </Routes>
       {!isAuthPage && <Footer />}
       {!isAuthPage && <WhatsAppButton />}

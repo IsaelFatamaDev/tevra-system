@@ -5,16 +5,52 @@ import { getDashboardPath } from '../../../core/utils/roles'
 import { useFieldAvailability } from '../../../core/hooks/useFieldAvailability'
 import { useTranslation } from 'react-i18next'
 
+const COUNTRY_CODES = [
+  { code: '+51', flag: '🇵🇪', name: 'PE' },
+  { code: '+57', flag: '🇨🇴', name: 'CO' },
+  { code: '+52', flag: '🇲🇽', name: 'MX' },
+  { code: '+54', flag: '🇦🇷', name: 'AR' },
+  { code: '+56', flag: '🇨🇱', name: 'CL' },
+  { code: '+55', flag: '🇧🇷', name: 'BR' },
+  { code: '+593', flag: '🇪🇨', name: 'EC' },
+  { code: '+591', flag: '🇧🇴', name: 'BO' },
+  { code: '+1',   flag: '🇺🇸', name: 'US' },
+  { code: '+34',  flag: '🇪🇸', name: 'ES' },
+]
+
+function detectCountryCode() {
+  const lang = navigator.language || navigator.languages?.[0] || 'es-PE'
+  const map = { PE: '+51', CO: '+57', MX: '+52', AR: '+54', CL: '+56', BR: '+55', EC: '+593', BO: '+591', US: '+1', ES: '+34' }
+  const country = lang.split('-')[1]?.toUpperCase()
+  return map[country] || '+51'
+}
+
+function getPasswordStrength(pw) {
+  if (pw.length < 6) return 0
+  let score = 0
+  if (pw.length >= 8) score++
+  if (/[A-Z]/.test(pw)) score++
+  if (/[0-9]/.test(pw)) score++
+  if (/[^A-Za-z0-9]/.test(pw)) score++
+  return score
+}
+
 export default function LoginPage() {
   const [isSignUp, setIsSignUp] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
-  const [phone, setPhone] = useState('')
+  const [dialCode, setDialCode] = useState(detectCountryCode)
+  const [phoneLocal, setPhoneLocal] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+
+  const phone = phoneLocal ? `${dialCode}${phoneLocal.replace(/^0/, '')}` : ''
+  const pwStrength = isSignUp ? getPasswordStrength(password) : 0
+  const pwLabels = ['', 'Débil', 'Regular', 'Buena', 'Fuerte']
+  const pwColors = ['', 'bg-red-400', 'bg-orange-400', 'bg-yellow-400', 'bg-emerald-500']
 
   const { login, register } = useAuth()
   const navigate = useNavigate()
@@ -34,7 +70,9 @@ export default function LoginPage() {
     if (!email.trim()) return setError(t('auth.errors.emailRequired'))
     if (!/\S+@\S+\.\S+/.test(email)) return setError(t('auth.errors.emailInvalid'))
     if (!password) return setError(t('auth.errors.passwordRequired'))
-    if (password.length < 6) return setError(t('auth.errors.passwordLength'))
+    if (isSignUp && password.length < 8) return setError('La contraseña debe tener al menos 8 caracteres.')
+    if (!isSignUp && password.length < 6) return setError(t('auth.errors.passwordLength'))
+    if (isSignUp && getPasswordStrength(password) < 2) return setError('La contraseña es muy débil. Agrega números o mayúsculas.')
     if (isSignUp) {
       if (!firstName.trim()) return setError(t('auth.errors.firstNameRequired'))
       if (!lastName.trim()) return setError(t('auth.errors.lastNameRequired'))
@@ -44,8 +82,16 @@ export default function LoginPage() {
     try {
       let loggedUser
       if (isSignUp) {
+        const isChecking = Object.values(checking).some(Boolean)
+        if (isChecking) {
+          setError('Verificando disponibilidad, intenta en un momento…')
+          setLoading(false)
+          return
+        }
         if (Object.keys(availabilityErrors).length > 0) {
-          setError(Object.values(availabilityErrors)[0])
+          const raw = Object.values(availabilityErrors)[0]
+          const avMsg = Array.isArray(raw) ? raw[0] : raw
+          setError(typeof avMsg === 'string' && avMsg.trim() ? avMsg : t('auth.errors.generic'))
           setLoading(false)
           return
         }
@@ -63,7 +109,8 @@ export default function LoginPage() {
         navigate(getDashboardPath(loggedUser?.role), { replace: true })
       }
     } catch (err) {
-      setError(err.message || t('auth.errors.generic'))
+      const msg = err?.response?.data?.message || err?.message
+      setError(typeof msg === 'string' && msg.trim() ? msg : t('auth.errors.generic'))
     } finally {
       setLoading(false)
     }
@@ -171,7 +218,7 @@ export default function LoginPage() {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-3.5 sm:space-y-4">
-            {error && (
+            {error && typeof error === 'string' && error.trim() && (
               <div className="flex items-center gap-2 px-3 py-2.5 sm:px-4 sm:py-3 bg-red-50 border border-red-200 rounded-xl text-red-700 text-xs sm:text-sm">
                 <span className="material-symbols-outlined text-base shrink-0">error</span>
                 {error}
@@ -212,16 +259,26 @@ export default function LoginPage() {
                 </div>
                 <div className="space-y-1">
                   <label className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-text-muted">{t('auth.phone')}</label>
-                  <div className="relative">
-                    <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-muted/60 text-[16px] sm:text-[18px]">phone</span>
+                  <div className={`flex bg-surface border rounded-xl overflow-hidden transition-all focus-within:ring-2 focus-within:ring-secondary/30 focus-within:border-secondary ${availabilityErrors.phone || availabilityErrors.whatsapp ? 'border-red-400' : 'border-outline-variant/30'}`}>
+                    <select
+                      value={dialCode}
+                      onChange={e => setDialCode(e.target.value)}
+                      className="bg-surface-container-low border-r border-outline-variant/20 px-2 py-3 sm:py-3.5 text-xs sm:text-sm text-on-background focus:outline-none cursor-pointer shrink-0"
+                    >
+                      {COUNTRY_CODES.map(c => (
+                        <option key={c.code} value={c.code}>
+                          {c.flag} {c.code}
+                        </option>
+                      ))}
+                    </select>
                     <input
                       type="tel"
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      placeholder="+51 999 123 456"
-                      className={`w-full pl-9 sm:pl-11 pr-3 py-3 sm:py-3.5 bg-surface border rounded-xl text-xs sm:text-sm text-on-background placeholder:text-text-muted/40 focus:outline-none focus:ring-2 focus:ring-secondary/30 focus:border-secondary transition-all ${availabilityErrors.phone || availabilityErrors.whatsapp ? 'border-red-400' : 'border-outline-variant/30'}`}
+                      value={phoneLocal}
+                      onChange={e => setPhoneLocal(e.target.value.replace(/[^0-9 \-]/g, ''))}
+                      placeholder="999 123 456"
+                      className="flex-1 px-3 py-3 sm:py-3.5 bg-transparent text-xs sm:text-sm text-on-background placeholder:text-text-muted/40 focus:outline-none"
                     />
-                    {checking.phone && <span className="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 border-2 border-secondary/40 border-t-secondary rounded-full animate-spin" />}
+                    {checking.phone && <span className="self-center mr-3 w-3.5 h-3.5 border-2 border-secondary/40 border-t-secondary rounded-full animate-spin shrink-0" />}
                   </div>
                   {(availabilityErrors.phone || availabilityErrors.whatsapp) && (
                     <p className="text-[10px] text-red-500 font-semibold flex items-center gap-1">
@@ -283,6 +340,25 @@ export default function LoginPage() {
                   </span>
                 </button>
               </div>
+
+              {/* Password strength (sign-up only) */}
+              {isSignUp && password.length > 0 && (
+                <div className="mt-2 space-y-1">
+                  <div className="flex gap-1">
+                    {[1, 2, 3, 4].map(n => (
+                      <div
+                        key={n}
+                        className={`h-1 flex-1 rounded-full transition-all duration-300 ${n <= pwStrength ? pwColors[pwStrength] : 'bg-outline-variant/20'}`}
+                      />
+                    ))}
+                  </div>
+                  {pwStrength > 0 && (
+                    <p className={`text-[10px] font-semibold ${pwStrength >= 3 ? 'text-emerald-600' : pwStrength === 2 ? 'text-yellow-600' : 'text-red-500'}`}>
+                      Contraseña {pwLabels[pwStrength]}
+                    </p>
+                  )}
+                </div>
+              )}
             </div>
 
             {!isSignUp && (

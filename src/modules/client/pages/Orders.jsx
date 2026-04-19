@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import dashboardService from '../../admin/services/dashboard.service'
+import ReviewModal from '../../../core/components/ReviewModal'
 
 const statusClasses = {
   pending: 'bg-amber-50 text-amber-700 border-amber-200',
@@ -36,6 +37,7 @@ export default function ClientOrders() {
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState('all')
   const [selectedOrder, setSelectedOrder] = useState(null)
+  const [reviewModal, setReviewModal] = useState(null)
 
   const statusTags = {
     pending: { label: t('client.orders.status.pending'), classes: statusClasses.pending },
@@ -362,9 +364,46 @@ export default function ClientOrders() {
               </div>
 
             </div>
+
+            {/* Review section for delivered orders */}
+            {selectedOrder?.status === 'delivered' && (
+              <div className="px-8 py-6 border-t border-slate-100 bg-slate-50">
+                <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">Deja tu opinión</p>
+                <div className="flex flex-wrap gap-2">
+                  {selectedOrder.items?.map((item, idx) => item.productId && (
+                    <button
+                      key={idx}
+                      onClick={() => setReviewModal({ type: 'product', targetId: item.productId, targetName: item.productName || 'Producto' })}
+                      className="flex items-center gap-1.5 px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 hover:border-primary/50 hover:text-primary transition-all"
+                    >
+                      <span className="material-symbols-outlined text-[14px] text-amber-400">star</span>
+                      {item.productName || 'Producto'}
+                    </button>
+                  ))}
+                  <button
+                    onClick={() => setReviewModal({ type: 'tevra', targetName: 'Servicio TeVra' })}
+                    className="flex items-center gap-1.5 px-3 py-2 bg-primary text-white border border-primary rounded-xl text-xs font-bold hover:bg-secondary transition-all"
+                  >
+                    <span className="material-symbols-outlined text-[14px]">storefront</span>
+                    Calificar TeVra
+                  </button>
+                </div>
+              </div>
+            )}
+
+          </div>
           )}
         </div>
       </div>
+
+      <ReviewModal
+        isOpen={!!reviewModal}
+        onClose={() => setReviewModal(null)}
+        type={reviewModal?.type}
+        targetId={reviewModal?.targetId}
+        targetName={reviewModal?.targetName}
+        onSubmitted={() => setTimeout(() => setReviewModal(null), 2000)}
+      />
     </div>
   )
 }

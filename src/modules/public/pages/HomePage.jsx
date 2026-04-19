@@ -1,6 +1,6 @@
 import HeroSection from '../components/HeroSection'
 import TrustBar from '../components/TrustBar'
-import StepsSection from '../components/StepsSection'
+import HowItWorksSection from '../components/HowItWorksSection'
 import CategoriesGrid from '../components/CategoriesGrid'
 import SocialProof from '../components/SocialProof'
 import TeVraReviews from '../components/TeVraReviews'
@@ -11,7 +11,7 @@ export default function HomePage() {
     <main>
       <HeroSection />
       <TrustBar />
-      <StepsSection />
+      <HowItWorksSection />
       <CategoriesGrid />
       <SocialProof />
       <TeVraReviews />

@@ -186,7 +186,7 @@ export default function AdminReviews() {
                         </div>
                       </td>
                       <td className="px-5 py-3"><Stars rating={rev.rating} /></td>
-                      <td className="px-5 py-3 text-sm text-zinc-500 max-w-[200px] truncate">{rev.body}</td>
+                      <td className="px-5 py-3 text-sm text-zinc-500 max-w-[200px] truncate">{rev.comment || rev.body || '—'}</td>
                       <td className="px-5 py-3 text-sm text-zinc-500">{rev.createdAt ? new Date(rev.createdAt).toLocaleDateString('es-PE') : '—'}</td>
                       <td className="px-5 py-3">
                         {rev.isVerifiedPurchase ? (
@@ -223,56 +223,90 @@ export default function AdminReviews() {
 
       {/* View Review Modal */}
       {viewReview && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 p-4">
-          <div className="bg-white rounded-xl shadow-lg w-full max-w-md max-h-[90vh] overflow-y-auto">
-            <div className="p-4 border-b border-zinc-100 flex justify-between items-center">
-              <h3 className="text-base font-semibold text-zinc-900">{t('admin.reviews.reviewDetail')}</h3>
-              <button onClick={() => setViewReview(null)} className="p-1 hover:bg-zinc-100 rounded-md"><span className="material-symbols-outlined text-zinc-400 text-[18px]">close</span></button>
-            </div>
-            <div className="p-4 space-y-3">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-zinc-100 flex items-center justify-center text-zinc-600 font-medium text-sm">
-                  {(viewReview.reviewer?.firstName?.[0] || 'A') + (viewReview.reviewer?.lastName?.[0] || '')}
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4" onClick={() => setViewReview(null)}>
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden" onClick={e => e.stopPropagation()}>
+
+            {/* Gradient header */}
+            <div className="relative bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 px-6 pt-6 pb-8">
+              <button
+                onClick={() => setViewReview(null)}
+                className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+              >
+                <span className="material-symbols-outlined text-white text-[16px]">close</span>
+              </button>
+
+              <div className="flex items-center gap-4">
+                <div className="w-14 h-14 rounded-2xl bg-white/15 border border-white/20 flex items-center justify-center text-white font-bold text-lg shrink-0">
+                  {(viewReview.reviewer?.firstName?.[0] || 'A')}{(viewReview.reviewer?.lastName?.[0] || '')}
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-zinc-900">{viewReview.reviewer ? `${viewReview.reviewer.firstName} ${viewReview.reviewer.lastName}` : t('admin.reviews.anonymous')}</p>
-                  <p className="text-xs text-zinc-500">{viewReview.createdAt ? new Date(viewReview.createdAt).toLocaleDateString('es-PE', { year: 'numeric', month: 'long', day: 'numeric' }) : '—'}</p>
+                  <p className="text-white font-semibold text-base leading-tight">
+                    {viewReview.reviewer ? `${viewReview.reviewer.firstName} ${viewReview.reviewer.lastName}` : t('admin.reviews.anonymous')}
+                  </p>
+                  <p className="text-white/50 text-xs mt-0.5">
+                    {viewReview.createdAt ? new Date(viewReview.createdAt).toLocaleDateString('es-PE', { year: 'numeric', month: 'long', day: 'numeric' }) : '—'}
+                  </p>
+                  {viewReview.isVerifiedPurchase && (
+                    <span className="inline-flex items-center gap-1 mt-1.5 px-2 py-0.5 bg-emerald-500/20 text-emerald-300 text-[10px] font-bold rounded-full border border-emerald-500/30">
+                      <span className="material-symbols-outlined text-[11px]">verified</span>
+                      {t('admin.reviews.verifiedPurchase')}
+                    </span>
+                  )}
                 </div>
               </div>
-              <div className="flex items-center gap-2">
-                <Stars rating={viewReview.rating} size={20} />
-                <span className="text-sm font-medium text-zinc-500">{viewReview.rating}/5</span>
-                {viewReview.isVerifiedPurchase && (
-                  <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-emerald-50 text-emerald-700 text-[10px] font-medium rounded-md">
-                    <span className="material-symbols-outlined text-[11px]">verified</span> {t('admin.reviews.verifiedPurchase')}
-                  </span>
-                )}
+
+              {/* Stars + score */}
+              <div className="flex items-center gap-3 mt-5">
+                <div className="flex gap-0.5">
+                  {[...Array(5)].map((_, i) => (
+                    <span key={i} className={`material-symbols-outlined text-2xl ${i < viewReview.rating ? 'text-amber-400' : 'text-white/15'}`}
+                      style={{ fontVariationSettings: i < viewReview.rating ? "'FILL' 1" : "'FILL' 0" }}>star</span>
+                  ))}
+                </div>
+                <span className="text-white/70 text-sm font-medium">{viewReview.rating}/5</span>
               </div>
-              {viewReview.title && <p className="text-sm font-semibold text-zinc-900">{viewReview.title}</p>}
-              <p className="text-sm text-zinc-500 leading-relaxed">{viewReview.body}</p>
+            </div>
+
+            {/* Body */}
+            <div className="px-6 py-5 space-y-4">
+              {viewReview.title && (
+                <p className="font-bold text-zinc-900 text-base">{viewReview.title}</p>
+              )}
+              <blockquote className="relative pl-4 border-l-2 border-zinc-200">
+                <p className="text-zinc-600 text-sm leading-relaxed italic">"{viewReview.comment || viewReview.body || '—'}"</p>
+              </blockquote>
               {viewReview.helpfulCount > 0 && (
-                <p className="text-xs text-zinc-500 flex items-center gap-1">
-                  <span className="material-symbols-outlined text-[14px]">thumb_up</span> {viewReview.helpfulCount} {t('admin.reviews.helpfulCount')}
+                <p className="text-xs text-zinc-400 flex items-center gap-1.5">
+                  <span className="material-symbols-outlined text-[14px]">thumb_up</span>
+                  {viewReview.helpfulCount} {t('admin.reviews.helpfulCount')}
                 </p>
               )}
             </div>
-            <div className="p-4 border-t border-zinc-100 flex justify-between gap-2">
+
+            {/* Actions */}
+            <div className="px-6 pb-6 flex items-center justify-between gap-3">
               <button onClick={() => handleDeleteReview(viewReview.id)}
-                className="px-3.5 py-2 text-sm font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded-lg flex items-center gap-1.5 transition-colors">
-                <span className="material-symbols-outlined text-[18px]">delete</span> {t('common.delete')}
+                className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-red-600 bg-red-50 hover:bg-red-100 rounded-xl transition-colors">
+                <span className="material-symbols-outlined text-[16px]">delete</span>
+                {t('common.delete')}
               </button>
               <div className="flex gap-2">
                 {!viewReview.isVerifiedPurchase && (
                   <button onClick={() => handleModerateReview(viewReview.id, 'approve')}
-                    className="px-3.5 py-2 text-sm font-medium text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg flex items-center gap-1.5 transition-colors">
-                    <span className="material-symbols-outlined text-[18px]">check_circle</span> {t('common.approve')}
+                    className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl transition-colors shadow-sm">
+                    <span className="material-symbols-outlined text-[16px]">check_circle</span>
+                    {t('common.approve')}
                   </button>
                 )}
                 <button onClick={() => handleModerateReview(viewReview.id, 'reject')}
-                  className="px-3.5 py-2 text-sm font-medium text-white bg-zinc-900 hover:bg-zinc-800 rounded-lg flex items-center gap-1.5 transition-colors">
-                  <span className="material-symbols-outlined text-[18px]">block</span> {t('common.reject')}
+                  className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-white bg-zinc-800 hover:bg-zinc-700 rounded-xl transition-colors shadow-sm">
+                  <span className="material-symbols-outlined text-[16px]">block</span>
+                  {t('common.reject')}
                 </button>
-                <button onClick={() => setViewReview(null)} className="px-4 py-2 text-sm font-medium text-zinc-500 hover:bg-zinc-50 rounded-lg transition-colors">{t('common.close')}</button>
+                <button onClick={() => setViewReview(null)}
+                  className="px-4 py-2 text-xs font-semibold text-zinc-500 hover:bg-zinc-100 rounded-xl transition-colors">
+                  {t('common.close')}
+                </button>
               </div>
             </div>
           </div>

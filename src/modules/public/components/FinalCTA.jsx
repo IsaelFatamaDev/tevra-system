@@ -27,9 +27,12 @@ export default function FinalCTA() {
               {t('home.cta.exploreCatalog')}
               <span className="material-symbols-outlined">arrow_forward</span>
             </Link>
-            <button className="bg-white/20 backdrop-blur-md text-white px-12 py-6 rounded-2xl font-headline font-extrabold text-xl hover:bg-white/30 transition-all duration-300">
+            <Link
+              to="/directorio-agentes"
+              className="bg-white text-secondary px-12 py-6 rounded-2xl font-headline font-extrabold text-xl hover:bg-white/90 transition-all duration-300 shadow-xl flex items-center justify-center gap-3"
+            >
               {t('home.cta.talkToAgent')}
-            </button>
+            </Link>
           </div>
         </div>
       </div>

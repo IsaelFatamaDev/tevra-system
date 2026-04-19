@@ -75,7 +75,9 @@
     "uploading": "Uploading...",
     "deleting": "Deleting...",
     "creating": "Creating...",
-    "optional": "(optional)"
+    "optional": "(optional)",
+    "supportChat": "Support Chat",
+    "genericError": "An error occurred. Please try again."
   },
   "lang": {
     "es": "Español",
@@ -151,7 +153,11 @@
       "steps": [
         {
           "title": "Choose",
-          "description": "Browse your favorite US stores and copy the link of the product you want."
+          "description": "Browse our catalogs and find the best product you're looking for."
+        },
+        {
+          "title": "Can't find it?",
+          "description": "If it's not in the catalog, paste the product link from any US store and we'll quote it for you."
         },
         {
           "title": "Connect",
@@ -258,9 +264,7 @@
       "badge": "TeVra Opportunity",
       "title": "Turn Your Network into Income",
       "subtitle": "Become a TeVra agent. No investment. No boss. No limits.",
-      "joinBtn": "I want to join",
-      "free": "It's free.",
-      "noInvestment": "No initial investment."
+      "joinBtn": "I want to join"
     },
     "values": [
       {
@@ -447,9 +451,21 @@
     "sections": {
       "buy": {
         "title": "Shop",
-        "howItWorks": "How it works",
-        "quoter": "Real Quoter",
-        "usaStores": "USA Stores"
+        "catalog": "Catalog",
+        "quote": "Quote",
+        "tracking": "Tracking"
+      },
+      "sell": {
+        "title": "Sell",
+        "applyAgent": "Apply as agent",
+        "agentProgram": "Agent program",
+        "aboutTevra": "About TeVra"
+      },
+      "legal": {
+        "title": "Legal",
+        "terms": "Terms",
+        "privacy": "Privacy",
+        "support": "Support"
       },
       "about": {
         "title": "About Us",
@@ -959,6 +975,18 @@
     "orders": {
       "title": "Your Imports",
       "subtitle": "Monitor in real time the purchase and shipping progress of your orders.",
+      "status": {
+        "pending": "Pending",
+        "confirmed": "Confirmed",
+        "processing": "Processing",
+        "shipped": "Shipped",
+        "purchasedUSA": "Purchased in USA",
+        "inTransit": "In Transit",
+        "inCustoms": "In Customs",
+        "readyForDelivery": "Ready for Delivery",
+        "delivered": "Delivered",
+        "cancelled": "Cancelled"
+      },
       "filters": {
         "all": "All",
         "active": "In progress",

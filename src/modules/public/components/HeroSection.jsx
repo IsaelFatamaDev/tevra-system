@@ -42,12 +42,14 @@ export default function HeroSection() {
             >
               {t('home.hero.exploreCatalog')}
             </Link>
-            <button
-              className="glass-card text-white rounded-2xl font-headline font-bold hover:bg-white/10 transition-all duration-300"
+            <Link
+              to="/cotizar-link"
+              className="glass-card text-white rounded-2xl font-headline font-bold hover:bg-white/10 transition-all duration-300 flex items-center gap-2"
               style={{ padding: 'clamp(0.75rem, 2vh, 1.25rem) clamp(1.5rem, 3vw, 2.5rem)', fontSize: 'clamp(0.875rem, 1.5vw, 1.125rem)' }}
             >
+              <span className="material-symbols-outlined" style={{ fontSize: 'clamp(1rem, 1.5vw, 1.25rem)' }}>link</span>
               {t('home.hero.quoteLink')}
-            </button>
+            </Link>
           </div>
 
           <div className="flex gap-8 sm:gap-10 pt-4 sm:pt-8 items-center">
