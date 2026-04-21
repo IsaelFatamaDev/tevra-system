@@ -12,6 +12,7 @@ export default function Navbar() {
   const { t } = useTranslation()
 
   const navLinks = [
+    { label: t('nav.howItWorks'), href: '/como-funciona' },
     { label: t('nav.buy'), href: '/catalogo' },
     { label: t('nav.agents'), href: '/agentes' },
     { label: t('nav.company'), href: '/empresa' },

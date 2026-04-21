@@ -85,6 +85,7 @@
     "switchTo": "Cambiar idioma"
   },
   "nav": {
+    "howItWorks": "Cómo Funciona",
     "buy": "Comprar",
     "agents": "Agentes",
     "company": "Empresa",
@@ -184,10 +185,10 @@
       "successfulMgmt": "gestiones exitosas"
     },
     "cta": {
-      "title": "¿Listo para traer lo mejor de USA?",
-      "subtitle": "Únete a miles de personas que ya compran originales americanos sin salir de casa.",
-      "exploreCatalog": "Explorar Catálogo",
-      "talkToAgent": "Hablar con un Agente"
+      "title": "¡Trae tus marcas favoritas hoy mismo!",
+      "subtitle": "No dejes pasar la oportunidad. Compra productos 100% originales en USA y recíbelos en la puerta de tu casa sin trámites.",
+      "exploreCatalog": "Ver catálogo ahora",
+      "talkToAgent": "Cotizar con un experto"
     }
   },
   "catalog": {

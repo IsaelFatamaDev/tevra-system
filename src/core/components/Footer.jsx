@@ -73,7 +73,7 @@ export default function Footer() {
         </div>
 
         {footerSections.map((section) => (
-          <div key={section.title} className="md:col-span-2">
+          <div key={section.title} className="md:col-span-3">
             <h5 className="font-headline font-bold mb-6 uppercase tracking-widest text-[11px] text-secondary-light">
             </h5>
             <ul className="space-y-3 text-[#EBF2FA]/55 text-sm font-medium">
@@ -88,23 +88,7 @@ export default function Footer() {
           </div>
         ))}
 
-        <div className="md:col-span-3">
-          <h5 className="font-headline font-bold mb-6 uppercase tracking-widest text-[11px] text-secondary-light">
-          </h5>
-          <p className="text-[#EBF2FA]/50 text-sm mb-5">
-            {t('footer.newsletterDesc')}
-          </p>
-          <div className="flex bg-[#EBF2FA]/5 border border-[#EBF2FA]/10 rounded-xl p-1.5">
-            <input
-              className="bg-transparent border-none focus:ring-0 focus:outline-none text-sm grow px-3 text-[#EBF2FA] placeholder:text-[#EBF2FA]/35"
-              placeholder={t('footer.emailPlaceholder')}
-              type="email"
-            />
-            <button className="bg-secondary hover:bg-accent-hover px-5 py-2.5 rounded-lg font-bold text-sm text-white transition-colors whitespace-nowrap">
-              {t('footer.joinBtn')}
-            </button>
-          </div>
-        </div>
+
       </div>
 
       <div className="max-w-7xl mx-auto px-8 pt-10 flex flex-wrap justify-between items-center gap-6 text-[10px] font-bold uppercase tracking-widest text-[#EBF2FA]/25 relative z-10">

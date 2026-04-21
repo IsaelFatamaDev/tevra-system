@@ -85,6 +85,7 @@
     "switchTo": "Change language"
   },
   "nav": {
+    "howItWorks": "How it Works",
     "buy": "Buy",
     "agents": "Agents",
     "company": "Company",
@@ -184,10 +185,10 @@
       "successfulMgmt": "successful orders"
     },
     "cta": {
-      "title": "Ready to bring the best from the USA?",
-      "subtitle": "Join thousands of people who already buy American originals without leaving their homes.",
-      "exploreCatalog": "Explore Catalog",
-      "talkToAgent": "Talk to an Agent"
+      "title": "Get your favorite brands today!",
+      "subtitle": "Don't miss out. Buy 100% original products from the USA and receive them at your doorstep with zero hassle.",
+      "exploreCatalog": "Shop catalog now",
+      "talkToAgent": "Quote with an expert"
     }
   },
   "catalog": {
