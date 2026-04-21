@@ -13,7 +13,7 @@ export default function Footer() {
       links: [
         { label: t('footer.sections.buy.catalog'), href: '/catalogo' },
         { label: t('footer.sections.buy.quote'), href: '/cotizar-link' },
-        { label: t('footer.sections.buy.tracking'), href: '/seguimiento' },
+        { label: t('footer.sections.buy.tracking'), href: '/tracking' },
       ],
     },
     {

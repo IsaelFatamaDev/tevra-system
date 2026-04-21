@@ -18,12 +18,12 @@ export default function HeroSection() {
 
           <div className="flex items-center gap-4 mb-2">
             <div className="w-px h-8 bg-secondary-light/40" />
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-secondary/20 rounded-full border border-secondary-light/30">
+            <Link to="/como-funciona" className="inline-flex items-center gap-2 px-3 py-1.5 bg-secondary/20 rounded-full border border-secondary-light/30 hover:bg-secondary/30 transition-colors">
               <span className="w-2 h-2 bg-secondary-light rounded-full animate-pulse" />
               <span className="text-[#F4E9CD] text-[10px] sm:text-[11px] font-bold uppercase tracking-widest">
                 {t('home.hero.badge')}
               </span>
-            </div>
+            </Link>
           </div>
 
           <h1 className="font-headline font-extrabold text-[#F4E9CD] leading-[1.1] tracking-tight" style={{ fontSize: 'clamp(2rem, 6vw, 4.5rem)' }}>
@@ -47,7 +47,7 @@ export default function HeroSection() {
               {t('home.hero.exploreCatalog')}
             </Link>
             <Link
-              to="/cotizar-link"
+              to="/directorio-agentes"
               className="btn-ghost flex items-center gap-2"
               style={{ padding: 'clamp(0.75rem, 2vh, 1.1rem) clamp(1.5rem, 3vw, 2.25rem)', fontSize: 'clamp(0.875rem, 1.5vw, 1rem)' }}
             >

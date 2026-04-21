@@ -15,7 +15,6 @@ export default function Navbar() {
     { label: t('nav.buy'), href: '/catalogo' },
     { label: t('nav.agents'), href: '/agentes' },
     { label: t('nav.company'), href: '/empresa' },
-    { label: t('nav.tracking'), href: '/tracking' },
   ]
 
   const handleLoginClick = useCallback((e) => {
