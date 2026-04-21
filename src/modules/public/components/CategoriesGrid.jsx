@@ -34,18 +34,18 @@ export default function CategoriesGrid() {
   const { ref: gridRef, isVisible: gridVisible } = useScrollReveal(0.05)
 
   return (
-    <section className="py-32 bg-surface-container-lowest">
+    <section className="py-32 bg-white">
       <div className="max-w-7xl mx-auto px-8">
         <div ref={titleRef} className={`flex justify-between items-end mb-16 reveal ${titleVisible ? 'visible' : ''}`}>
           <div>
-            <h2 className="font-headline text-4xl font-extrabold text-primary tracking-tight">
+            <h2 className="font-headline text-4xl font-extrabold text-[#031926] tracking-tight">
               {t('home.categories.title')}
             </h2>
             <p className="text-text-muted mt-2">{t('home.categories.subtitle')}</p>
           </div>
           <Link
             to="/catalogo"
-            className="hidden md:inline font-headline font-bold text-primary border-b-2 border-secondary pb-1 hover:text-secondary transition-all"
+            className="hidden md:inline font-headline font-bold text-[#468189] border-b-2 border-[#468189] pb-1 hover:text-[#031926] transition-all"
           >
             {t('home.categories.seeAll')}
           </Link>
@@ -57,17 +57,17 @@ export default function CategoriesGrid() {
               return (
                 <div
                   key={cat.key}
-                  className="md:col-span-2 md:row-span-2 relative group overflow-hidden rounded-3xl aspect-[4/5] md:aspect-auto"
+                  className="md:col-span-2 md:row-span-2 relative group overflow-hidden rounded-3xl aspect-4/5 md:aspect-auto"
                 >
                   <img
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
                     src={cat.image}
                     alt={cat.title}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/20 to-transparent flex flex-col justify-end p-10">
-                    <h4 className="text-white font-headline font-extrabold text-3xl">{cat.title}</h4>
-                    <p className="text-white/70 mt-2">{cat.subtitle}</p>
-                    <button className="mt-6 w-fit bg-surface-container-lowest text-primary px-6 py-3 rounded-xl font-bold text-sm opacity-0 group-hover:opacity-100 transition-all translate-y-4 group-hover:translate-y-0 duration-500">
+                  <div className="absolute inset-0 bg-linear-to-t from-[#031926]/90 via-[#031926]/20 to-transparent flex flex-col justify-end p-10">
+                    <h4 className="text-[#F4E9CD] font-headline font-extrabold text-3xl">{cat.title}</h4>
+                    <p className="text-[#F4E9CD]/70 mt-2">{cat.subtitle}</p>
+                    <button className="mt-6 w-fit bg-[#F4E9CD] text-[#031926] px-6 py-3 rounded-xl font-bold text-sm opacity-0 group-hover:opacity-100 transition-all translate-y-4 group-hover:translate-y-0 duration-500">
                       {t('home.categories.explore')}
                     </button>
                   </div>
@@ -83,8 +83,8 @@ export default function CategoriesGrid() {
                     src={cat.image}
                     alt={cat.title}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-transparent flex items-center p-10">
-                    <h4 className="text-white font-headline font-extrabold text-2xl">{cat.title}</h4>
+                  <div className="absolute inset-0 bg-linear-to-r from-[#031926]/80 to-transparent flex items-center p-10">
+                    <h4 className="text-[#F4E9CD] font-headline font-extrabold text-2xl">{cat.title}</h4>
                   </div>
                 </div>
               )

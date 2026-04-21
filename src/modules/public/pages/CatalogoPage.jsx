@@ -62,7 +62,7 @@ function ProductCard({ producto, onClick }) {
             Ahorra {savings}%
           </span>
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+        <div className="absolute inset-0 bg-linear-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
       </div>
 
       <div className="p-4 flex flex-col flex-1 gap-2">

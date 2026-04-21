@@ -196,25 +196,7 @@ export default function EmpresaPage() {
         </div>
       </section>
 
-      <section className="py-20 hero-gradient relative overflow-hidden">
-        <div className="absolute inset-0 bg-grid-pattern opacity-20" />
-        <div className="max-w-4xl mx-auto px-4 sm:px-8 text-center relative z-10">
-          <h2 className="font-headline font-extrabold text-white tracking-tight mb-5" style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)' }}>
-            {t('empresa.joinCta.title')}
-          </h2>
-          <p className="text-white/70 mb-10 max-w-xl mx-auto" style={{ fontSize: 'clamp(0.95rem, 1.8vw, 1.1rem)' }}>
-            {t('empresa.joinCta.subtitle')}
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/agentes" className="px-10 py-4 bg-secondary text-white rounded-2xl font-headline font-bold text-lg shadow-xl shadow-secondary/30 hover:-translate-y-1 transition-all">
-              {t('empresa.joinCta.becomeAgent')}
-            </Link>
-            <Link to="/tracking" className="px-10 py-4 glass-card text-white rounded-2xl font-headline font-bold text-lg hover:bg-white/10 transition-all">
-              {t('empresa.joinCta.trackOrder')}
-            </Link>
-          </div>
-        </div>
-      </section>
+
     </main>
   )
 }

@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useCart } from '../../../core/hooks/useCart'
 import agentsService from '../services/agents.service'
+import reviewsService from '../services/reviews.service'
 
 export default function AgentProfilePage() {
   const { code } = useParams()
@@ -11,6 +12,7 @@ export default function AgentProfilePage() {
   const { setSelectedAgent, items } = useCart()
   const [agent, setAgent] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [reviews, setReviews] = useState([])
 
   useEffect(() => {
     setLoading(true)
@@ -19,6 +21,13 @@ export default function AgentProfilePage() {
       .catch(() => setAgent(null))
       .finally(() => setLoading(false))
   }, [code])
+
+  useEffect(() => {
+    if (!agent?.id) return
+    reviewsService.findByAgent(agent.id)
+      .then(list => { if (Array.isArray(list)) setReviews(list) })
+      .catch(() => { })
+  }, [agent?.id])
 
   const handleSelectAgent = () => {
     if (!agent) return
@@ -67,7 +76,7 @@ export default function AgentProfilePage() {
           <span className="material-symbols-outlined text-xs">chevron_right</span>
           <Link to="/directorio-agentes" className="hover:text-primary transition-colors">{t('agentProfile.breadcrumbAgents')}</Link>
           <span className="material-symbols-outlined text-xs">chevron_right</span>
-          <span className="text-primary font-semibold truncate max-w-[200px]">{name}</span>
+          <span className="text-primary font-semibold truncate max-w-50">{name}</span>
         </nav>
       </div>
 
@@ -156,6 +165,54 @@ export default function AgentProfilePage() {
                       <span className="material-symbols-outlined text-sm">location_on</span>
                       {zone}
                     </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Reviews */}
+            {reviews.length > 0 && (
+              <div className="bg-surface-container-lowest rounded-2xl p-8 shadow-soft space-y-5">
+                <div className="flex items-center justify-between">
+                  <h2 className="font-headline font-bold text-lg text-primary">Reseñas</h2>
+                  <div className="flex items-center gap-1.5">
+                    <div className="flex text-amber-400">
+                      {[...Array(5)].map((_, i) => (
+                        <span key={i} className="material-symbols-outlined text-sm" style={{ fontVariationSettings: `'FILL' ${i < Math.round(agent.rating || 0) ? 1 : 0}` }}>star</span>
+                      ))}
+                    </div>
+                    <span className="text-sm font-bold text-primary">{Number(agent.rating || 0).toFixed(1)}</span>
+                    <span className="text-xs text-text-muted">({reviews.length} reseñas)</span>
+                  </div>
+                </div>
+                <div className="space-y-4">
+                  {reviews.map(review => (
+                    <div key={review.id} className="border-b border-outline-variant/10 pb-4 last:border-0 last:pb-0">
+                      <div className="flex items-start gap-3">
+                        <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary shrink-0">
+                          {(review.reviewer?.firstName?.[0] || 'C')}{(review.reviewer?.lastName?.[0] || '')}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between gap-2 mb-1">
+                            <span className="text-sm font-bold text-primary truncate">
+                              {review.reviewer?.firstName || 'Cliente'} {review.reviewer?.lastName?.[0] ? `${review.reviewer.lastName[0]}.` : ''}
+                            </span>
+                            <span className="text-xs text-text-muted shrink-0">
+                              {review.createdAt ? new Date(review.createdAt).toLocaleDateString('es-PE', { day: '2-digit', month: 'short', year: 'numeric' }) : ''}
+                            </span>
+                          </div>
+                          <div className="flex text-amber-400 mb-1.5">
+                            {[...Array(review.rating || 5)].map((_, j) => (
+                              <span key={j} className="material-symbols-outlined text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                            ))}
+                          </div>
+                          {review.title && <p className="text-sm font-semibold text-primary mb-1">{review.title}</p>}
+                          {(review.body || review.comment) && (
+                            <p className="text-sm text-text-muted leading-relaxed">"{review.body || review.comment}"</p>
+                          )}
+                        </div>
+                      </div>
+                    </div>
                   ))}
                 </div>
               </div>

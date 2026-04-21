@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import AdminSidebar from './AdminSidebar'
 import { useAuth } from '../../../core/contexts/AuthContext'
@@ -33,52 +33,59 @@ export default function AdminLayout() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-50">
+    <div className="min-h-screen bg-[#EBF2FA]/20">
       <AdminSidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
       <div className="lg:pl-60">
-        <header className="sticky top-0 z-30 bg-white border-b border-zinc-200">
+        <header className="sticky top-0 z-30 bg-white border-b border-[#9DBEBB]/20">
           <div className="h-14 flex items-center justify-between px-4 lg:px-6">
             <div className="flex items-center gap-3">
               <button
                 onClick={() => setSidebarOpen(true)}
-                className="lg:hidden p-2 rounded-lg text-zinc-500 hover:bg-zinc-100 transition-colors"
+                className="lg:hidden p-2 rounded-lg text-[#468189] hover:bg-[#9DBEBB]/20 transition-colors"
               >
                 <span className="material-symbols-outlined text-[20px]">menu</span>
               </button>
               {meta.title && (
                 <div className="flex items-center gap-2">
-                  <span className="material-symbols-outlined text-[18px] text-zinc-400">{meta.icon}</span>
-                  <h1 className="text-sm font-semibold text-zinc-900">{meta.title}</h1>
+                  <span className="material-symbols-outlined text-[18px] text-[#468189]">{meta.icon}</span>
+                  <h1 className="text-sm font-semibold text-[#031926]">{meta.title}</h1>
                 </div>
               )}
             </div>
 
             <div className="flex items-center gap-1">
-              <button className="relative p-2 rounded-lg text-zinc-500 hover:bg-zinc-100 hover:text-zinc-700 transition-colors">
+              <Link
+                to="/"
+                className="p-2 rounded-lg text-[#468189] hover:bg-[#9DBEBB]/20 hover:text-[#031926] transition-colors"
+                title="Ir al sitio web"
+              >
+                <span className="material-symbols-outlined text-[20px]">home</span>
+              </Link>
+              <button className="relative p-2 rounded-lg text-[#468189] hover:bg-[#9DBEBB]/20 hover:text-[#031926] transition-colors">
                 <span className="material-symbols-outlined text-[20px]">notifications</span>
-                <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full ring-2 ring-white" />
+                <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-[#468189] rounded-full ring-2 ring-white" />
               </button>
 
-              <div className="w-px h-5 bg-zinc-200 mx-1.5" />
+              <div className="w-px h-5 bg-[#9DBEBB]/30 mx-1.5" />
 
               <div className="flex items-center gap-2 pl-1">
                 {user?.avatarUrl ? (
                   <img src={user.avatarUrl} alt={user.firstName} className="w-7 h-7 rounded-full object-cover" />
                 ) : (
-                  <div className="w-7 h-7 rounded-full bg-zinc-100 flex items-center justify-center text-zinc-600 font-semibold text-[11px]">
+                  <div className="w-7 h-7 rounded-full bg-[#468189]/15 flex items-center justify-center text-[#468189] font-semibold text-[11px]">
                     {user?.firstName?.[0]}{user?.lastName?.[0]}
                   </div>
                 )}
                 <div className="hidden sm:block">
-                  <p className="text-[13px] font-medium text-zinc-900 leading-tight">{user?.firstName} {user?.lastName}</p>
-                  <p className="text-[10px] text-zinc-400 capitalize leading-tight">{user?.role?.replace('_', ' ')}</p>
+                  <p className="text-[13px] font-medium text-[#031926] leading-tight">{user?.firstName} {user?.lastName}</p>
+                  <p className="text-[10px] text-[#468189] capitalize leading-tight">{user?.role?.replace('_', ' ')}</p>
                 </div>
               </div>
 
               <button
                 onClick={handleLogout}
-                className="ml-1 p-2 rounded-lg text-zinc-400 hover:text-red-500 hover:bg-red-50 transition-colors"
+                className="ml-1 p-2 rounded-lg text-[#9DBEBB] hover:text-red-500 hover:bg-red-50 transition-colors"
                 title={t('common.logout')}
               >
                 <span className="material-symbols-outlined text-[18px]">logout</span>

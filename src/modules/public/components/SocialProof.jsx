@@ -44,7 +44,7 @@ export default function SocialProof() {
   const { ref: rightRef, isVisible: rightVisible } = useScrollReveal(0.1)
 
   return (
-    <section className="py-32 bg-background-cream">
+    <section className="py-32 bg-[#F4E9CD]/40">
       <div className="max-w-7xl mx-auto px-8">
         <div ref={titleRef} className={`text-center mb-20 reveal ${titleVisible ? 'visible' : ''}`}>
           <h2 className="font-headline text-4xl font-extrabold text-primary mb-4">{t('home.social.title')}</h2>
@@ -52,7 +52,7 @@ export default function SocialProof() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-          <div ref={leftRef} className={`bg-surface-container-lowest p-10 rounded-3xl shadow-soft reveal-left ${leftVisible ? 'visible' : ''}`}>
+          <div ref={leftRef} className={`bg-white p-10 rounded-3xl shadow-soft border border-[#9DBEBB]/20 reveal-left ${leftVisible ? 'visible' : ''}`}>
             <h3 className="font-headline font-extrabold text-xl mb-8 flex items-center gap-2">
               <span className="material-symbols-outlined text-secondary">flash_on</span>
               {t('home.social.recentSales')}
@@ -61,12 +61,12 @@ export default function SocialProof() {
               {recentSales.map((sale) => (
                 <div
                   key={sale.name}
-                  className="flex items-center gap-4 p-4 hover:bg-surface-container-low rounded-2xl transition-colors border border-transparent hover:border-outline-variant/20"
+                  className="flex items-center gap-4 p-4 hover:bg-[#F4E9CD]/50 rounded-2xl transition-colors border border-transparent hover:border-[#9DBEBB]/20"
                 >
-                  <div className="w-14 h-14 rounded-xl bg-surface-container-low overflow-hidden flex-shrink-0">
+                  <div className="w-14 h-14 rounded-xl bg-[#9DBEBB]/20 overflow-hidden shrink-0">
                     <img alt={sale.name} className="w-full h-full object-cover" src={sale.image} />
                   </div>
-                  <div className="flex-grow">
+                  <div className="grow">
                     <div className="font-bold text-primary">{sale.name}</div>
                     <div className="text-xs text-text-muted">{t('home.social.sentTo')} {sale.location}</div>
                   </div>
@@ -79,7 +79,7 @@ export default function SocialProof() {
             </div>
           </div>
 
-          <div ref={rightRef} className={`bg-primary p-10 rounded-3xl shadow-soft text-white relative overflow-hidden reveal-right ${rightVisible ? 'visible' : ''}`}>
+          <div ref={rightRef} className={`p-10 rounded-3xl shadow-soft text-[#F4E9CD] relative overflow-hidden reveal-right ${rightVisible ? 'visible' : ''}`} style={{ background: 'linear-gradient(135deg, #031926 0%, #0d3349 60%, #468189 100%)' }}>
             <div className="absolute top-0 right-0 p-8 opacity-10">
               <span className="material-symbols-outlined text-[120px]">support_agent</span>
             </div>
@@ -91,7 +91,7 @@ export default function SocialProof() {
               {agents.map((agent) => (
                 <div
                   key={agent.initials}
-                  className="bg-white/5 p-6 rounded-2xl border border-white/10 flex items-center gap-5 hover:bg-white/10 transition-colors"
+                  className="bg-[#F4E9CD]/5 p-6 rounded-2xl border border-[#F4E9CD]/10 flex items-center gap-5 hover:bg-[#F4E9CD]/10 transition-colors"
                 >
                   <div className={`w-16 h-16 rounded-full ${agent.color} border-2 flex items-center justify-center font-black text-xl`}>
                     {agent.initials}

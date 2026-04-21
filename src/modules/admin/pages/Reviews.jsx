@@ -12,13 +12,13 @@ export default function AdminReviews() {
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
   const [ratingFilter, setRatingFilter] = useState(0)
-  const [verifiedFilter, setVerifiedFilter] = useState('')
+  const [statusFilter, setStatusFilter] = useState('')
   const [page, setPage] = useState(1)
   const [viewReview, setViewReview] = useState(null)
 
   const fetchReviews = useCallback(() => {
     setLoading(true)
-    reviewsService.findAll({ search: search || undefined, rating: ratingFilter || undefined })
+    reviewsService.findAll({ search: search || undefined, rating: ratingFilter || undefined, status: 'all' })
       .then(data => {
         const list = Array.isArray(data) ? data : data?.items || []
         setReviews(list)
@@ -34,9 +34,9 @@ export default function AdminReviews() {
     return () => clearTimeout(timer)
   }, [search, ratingFilter])
 
-  const verifiedFiltered = verifiedFilter === ''
+  const verifiedFiltered = statusFilter === ''
     ? reviews
-    : reviews.filter(r => verifiedFilter === 'yes' ? r.isVerifiedPurchase : !r.isVerifiedPurchase)
+    : reviews.filter(r => r.status === statusFilter)
 
   const totalPages = Math.ceil(total / ITEMS_PER_PAGE)
   const paginated = verifiedFiltered.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE)
@@ -58,13 +58,14 @@ export default function AdminReviews() {
     } catch (err) { console.error('Error moderating review', err) }
   }
   const avgRating = reviews.length ? (reviews.reduce((s, r) => s + r.rating, 0) / reviews.length) : 0
-  const verifiedCount = reviews.filter(r => r.isVerifiedPurchase).length
+  const approvedCount = reviews.filter(r => r.status === 'approved').length
+  const pendingCount = reviews.filter(r => r.status === 'pending').length
   const ratingDist = [5, 4, 3, 2, 1].map(star => ({ star, count: reviews.filter(r => r.rating === star).length }))
 
   const Stars = ({ rating, size = 16 }) => (
     <div className="flex items-center gap-0.5">
       {[...Array(5)].map((_, i) => (
-        <span key={i} className={`material-symbols-outlined text-[${size}px] ${i < rating ? 'text-amber-400' : 'text-zinc-200'}`}
+        <span key={i} className={`material-symbols-outlined text-[${size}px] ${i < rating ? 'text-amber-400' : 'text-[#9DBEBB]'}`}
           style={{ fontVariationSettings: i < rating ? "'FILL' 1" : "'FILL' 0" }}>star</span>
       ))}
     </div>
@@ -74,49 +75,49 @@ export default function AdminReviews() {
     <div className="max-w-7xl mx-auto space-y-5 platform-enter">
       {/* Header */}
       <div>
-        <h2 className="text-xl font-semibold text-zinc-900">{t('admin.reviews.title')}</h2>
-        <p className="text-sm text-zinc-500 mt-0.5">{t('admin.reviews.subtitle')}</p>
+        <h2 className="text-xl font-semibold text-[#031926]">{t('admin.reviews.title')}</h2>
+        <p className="text-sm text-[#468189] mt-0.5">{t('admin.reviews.subtitle')}</p>
       </div>
 
       {/* Metrics */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        <div className="bg-white p-4 rounded-xl border border-zinc-200 flex items-center gap-3 stat-card">
-          <div className="w-9 h-9 rounded-lg bg-zinc-100 text-zinc-600 flex items-center justify-center shrink-0">
+        <div className="bg-white p-4 rounded-xl border border-[#9DBEBB]/20 flex items-center gap-3 stat-card">
+          <div className="w-9 h-9 rounded-lg bg-[#EBF2FA] text-[#468189] flex items-center justify-center shrink-0">
             <span className="material-symbols-outlined text-[18px]">star</span>
           </div>
           <div>
-            <p className="text-xs text-zinc-500">{t('admin.reviews.avgRating')}</p>
-            <p className="text-lg font-semibold text-zinc-900">{avgRating.toFixed(1)}</p>
+            <p className="text-xs text-[#468189]">{t('admin.reviews.avgRating')}</p>
+            <p className="text-lg font-semibold text-[#031926]">{avgRating.toFixed(1)}</p>
           </div>
         </div>
-        <div className="bg-white p-4 rounded-xl border border-zinc-200 flex items-center gap-3 stat-card">
-          <div className="w-9 h-9 rounded-lg bg-zinc-100 text-zinc-600 flex items-center justify-center shrink-0">
+        <div className="bg-white p-4 rounded-xl border border-[#9DBEBB]/20 flex items-center gap-3 stat-card">
+          <div className="w-9 h-9 rounded-lg bg-[#EBF2FA] text-[#468189] flex items-center justify-center shrink-0">
             <span className="material-symbols-outlined text-[18px]">reviews</span>
           </div>
           <div>
-            <p className="text-xs text-zinc-500">{t('admin.reviews.totalReviews')}</p>
-            <p className="text-lg font-semibold text-zinc-900">{reviews.length}</p>
+            <p className="text-xs text-[#468189]">{t('admin.reviews.totalReviews')}</p>
+            <p className="text-lg font-semibold text-[#031926]">{reviews.length}</p>
           </div>
         </div>
-        <div className="bg-white p-4 rounded-xl border border-zinc-200 flex items-center gap-3 stat-card">
-          <div className="w-9 h-9 rounded-lg bg-zinc-100 text-zinc-600 flex items-center justify-center shrink-0">
+        <div className="bg-white p-4 rounded-xl border border-[#9DBEBB]/20 flex items-center gap-3 stat-card">
+          <div className="w-9 h-9 rounded-lg bg-[#EBF2FA] text-[#468189] flex items-center justify-center shrink-0">
             <span className="material-symbols-outlined text-[18px]">verified</span>
           </div>
           <div>
-            <p className="text-xs text-zinc-500">{t('admin.reviews.verified')}</p>
-            <p className="text-lg font-semibold text-zinc-900">{verifiedCount}</p>
+            <p className="text-xs text-[#468189]">{t('admin.reviews.verified')}</p>
+            <p className="text-lg font-semibold text-[#031926]">{approvedCount} <span className="text-sm font-normal text-amber-600">({pendingCount} {t('admin.reviews.pendingBadge')})</span></p>
           </div>
         </div>
-        <div className="bg-white p-4 rounded-xl border border-zinc-200">
-          <p className="text-xs text-zinc-500 mb-2">{t('admin.reviews.distribution')}</p>
+        <div className="bg-white p-4 rounded-xl border border-[#9DBEBB]/20">
+          <p className="text-xs text-[#468189] mb-2">{t('admin.reviews.distribution')}</p>
           <div className="space-y-1">
             {ratingDist.map(d => (
               <div key={d.star} className="flex items-center gap-1.5">
-                <span className="text-[10px] text-zinc-500 w-3 font-medium">{d.star}</span>
-                <div className="flex-1 h-1.5 bg-zinc-100 rounded-full overflow-hidden">
+                <span className="text-[10px] text-[#468189] w-3 font-medium">{d.star}</span>
+                <div className="flex-1 h-1.5 bg-[#EBF2FA] rounded-full overflow-hidden">
                   <div className="h-full bg-amber-400 rounded-full" style={{ width: reviews.length ? `${(d.count / reviews.length) * 100}%` : '0%' }} />
                 </div>
-                <span className="text-[10px] text-zinc-500 w-4 text-right">{d.count}</span>
+                <span className="text-[10px] text-[#468189] w-4 text-right">{d.count}</span>
               </div>
             ))}
           </div>
@@ -124,39 +125,41 @@ export default function AdminReviews() {
       </div>
 
       {/* Table */}
-      <div className="bg-white rounded-xl border border-zinc-200 overflow-hidden">
-        <div className="p-4 border-b border-zinc-100 flex flex-col sm:flex-row gap-3">
+      <div className="bg-white rounded-xl border border-[#9DBEBB]/20 overflow-hidden">
+        <div className="p-4 border-b border-[#9DBEBB]/10 flex flex-col sm:flex-row gap-3">
           <div className="relative flex-1">
-            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 text-[18px]">search</span>
+            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#9DBEBB] text-[18px]">search</span>
             <input type="text" value={search} onChange={e => setSearch(e.target.value)} placeholder={t('admin.reviews.searchPlaceholder')}
-              className="w-full pl-9 pr-4 py-2 bg-zinc-50 border border-zinc-200 rounded-lg text-sm focus:ring-2 focus:ring-zinc-900/10 focus:border-zinc-400 outline-none transition-all" />
+              className="w-full pl-9 pr-4 py-2 bg-[#EBF2FA]/30 border border-[#9DBEBB]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#031926]/10 focus:border-[#468189] outline-none transition-all" />
           </div>
           <div className="flex gap-1.5 flex-wrap">
             {[5, 4, 3, 2, 1].map(star => (
               <button key={star} onClick={() => setRatingFilter(ratingFilter === star ? 0 : star)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1 ${ratingFilter === star ? 'bg-zinc-900 text-white' : 'bg-zinc-50 text-zinc-600 hover:bg-zinc-100 border border-zinc-200'}`}>
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1 ${ratingFilter === star ? 'bg-[#031926] text-[#EBF2FA]' : 'bg-[#EBF2FA]/30 text-[#468189] hover:bg-[#EBF2FA] border border-[#9DBEBB]/20'}`}>
                 {star}<span className="material-symbols-outlined text-[12px]" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
               </button>
             ))}
-            <button onClick={() => setVerifiedFilter(verifiedFilter === 'yes' ? '' : 'yes')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${verifiedFilter === 'yes' ? 'bg-zinc-900 text-white' : 'bg-zinc-50 text-zinc-600 hover:bg-zinc-100 border border-zinc-200'}`}>
-              {t('admin.reviews.verifiedFilter')}
-            </button>
+            {[{ key: '', label: t('common.all') }, { key: 'pending', label: t('admin.reviews.pendingBadge') }, { key: 'approved', label: t('admin.reviews.verifiedBadge') }, { key: 'rejected', label: t('common.rejected') }].map(opt => (
+              <button key={opt.key} onClick={() => setStatusFilter(statusFilter === opt.key ? '' : opt.key)}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${statusFilter === opt.key ? 'bg-[#031926] text-[#EBF2FA]' : 'bg-[#EBF2FA]/30 text-[#468189] hover:bg-[#EBF2FA] border border-[#9DBEBB]/20'}`}>
+                {opt.label}
+              </button>
+            ))}
           </div>
         </div>
 
         {loading ? (
-          <div className="flex items-center justify-center py-16"><div className="w-6 h-6 border-2 border-zinc-200 border-t-zinc-600 rounded-full animate-spin" /></div>
+          <div className="flex items-center justify-center py-16"><div className="w-6 h-6 border-2 border-[#9DBEBB]/20 border-t-[#468189] rounded-full animate-spin" /></div>
         ) : reviews.length === 0 ? (
           <div className="text-center py-16">
-            <span className="material-symbols-outlined text-3xl text-zinc-300">rate_review</span>
-            <p className="text-sm text-zinc-500 mt-2">{t('admin.reviews.noReviewsFound')}</p>
+            <span className="material-symbols-outlined text-3xl text-[#9DBEBB]">rate_review</span>
+            <p className="text-sm text-[#468189] mt-2">{t('admin.reviews.noReviewsFound')}</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left min-w-[650px]">
+            <table className="w-full text-left min-w-162.5">
               <thead>
-                <tr className="bg-zinc-50 text-[11px] font-medium text-zinc-500 uppercase tracking-wider border-b border-zinc-100">
+                <tr className="bg-[#EBF2FA]/30 text-[11px] font-medium text-[#468189] uppercase tracking-wider border-b border-[#9DBEBB]/10">
                   <th className="px-5 py-3">{t('admin.table.user')}</th>
                   <th className="px-5 py-3">{t('admin.table.rating')}</th>
                   <th className="px-5 py-3">{t('admin.table.comment')}</th>
@@ -165,43 +168,47 @@ export default function AdminReviews() {
                   <th className="px-5 py-3 text-right">{t('admin.table.actions')}</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-zinc-100">
+              <tbody className="divide-y divide-[#9DBEBB]/10">
                 {paginated.map(rev => {
                   const reviewerName = rev.reviewer ? `${rev.reviewer.firstName} ${rev.reviewer.lastName}` : t('admin.reviews.anonymous')
                   return (
-                    <tr key={rev.id} className="hover:bg-zinc-50 transition-colors group">
+                    <tr key={rev.id} className="hover:bg-[#EBF2FA]/30 transition-colors group">
                       <td className="px-5 py-3">
                         <div className="flex items-center gap-3">
                           {rev.reviewer?.avatarUrl ? (
                             <img src={rev.reviewer.avatarUrl} alt={reviewerName} className="w-8 h-8 rounded-full object-cover" />
                           ) : (
-                            <div className="w-8 h-8 rounded-full bg-zinc-100 flex items-center justify-center text-zinc-600 font-medium text-xs">
+                            <div className="w-8 h-8 rounded-full bg-[#EBF2FA] flex items-center justify-center text-[#468189] font-medium text-xs">
                               {(rev.reviewer?.firstName?.[0] || 'A') + (rev.reviewer?.lastName?.[0] || '')}
                             </div>
                           )}
                           <div className="min-w-0">
-                            <p className="text-sm font-medium text-zinc-900">{reviewerName}</p>
-                            <p className="text-xs text-zinc-500 truncate">{rev.title || '—'}</p>
+                            <p className="text-sm font-medium text-[#031926]">{reviewerName}</p>
+                            <p className="text-xs text-[#468189] truncate">{rev.title || '—'}</p>
                           </div>
                         </div>
                       </td>
                       <td className="px-5 py-3"><Stars rating={rev.rating} /></td>
-                      <td className="px-5 py-3 text-sm text-zinc-500 max-w-[200px] truncate">{rev.comment || rev.body || '—'}</td>
-                      <td className="px-5 py-3 text-sm text-zinc-500">{rev.createdAt ? new Date(rev.createdAt).toLocaleDateString('es-PE') : '—'}</td>
+                      <td className="px-5 py-3 text-sm text-[#468189] max-w-50 truncate">{rev.comment || rev.body || '—'}</td>
+                      <td className="px-5 py-3 text-sm text-[#468189]">{rev.createdAt ? new Date(rev.createdAt).toLocaleDateString('es-PE') : '—'}</td>
                       <td className="px-5 py-3">
-                        {rev.isVerifiedPurchase ? (
+                        {rev.status === 'approved' ? (
                           <span className="inline-flex items-center gap-1.5 px-2 py-0.5 bg-emerald-50 text-emerald-700 text-[11px] font-medium rounded-md">
                             <span className="material-symbols-outlined text-[12px]">check_circle</span> {t('admin.reviews.verifiedBadge')}
                           </span>
+                        ) : rev.status === 'rejected' ? (
+                          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 bg-red-50 text-red-600 text-[11px] font-medium rounded-md">
+                            <span className="material-symbols-outlined text-[12px]">block</span> {t('common.rejected')}
+                          </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 bg-zinc-100 text-zinc-500 text-[11px] font-medium rounded-md">
+                          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 bg-[#EBF2FA] text-[#468189] text-[11px] font-medium rounded-md">
                             <span className="material-symbols-outlined text-[12px]">schedule</span> {t('admin.reviews.pendingBadge')}
                           </span>
                         )}
                       </td>
                       <td className="px-5 py-3 text-right">
                         <button onClick={() => setViewReview(rev)} title={t('admin.reviews.reviewDetail')}
-                          className="p-1.5 rounded-md hover:bg-zinc-100 text-zinc-400 hover:text-zinc-700 transition-colors opacity-60 group-hover:opacity-100">
+                          className="p-1.5 rounded-md hover:bg-[#EBF2FA] text-[#9DBEBB] hover:text-[#031926] transition-colors opacity-60 group-hover:opacity-100">
                           <span className="material-symbols-outlined text-[18px]">visibility</span>
                         </button>
                       </td>
@@ -213,8 +220,8 @@ export default function AdminReviews() {
           </div>
         )}
 
-        <div className="px-5 py-3 border-t border-zinc-100 flex flex-col sm:flex-row justify-between items-center gap-3">
-          <span className="text-xs text-zinc-500">
+        <div className="px-5 py-3 border-t border-[#9DBEBB]/10 flex flex-col sm:flex-row justify-between items-center gap-3">
+          <span className="text-xs text-[#468189]">
             {t('admin.pagination.showing')} <span className="font-medium">{Math.min((page - 1) * ITEMS_PER_PAGE + 1, total)}-{Math.min(page * ITEMS_PER_PAGE, total)}</span> {t('admin.pagination.of')} <span className="font-medium">{total}</span> {t('admin.pagination.reviews')}
           </span>
           <Pagination page={page} totalPages={totalPages} onPageChange={p => setPage(p)} />
@@ -227,23 +234,23 @@ export default function AdminReviews() {
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden" onClick={e => e.stopPropagation()}>
 
             {/* Gradient header */}
-            <div className="relative bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 px-6 pt-6 pb-8">
+            <div className="relative bg-linear-to-br from-[#031926] via-primary-mid to-[#031926] px-6 pt-6 pb-8">
               <button
                 onClick={() => setViewReview(null)}
                 className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
               >
-                <span className="material-symbols-outlined text-white text-[16px]">close</span>
+                <span className="material-symbols-outlined text-[#EBF2FA] text-[16px]">close</span>
               </button>
 
               <div className="flex items-center gap-4">
-                <div className="w-14 h-14 rounded-2xl bg-white/15 border border-white/20 flex items-center justify-center text-white font-bold text-lg shrink-0">
+                <div className="w-14 h-14 rounded-2xl bg-white/15 border border-white/20 flex items-center justify-center text-[#EBF2FA] font-bold text-lg shrink-0">
                   {(viewReview.reviewer?.firstName?.[0] || 'A')}{(viewReview.reviewer?.lastName?.[0] || '')}
                 </div>
                 <div>
-                  <p className="text-white font-semibold text-base leading-tight">
+                  <p className="text-[#EBF2FA] font-semibold text-base leading-tight">
                     {viewReview.reviewer ? `${viewReview.reviewer.firstName} ${viewReview.reviewer.lastName}` : t('admin.reviews.anonymous')}
                   </p>
-                  <p className="text-white/50 text-xs mt-0.5">
+                  <p className="text-[#EBF2FA]/50 text-xs mt-0.5">
                     {viewReview.createdAt ? new Date(viewReview.createdAt).toLocaleDateString('es-PE', { year: 'numeric', month: 'long', day: 'numeric' }) : '—'}
                   </p>
                   {viewReview.isVerifiedPurchase && (
@@ -259,24 +266,24 @@ export default function AdminReviews() {
               <div className="flex items-center gap-3 mt-5">
                 <div className="flex gap-0.5">
                   {[...Array(5)].map((_, i) => (
-                    <span key={i} className={`material-symbols-outlined text-2xl ${i < viewReview.rating ? 'text-amber-400' : 'text-white/15'}`}
+                    <span key={i} className={`material-symbols-outlined text-2xl ${i < viewReview.rating ? 'text-amber-400' : 'text-[#EBF2FA]/15'}`}
                       style={{ fontVariationSettings: i < viewReview.rating ? "'FILL' 1" : "'FILL' 0" }}>star</span>
                   ))}
                 </div>
-                <span className="text-white/70 text-sm font-medium">{viewReview.rating}/5</span>
+                <span className="text-[#EBF2FA]/70 text-sm font-medium">{viewReview.rating}/5</span>
               </div>
             </div>
 
             {/* Body */}
             <div className="px-6 py-5 space-y-4">
               {viewReview.title && (
-                <p className="font-bold text-zinc-900 text-base">{viewReview.title}</p>
+                <p className="font-bold text-[#031926] text-base">{viewReview.title}</p>
               )}
-              <blockquote className="relative pl-4 border-l-2 border-zinc-200">
-                <p className="text-zinc-600 text-sm leading-relaxed italic">"{viewReview.comment || viewReview.body || '—'}"</p>
+              <blockquote className="relative pl-4 border-l-2 border-[#9DBEBB]/20">
+                <p className="text-[#468189] text-sm leading-relaxed italic">"{viewReview.comment || viewReview.body || '—'}"</p>
               </blockquote>
               {viewReview.helpfulCount > 0 && (
-                <p className="text-xs text-zinc-400 flex items-center gap-1.5">
+                <p className="text-xs text-[#9DBEBB] flex items-center gap-1.5">
                   <span className="material-symbols-outlined text-[14px]">thumb_up</span>
                   {viewReview.helpfulCount} {t('admin.reviews.helpfulCount')}
                 </p>
@@ -291,20 +298,22 @@ export default function AdminReviews() {
                 {t('common.delete')}
               </button>
               <div className="flex gap-2">
-                {!viewReview.isVerifiedPurchase && (
+                {viewReview.status !== 'approved' && (
                   <button onClick={() => handleModerateReview(viewReview.id, 'approve')}
-                    className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl transition-colors shadow-sm">
+                    className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-[#EBF2FA] bg-emerald-600 hover:bg-emerald-700 rounded-xl transition-colors shadow-sm">
                     <span className="material-symbols-outlined text-[16px]">check_circle</span>
                     {t('common.approve')}
                   </button>
                 )}
-                <button onClick={() => handleModerateReview(viewReview.id, 'reject')}
-                  className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-white bg-zinc-800 hover:bg-zinc-700 rounded-xl transition-colors shadow-sm">
-                  <span className="material-symbols-outlined text-[16px]">block</span>
-                  {t('common.reject')}
-                </button>
+                {viewReview.status !== 'rejected' && (
+                  <button onClick={() => handleModerateReview(viewReview.id, 'reject')}
+                    className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-[#EBF2FA] bg-primary-mid hover:bg-[#468189] rounded-xl transition-colors shadow-sm">
+                    <span className="material-symbols-outlined text-[16px]">block</span>
+                    {t('common.reject')}
+                  </button>
+                )}
                 <button onClick={() => setViewReview(null)}
-                  className="px-4 py-2 text-xs font-semibold text-zinc-500 hover:bg-zinc-100 rounded-xl transition-colors">
+                  className="px-4 py-2 text-xs font-semibold text-[#468189] hover:bg-[#EBF2FA] rounded-xl transition-colors">
                   {t('common.close')}
                 </button>
               </div>

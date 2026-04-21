@@ -276,9 +276,6 @@ function RegistroSection() {
               {t('agentes.register.disclaimer')}
             </p>
           </div>
-          <div className="absolute -top-10 -right-10 hidden lg:flex w-24 h-24 rounded-full items-center justify-center text-white shadow-xl rotate-12" style={{ background: 'linear-gradient(135deg, #000f22 0%, #0a2540 100%)' }}>
-            <span className="material-symbols-outlined text-4xl">edit_note</span>
-          </div>
         </div>
       </div>
     </section>

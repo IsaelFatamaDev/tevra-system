@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../../../core/contexts/AuthContext'
 import reviewsService from '../services/reviews.service'
-import api from '../../../core/services/api'
 import useScrollReveal from '../../../core/hooks/useScrollReveal'
 
 export default function TeVraReviews() {
@@ -17,17 +16,9 @@ export default function TeVraReviews() {
   const { ref, isVisible } = useScrollReveal(0.05)
 
   useEffect(() => {
-    const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3001/api/v1'
-    const tenantId = import.meta.env.VITE_DEFAULT_TENANT_ID || ''
-    fetch(`${API_BASE}/reviews?type=tevra&limit=6&status=approved`, {
-      headers: { ...(tenantId && { 'x-tenant-id': tenantId }) },
-    })
-      .then(r => r.ok ? r.json() : { items: [] })
-      .then(body => {
-        const list = body?.data?.items || body?.data || body?.items || (Array.isArray(body) ? body : [])
-        setReviews(list)
-      })
-      .catch(() => {})
+    reviewsService.findPublic({ limit: 6 })
+      .then(list => { if (Array.isArray(list)) setReviews(list) })
+      .catch(() => { })
   }, [])
 
   const handleSubmit = async (e) => {
@@ -44,9 +35,9 @@ export default function TeVraReviews() {
       })
       setSubmitted(true)
       setForm({ rating: 5, title: '', comment: '' })
-      api.get('/reviews?type=tevra&limit=6')
-        .then(r => setReviews(Array.isArray(r) ? r : r?.items || []))
-        .catch(() => {})
+      reviewsService.findPublic({ limit: 6 })
+        .then(list => setReviews(list))
+        .catch(() => { })
     } catch {
       setError(t('teVraReviews.error'))
     } finally {
@@ -55,7 +46,7 @@ export default function TeVraReviews() {
   }
 
   return (
-    <section className="py-24 bg-surface-container-low">
+    <section ref={ref} className="py-24 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-8">
         <div className="text-center max-w-2xl mx-auto mb-14">
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-secondary/10 rounded-full border border-secondary/20 mb-4">
@@ -69,9 +60,9 @@ export default function TeVraReviews() {
         </div>
 
         {reviews.length > 0 && (
-          <div ref={ref} className={`grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-14 reveal ${isVisible ? 'visible' : ''}`}>
+          <div className={`grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-14 reveal ${isVisible ? 'visible' : ''}`}>
             {reviews.map((review, i) => (
-              <div key={review.id} className={`bg-surface-container-lowest rounded-2xl p-6 shadow-soft border border-outline-variant/15 stagger-${Math.min(i + 1, 5)}`}>
+              <div key={review.id} className={`bg-white rounded-2xl p-6 shadow-soft border border-[#9DBEBB]/20 stagger-${Math.min(i + 1, 5)}`}>
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex text-amber-400">
                     {[...Array(review.rating || 5)].map((_, j) => (
@@ -83,13 +74,17 @@ export default function TeVraReviews() {
                   </span>
                 </div>
                 {review.title && <p className="font-bold text-primary text-sm mb-1">{review.title}</p>}
-                <p className="text-sm text-on-surface-variant leading-relaxed italic mb-4">"{review.comment || review.body}"</p>
+                <p className="text-sm text-text-muted leading-relaxed italic mb-4">"{review.comment || review.body}"</p>
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary shrink-0">
-                    {(review.user?.firstName?.[0] || 'U')}{(review.user?.lastName?.[0] || '')}
+                  <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary shrink-0 overflow-hidden">
+                    {review.reviewer?.avatarUrl ? (
+                      <img src={review.reviewer.avatarUrl} alt={review.reviewer.firstName} className="w-full h-full object-cover" />
+                    ) : (
+                      <span>{(review.reviewer?.firstName?.[0] || 'U')}{(review.reviewer?.lastName?.[0] || '')}</span>
+                    )}
                   </div>
-                  <span className="text-xs font-bold text-primary">{review.user?.firstName || 'Cliente'} {review.user?.lastName?.[0] || ''}.</span>
-                  <span className="ml-auto flex items-center gap-1 text-xs text-mint font-bold">
+                  <span className="text-xs font-bold text-primary">{review.reviewer?.firstName || 'Cliente'} {review.reviewer?.lastName?.[0] || ''}.</span>
+                  <span className="ml-auto flex items-center gap-1 text-xs text-secondary font-bold">
                     <span className="material-symbols-outlined text-sm">verified</span>
                     {t('teVraReviews.verified')}
                   </span>
@@ -101,7 +96,7 @@ export default function TeVraReviews() {
 
         <div className="max-w-2xl mx-auto">
           {isAuthenticated ? (
-            <div className="bg-surface-container-lowest rounded-3xl border border-outline-variant/20 p-8 shadow-soft">
+            <div className="bg-white rounded-3xl border border-[#9DBEBB]/20 p-8 shadow-soft">
               <h3 className="font-headline font-bold text-primary text-xl mb-1">{t('teVraReviews.formTitle')}</h3>
               <p className="text-text-muted text-sm mb-6">{t('teVraReviews.formSubtitle')}</p>
               {submitted ? (
@@ -137,7 +132,7 @@ export default function TeVraReviews() {
                     placeholder={t('teVraReviews.titlePlaceholder')}
                     value={form.title}
                     onChange={e => setForm(f => ({ ...f, title: e.target.value }))}
-                    className="w-full px-4 py-3 rounded-xl border border-outline-variant/30 bg-surface-container-low text-sm focus:outline-none focus:border-primary/50 transition-colors"
+                    className="w-full px-4 py-3 rounded-xl border border-[#9DBEBB]/40 bg-[#F4E9CD]/30 text-sm focus:outline-none focus:border-secondary/60 transition-colors"
                   />
                   <textarea
                     placeholder={t('teVraReviews.commentPlaceholder')}
@@ -145,7 +140,7 @@ export default function TeVraReviews() {
                     onChange={e => setForm(f => ({ ...f, comment: e.target.value }))}
                     rows={4}
                     required
-                    className="w-full px-4 py-3 rounded-xl border border-outline-variant/30 bg-surface-container-low text-sm focus:outline-none focus:border-primary/50 transition-colors resize-none"
+                    className="w-full px-4 py-3 rounded-xl border border-[#9DBEBB]/40 bg-[#F4E9CD]/30 text-sm focus:outline-none focus:border-secondary/60 transition-colors resize-none"
                   />
                   {error && <p className="text-red-500 text-xs">{error}</p>}
                   <button
@@ -160,7 +155,7 @@ export default function TeVraReviews() {
               )}
             </div>
           ) : (
-            <div className="bg-surface-container-lowest rounded-3xl border border-outline-variant/20 p-8 text-center shadow-soft">
+            <div className="bg-white rounded-3xl border border-[#9DBEBB]/20 p-8 text-center shadow-soft">
               <span className="material-symbols-outlined text-4xl text-text-muted mb-3 block">rate_review</span>
               <p className="font-headline font-bold text-primary text-lg mb-2">{t('teVraReviews.guestTitle')}</p>
               <p className="text-text-muted text-sm mb-5">{t('teVraReviews.guestDesc')}</p>

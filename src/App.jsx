@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-route
 import { AuthProvider, useAuth } from './core/contexts/AuthContext'
 import { CartProvider } from './core/contexts/CartContext'
 import { ToastProvider } from './core/contexts/ToastContext'
+import { SiteConfigProvider } from './core/contexts/SiteConfigContext'
 import Navbar from './core/components/Navbar'
 import Footer from './core/components/Footer'
 import WhatsAppButton from './core/components/WhatsAppButton'
@@ -173,13 +174,15 @@ function AppLayout() {
 export default function App() {
   return (
     <BrowserRouter>
-      <AuthProvider>
-        <CartProvider>
-          <ToastProvider>
-            <AppLayout />
-          </ToastProvider>
-        </CartProvider>
-      </AuthProvider>
+      <SiteConfigProvider>
+        <AuthProvider>
+          <CartProvider>
+            <ToastProvider>
+              <AppLayout />
+            </ToastProvider>
+          </CartProvider>
+        </AuthProvider>
+      </SiteConfigProvider>
     </BrowserRouter>
   )
 }

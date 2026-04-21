@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import dashboardService from '../../admin/services/dashboard.service'
@@ -18,9 +19,6 @@ const statusClasses = {
 
 function getTimelineProgress(currentStatus) {
   if (currentStatus === 'cancelled') return -1;
-  const passed = [];
-  let found = false;
-
   if (['pending', 'confirmed', 'processing'].includes(currentStatus)) return 0;
   if (['purchased_in_usa', 'shipped'].includes(currentStatus)) return 1;
   if (['in_transit'].includes(currentStatus)) return 2;
@@ -164,7 +162,7 @@ export default function ClientOrders() {
               {order.items?.length > 0 && (
                 <div className="flex gap-[-10px] items-center mb-6 pl-2">
                   {order.items.slice(0, 3).map((item, idx) => (
-                    <div key={idx} className="w-10 h-10 rounded-full border-2 border-white bg-slate-50 shrink-0 overflow-hidden shadow-sm -ml-2 z-[3] flex items-center justify-center">
+                    <div key={idx} className="w-10 h-10 rounded-full border-2 border-white bg-slate-50 shrink-0 overflow-hidden shadow-sm -ml-2 z-3 flex items-center justify-center">
                       {item.productImage ? (
                         <img src={item.productImage} alt={item.productName} className="w-full h-full object-cover" />
                       ) : (
@@ -173,7 +171,7 @@ export default function ClientOrders() {
                     </div>
                   ))}
                   {order.items.length > 3 && (
-                    <div className="w-10 h-10 rounded-full border-2 border-white bg-slate-100 shrink-0 shadow-sm -ml-2 z-[2] flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-full border-2 border-white bg-slate-100 shrink-0 shadow-sm -ml-2 z-2 flex items-center justify-center">
                       <span className="text-[10px] font-bold text-slate-500">+{order.items.length - 3}</span>
                     </div>
                   )}
@@ -188,7 +186,7 @@ export default function ClientOrders() {
                   <p className="text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-0.5">{t('client.orders.estimatedTotal')}</p>
                   <p className="font-extrabold text-slate-900">${parseFloat(order.total || 0).toLocaleString()} <span className="text-xs text-slate-500 font-medium tracking-normal">USD</span></p>
                 </div>
-                <div className="w-8 h-8 rounded-full bg-slate-50 text-slate-400 flex items-center justify-center group-hover:bg-slate-900 group-hover:text-white transition-colors">
+                <div className="w-8 h-8 rounded-full bg-slate-50 text-slate-400 flex items-center justify-center group-hover:bg-slate-900 group-hover:text-[#EBF2FA] transition-colors">
                   <span className="material-symbols-outlined text-sm">arrow_forward</span>
                 </div>
               </div>
@@ -229,169 +227,169 @@ export default function ClientOrders() {
 
           {/* Body */}
           {selectedOrder && (
-            <div className="flex-1 overflow-y-auto no-scrollbar pb-10">
+            <>
+              <div className="flex-1 overflow-y-auto no-scrollbar pb-10">
 
-              {/* Agent contact */}
-              <div className="p-6 bg-slate-50 border-b border-slate-100">
-                <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">{t('client.orders.detail.assignedAgent')}</p>
-                <div className="flex items-center gap-4 bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
-                  <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center shrink-0">
-                    <span className="material-symbols-outlined text-slate-400">person</span>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-bold text-slate-900 truncate">
-                      {selectedOrder.agent ? `${selectedOrder.agent.user?.firstName || selectedOrder.agent.firstName || ''} ${selectedOrder.agent.user?.lastName || selectedOrder.agent.lastName || ''}`.trim() || 'Agente TeVra' : 'Agente TeVra'}
-                    </p>
-                    <p className="text-xs text-slate-500 truncate">{t('client.orders.detail.managingOrder')}</p>
-                  </div>
-                  <button
-                    onClick={() => {
-                      const phone = (selectedOrder.agent?.whatsapp || selectedOrder.agent?.user?.whatsapp || '').replace(/[^0-9]/g, '');
-                      const text = encodeURIComponent(`Hola, te escribo sobre mi pedido ${selectedOrder.orderNumber}`);
-                      if (phone) window.open(`https://wa.me/${phone}?text=${text}`, '_blank');
-                    }}
-                    className="w-10 h-10 rounded-full bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366] hover:text-white border border-[#25D366]/20 flex items-center justify-center shrink-0 transition-all"
-                    title="WhatsApp"
-                  >
-                    <span className="material-symbols-outlined text-[20px]">chat</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* Advanced Timeline */}
-              <div className="px-8 py-8">
-                <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-6">{t('client.orders.detail.tracking')}</p>
-                <div className="relative">
-                  {selectedOrder.status === 'cancelled' ? (
-                    <div className="flex items-start gap-4">
-                      <div className="w-8 h-8 rounded-full bg-red-100 text-red-600 flex items-center justify-center shrink-0 z-10 shadow-sm border border-white">
-                        <span className="material-symbols-outlined text-[16px]">cancel</span>
-                      </div>
-                      <div className="pt-1.5">
-                        <p className="font-bold text-slate-900">{t('client.orders.detail.cancelled')}</p>
-                        <p className="text-xs text-slate-500 mt-1">{t('client.orders.detail.cancelledDesc')}</p>
-                      </div>
+                {/* Agent contact */}
+                <div className="p-6 bg-slate-50 border-b border-slate-100">
+                  <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">{t('client.orders.detail.assignedAgent')}</p>
+                  <div className="flex items-center gap-4 bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
+                    <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center shrink-0">
+                      <span className="material-symbols-outlined text-slate-400">person</span>
                     </div>
-                  ) : (
-                    <>
-                      <div className="absolute left-4 top-4 bottom-4 w-px bg-slate-100"></div>
-                      <div className="space-y-6">
-                        {timelineSteps.map((step, idx) => {
-                          const progress = getTimelineProgress(selectedOrder.status);
-                          const isCompleted = idx <= progress;
-                          const isCurrent = idx === progress;
-
-                          return (
-                            <div key={step.id} className={`flex items-start gap-4 relative ${isCompleted ? 'opacity-100' : 'opacity-40 grayscale'}`}>
-                              {/* Connector line overlay for active stuff */}
-                              {isCompleted && idx < timelineSteps.length - 1 && idx < progress && (
-                                <div className="absolute left-[15.5px] top-8 h-8 w-0.5 bg-slate-800 -ml-[0.5px]"></div>
-                              )}
-
-                              <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 z-10 shadow-sm border-2 ${isCurrent ? 'bg-slate-900 text-white border-slate-900 ring-4 ring-slate-100' : (isCompleted ? 'bg-slate-900 border-slate-900 text-white' : 'bg-white border-slate-200 text-slate-400')}`}>
-                                <span className="material-symbols-outlined text-[14px]">
-                                  {isCompleted ? 'check' : step.icon}
-                                </span>
-                              </div>
-                              <div className="pt-1">
-                                <p className={`font-bold ${isCurrent ? 'text-slate-900' : 'text-slate-700'}`}>{step.label}</p>
-                                {isCurrent && (
-                                  <p className="text-[11px] font-medium text-slate-500 mt-1">{t('client.orders.detail.currentPhase')}</p>
-                                )}
-                              </div>
-                            </div>
-                          )
-                        })}
-                      </div>
-                    </>
-                  )}
-                </div>
-              </div>
-
-              {/* Items */}
-              <div className="px-6 py-4 bg-slate-50/50">
-                <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4 px-2">{t('client.orders.detail.productDetails')}</p>
-                <div className="space-y-3">
-                  {selectedOrder.items?.map((item, i) => (
-                    <div key={i} className="bg-white p-3 rounded-2xl border border-slate-100 flex gap-4 items-center shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
-                      <div className="w-14 h-14 bg-slate-50 rounded-xl flex items-center justify-center border border-slate-100 shrink-0 overflow-hidden">
-                        {item.productImage ? (
-                          <img src={item.productImage} alt={item.productName} className="w-full h-full object-cover" />
-                        ) : (
-                          <span className="material-symbols-outlined text-slate-300">image</span>
-                        )}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="font-bold text-sm text-slate-900 truncate" title={item.productName}>{item.productName}</p>
-                        <p className="text-xs text-slate-500 mt-0.5">Cant: {item.quantity}</p>
-                      </div>
-                      <div className="text-right shrink-0 pr-2">
-                        <p className="font-extrabold text-slate-900 text-sm">${parseFloat(item.totalPrice || item.unitPrice * item.quantity || 0).toLocaleString()}</p>
-                      </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-bold text-slate-900 truncate">
+                        {selectedOrder.agent ? `${selectedOrder.agent.user?.firstName || selectedOrder.agent.firstName || ''} ${selectedOrder.agent.user?.lastName || selectedOrder.agent.lastName || ''}`.trim() || 'Agente TeVra' : 'Agente TeVra'}
+                      </p>
+                      <p className="text-xs text-slate-500 truncate">{t('client.orders.detail.managingOrder')}</p>
                     </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Summary */}
-              <div className="px-8 py-8 border-t border-slate-100 bg-white">
-                <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-5">{t('client.orders.detail.financialSummary')}</p>
-                <div className="space-y-3 text-sm">
-                  <div className="flex justify-between items-center text-slate-600">
-                    <span>{t('client.orders.detail.subtotal')}</span>
-                    <span className="font-semibold">${parseFloat(selectedOrder.subtotal || 0).toLocaleString()}</span>
+                    <button
+                      onClick={() => {
+                        const phone = (selectedOrder.agent?.whatsapp || selectedOrder.agent?.user?.whatsapp || '').replace(/[^0-9]/g, '');
+                        const text = encodeURIComponent(`Hola, te escribo sobre mi pedido ${selectedOrder.orderNumber}`);
+                        if (phone) window.open(`https://wa.me/${phone}?text=${text}`, '_blank');
+                      }}
+                      className="w-10 h-10 rounded-full bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366] hover:text-[#EBF2FA] border border-[#25D366]/20 flex items-center justify-center shrink-0 transition-all"
+                      title="WhatsApp"
+                    >
+                      <span className="material-symbols-outlined text-[20px]">chat</span>
+                    </button>
                   </div>
-                  <div className="flex justify-between items-center text-slate-600">
-                    <span>{t('client.orders.detail.shippingCost')}</span>
-                    {parseFloat(selectedOrder.shippingCost || 0) > 0 ? (
-                      <span className="font-semibold">${parseFloat(selectedOrder.shippingCost).toLocaleString()}</span>
+                </div>
+
+                {/* Advanced Timeline */}
+                <div className="px-8 py-8">
+                  <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-6">{t('client.orders.detail.tracking')}</p>
+                  <div className="relative">
+                    {selectedOrder.status === 'cancelled' ? (
+                      <div className="flex items-start gap-4">
+                        <div className="w-8 h-8 rounded-full bg-red-100 text-red-600 flex items-center justify-center shrink-0 z-10 shadow-sm border border-white">
+                          <span className="material-symbols-outlined text-[16px]">cancel</span>
+                        </div>
+                        <div className="pt-1.5">
+                          <p className="font-bold text-slate-900">{t('client.orders.detail.cancelled')}</p>
+                          <p className="text-xs text-slate-500 mt-1">{t('client.orders.detail.cancelledDesc')}</p>
+                        </div>
+                      </div>
                     ) : (
-                      <span className="font-medium text-amber-600 bg-amber-50 px-2 py-0.5 rounded text-xs border border-amber-100">{t('client.orders.detail.toCalculate')}</span>
+                      <>
+                        <div className="absolute left-4 top-4 bottom-4 w-px bg-slate-100"></div>
+                        <div className="space-y-6">
+                          {timelineSteps.map((step, idx) => {
+                            const progress = getTimelineProgress(selectedOrder.status);
+                            const isCompleted = idx <= progress;
+                            const isCurrent = idx === progress;
+
+                            return (
+                              <div key={step.id} className={`flex items-start gap-4 relative ${isCompleted ? 'opacity-100' : 'opacity-40 grayscale'}`}>
+                                {/* Connector line overlay for active stuff */}
+                                {isCompleted && idx < timelineSteps.length - 1 && idx < progress && (
+                                  <div className="absolute left-[15.5px] top-8 h-8 w-0.5 bg-slate-800 -ml-[0.5px]"></div>
+                                )}
+
+                                <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 z-10 shadow-sm border-2 ${isCurrent ? 'bg-slate-900 text-[#EBF2FA] border-slate-900 ring-4 ring-slate-100' : (isCompleted ? 'bg-slate-900 border-slate-900 text-[#EBF2FA]' : 'bg-white border-slate-200 text-slate-400')}`}>
+                                  <span className="material-symbols-outlined text-[14px]">
+                                    {isCompleted ? 'check' : step.icon}
+                                  </span>
+                                </div>
+                                <div className="pt-1">
+                                  <p className={`font-bold ${isCurrent ? 'text-slate-900' : 'text-slate-700'}`}>{step.label}</p>
+                                  {isCurrent && (
+                                    <p className="text-[11px] font-medium text-slate-500 mt-1">{t('client.orders.detail.currentPhase')}</p>
+                                  )}
+                                </div>
+                              </div>
+                            )
+                          })}
+                        </div>
+                      </>
                     )}
                   </div>
-                  <div className="flex justify-between items-center text-slate-600">
-                    <span>{t('client.orders.detail.tevraCost')}</span>
-                    <span className="font-semibold">${parseFloat(selectedOrder.tevraCommission || 0).toLocaleString()}</span>
+                </div>
+
+                {/* Items */}
+                <div className="px-6 py-4 bg-slate-50/50">
+                  <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4 px-2">{t('client.orders.detail.productDetails')}</p>
+                  <div className="space-y-3">
+                    {selectedOrder.items?.map((item, i) => (
+                      <div key={i} className="bg-white p-3 rounded-2xl border border-slate-100 flex gap-4 items-center shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
+                        <div className="w-14 h-14 bg-slate-50 rounded-xl flex items-center justify-center border border-slate-100 shrink-0 overflow-hidden">
+                          {item.productImage ? (
+                            <img src={item.productImage} alt={item.productName} className="w-full h-full object-cover" />
+                          ) : (
+                            <span className="material-symbols-outlined text-slate-300">image</span>
+                          )}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-bold text-sm text-slate-900 truncate" title={item.productName}>{item.productName}</p>
+                          <p className="text-xs text-slate-500 mt-0.5">Cant: {item.quantity}</p>
+                        </div>
+                        <div className="text-right shrink-0 pr-2">
+                          <p className="font-extrabold text-slate-900 text-sm">${parseFloat(item.totalPrice || item.unitPrice * item.quantity || 0).toLocaleString()}</p>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                  <div className="pt-4 mt-2 border-t border-slate-100 border-dashed flex justify-between items-center">
-                    <span className="font-bold text-slate-900">{t('client.orders.detail.finalAmount')}</span>
-                    <div className="text-right">
-                      <span className="font-extrabold text-2xl text-slate-900 tracking-tight">${parseFloat(selectedOrder.total || 0).toLocaleString()}</span>
-                      <span className="text-xs font-bold text-slate-400 ml-1">USD</span>
+                </div>
+
+                {/* Summary */}
+                <div className="px-8 py-8 border-t border-slate-100 bg-white">
+                  <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-5">{t('client.orders.detail.financialSummary')}</p>
+                  <div className="space-y-3 text-sm">
+                    <div className="flex justify-between items-center text-slate-600">
+                      <span>{t('client.orders.detail.subtotal')}</span>
+                      <span className="font-semibold">${parseFloat(selectedOrder.subtotal || 0).toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between items-center text-slate-600">
+                      <span>{t('client.orders.detail.shippingCost')}</span>
+                      {parseFloat(selectedOrder.shippingCost || 0) > 0 ? (
+                        <span className="font-semibold">${parseFloat(selectedOrder.shippingCost).toLocaleString()}</span>
+                      ) : (
+                        <span className="font-medium text-amber-600 bg-amber-50 px-2 py-0.5 rounded text-xs border border-amber-100">{t('client.orders.detail.toCalculate')}</span>
+                      )}
+                    </div>
+                    <div className="flex justify-between items-center text-slate-600">
+                      <span>{t('client.orders.detail.tevraCost')}</span>
+                      <span className="font-semibold">${parseFloat(selectedOrder.tevraCommission || 0).toLocaleString()}</span>
+                    </div>
+                    <div className="pt-4 mt-2 border-t border-slate-100 border-dashed flex justify-between items-center">
+                      <span className="font-bold text-slate-900">{t('client.orders.detail.finalAmount')}</span>
+                      <div className="text-right">
+                        <span className="font-extrabold text-2xl text-slate-900 tracking-tight">${parseFloat(selectedOrder.total || 0).toLocaleString()}</span>
+                        <span className="text-xs font-bold text-slate-400 ml-1">USD</span>
+                      </div>
                     </div>
                   </div>
                 </div>
+
               </div>
 
-            </div>
-
-            {/* Review section for delivered orders */}
-            {selectedOrder?.status === 'delivered' && (
-              <div className="px-8 py-6 border-t border-slate-100 bg-slate-50">
-                <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">Deja tu opinión</p>
-                <div className="flex flex-wrap gap-2">
-                  {selectedOrder.items?.map((item, idx) => item.productId && (
+              {selectedOrder?.status === 'delivered' && (
+                <div className="px-8 py-6 border-t border-slate-100 bg-slate-50">
+                  <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">Deja tu opinión</p>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedOrder.items?.map((item, idx) => item.productId && (
+                      <button
+                        key={idx}
+                        onClick={() => setReviewModal({ type: 'product', targetId: item.productId, targetName: item.productName || 'Producto' })}
+                        className="flex items-center gap-1.5 px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 hover:border-primary/50 hover:text-primary transition-all"
+                      >
+                        <span className="material-symbols-outlined text-[14px] text-amber-400">star</span>
+                        {item.productName || 'Producto'}
+                      </button>
+                    ))}
                     <button
-                      key={idx}
-                      onClick={() => setReviewModal({ type: 'product', targetId: item.productId, targetName: item.productName || 'Producto' })}
-                      className="flex items-center gap-1.5 px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 hover:border-primary/50 hover:text-primary transition-all"
+                      onClick={() => setReviewModal({ type: 'tevra', targetName: 'Servicio TeVra' })}
+                      className="flex items-center gap-1.5 px-3 py-2 bg-primary text-[#EBF2FA] border border-primary rounded-xl text-xs font-bold hover:bg-secondary transition-all"
                     >
-                      <span className="material-symbols-outlined text-[14px] text-amber-400">star</span>
-                      {item.productName || 'Producto'}
+                      <span className="material-symbols-outlined text-[14px]">storefront</span>
+                      Calificar TeVra
                     </button>
-                  ))}
-                  <button
-                    onClick={() => setReviewModal({ type: 'tevra', targetName: 'Servicio TeVra' })}
-                    className="flex items-center gap-1.5 px-3 py-2 bg-primary text-white border border-primary rounded-xl text-xs font-bold hover:bg-secondary transition-all"
-                  >
-                    <span className="material-symbols-outlined text-[14px]">storefront</span>
-                    Calificar TeVra
-                  </button>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
 
-          </div>
+            </>
           )}
         </div>
       </div>
@@ -407,3 +405,6 @@ export default function ClientOrders() {
     </div>
   )
 }
+
+
+

@@ -103,7 +103,7 @@ export default function ClientAddresses() {
           <p className="text-slate-500 mt-1">{t('client.addresses.subtitle')}</p>
         </div>
         <button onClick={openCreate}
-          className="bg-slate-900 hover:bg-slate-800 text-white px-6 py-3 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all shadow-[0_4px_20px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-0.5 text-sm">
+          className="bg-slate-900 hover:bg-slate-800 text-[#EBF2FA] px-6 py-3 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all shadow-[0_4px_20px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] hover:-translate-y-0.5 text-sm">
           <span className="material-symbols-outlined text-[20px]">add_location_alt</span>
           {t('client.addresses.addButton')}
         </button>
@@ -135,12 +135,12 @@ export default function ClientAddresses() {
               <div className="flex items-start justify-between mb-5">
                 <div className="flex flex-col gap-1.5">
                   <span className="w-12 h-12 rounded-2xl flex items-center justify-center bg-slate-50 border border-slate-100 mb-2 group-hover:bg-slate-900 group-hover:border-slate-900 transition-colors">
-                    <span className="material-symbols-outlined text-slate-400 group-hover:text-white transition-colors">signpost</span>
+                    <span className="material-symbols-outlined text-slate-400 group-hover:text-[#EBF2FA] transition-colors">signpost</span>
                   </span>
                   <div className="flex items-center gap-2">
                     <span className="font-headline text-lg font-extrabold text-slate-900">{addr.label || t('client.addresses.addressLabel')}</span>
                     {addr.isDefault && (
-                      <span className="text-[10px] font-bold px-2.5 py-1 bg-slate-900 text-white rounded-md tracking-widest uppercase">{t('client.addresses.defaultBadge')}</span>
+                      <span className="text-[10px] font-bold px-2.5 py-1 bg-slate-900 text-[#EBF2FA] rounded-md tracking-widest uppercase">{t('client.addresses.defaultBadge')}</span>
                     )}
                   </div>
                 </div>
@@ -149,7 +149,7 @@ export default function ClientAddresses() {
                   <button onClick={() => openEdit(addr)} className="w-8 h-8 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center hover:bg-slate-200 text-slate-400 hover:text-slate-700 transition-colors" title="Editar">
                     <span className="material-symbols-outlined text-[16px]">edit</span>
                   </button>
-                  <button onClick={() => handleDelete(addr.id)} className="w-8 h-8 rounded-full bg-red-50 border border-red-100 flex items-center justify-center hover:bg-red-500 text-red-500 hover:text-white transition-colors" title="Eliminar">
+                  <button onClick={() => handleDelete(addr.id)} className="w-8 h-8 rounded-full bg-red-50 border border-red-100 flex items-center justify-center hover:bg-red-500 text-red-500 hover:text-[#EBF2FA] transition-colors" title="Eliminar">
                     <span className="material-symbols-outlined text-[16px]">delete</span>
                   </button>
                 </div>
@@ -244,7 +244,7 @@ export default function ClientAddresses() {
           {/* Footer Save */}
           <div className="p-6 md:p-8 bg-white border-t border-slate-100 shrink-0 flex gap-4">
             <button onClick={() => setModal(null)} className="flex-1 py-4 text-sm font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-2xl transition-colors">{t('client.addresses.cancel')}</button>
-            <button onClick={handleSave} disabled={saving} className="flex-1 py-4 bg-slate-900 hover:bg-slate-800 disabled:opacity-50 text-white rounded-2xl font-bold text-sm transition-all flex items-center justify-center gap-2 shadow-[0_4px_20px_rgba(0,0,0,0.1)]">
+            <button onClick={handleSave} disabled={saving} className="flex-1 py-4 bg-slate-900 hover:bg-slate-800 disabled:opacity-50 text-[#EBF2FA] rounded-2xl font-bold text-sm transition-all flex items-center justify-center gap-2 shadow-[0_4px_20px_rgba(0,0,0,0.1)]">
               {saving ? <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <span className="material-symbols-outlined text-[20px]">save</span>}
               {t('client.addresses.save')}
             </button>

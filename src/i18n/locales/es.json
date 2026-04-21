@@ -277,7 +277,7 @@
       },
       {
         "title": "Sin techo",
-        "desc": "Ganas del 10–15% por venta realizada. No hay límites en tus comisiones; tú decides cuánto quieres ganar cada mes."
+        "desc": "No hay límites en tus comisiones; tú decides cuánto quieres ganar cada mes."
       }
     ],
     "calculator": {
@@ -326,7 +326,7 @@
       "subtitle": "Somos una empresa registrada con socios logísticos en USA y cobertura operativa en toda Latinoamérica.",
       "items": [
         { "title": "Socios Logísticos", "desc": "Alianzas con operadores en Miami y California con más de 12 años de experiencia en aduana peruana." },
-        { "title": "Cobertura en todo USA", "desc": "Operamos desde ambas costas — California y Florida — para conseguir siempre el mejor precio." },
+        { "title": "Cobertura en todo USA", "desc": "Operamos desde todo USA, para conseguir siempre el mejor precio." },
         { "title": "Empresa Registrada", "desc": "LLC registrada en California con número EIN federal. Transparencia total para ti y tus clientes." },
         { "title": "Transparencia Total", "desc": "Sin costos ocultos. Tu cliente sabe exactamente qué paga. Cada centavo se maneja con seriedad." }
       ]
@@ -359,16 +359,16 @@
     },
     "process": {
       "title": "Cómo funciona el proceso",
-      "subtitle": "7 pasos simples desde que tu cliente pide hasta que recibe en casa.",
+      "subtitle": "7 pasos simples desde que decides qué quieres hasta que lo recibes en tus manos.",
       "businessDays": "5–10 días hábiles",
       "steps": [
-        { "titulo": "Tu cliente quiere un producto", "desc": "Un amigo, familiar o seguidor te dice qué quiere: Nike, iPhone, perfume, ropa de marca... cualquier producto disponible en tiendas de Estados Unidos." },
-        { "titulo": "Tú tomas el pedido", "desc": "Le indicas el precio (producto + tu comisión + envío). Si acepta, el cliente te paga a ti directamente. Él es TU cliente, no de TeVra." },
-        { "titulo": "Reportas el pedido a TeVra", "desc": "Nos envías el detalle: producto, talla/color/modelo y comprobante de pago. Nosotros nos encargamos del resto." },
-        { "titulo": "TeVra compra en USA", "desc": "Vamos a la tienda, outlet o proveedor mayorista y compramos exactamente lo que tu cliente pidió. Tomamos foto como comprobante." },
-        { "titulo": "TeVra envía a Perú", "desc": "El producto va a nuestro socio logístico en Miami. Lo embarcan en el próximo vuelo a Perú, 2 salidas por semana. Viaja asegurado." },
-        { "titulo": "Llega a Perú y pasa aduana", "desc": "Nuestro socio logístico tiene oficina en Lima y se encarga del desaduanaje. Tú no haces ningún trámite con aduanas ni SUNAT." },
-        { "titulo": "Tú entregas al cliente", "desc": "El producto llega a la oficina en Lima. Tú lo recoges y lo entregas. Pedido completado. Tiempo estimado: 5 a 10 días hábiles." }
+        { "titulo": "Eliges un producto", "desc": "Tú decides qué quieres: Nike, iPhone, perfume, ropa de marca... cualquier producto disponible en tiendas de Estados Unidos." },
+        { "titulo": "Contactas a un Agente", "desc": "Tu agente te indicará el precio final con todo incluido. Si aceptas, realizas el pago directamente a tu agente de confianza." },
+        { "titulo": "El agente reporta a TeVra", "desc": "Tu agente nos envía el detalle de tu pedido y el comprobante. A partir de aquí, nosotros nos encargamos del resto." },
+        { "titulo": "TeVra compra en USA", "desc": "Vamos a la tienda o proveedor mayorista y compramos exactamente lo que pediste. Tomamos foto de tu producto como comprobante." },
+        { "titulo": "TeVra envía a Perú", "desc": "Tu producto va a nuestro socio logístico en Miami y se embarca en el próximo vuelo a Perú. Todo viaja de forma segura y asegurada." },
+        { "titulo": "Llega a Perú y pasa aduana", "desc": "Nuestro socio logístico en Lima se encarga de todo el proceso de desaduanaje. Tú no tienes que hacer ningún trámite." },
+        { "titulo": "Recibes tu producto", "desc": "El producto llega a Lima y tu agente te lo entrega en tus manos. Pedido completado. Tiempo estimado: 5 a 10 días hábiles." }
       ]
     },
     "advantages": {

@@ -57,9 +57,9 @@ export default function AdminCommunications() {
   const paginatedCampaigns = campaigns.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE)
 
   const channelIcons = { email: 'mail', whatsapp: 'chat', sms: 'sms', push: 'notifications' }
-  const channelColors = { email: 'bg-zinc-100 text-zinc-600', whatsapp: 'bg-zinc-100 text-zinc-600', sms: 'bg-zinc-100 text-zinc-600', push: 'bg-zinc-100 text-zinc-600' }
+  const channelColors = { email: 'bg-[#EBF2FA] text-[#468189]', whatsapp: 'bg-[#EBF2FA] text-[#468189]', sms: 'bg-[#EBF2FA] text-[#468189]', push: 'bg-[#EBF2FA] text-[#468189]' }
   const STATUS_CONFIG = {
-    draft: { bg: 'bg-zinc-100', text: 'text-zinc-500', label: t('admin.communications.statusDraft') },
+    draft: { bg: 'bg-[#EBF2FA]', text: 'text-[#468189]', label: t('admin.communications.statusDraft') },
     scheduled: { bg: 'bg-blue-50', text: 'text-blue-700', label: t('admin.communications.statusScheduled') },
     sending: { bg: 'bg-amber-50', text: 'text-amber-700', label: t('admin.communications.statusSending') },
     sent: { bg: 'bg-emerald-50', text: 'text-emerald-700', label: t('admin.communications.statusSent') },
@@ -72,11 +72,11 @@ export default function AdminCommunications() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4">
         <div>
-          <h2 className="text-xl font-semibold text-zinc-900">{t('admin.communications.title')}</h2>
-          <p className="text-sm text-zinc-500 mt-0.5">{t('admin.communications.subtitle')}</p>
+          <h2 className="text-xl font-semibold text-[#031926]">{t('admin.communications.title')}</h2>
+          <p className="text-sm text-[#468189] mt-0.5">{t('admin.communications.subtitle')}</p>
         </div>
         <button onClick={() => setShowCreate(true)}
-          className="bg-zinc-900 hover:bg-zinc-800 text-white px-4 py-2 rounded-lg font-medium flex items-center justify-center gap-1.5 transition-colors text-sm">
+          className="bg-[#031926] hover:bg-primary-mid text-[#EBF2FA] px-4 py-2 rounded-lg font-medium flex items-center justify-center gap-1.5 transition-colors text-sm">
           <span className="material-symbols-outlined text-[16px]">campaign</span> {t('admin.communications.newCampaign')}
         </button>
       </div>
@@ -89,14 +89,14 @@ export default function AdminCommunications() {
           { label: t('admin.communications.clicks'), value: (stats?.totalClicks || 0).toLocaleString(), icon: 'ads_click' },
           { label: t('admin.communications.campaigns'), value: campaigns.length, icon: 'campaign' },
         ].map((m, i) => (
-          <div key={i} className="bg-white p-4 rounded-xl border border-zinc-200 flex items-center gap-3 stat-card">
-            <div className="w-9 h-9 rounded-lg bg-zinc-100 text-zinc-600 flex items-center justify-center">
+          <div key={i} className="bg-white p-4 rounded-xl border border-[#9DBEBB]/20 flex items-center gap-3 stat-card">
+            <div className="w-9 h-9 rounded-lg bg-[#EBF2FA] text-[#468189] flex items-center justify-center">
               <span className="material-symbols-outlined text-[18px]">{m.icon}</span>
             </div>
             <div>
-              <p className="text-xs text-zinc-500">{m.label}</p>
+              <p className="text-xs text-[#468189]">{m.label}</p>
               <div className="flex items-baseline gap-1.5">
-                <p className="text-lg font-semibold text-zinc-900">{m.value}</p>
+                <p className="text-lg font-semibold text-[#031926]">{m.value}</p>
                 {m.sub && <span className="text-xs font-medium text-emerald-600">{m.sub}</span>}
               </div>
             </div>
@@ -107,35 +107,35 @@ export default function AdminCommunications() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 items-start">
         {/* Campaigns List */}
         <div className="lg:col-span-2 space-y-3">
-          <h3 className="text-sm font-semibold text-zinc-900">{t('admin.communications.recentCampaigns')}</h3>
+          <h3 className="text-sm font-semibold text-[#031926]">{t('admin.communications.recentCampaigns')}</h3>
 
           {loading ? (
-            <div className="flex items-center justify-center py-16"><div className="w-6 h-6 border-2 border-zinc-200 border-t-zinc-600 rounded-full animate-spin" /></div>
+            <div className="flex items-center justify-center py-16"><div className="w-6 h-6 border-2 border-[#9DBEBB]/20 border-t-[#468189] rounded-full animate-spin" /></div>
           ) : campaigns.length === 0 ? (
-            <div className="text-center py-16 bg-white rounded-xl border border-zinc-200">
-              <span className="material-symbols-outlined text-3xl text-zinc-300">campaign</span>
-              <p className="text-sm text-zinc-500 mt-2">{t('admin.communications.noCampaigns')}</p>
+            <div className="text-center py-16 bg-white rounded-xl border border-[#9DBEBB]/20">
+              <span className="material-symbols-outlined text-3xl text-[#9DBEBB]">campaign</span>
+              <p className="text-sm text-[#468189] mt-2">{t('admin.communications.noCampaigns')}</p>
             </div>
           ) : (
             <div className="space-y-2">
               {paginatedCampaigns.map((camp, i) => {
                 const st = STATUS_CONFIG[camp.status] || STATUS_CONFIG.draft
                 return (
-                  <div key={camp.id || i} className="group bg-white p-3.5 rounded-xl border border-zinc-200 transition-all hover:border-zinc-300 flex items-center gap-3">
-                    <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${channelColors[camp.type] || 'bg-zinc-100 text-zinc-500'}`}>
+                  <div key={camp.id || i} className="group bg-white p-3.5 rounded-xl border border-[#9DBEBB]/20 transition-all hover:border-[#9DBEBB]/40 flex items-center gap-3">
+                    <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${channelColors[camp.type] || 'bg-[#EBF2FA] text-[#468189]'}`}>
                       <span className="material-symbols-outlined text-[18px]">{channelIcons[camp.type] || 'campaign'}</span>
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-0.5">
                         <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded-md ${st.bg} ${st.text}`}>{st.label}</span>
-                        <span className="text-[10px] text-zinc-400">{new Date(camp.sentAt || camp.scheduledAt || camp.createdAt).toLocaleDateString('es-PE')}</span>
+                        <span className="text-[10px] text-[#9DBEBB]">{new Date(camp.sentAt || camp.scheduledAt || camp.createdAt).toLocaleDateString('es-PE')}</span>
                       </div>
-                      <h4 className="font-medium text-zinc-900 truncate text-sm">{camp.name}</h4>
-                      <p className="text-xs text-zinc-500 truncate">{(camp.recipientCount || 0).toLocaleString()} {t('admin.communications.recipients')} · {camp.audienceType}</p>
+                      <h4 className="font-medium text-[#031926] truncate text-sm">{camp.name}</h4>
+                      <p className="text-xs text-[#468189] truncate">{(camp.recipientCount || 0).toLocaleString()} {t('admin.communications.recipients')} · {camp.audienceType}</p>
                     </div>
                     <div className="text-right shrink-0">
-                      <p className="text-sm font-semibold text-zinc-900">{(camp.openCount || 0).toLocaleString()}</p>
-                      <p className="text-[10px] text-zinc-500">{t('admin.communications.opensCount')}</p>
+                      <p className="text-sm font-semibold text-[#031926]">{(camp.openCount || 0).toLocaleString()}</p>
+                      <p className="text-[10px] text-[#468189]">{t('admin.communications.opensCount')}</p>
                     </div>
                   </div>
                 )
@@ -148,8 +148,8 @@ export default function AdminCommunications() {
         {/* Sidebar */}
         <div className="space-y-5">
           {/* Quick Templates */}
-          <div className="bg-white p-4 rounded-xl border border-zinc-200">
-            <h3 className="text-sm font-semibold text-zinc-900 mb-3">{t('admin.communications.quickTemplates')}</h3>
+          <div className="bg-white p-4 rounded-xl border border-[#9DBEBB]/20">
+            <h3 className="text-sm font-semibold text-[#031926] mb-3">{t('admin.communications.quickTemplates')}</h3>
             <div className="grid grid-cols-2 gap-2">
               {[
                 { icon: 'loyalty', key: 'Oferta', label: t('admin.communications.templateOffer') },
@@ -157,19 +157,19 @@ export default function AdminCommunications() {
                 { icon: 'local_shipping', key: 'Envío', label: t('admin.communications.templateShipping') },
                 { icon: 'reviews', key: 'Reseña', label: t('admin.communications.templateReview') },
               ].map((tpl, i) => (
-                <button key={i} onClick={() => applyTemplate(tpl.key)} className="bg-zinc-50 border border-zinc-200 p-3 rounded-lg text-center hover:bg-zinc-100 transition-colors">
-                  <span className="material-symbols-outlined text-xl mb-1 text-zinc-600">{tpl.icon}</span>
-                  <p className="text-[10px] font-medium text-zinc-500 uppercase">{tpl.label}</p>
+                <button key={i} onClick={() => applyTemplate(tpl.key)} className="bg-[#EBF2FA]/30 border border-[#9DBEBB]/20 p-3 rounded-lg text-center hover:bg-[#EBF2FA] transition-colors">
+                  <span className="material-symbols-outlined text-xl mb-1 text-[#468189]">{tpl.icon}</span>
+                  <p className="text-[10px] font-medium text-[#468189] uppercase">{tpl.label}</p>
                 </button>
               ))}
             </div>
           </div>
 
           {/* Segmentation */}
-          <div className="bg-zinc-900 text-white p-4 rounded-xl overflow-hidden relative">
+          <div className="bg-[#031926] text-[#EBF2FA] p-4 rounded-xl overflow-hidden relative">
             <div className="relative z-10">
               <h3 className="text-sm font-semibold mb-1.5">{t('admin.communications.segmentation')}</h3>
-              <p className="text-white/60 text-xs mb-3">{t('admin.communications.segmentationHint')}</p>
+              <p className="text-[#EBF2FA]/60 text-xs mb-3">{t('admin.communications.segmentationHint')}</p>
               <div className="space-y-2">
                 {[
                   { label: t('admin.communications.vipClients'), count: '2.4k' },
@@ -178,7 +178,7 @@ export default function AdminCommunications() {
                 ].map((seg, i) => (
                   <div key={i} className="flex items-center justify-between text-xs font-medium py-2 border-b border-white/10 last:border-transparent">
                     <span>{seg.label}</span>
-                    <span className="bg-white/10 text-white px-2 py-0.5 rounded text-[10px] font-medium">{seg.count}</span>
+                    <span className="bg-white/10 text-[#EBF2FA] px-2 py-0.5 rounded text-[10px] font-medium">{seg.count}</span>
                   </div>
                 ))}
               </div>
@@ -186,18 +186,18 @@ export default function AdminCommunications() {
           </div>
 
           {/* Deliverability */}
-          <div className="bg-white p-4 rounded-xl border border-zinc-200">
+          <div className="bg-white p-4 rounded-xl border border-[#9DBEBB]/20">
             <div className="flex items-center gap-2 mb-3">
               <span className="material-symbols-outlined text-emerald-500 text-[18px]">mail_lock</span>
-              <h3 className="font-semibold text-zinc-900 text-sm">{t('admin.communications.deliverability')}</h3>
+              <h3 className="font-semibold text-[#031926] text-sm">{t('admin.communications.deliverability')}</h3>
             </div>
             <div className="flex items-center gap-3">
-              <div className="flex-1 h-1.5 bg-zinc-100 rounded-full overflow-hidden">
+              <div className="flex-1 h-1.5 bg-[#EBF2FA] rounded-full overflow-hidden">
                 <div className="h-full bg-emerald-500 rounded-full" style={{ width: '98%' }}></div>
               </div>
-              <span className="font-semibold text-zinc-900 text-sm">98%</span>
+              <span className="font-semibold text-[#031926] text-sm">98%</span>
             </div>
-            <p className="text-[10px] text-zinc-500 mt-2">{t('admin.communications.domainReputation')}</p>
+            <p className="text-[10px] text-[#468189] mt-2">{t('admin.communications.domainReputation')}</p>
           </div>
         </div>
       </div>
@@ -206,21 +206,21 @@ export default function AdminCommunications() {
       {showCreate && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 p-4">
           <div className="bg-white rounded-xl shadow-lg w-full max-w-md max-h-[90vh] overflow-y-auto">
-            <div className="p-4 border-b border-zinc-100 flex justify-between items-center">
-              <h3 className="text-base font-semibold text-zinc-900">{t('admin.communications.newCampaign')}</h3>
-              <button onClick={() => setShowCreate(false)} className="p-1 hover:bg-zinc-100 rounded-md"><span className="material-symbols-outlined text-zinc-400 text-[18px]">close</span></button>
+            <div className="p-4 border-b border-[#9DBEBB]/10 flex justify-between items-center">
+              <h3 className="text-base font-semibold text-[#031926]">{t('admin.communications.newCampaign')}</h3>
+              <button onClick={() => setShowCreate(false)} className="p-1 hover:bg-[#EBF2FA] rounded-md"><span className="material-symbols-outlined text-[#9DBEBB] text-[18px]">close</span></button>
             </div>
             <div className="p-4 space-y-3">
               <div>
-                <label className="block text-xs font-medium text-zinc-500 mb-1">{t('admin.communications.campaignName')}</label>
+                <label className="block text-xs font-medium text-[#468189] mb-1">{t('admin.communications.campaignName')}</label>
                 <input type="text" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} placeholder={t('admin.communications.campaignPlaceholder')}
-                  className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200 rounded-lg text-sm focus:ring-2 focus:ring-zinc-900/10 focus:border-zinc-400 outline-none" />
+                  className="w-full px-3 py-2 bg-[#EBF2FA]/30 border border-[#9DBEBB]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#031926]/10 focus:border-[#468189] outline-none" />
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-medium text-zinc-500 mb-1">{t('admin.communications.channel')}</label>
+                  <label className="block text-xs font-medium text-[#468189] mb-1">{t('admin.communications.channel')}</label>
                   <select value={form.type} onChange={e => setForm({ ...form, type: e.target.value })}
-                    className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200 rounded-lg text-sm focus:ring-2 focus:ring-zinc-900/10 focus:border-zinc-400 outline-none">
+                    className="w-full px-3 py-2 bg-[#EBF2FA]/30 border border-[#9DBEBB]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#031926]/10 focus:border-[#468189] outline-none">
                     <option value="email">{t('admin.communications.channelEmail')}</option>
                     <option value="whatsapp">{t('admin.communications.channelWhatsApp')}</option>
                     <option value="sms">{t('admin.communications.channelSMS')}</option>
@@ -228,9 +228,9 @@ export default function AdminCommunications() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-zinc-500 mb-1">{t('admin.communications.audience')}</label>
+                  <label className="block text-xs font-medium text-[#468189] mb-1">{t('admin.communications.audience')}</label>
                   <select value={form.audienceType} onChange={e => setForm({ ...form, audienceType: e.target.value })}
-                    className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200 rounded-lg text-sm focus:ring-2 focus:ring-zinc-900/10 focus:border-zinc-400 outline-none">
+                    className="w-full px-3 py-2 bg-[#EBF2FA]/30 border border-[#9DBEBB]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#031926]/10 focus:border-[#468189] outline-none">
                     <option value="all">{t('admin.communications.audienceAll')}</option>
                     <option value="vip">{t('admin.communications.audienceVIP')}</option>
                     <option value="agents">{t('admin.communications.audienceAgents')}</option>
@@ -239,20 +239,20 @@ export default function AdminCommunications() {
                 </div>
               </div>
               <div>
-                <label className="block text-xs font-medium text-zinc-500 mb-1">{t('admin.communications.estimatedRecipients')}</label>
+                <label className="block text-xs font-medium text-[#468189] mb-1">{t('admin.communications.estimatedRecipients')}</label>
                 <input type="number" value={form.recipientCount} onChange={e => setForm({ ...form, recipientCount: Number(e.target.value) })}
-                  className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200 rounded-lg text-sm focus:ring-2 focus:ring-zinc-900/10 focus:border-zinc-400 outline-none" />
+                  className="w-full px-3 py-2 bg-[#EBF2FA]/30 border border-[#9DBEBB]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#031926]/10 focus:border-[#468189] outline-none" />
               </div>
               <div>
-                <label className="block text-xs font-medium text-zinc-500 mb-1">{t('admin.communications.message')}</label>
+                <label className="block text-xs font-medium text-[#468189] mb-1">{t('admin.communications.message')}</label>
                 <textarea value={form.message} onChange={e => setForm({ ...form, message: e.target.value })} rows={3} placeholder={t('admin.communications.messagePlaceholder')}
-                  className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200 rounded-lg text-sm focus:ring-2 focus:ring-zinc-900/10 focus:border-zinc-400 outline-none resize-none" />
+                  className="w-full px-3 py-2 bg-[#EBF2FA]/30 border border-[#9DBEBB]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#031926]/10 focus:border-[#468189] outline-none resize-none" />
               </div>
             </div>
-            <div className="p-4 border-t border-zinc-100 flex justify-end gap-2">
-              <button onClick={() => setShowCreate(false)} className="px-4 py-2 text-sm font-medium text-zinc-500 hover:bg-zinc-50 rounded-lg transition-colors">{t('common.cancel')}</button>
+            <div className="p-4 border-t border-[#9DBEBB]/10 flex justify-end gap-2">
+              <button onClick={() => setShowCreate(false)} className="px-4 py-2 text-sm font-medium text-[#468189] hover:bg-[#EBF2FA]/30 rounded-lg transition-colors">{t('common.cancel')}</button>
               <button onClick={handleCreate} disabled={saving || !form.name}
-                className="px-4 py-2 text-sm font-medium bg-zinc-900 text-white rounded-lg hover:bg-zinc-800 disabled:opacity-40 transition-colors">
+                className="px-4 py-2 text-sm font-medium bg-[#031926] text-[#EBF2FA] rounded-lg hover:bg-primary-mid disabled:opacity-40 transition-colors">
                 {saving ? t('common.saving') : t('admin.communications.createCampaign')}
               </button>
             </div>

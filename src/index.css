@@ -1,38 +1,66 @@
 @import "tailwindcss";
 
+/* ── Tevra Design System — Paleta Profesional ── */
+/* Ink Black:   #031926 | Teal:       #468189      */
+/* Muted Teal:  #77ACA2 | Ash Grey:   #9DBEBB      */
+/* Vanilla Cream: #EBF2FA                           */
+
 @theme {
-     --color-primary: #0a2540;
-     --color-primary-dark: #000f22;
-     --color-secondary: #ff6b6b;
-     --color-mint: #00d68f;
-     --color-accent-gold: #ffb347;
+     /* ── Brand Colors ── */
+     --color-primary: #031926;
+     --color-primary-dark: #010f17;
+     --color-primary-mid: #0d3349;
 
-     --color-background: #fff8f0;
-     --color-background-cream: #fff8f0;
+     --color-secondary: #468189;
+     --color-secondary-light: #77ACA2;
+     --color-secondary-pale: #9DBEBB;
+
+     --color-accent: #468189;
+     --color-accent-hover: #3a6e75;
+     --color-accent-gold: #d4a96a;
+
+     /* ── Backgrounds ── */
+     --color-background: #FFFF;
+     --color-background-cream: #EBF2FA;
+     --color-background-warm: #efe3bb;
+
+     /* ── Surfaces ── */
      --color-surface: #ffffff;
-     --color-surface-dim: #dfd9d1;
+     --color-surface-dim: #e8dfc9;
      --color-surface-container-lowest: #ffffff;
-     --color-surface-container-low: #f9f3eb;
-     --color-surface-container: #f4ede5;
-     --color-surface-container-high: #eee7df;
-     --color-surface-container-highest: #e8e1da;
+     --color-surface-container-low: #faf5eb;
+     --color-surface-container: #EBF2FA;
+     --color-surface-container-high: #ece2c5;
+     --color-surface-container-highest: #e3d8b8;
 
-     --color-on-background: #1e1b17;
-     --color-on-surface: #1e1b17;
-     --color-text-muted: #43474d;
-     --color-outline: #74777e;
-     --color-outline-variant: #c4c6ce;
+     /* ── On Colors (texto sobre fondos) ── */
+     --color-on-background: #031926;
+     --color-on-surface: #031926;
+     --color-on-primary: #EBF2FA;
+     --color-on-secondary: #ffffff;
+     --color-text-muted: #3d5a67;
+     --color-text-soft: #5a7a8a;
 
+     /* ── Borders ── */
+     --color-outline: #468189;
+     --color-outline-variant: #9DBEBB;
+     --color-outline-soft: rgba(70, 129, 137, 0.15);
+
+     /* ── Typography ── */
      --font-headline: "Plus Jakarta Sans", sans-serif;
      --font-body: "Inter", sans-serif;
 
+     /* ── Radius ── */
      --radius-xl: 12px;
      --radius-2xl: 16px;
      --radius-3xl: 24px;
 
-     --shadow-soft: 0 10px 40px -10px rgba(0, 0, 0, 0.08);
-     --shadow-premium: 0 20px 60px -15px rgba(10, 37, 64, 0.15);
-     --shadow-ambient: 0 20px 40px rgba(10, 37, 64, 0.05);
+     /* ── Shadows ── */
+     --shadow-soft: 0 10px 40px -10px rgba(3, 25, 38, 0.10);
+     --shadow-premium: 0 20px 60px -15px rgba(3, 25, 38, 0.20);
+     --shadow-ambient: 0 20px 40px rgba(70, 129, 137, 0.08);
+     --shadow-teal: 0 10px 30px -8px rgba(70, 129, 137, 0.40);
+     --shadow-card: 0 2px 12px rgba(3, 25, 38, 0.06);
 }
 
 /* ── Base ── */
@@ -43,7 +71,8 @@ body {
 }
 
 ::selection {
-     background-color: rgba(99, 102, 241, 0.15);
+     background-color: rgba(70, 129, 137, 0.20);
+     color: #031926;
 }
 
 /* ── Icons ── */
@@ -78,78 +107,70 @@ body {
      background: transparent;
 }
 .sidebar-scroll::-webkit-scrollbar-thumb {
-     background: rgba(255, 255, 255, 0.08);
+     background: rgba(70, 129, 137, 0.25);
      border-radius: 2px;
 }
 .sidebar-scroll::-webkit-scrollbar-thumb:hover {
-     background: rgba(255, 255, 255, 0.15);
+     background: rgba(70, 129, 137, 0.45);
 }
 
 /* ── Landing page helpers ── */
 .hero-gradient {
-     background: linear-gradient(135deg, #18181b 0%, #27272a 100%);
+     background: linear-gradient(135deg, #031926 0%, #0d3349 50%, #468189 100%);
 }
 .bg-grid-pattern {
-     background-image: radial-gradient(#ffffff12 1px, transparent 1px);
+     background-image: radial-gradient(rgba(244, 233, 205, 0.10) 1px, transparent 1px);
      background-size: 24px 24px;
 }
 .glass-card {
-     background: rgba(255, 255, 255, 0.04);
+     background: rgba(244, 233, 205, 0.06);
      backdrop-filter: blur(12px);
-     border: 1px solid rgba(255, 255, 255, 0.08);
+     border: 1px solid rgba(244, 233, 205, 0.15);
 }
 
-/* ── TEVRA PUBLIC PAGES EXCLUSIVE CLASSES ── 
-   These classes guarantee no conflicts with the admin dashboard 
+/* ── TEVRA PUBLIC PAGES EXCLUSIVE CLASSES ──
+   Estas clases garantizan que no haya conflictos con el admin
 */
-.bg-tevra-cream { background-color: #fff8f0; }
-.text-tevra-dark { color: #0a2540; }
-.text-tevra-muted { color: #43474d; }
+.bg-tevra-cream { background-color: #EBF2FA; }
+.text-tevra-dark { color: #031926; }
+.text-tevra-muted { color: #3d5a67; }
 
 .tevra-hero-gradient {
-     background: linear-gradient(135deg, #000f22 0%, #0a2540 100%);
-     color: #ffffff;
+     background: linear-gradient(145deg, #031926 0%, #0d3349 55%, #468189 100%);
+     color: #EBF2FA;
      position: relative;
 }
 
-/* Overlay warehouse or grid for heros */
+/* Overlay de puntos para heros */
 .tevra-hero-overlay {
      position: absolute;
      inset: 0;
-     background-image: radial-gradient(rgba(255,255,255,0.1) 1px, transparent 1px);
+     background-image: radial-gradient(rgba(244, 233, 205, 0.08) 1px, transparent 1px);
      background-size: 24px 24px;
-     opacity: 0.3;
+     opacity: 0.6;
 }
 
-.bg-tevra-coral {
-     background-color: #ff6b6b;
+.bg-tevra-teal {
+     background-color: #468189;
 }
 
-.text-tevra-coral {
-     color: #ff6b6b;
+.text-tevra-teal {
+     color: #468189;
 }
 
-.border-tevra-coral {
-     border-color: #ff6b6b;
+.border-tevra-teal {
+     border-color: #468189;
 }
 
-.shadow-tevra-coral {
-     box-shadow: 0 10px 25px -5px rgba(255, 107, 107, 0.4);
+.shadow-tevra-teal {
+     box-shadow: 0 10px 30px -8px rgba(70, 129, 137, 0.45);
 }
 
-/* ── Subtle page entry ── */
-@keyframes platform-enter {
-     from {
-          opacity: 0;
-          transform: translateY(6px);
-     }
-     to {
-          opacity: 1;
-          transform: translateY(0);
-     }
-}
+.bg-tevra-coral { background-color: #468189; }
+.text-tevra-coral { color: #468189; }
+.border-tevra-coral { border-color: #468189; }
+.shadow-tevra-coral { box-shadow: 0 10px 25px -5px rgba(70, 129, 137, 0.40); }
 
-/* ── Landing animations ── */
 @keyframes fade-up {
      from {
           opacity: 0;
@@ -254,8 +275,266 @@ body {
 
 /* ── Stat card minimal hover ── */
 .stat-card {
-     transition: box-shadow 0.15s ease;
+     transition: box-shadow 0.15s ease, transform 0.15s ease;
 }
 .stat-card:hover {
-     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+     box-shadow: 0 4px 16px rgba(70, 129, 137, 0.12);
+     transform: translateY(-1px);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   TEVRA DESIGN SYSTEM — Componentes globales
+   Paleta: #031926 | #468189 | #77ACA2 | #9DBEBB | #EBF2FA
+───────────────────────────────────────────────────────────────── */
+
+/* ── Botones principales ── */
+.btn-primary {
+     display: inline-flex;
+     align-items: center;
+     justify-content: center;
+     gap: 0.5rem;
+     padding: 0.75rem 1.75rem;
+     background: linear-gradient(135deg, #468189 0%, #3a6e75 100%);
+     color: #ffffff;
+     font-family: var(--font-headline);
+     font-weight: 700;
+     font-size: 0.9375rem;
+     border-radius: 12px;
+     border: none;
+     cursor: pointer;
+     transition: all 0.25s ease;
+     box-shadow: 0 4px 14px rgba(70, 129, 137, 0.30);
+     text-decoration: none;
+}
+.btn-primary:hover {
+     background: linear-gradient(135deg, #3a6e75 0%, #2d5c63 100%);
+     box-shadow: 0 8px 24px rgba(70, 129, 137, 0.40);
+     transform: translateY(-2px);
+}
+.btn-primary:active {
+     transform: translateY(0);
+     box-shadow: 0 2px 8px rgba(70, 129, 137, 0.25);
+}
+
+/* ── Botón secundario (outline) ── */
+.btn-secondary {
+     display: inline-flex;
+     align-items: center;
+     justify-content: center;
+     gap: 0.5rem;
+     padding: 0.75rem 1.75rem;
+     background: transparent;
+     color: #468189;
+     font-family: var(--font-headline);
+     font-weight: 700;
+     font-size: 0.9375rem;
+     border-radius: 12px;
+     border: 1.5px solid #468189;
+     cursor: pointer;
+     transition: all 0.25s ease;
+     text-decoration: none;
+}
+.btn-secondary:hover {
+     background: #468189;
+     color: #ffffff;
+     box-shadow: 0 4px 14px rgba(70, 129, 137, 0.25);
+     transform: translateY(-1px);
+}
+
+/* ── Botón ghost (sobre fondos oscuros) ── */
+.btn-ghost {
+     display: inline-flex;
+     align-items: center;
+     justify-content: center;
+     gap: 0.5rem;
+     padding: 0.75rem 1.75rem;
+     background: rgba(244, 233, 205, 0.10);
+     color: #EBF2FA;
+     font-family: var(--font-headline);
+     font-weight: 700;
+     font-size: 0.9375rem;
+     border-radius: 12px;
+     border: 1.5px solid rgba(244, 233, 205, 0.20);
+     cursor: pointer;
+     transition: all 0.25s ease;
+     text-decoration: none;
+     backdrop-filter: blur(8px);
+}
+.btn-ghost:hover {
+     background: rgba(244, 233, 205, 0.18);
+     border-color: rgba(244, 233, 205, 0.35);
+     transform: translateY(-1px);
+}
+
+/* ── Cards ── */
+.card {
+     background: #ffffff;
+     border-radius: 16px;
+     border: 1px solid rgba(157, 190, 187, 0.25);
+     box-shadow: var(--shadow-card);
+     transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+.card:hover {
+     box-shadow: 0 8px 24px rgba(70, 129, 137, 0.12);
+     transform: translateY(-2px);
+}
+
+.card-cream {
+     background: #EBF2FA;
+     border-radius: 16px;
+     border: 1px solid rgba(157, 190, 187, 0.20);
+     box-shadow: var(--shadow-soft);
+}
+
+/* ── Badges de estado ── */
+.badge {
+     display: inline-flex;
+     align-items: center;
+     gap: 0.25rem;
+     padding: 0.25rem 0.75rem;
+     border-radius: 999px;
+     font-size: 0.6875rem;
+     font-weight: 700;
+     letter-spacing: 0.04em;
+     text-transform: uppercase;
+}
+.badge-teal    { background: rgba(70, 129, 137, 0.12); color: #468189; }
+.badge-success { background: rgba(70, 129, 137, 0.12); color: #2d7a68; }
+.badge-warning { background: rgba(212, 169, 106, 0.15); color: #9a6f2a; }
+.badge-danger  { background: rgba(220, 80, 80, 0.10);  color: #c0392b; }
+.badge-neutral { background: rgba(157, 190, 187, 0.20); color: #3d5a67; }
+
+/* ── Formularios ── */
+.input-field {
+     width: 100%;
+     padding: 0.75rem 1rem;
+     background: #ffffff;
+     border: 1.5px solid rgba(157, 190, 187, 0.40);
+     border-radius: 10px;
+     font-size: 0.9375rem;
+     color: #031926;
+     transition: border-color 0.2s, box-shadow 0.2s;
+     outline: none;
+}
+.input-field::placeholder { color: #9DBEBB; }
+.input-field:focus {
+     border-color: #468189;
+     box-shadow: 0 0 0 3px rgba(70, 129, 137, 0.15);
+}
+
+/* ── Sección de hero con gradiente premium ── */
+.section-hero-teal {
+     background: linear-gradient(145deg, #031926 0%, #0d3349 50%, #1e6570 100%);
+     position: relative;
+     overflow: hidden;
+}
+.section-hero-teal::before {
+     content: '';
+     position: absolute;
+     top: -30%;
+     right: -10%;
+     width: 60%;
+     height: 140%;
+     background: radial-gradient(ellipse, rgba(70, 129, 137, 0.25) 0%, transparent 70%);
+     pointer-events: none;
+}
+
+/* ── Gradiente de sección claro ── */
+.section-gradient-light {
+     background: linear-gradient(180deg, #ffffff 0%, #EBF2FA 100%);
+}
+.section-gradient-teal {
+     background: linear-gradient(135deg, #EBF2FA 0%, rgba(157, 190, 187, 0.30) 100%);
+}
+
+/* ── Línea decorativa ── */
+.divider-teal {
+     height: 1px;
+     background: linear-gradient(90deg, transparent, #9DBEBB, transparent);
+     opacity: 0.5;
+}
+
+/* ── Animaciones de entrada del dashboard ── */
+@keyframes platform-enter {
+     from {
+          opacity: 0;
+          transform: translateY(6px);
+     }
+     to {
+          opacity: 1;
+          transform: translateY(0);
+     }
+}
+
+
+/* ── Animaciones landing ── */
+@keyframes fade-up {
+     from { opacity: 0; transform: translateY(20px); }
+     to   { opacity: 1; transform: translateY(0); }
+}
+.hero-enter          { animation: fade-up 0.6s ease-out 0.1s both; }
+.hero-enter-delayed  { animation: fade-up 0.6s ease-out 0.25s both; }
+
+@keyframes marquee {
+     0%   { transform: translateX(0); }
+     100% { transform: translateX(-50%); }
+}
+
+/* ── Scroll reveal ── */
+.reveal {
+     opacity: 0;
+     transform: translateY(20px);
+     transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-left {
+     opacity: 0;
+     transform: translateX(-30px);
+     transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.reveal-left.visible  { opacity: 1; transform: translateX(0); }
+.reveal-right {
+     opacity: 0;
+     transform: translateX(30px);
+     transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.reveal-right.visible { opacity: 1; transform: translateX(0); }
+.reveal-scale {
+     opacity: 0;
+     transform: scale(0.95);
+     transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.reveal-scale.visible { opacity: 1; transform: scale(1); }
+
+.stagger-1 { transition-delay: 0.05s; }
+.stagger-2 { transition-delay: 0.10s; }
+.stagger-3 { transition-delay: 0.15s; }
+.stagger-4 { transition-delay: 0.20s; }
+.stagger-5 { transition-delay: 0.25s; }
+
+/* ── Notification dot ── */
+.notification-pulse { animation: notif-pulse 2s ease-in-out infinite; }
+@keyframes notif-pulse {
+     0%, 100% { opacity: 1; }
+     50%       { opacity: 0.5; }
+}
+
+/* ── Tabla admin ── */
+.table-row-hover:hover {
+     background: rgba(244, 233, 205, 0.50);
+}
+
+/* ── Stat card ── */
+.stat-card {
+     transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+.stat-card:hover {
+     box-shadow: 0 4px 16px rgba(70, 129, 137, 0.12);
+     transform: translateY(-1px);
+}
+
+/* ── Mask gradient para marquee ── */
+.mask-gradient {
+     -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+     mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
 }

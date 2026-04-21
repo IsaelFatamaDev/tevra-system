@@ -14,8 +14,8 @@ const COUNTRY_CODES = [
   { code: '+55', flag: '🇧🇷', name: 'BR' },
   { code: '+593', flag: '🇪🇨', name: 'EC' },
   { code: '+591', flag: '🇧🇴', name: 'BO' },
-  { code: '+1',   flag: '🇺🇸', name: 'US' },
-  { code: '+34',  flag: '🇪🇸', name: 'ES' },
+  { code: '+1', flag: '🇺🇸', name: 'US' },
+  { code: '+34', flag: '🇪🇸', name: 'ES' },
 ]
 
 function detectCountryCode() {
@@ -117,15 +117,15 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-[100dvh] flex flex-col lg:flex-row">
+    <div className="min-h-dvh flex flex-col lg:flex-row">
       <div
         className="hidden lg:flex relative overflow-hidden items-center justify-center lg:w-[42%] xl:w-[45%] lg:min-h-screen"
-        style={{ background: 'linear-gradient(135deg, #0a2540 0%, #0d1b2a 30%, #1a1a2e 60%, #0a2540 100%)' }}
+        style={{ background: 'linear-gradient(135deg, #031926 0%, #0d3349 40%, #468189 100%)' }}
       >
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,107,107,0.08)_0%,transparent_50%)]" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(46,213,115,0.06)_0%,transparent_50%)]" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,215,0,0.04)_0%,transparent_40%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(70,129,137,0.15)_0%,transparent_50%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(119,172,162,0.1)_0%,transparent_50%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(244,233,205,0.05)_0%,transparent_40%)]" />
         </div>
 
         <div
@@ -138,12 +138,12 @@ export default function LoginPage() {
 
         <div className="relative z-10 flex flex-col items-center text-center w-full max-w-md gap-4 sm:gap-5 lg:gap-8">
           <div className="relative">
-            <div className="absolute w-32 h-32 sm:w-36 sm:h-36 lg:w-52 lg:h-52 xl:w-60 xl:h-60 -inset-2 rounded-full border border-white/[0.03] animate-[spin_25s_linear_infinite]" />
-            <div className="absolute w-36 h-36 sm:w-40 sm:h-40 lg:w-56 lg:h-56 xl:w-64 xl:h-64 -inset-4 rounded-full border border-secondary/[0.06] animate-[spin_35s_linear_infinite_reverse]" />
-            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-secondary/15 via-transparent to-mint/10 blur-3xl scale-150" />
+            <div className="absolute w-32 h-32 sm:w-36 sm:h-36 lg:w-52 lg:h-52 xl:w-60 xl:h-60 -inset-2 rounded-full border border-white/3 animate-[spin_25s_linear_infinite]" />
+            <div className="absolute w-36 h-36 sm:w-40 sm:h-40 lg:w-56 lg:h-56 xl:w-64 xl:h-64 -inset-4 rounded-full border border-secondary/6 animate-[spin_35s_linear_infinite_reverse]" />
+            <div className="absolute inset-0 rounded-full bg-linear-to-br from-secondary/20 via-transparent to-secondary-light/15 blur-3xl scale-150" />
 
-            <div className="relative w-20 h-20 sm:w-24 sm:h-24 lg:w-40 lg:h-40 xl:w-48 xl:h-48 rounded-full overflow-hidden bg-white/[0.05] backdrop-blur-xl border border-white/[0.08] flex items-center justify-center shadow-[0_0_60px_rgba(255,107,107,0.1),0_0_0_1px_rgba(255,255,255,0.04)]">
-              <div className="absolute inset-[2px] rounded-full bg-gradient-to-br from-white/[0.06] to-transparent" />
+            <div className="relative w-20 h-20 sm:w-24 sm:h-24 lg:w-40 lg:h-40 xl:w-48 xl:h-48 rounded-full overflow-hidden bg-white/5 backdrop-blur-xl border border-white/8 flex items-center justify-center shadow-[0_0_60px_rgba(70,129,137,0.15),0_0_0_1px_rgba(255,255,255,0.04)]">
+              <div className="absolute inset-0.5 rounded-full bg-linear-to-br from-white/6 to-transparent" />
               <img
                 src="/LogoTevra.png"
                 alt="TeVra"
@@ -153,25 +153,25 @@ export default function LoginPage() {
           </div>
 
           <div>
-            <h1 className="font-headline text-2xl sm:text-3xl lg:text-5xl xl:text-6xl font-extrabold text-white tracking-tighter">
-              Te<span className="bg-gradient-to-r from-secondary to-[#ff8a8a] bg-clip-text text-transparent">Vra</span>
+            <h1 className="font-headline text-2xl sm:text-3xl lg:text-5xl xl:text-6xl font-extrabold text-[#F4E9CD] tracking-tighter">
+              Te<span className="bg-linear-to-r from-secondary-light to-secondary-pale bg-clip-text text-transparent">Vra</span>
             </h1>
             <div className="flex items-center justify-center gap-2 mt-2 lg:mt-4">
-              <div className="w-6 lg:w-10 h-px bg-gradient-to-r from-transparent to-white/15" />
+              <div className="w-6 lg:w-10 h-px bg-linear-to-r from-transparent to-white/15" />
               <p className="text-white/30 text-[8px] sm:text-[9px] lg:text-[11px] font-bold uppercase tracking-[0.3em] lg:tracking-[0.4em]">
                 {t('auth.premiumImports')}
               </p>
-              <div className="w-6 lg:w-10 h-px bg-gradient-to-l from-transparent to-white/15" />
+              <div className="w-6 lg:w-10 h-px bg-linear-to-l from-transparent to-white/15" />
             </div>
           </div>
 
           <div className="hidden lg:flex flex-col gap-3 w-full mt-2">
             {[
-              { icon: 'verified', bg: 'rgba(255,107,107,0.1)', color: 'text-secondary', text: t('auth.features.originals') },
-              { icon: 'local_shipping', bg: 'rgba(46,213,115,0.1)', color: 'text-mint', text: t('auth.features.tracking') },
-              { icon: 'support_agent', bg: 'rgba(255,215,0,0.1)', color: 'text-accent-gold', text: t('auth.features.agents') },
+              { icon: 'verified', bg: 'rgba(70,129,137,0.2)', color: 'text-[#77ACA2]', text: t('auth.features.originals') },
+              { icon: 'local_shipping', bg: 'rgba(119,172,162,0.2)', color: 'text-[#9DBEBB]', text: t('auth.features.tracking') },
+              { icon: 'support_agent', bg: 'rgba(244,233,205,0.1)', color: 'text-[#F4E9CD]', text: t('auth.features.agents') },
             ].map((f, i) => (
-              <div key={i} className="flex items-center gap-4 text-left bg-white/[0.03] backdrop-blur-sm border border-white/[0.05] rounded-xl px-5 py-3.5 hover:bg-white/[0.06] transition-all duration-300 group">
+              <div key={i} className="flex items-center gap-4 text-left bg-white/3 backdrop-blur-sm border border-white/5 rounded-xl px-5 py-3.5 hover:bg-white/6 transition-all duration-300 group">
                 <div
                   className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-110"
                   style={{ background: f.bg }}
@@ -185,10 +185,10 @@ export default function LoginPage() {
         </div>
       </div>
 
-      <div className="flex-1 flex flex-col justify-center items-center px-5 py-6 sm:px-8 sm:py-8 md:px-12 lg:px-16 bg-background-cream overflow-y-auto">
-        <div className="w-full max-w-[420px] space-y-5 sm:space-y-6">
+      <div className="flex-1 flex flex-col justify-center items-center px-5 py-6 sm:px-8 sm:py-8 md:px-12 lg:px-16 bg-[#F4E9CD]/30 overflow-y-auto">
+        <div className="w-full max-w-105 space-y-5 sm:space-y-6">
           <div className="text-center lg:text-left">
-            <h2 className="font-headline text-xl sm:text-2xl lg:text-3xl font-bold text-on-background leading-tight">
+            <h2 className="font-headline text-xl sm:text-2xl lg:text-3xl font-bold text-[#031926] leading-tight">
               {isSignUp ? t('auth.createAccount') : t('auth.welcome')}
             </h2>
             <p className="mt-1 text-text-muted text-xs sm:text-sm">
@@ -196,12 +196,12 @@ export default function LoginPage() {
             </p>
           </div>
 
-          <div className="flex bg-surface-container-low p-1 rounded-2xl">
+          <div className="flex bg-[#9DBEBB]/20 p-1 rounded-2xl">
             <button
               onClick={() => { setIsSignUp(false); setError('') }}
               className={`flex-1 py-2 sm:py-2.5 rounded-xl font-headline font-bold text-xs sm:text-sm transition-all ${!isSignUp
-                ? 'bg-surface-container-lowest text-primary shadow-soft'
-                : 'text-text-muted hover:text-primary'
+                ? 'bg-white text-[#031926] shadow-soft'
+                : 'text-[#468189] hover:text-[#031926]'
                 }`}
             >
               {t('auth.signIn')}
@@ -209,8 +209,8 @@ export default function LoginPage() {
             <button
               onClick={() => { setIsSignUp(true); setError('') }}
               className={`flex-1 py-2 sm:py-2.5 rounded-xl font-headline font-bold text-xs sm:text-sm transition-all ${isSignUp
-                ? 'bg-surface-container-lowest text-primary shadow-soft'
-                : 'text-text-muted hover:text-primary'
+                ? 'bg-white text-[#031926] shadow-soft'
+                : 'text-[#468189] hover:text-[#031926]'
                 }`}
             >
               {t('auth.register')}
@@ -238,7 +238,7 @@ export default function LoginPage() {
                         value={firstName}
                         onChange={(e) => setFirstName(e.target.value)}
                         placeholder="Carlos"
-                        className="w-full pl-9 sm:pl-11 pr-3 py-3 sm:py-3.5 bg-surface border border-outline-variant/30 rounded-xl text-xs sm:text-sm text-on-background placeholder:text-text-muted/40 focus:outline-none focus:ring-2 focus:ring-secondary/30 focus:border-secondary transition-all"
+                        className="w-full pl-9 sm:pl-11 pr-3 py-3 sm:py-3.5 bg-white border border-[#9DBEBB]/40 rounded-xl text-xs sm:text-sm text-[#031926] placeholder:text-[#9DBEBB]/60 focus:outline-none focus:ring-2 focus:ring-secondary/30 focus:border-secondary transition-all"
                       />
                     </div>
                   </div>
@@ -252,18 +252,18 @@ export default function LoginPage() {
                         value={lastName}
                         onChange={(e) => setLastName(e.target.value)}
                         placeholder="Mendez"
-                        className="w-full pl-9 sm:pl-11 pr-3 py-3 sm:py-3.5 bg-surface border border-outline-variant/30 rounded-xl text-xs sm:text-sm text-on-background placeholder:text-text-muted/40 focus:outline-none focus:ring-2 focus:ring-secondary/30 focus:border-secondary transition-all"
+                        className="w-full pl-9 sm:pl-11 pr-3 py-3 sm:py-3.5 bg-white border border-[#9DBEBB]/40 rounded-xl text-xs sm:text-sm text-[#031926] placeholder:text-[#9DBEBB]/60 focus:outline-none focus:ring-2 focus:ring-secondary/30 focus:border-secondary transition-all"
                       />
                     </div>
                   </div>
                 </div>
                 <div className="space-y-1">
                   <label className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-text-muted">{t('auth.phone')}</label>
-                  <div className={`flex bg-surface border rounded-xl overflow-hidden transition-all focus-within:ring-2 focus-within:ring-secondary/30 focus-within:border-secondary ${availabilityErrors.phone || availabilityErrors.whatsapp ? 'border-red-400' : 'border-outline-variant/30'}`}>
+                  <div className={`flex bg-white border rounded-xl overflow-hidden transition-all focus-within:ring-2 focus-within:ring-secondary/30 focus-within:border-secondary ${availabilityErrors.phone || availabilityErrors.whatsapp ? 'border-red-400' : 'border-[#9DBEBB]/40'}`}>
                     <select
                       value={dialCode}
                       onChange={e => setDialCode(e.target.value)}
-                      className="bg-surface-container-low border-r border-outline-variant/20 px-2 py-3 sm:py-3.5 text-xs sm:text-sm text-on-background focus:outline-none cursor-pointer shrink-0"
+                      className="bg-[#F4E9CD]/50 border-r border-[#9DBEBB]/30 px-2 py-3 sm:py-3.5 text-xs sm:text-sm text-[#031926] focus:outline-none cursor-pointer shrink-0"
                     >
                       {COUNTRY_CODES.map(c => (
                         <option key={c.code} value={c.code}>
@@ -276,7 +276,7 @@ export default function LoginPage() {
                       value={phoneLocal}
                       onChange={e => setPhoneLocal(e.target.value.replace(/[^0-9 \-]/g, ''))}
                       placeholder="999 123 456"
-                      className="flex-1 px-3 py-3 sm:py-3.5 bg-transparent text-xs sm:text-sm text-on-background placeholder:text-text-muted/40 focus:outline-none"
+                      className="flex-1 px-3 py-3 sm:py-3.5 bg-transparent text-xs sm:text-sm text-[#031926] placeholder:text-[#9DBEBB]/60 focus:outline-none"
                     />
                     {checking.phone && <span className="self-center mr-3 w-3.5 h-3.5 border-2 border-secondary/40 border-t-secondary rounded-full animate-spin shrink-0" />}
                   </div>
@@ -303,7 +303,7 @@ export default function LoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="correo@ejemplo.com"
-                  className={`w-full pl-9 sm:pl-11 pr-3 py-3 sm:py-3.5 bg-surface border rounded-xl text-xs sm:text-sm text-on-background placeholder:text-text-muted/40 focus:outline-none focus:ring-2 focus:ring-secondary/30 focus:border-secondary transition-all ${isSignUp && availabilityErrors.email ? 'border-red-400' : 'border-outline-variant/30'}`}
+                  className={`w-full pl-9 sm:pl-11 pr-3 py-3 sm:py-3.5 bg-white border rounded-xl text-xs sm:text-sm text-[#031926] placeholder:text-[#9DBEBB]/60 focus:outline-none focus:ring-2 focus:ring-secondary/30 focus:border-secondary transition-all ${isSignUp && availabilityErrors.email ? 'border-red-400' : 'border-[#9DBEBB]/40'}`}
                 />
                 {isSignUp && checking.email && <span className="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 border-2 border-secondary/40 border-t-secondary rounded-full animate-spin" />}
               </div>
@@ -328,7 +328,7 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full pl-9 sm:pl-11 pr-11 py-3 sm:py-3.5 bg-surface border border-outline-variant/30 rounded-xl text-xs sm:text-sm text-on-background placeholder:text-text-muted/40 focus:outline-none focus:ring-2 focus:ring-secondary/30 focus:border-secondary transition-all"
+                  className="w-full pl-9 sm:pl-11 pr-11 py-3 sm:py-3.5 bg-white border border-[#9DBEBB]/40 rounded-xl text-xs sm:text-sm text-[#031926] placeholder:text-[#9DBEBB]/60 focus:outline-none focus:ring-2 focus:ring-secondary/30 focus:border-secondary transition-all"
                 />
                 <button
                   type="button"
@@ -348,7 +348,7 @@ export default function LoginPage() {
                     {[1, 2, 3, 4].map(n => (
                       <div
                         key={n}
-                        className={`h-1 flex-1 rounded-full transition-all duration-300 ${n <= pwStrength ? pwColors[pwStrength] : 'bg-outline-variant/20'}`}
+                        className={`h-1 flex-1 rounded-full transition-all duration-300 ${n <= pwStrength ? pwColors[pwStrength] : 'bg-[#9DBEBB]/20'}`}
                       />
                     ))}
                   </div>
@@ -379,7 +379,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full flex items-center justify-center gap-2 py-3 sm:py-3.5 mt-1 bg-secondary hover:bg-secondary/90 disabled:opacity-50 text-white font-headline font-bold text-xs sm:text-sm uppercase tracking-wider rounded-xl transition-all shadow-[0_4px_20px_rgba(255,107,107,0.3)] hover:shadow-[0_6px_30px_rgba(255,107,107,0.4)] active:scale-[0.98]"
+              className="w-full flex items-center justify-center gap-2 py-3 sm:py-3.5 mt-1 bg-[#031926] hover:bg-[#468189] disabled:opacity-50 text-[#F4E9CD] font-headline font-bold text-xs sm:text-sm uppercase tracking-wider rounded-xl transition-all shadow-[0_4px_20px_rgba(3,25,38,0.3)] hover:shadow-[0_6px_30px_rgba(70,129,137,0.4)] active:scale-[0.98]"
             >
               <>
                 <span className="material-symbols-outlined text-base">
@@ -393,13 +393,13 @@ export default function LoginPage() {
           </form>
 
           <div className="flex items-center gap-3">
-            <div className="flex-1 h-px bg-outline-variant/25" />
-            <span className="text-[10px] sm:text-xs text-text-muted font-medium whitespace-nowrap">{t('auth.orContinueWith')}</span>
-            <div className="flex-1 h-px bg-outline-variant/25" />
+            <div className="flex-1 h-px bg-[#9DBEBB]/30" />
+            <span className="text-[10px] sm:text-xs text-[#468189] font-medium whitespace-nowrap">{t('auth.orContinueWith')}</span>
+            <div className="flex-1 h-px bg-[#9DBEBB]/30" />
           </div>
 
           <div className="grid grid-cols-3 gap-2 sm:gap-2.5">
-            <button className="flex items-center justify-center gap-1.5 py-2.5 sm:py-3 bg-surface border border-outline-variant/25 rounded-xl hover:bg-surface-container-low hover:border-outline-variant/40 transition-all text-xs font-medium text-on-background">
+            <button className="flex items-center justify-center gap-1.5 py-2.5 sm:py-3 bg-white border border-[#9DBEBB]/30 rounded-xl hover:bg-[#F4E9CD]/50 hover:border-[#9DBEBB]/60 transition-all text-xs font-medium text-[#031926]">
               <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
                 <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" />
                 <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
@@ -408,18 +408,18 @@ export default function LoginPage() {
               </svg>
               <span className="hidden sm:inline">Google</span>
             </button>
-            <button className="flex items-center justify-center gap-1.5 py-2.5 sm:py-3 bg-surface border border-outline-variant/25 rounded-xl hover:bg-surface-container-low hover:border-outline-variant/40 transition-all text-xs font-medium text-on-background">
+            <button className="flex items-center justify-center gap-1.5 py-2.5 sm:py-3 bg-white border border-[#9DBEBB]/30 rounded-xl hover:bg-[#F4E9CD]/50 hover:border-[#9DBEBB]/60 transition-all text-xs font-medium text-[#031926]">
               <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
               </svg>
               <span className="hidden sm:inline">Apple</span>
             </button>
-            <button className="flex items-center justify-center gap-1.5 py-2.5 sm:py-3 bg-surface border border-outline-variant/25 rounded-xl hover:bg-surface-container-low hover:border-outline-variant/40 transition-all text-xs font-medium text-on-background">
+            <button className="flex items-center justify-center gap-1.5 py-2.5 sm:py-3 bg-white border border-[#9DBEBB]/30 rounded-xl hover:bg-[#F4E9CD]/50 hover:border-[#9DBEBB]/60 transition-all text-xs font-medium text-[#031926]">
               <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
-                <path fill="#F25022" d="M1 1h10v10H1z"/>
-                <path fill="#00A4EF" d="M13 1h10v10H13z"/>
-                <path fill="#7FBA00" d="M1 13h10v10H1z"/>
-                <path fill="#FFB900" d="M13 13h10v10H13z"/>
+                <path fill="#F25022" d="M1 1h10v10H1z" />
+                <path fill="#00A4EF" d="M13 1h10v10H13z" />
+                <path fill="#7FBA00" d="M1 13h10v10H1z" />
+                <path fill="#FFB900" d="M13 13h10v10H13z" />
               </svg>
               <span className="hidden sm:inline">Microsoft</span>
             </button>

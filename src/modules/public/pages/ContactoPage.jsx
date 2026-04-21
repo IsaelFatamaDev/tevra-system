@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-
+import { TEVRA_SUPPORT_WHATSAPP, TEVRA_INSTAGRAM_URL } from '../../../core/config/constants'
 export default function ContactoPage() {
   const { t } = useTranslation()
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' })
@@ -25,14 +25,14 @@ export default function ContactoPage() {
       color: 'bg-mint/10 text-mint',
       title: 'WhatsApp',
       value: t('contact.methods.whatsapp.value'),
-      link: 'https://wa.me/15551234567',
+      link: `https://wa.me/${TEVRA_SUPPORT_WHATSAPP.replace(/\D/g, '')}`,
     },
     {
       icon: 'public',
       color: 'bg-accent-gold/10 text-accent-gold',
       title: t('contact.methods.social.title'),
-      value: '@tevra.usa',
-      link: 'https://www.instagram.com/tevra.usa',
+      value: '@tevra.tech',
+      link: TEVRA_INSTAGRAM_URL,
     },
   ]
 

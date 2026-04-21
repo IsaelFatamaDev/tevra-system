@@ -103,7 +103,12 @@ export default function AgentDashboard() {
     }
   }
 
-  const totalRevenue = orders.reduce((sum, o) => sum + parseFloat(o.total || 0), 0)
+  const totalRevenue = agentProfile?.totalRevenue != null
+    ? Number(agentProfile.totalRevenue)
+    : orders.reduce((sum, o) => sum + parseFloat(o.total || 0), 0)
+  const totalOrders = agentProfile?.totalSales != null
+    ? Number(agentProfile.totalSales)
+    : orders.length
 
   return (
     <div className="space-y-8 platform-enter max-w-7xl mx-auto pb-10">
@@ -118,9 +123,9 @@ export default function AgentDashboard() {
         <div className="relative flex flex-col md:flex-row items-center md:items-start gap-8 z-10 text-center md:text-left">
 
           <div className="w-24 h-24 rounded-[2rem] bg-white/5 backdrop-blur-md border border-white/10 overflow-hidden flex items-center justify-center text-4xl font-extrabold shadow-[0_0_40px_rgba(255,255,255,0.1)] shrink-0">
-            {(agentProfile?.profileImage || user?.avatar) ? (
+            {(agentProfile?.avatarUrl || agentProfile?.profileImage || user?.avatarUrl || user?.avatar) ? (
               <img
-                src={agentProfile?.profileImage || user?.avatar}
+                src={agentProfile?.avatarUrl || agentProfile?.profileImage || user?.avatarUrl || user?.avatar}
                 alt={`${user?.firstName} ${user?.lastName}`}
                 className="w-full h-full object-cover"
               />
@@ -171,7 +176,7 @@ export default function AgentDashboard() {
           {[
             { label: t('agentDash.dashboard.stats.totalSales'), value: `$${totalRevenue.toLocaleString()}`, icon: 'monitoring', color: 'text-indigo-600', bg: 'bg-indigo-50 border-indigo-100' },
             { label: t('agentDash.dashboard.stats.earned'), value: `$${Number(commissionSummary.totalEarned || 0).toLocaleString()}`, icon: 'account_balance_wallet', color: 'text-emerald-600', bg: 'bg-emerald-50 border-emerald-100' },
-            { label: t('agentDash.dashboard.stats.totalOrders'), value: orders.length, icon: 'inventory_2', color: 'text-sky-600', bg: 'bg-sky-50 border-sky-100' },
+            { label: t('agentDash.dashboard.stats.totalOrders'), value: totalOrders, icon: 'inventory_2', color: 'text-sky-600', bg: 'bg-sky-50 border-sky-100' },
             { label: t('agentDash.dashboard.stats.pending'), value: `$${Number(commissionSummary.totalPending || 0).toLocaleString()}`, icon: 'schedule', color: 'text-amber-600', bg: 'bg-amber-50 border-amber-100' },
           ].map((s) => (
             <div key={s.label} className="bg-white rounded-[2rem] p-6 border border-slate-100 shadow-[0_2px_15px_rgba(0,0,0,0.02)] flex flex-col justify-between hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition-all">
@@ -281,9 +286,9 @@ export default function AgentDashboard() {
                     <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mt-1">{c.createdAt ? new Date(c.createdAt).toLocaleDateString() : '—'}</p>
                   </div>
                   <span className={`text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider ${c.status === 'paid' ? 'bg-emerald-100 text-emerald-800' :
-                      c.status === 'approved' ? 'bg-sky-100 text-sky-800' :
-                        c.status === 'cancelled' ? 'bg-red-100 text-red-800' :
-                          'bg-amber-100 text-amber-800'
+                    c.status === 'approved' ? 'bg-sky-100 text-sky-800' :
+                      c.status === 'cancelled' ? 'bg-red-100 text-red-800' :
+                        'bg-amber-100 text-amber-800'
                     }`}>
                     {t(`common.status.${c.status}`, c.status)}
                   </span>

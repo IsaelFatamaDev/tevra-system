@@ -5,7 +5,7 @@ import { useCart } from '../../../core/hooks/useCart'
 import { useAuth } from '../../../core/contexts/AuthContext'
 import productsService from '../services/products.service'
 import reviewsService from '../services/reviews.service'
-import api from '../../../core/services/api'
+import { TEVRA_SUPPORT_WHATSAPP } from '../../../core/config/constants'
 
 export default function ProductDetailPage() {
   const { slug } = useParams()
@@ -38,9 +38,9 @@ export default function ProductDetailPage() {
             })
             .catch(() => { })
         }
-        // Fetch product reviews
-        api.get(`/reviews/product/${data.id}`)
-          .then(r => setReviews(Array.isArray(r) ? r : r?.items || []))
+        // Fetch product reviews (public — no auth needed)
+        reviewsService.findByProduct(data.id)
+          .then(list => setReviews(list))
           .catch(() => { })
       })
       .catch(() => setProduct(null))
@@ -61,9 +61,9 @@ export default function ProductDetailPage() {
       })
       setReviewSubmitted(true)
       setReviewForm({ rating: 5, title: '', comment: '' })
-      api.get(`/reviews/product/${product.id}`)
-        .then(r => setReviews(Array.isArray(r) ? r : r?.items || []))
-        .catch(() => {})
+      reviewsService.findByProduct(product.id)
+        .then(list => setReviews(list))
+        .catch(() => { })
     } catch {
       setReviewError('No se pudo enviar la reseña. Intenta de nuevo.')
     } finally {
@@ -80,7 +80,7 @@ export default function ProductDetailPage() {
       (product.brand ? `Marca: ${product.brand.name}\n` : '') +
       `\n¿Me pueden dar más información?`
     )
-    window.open(`https://wa.me/50370001234?text=${msg}`, '_blank')
+    window.open(`https://wa.me/${TEVRA_SUPPORT_WHATSAPP.replace(/\D/g, '')}?text=${msg}`, '_blank')
   }
 
   if (loading) {
@@ -120,7 +120,7 @@ export default function ProductDetailPage() {
             </>
           )}
           <span className="material-symbols-outlined text-xs">chevron_right</span>
-          <span className="text-primary font-semibold truncate max-w-[200px]">{product.name}</span>
+          <span className="text-primary font-semibold truncate max-w-50">{product.name}</span>
         </nav>
       </div>
 

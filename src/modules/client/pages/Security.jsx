@@ -142,7 +142,7 @@ export default function ClientSecurity() {
 
       {/* Tab Content: Profile */}
       {tab === 'profile' && (
-        <div className="bg-white rounded-[2rem] p-8 shadow-[0_2px_20px_rgba(0,0,0,0.02)] border border-slate-100">
+        <div className="bg-white rounded-4xl p-8 shadow-[0_2px_20px_rgba(0,0,0,0.02)] border border-slate-100">
 
           <div className="flex flex-col md:flex-row items-center md:items-start gap-8 mb-8 pb-8 border-b border-slate-100">
             <div className="shrink-0 relative group cursor-pointer">
@@ -186,7 +186,7 @@ export default function ClientSecurity() {
             <button
               onClick={handleProfileSave}
               disabled={profileSaving}
-              className="px-8 py-3.5 bg-slate-900 text-white rounded-2xl font-bold text-sm hover:bg-slate-800 transition-all shadow-[0_4px_20px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] disabled:opacity-50 flex items-center gap-2"
+              className="px-8 py-3.5 bg-slate-900 text-[#EBF2FA] rounded-2xl font-bold text-sm hover:bg-slate-800 transition-all shadow-[0_4px_20px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] disabled:opacity-50 flex items-center gap-2"
             >
               {profileSaving ? <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <span className="material-symbols-outlined text-[20px]">save</span>}
               {t('client.security.saveAllChanges')}
@@ -197,7 +197,7 @@ export default function ClientSecurity() {
 
       {/* Tab Content: Password */}
       {tab === 'password' && (
-        <div className="bg-white rounded-[2rem] p-8 shadow-[0_2px_20px_rgba(0,0,0,0.02)] border border-slate-100 max-w-2xl">
+        <div className="bg-white rounded-4xl p-8 shadow-[0_2px_20px_rgba(0,0,0,0.02)] border border-slate-100 max-w-2xl">
           <div className="flex items-center gap-4 mb-6">
             <div className="w-12 h-12 bg-slate-50 border border-slate-100 flex items-center justify-center rounded-2xl shrink-0">
               <span className="material-symbols-outlined text-slate-400">password</span>
@@ -226,7 +226,7 @@ export default function ClientSecurity() {
             <button
               onClick={handlePasswordChange}
               disabled={pwSaving}
-              className="px-8 py-3.5 bg-slate-900 text-white rounded-2xl font-bold text-sm hover:bg-slate-800 transition-all shadow-[0_4px_20px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] disabled:opacity-50 flex items-center gap-2"
+              className="px-8 py-3.5 bg-slate-900 text-[#EBF2FA] rounded-2xl font-bold text-sm hover:bg-slate-800 transition-all shadow-[0_4px_20px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] disabled:opacity-50 flex items-center gap-2"
             >
               {pwSaving ? <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <span className="material-symbols-outlined text-[20px]">enhanced_encryption</span>}
               {t('client.security.secureAccount')}

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { NavLink, useNavigate } from 'react-router-dom'
+import { NavLink, Link, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../../../core/contexts/AuthContext'
 import LanguageSwitcher from '../../../core/components/LanguageSwitcher'
@@ -31,20 +31,20 @@ export default function ClientHeader() {
   ]
 
   const roleLabel = isAgent ? t('agentDash.header.agentLabel') : t('client.header.myAccount')
-  const roleColor = isAgent ? 'from-emerald-500 to-teal-600' : 'from-primary to-primary-dark'
+  const roleColor = isAgent ? 'from-[#468189] to-[#77ACA2]' : 'from-[#031926] to-[#0d3349]'
 
   return (
-    <header className="sticky top-0 z-30 bg-white shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
-      <div className={`h-[3px] w-full bg-gradient-to-r ${roleColor}`} />
+    <header className="sticky top-0 z-30 bg-white border-b border-[#9DBEBB]/20 shadow-[0_1px_3px_rgba(3,25,38,0.06)]">
+      <div className={`h-0.75 w-full bg-linear-to-r ${roleColor}`} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-15 flex items-center justify-between gap-4">
         <div className="flex items-center gap-6">
-          <NavLink to={isAgent ? '/agente' : '/mi-cuenta'} className="flex items-center gap-2 flex-shrink-0">
-            <div className={`w-7 h-7 rounded-lg flex items-center justify-center bg-gradient-to-br ${roleColor} shadow-sm`}>
+          <NavLink to={isAgent ? '/agente' : '/mi-cuenta'} className="flex items-center gap-2 shrink-0">
+            <div className={`w-7 h-7 rounded-lg flex items-center justify-center bg-linear-to-br ${roleColor} shadow-sm`}>
               <span className="text-white font-black text-[11px]">TV</span>
             </div>
-            <span className="font-headline text-base font-extrabold text-on-background tracking-tight">
-              Te<span className="text-secondary">Vra</span>
+            <span className="font-headline text-base font-extrabold text-[#031926] tracking-tight">
+              Te<span className="text-[#468189]">Vra</span>
             </span>
           </NavLink>
 
@@ -55,24 +55,23 @@ export default function ClientHeader() {
                 to={item.to}
                 end={item.end}
                 className={({ isActive }) =>
-                  `relative flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
-                    isActive
-                      ? 'text-primary font-semibold bg-primary/5'
-                      : 'text-text-muted hover:text-on-background hover:bg-surface-container-low'
+                  `relative flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${isActive
+                    ? 'text-[#031926] font-semibold bg-[#468189]/8'
+                    : 'text-[#468189] hover:text-[#031926] hover:bg-[#9DBEBB]/15'
                   }`
                 }
               >
                 {({ isActive }) => (
                   <>
                     <span
-                      className={`material-symbols-outlined text-[16px] ${isActive ? 'text-primary' : ''}`}
+                      className={`material-symbols-outlined text-[16px] ${isActive ? 'text-[#031926]' : ''}`}
                       style={isActive ? { fontVariationSettings: "'FILL' 1" } : {}}
                     >
                       {item.icon}
                     </span>
                     {item.label}
                     {isActive && (
-                      <span className="absolute bottom-0 left-2 right-2 h-[2px] bg-primary rounded-t-full" />
+                      <span className="absolute bottom-0 left-2 right-2 h-0.5 bg-[#468189] rounded-t-full" />
                     )}
                   </>
                 )}
@@ -82,28 +81,35 @@ export default function ClientHeader() {
         </div>
 
         <div className="flex items-center gap-2">
-          <span className={`hidden sm:inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold text-white bg-gradient-to-r ${roleColor}`}>
+          <Link
+            to="/"
+            className="p-2 rounded-xl text-[#468189] hover:bg-[#9DBEBB]/15 hover:text-[#031926] transition-colors"
+            title="Ir al sitio web"
+          >
+            <span className="material-symbols-outlined text-[20px]">home</span>
+          </Link>
+          <span className={`hidden sm:inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold text-white bg-linear-to-r ${roleColor}`}>
             {roleLabel}
           </span>
 
           <LanguageSwitcher variant="dark" />
 
-          <div className="w-px h-5 bg-outline-variant/20 mx-0.5" />
+          <div className="w-px h-5 bg-[#9DBEBB]/30 mx-0.5" />
 
           <div className="flex items-center gap-2">
             {user?.avatarUrl ? (
-              <img src={user.avatarUrl} alt={user.firstName} className="w-8 h-8 rounded-full object-cover ring-2 ring-outline-variant/20" />
+              <img src={user.avatarUrl} alt={user.firstName} className="w-8 h-8 rounded-full object-cover ring-2 ring-[#9DBEBB]/30" />
             ) : (
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-[11px] bg-gradient-to-br ${roleColor}`}>
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-[11px] bg-linear-to-br ${roleColor}`}>
                 {user?.firstName?.[0]}{user?.lastName?.[0]}
               </div>
             )}
-            <span className="hidden lg:block text-sm font-semibold text-on-background">{user?.firstName}</span>
+            <span className="hidden lg:block text-sm font-semibold text-[#031926]">{user?.firstName}</span>
           </div>
 
           <button
             onClick={handleLogout}
-            className="p-2 rounded-xl text-text-muted hover:text-red-500 hover:bg-red-50 transition-colors"
+            className="p-2 rounded-xl text-[#9DBEBB] hover:text-red-500 hover:bg-red-50 transition-colors"
             title={t('common.logout')}
           >
             <span className="material-symbols-outlined text-[18px]">logout</span>
@@ -111,7 +117,7 @@ export default function ClientHeader() {
 
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="md:hidden p-2 rounded-xl text-text-muted hover:bg-surface-container-low transition-colors"
+            className="md:hidden p-2 rounded-xl text-[#468189] hover:bg-[#9DBEBB]/15 transition-colors"
           >
             <span className="material-symbols-outlined text-[20px]">{mobileOpen ? 'close' : 'menu'}</span>
           </button>
@@ -119,7 +125,7 @@ export default function ClientHeader() {
       </div>
 
       {mobileOpen && (
-        <div className="md:hidden border-t border-outline-variant/10 bg-white px-4 py-3 space-y-1">
+        <div className="md:hidden border-t border-[#9DBEBB]/20 bg-white px-4 py-3 space-y-1">
           {navItems.map((item) => (
             <NavLink
               key={item.to}
@@ -127,17 +133,16 @@ export default function ClientHeader() {
               end={item.end}
               onClick={() => setMobileOpen(false)}
               className={({ isActive }) =>
-                `flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${
-                  isActive
-                    ? 'bg-primary/8 text-primary font-semibold'
-                    : 'text-text-muted hover:bg-surface-container-low hover:text-on-background'
+                `flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${isActive
+                  ? 'bg-[#468189]/10 text-[#031926] font-semibold'
+                  : 'text-[#468189] hover:bg-[#9DBEBB]/15 hover:text-[#031926]'
                 }`
               }
             >
               {({ isActive }) => (
                 <>
                   <span
-                    className={`material-symbols-outlined text-[18px] ${isActive ? 'text-primary' : 'text-text-muted'}`}
+                    className={`material-symbols-outlined text-[18px] ${isActive ? 'text-[#031926]' : 'text-[#468189]'}`}
                     style={isActive ? { fontVariationSettings: "'FILL' 1" } : {}}
                   >
                     {item.icon}
@@ -147,7 +152,7 @@ export default function ClientHeader() {
               )}
             </NavLink>
           ))}
-          <div className="pt-2 mt-2 border-t border-outline-variant/10">
+          <div className="pt-2 mt-2 border-t border-[#9DBEBB]/20">
             <button
               onClick={handleLogout}
               className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-red-500 hover:bg-red-50 transition-all w-full"

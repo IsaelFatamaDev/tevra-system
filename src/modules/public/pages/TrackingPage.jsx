@@ -26,7 +26,7 @@ function EstadoStep({ estado, activo, completado, esUltimo }) {
   return (
     <div className="flex gap-4 sm:gap-6">
       <div className="flex flex-col items-center">
-        <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-500 ${completado ? `${estado.color} shadow-lg` :
+        <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-all duration-500 ${completado ? `${estado.color} shadow-lg` :
           activo ? `${estado.color} shadow-lg ring-4 ring-current/20 ${estado.textColor}` :
             'bg-surface-container border-2 border-outline-variant/30'
           }`}>
@@ -35,7 +35,7 @@ function EstadoStep({ estado, activo, completado, esUltimo }) {
           </span>
         </div>
         {!esUltimo && (
-          <div className={`w-0.5 flex-1 mt-1 min-h-[3rem] rounded-full transition-all duration-500 ${completado ? estado.color : 'bg-outline-variant/20'}`} />
+          <div className={`w-0.5 flex-1 mt-1 min-h-12 rounded-full transition-all duration-500 ${completado ? estado.color : 'bg-outline-variant/20'}`} />
         )}
       </div>
       <div className={`pb-8 flex-1 ${esUltimo ? 'pb-0' : ''}`}>
@@ -116,7 +116,7 @@ export default function TrackingPage() {
             </p>
             <form onSubmit={handleBuscar} className="flex flex-col sm:flex-row gap-3">
               <div className="flex-1 flex items-center bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl px-5 py-3.5 focus-within:border-white/40 transition-colors">
-                <span className="material-symbols-outlined text-white/50 mr-3 flex-shrink-0">search</span>
+                <span className="material-symbols-outlined text-white/50 mr-3 shrink-0">search</span>
                 <input
                   className="bg-transparent border-none focus:outline-none text-white placeholder:text-white/40 text-sm w-full font-mono tracking-wider"
                   placeholder={t('tracking.hero.placeholder')}
@@ -238,7 +238,7 @@ export default function TrackingPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {estadosPosibles.map((estado, i) => (
                 <div key={estado.id} className="bg-surface-container-lowest rounded-3xl p-7 shadow-soft flex gap-4 items-start" style={{ animation: `fade-up 0.6s cubic-bezier(0.16,1,0.3,1) ${i * 0.08 + 0.1}s both` }}>
-                  <div className={`w-12 h-12 ${estado.color} rounded-2xl flex items-center justify-center flex-shrink-0`}>
+                  <div className={`w-12 h-12 ${estado.color} rounded-2xl flex items-center justify-center shrink-0`}>
                     <span className="material-symbols-outlined text-white text-xl fill-icon">{estado.icon}</span>
                   </div>
                   <div>

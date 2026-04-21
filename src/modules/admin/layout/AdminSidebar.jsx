@@ -53,19 +53,19 @@ export default function AdminSidebar({ open, onClose }) {
         <div className="fixed inset-0 bg-black/30 z-40 lg:hidden" onClick={onClose} />
       )}
 
-      <aside className={`fixed top-0 left-0 z-50 h-screen w-60 flex flex-col bg-white border-r border-zinc-200 transition-transform duration-200 lg:translate-x-0 ${open ? 'translate-x-0' : '-translate-x-full'}`}>
+      <aside className={`fixed top-0 left-0 z-50 h-screen w-60 flex flex-col border-r border-[#9DBEBB]/20 transition-transform duration-200 lg:translate-x-0 ${open ? 'translate-x-0' : '-translate-x-full'}`} style={{ background: '#031926' }}>
 
-        <div className="flex items-center gap-2.5 px-5 h-14 border-b border-zinc-100 flex-shrink-0">
-          <div className="w-7 h-7 rounded-lg bg-zinc-900 flex items-center justify-center">
-            <span className="text-white font-bold text-[10px] tracking-tight">TV</span>
+        <div className="flex items-center gap-2.5 px-5 h-14 border-b border-[#EBF2FA]/8 shrink-0">
+          <div className="w-7 h-7 rounded-lg bg-linear-to-br from-[#468189] to-[#031926] flex items-center justify-center">
+            <span className="text-[#EBF2FA] font-bold text-[10px] tracking-tight">TV</span>
           </div>
           <div>
-            <p className="text-sm font-semibold text-zinc-900 tracking-tight">TeVra</p>
-            <p className="text-[10px] text-zinc-400 font-medium">{t('admin.sidebar.admin')}</p>
+            <p className="text-sm font-semibold text-[#EBF2FA] tracking-tight">TeVra</p>
+            <p className="text-[10px] text-[#9DBEBB] font-medium">{t('admin.sidebar.admin')}</p>
           </div>
           <button
             onClick={onClose}
-            className="ml-auto lg:hidden p-1 rounded-md text-zinc-400 hover:text-zinc-600 hover:bg-zinc-100 transition-colors"
+            className="ml-auto lg:hidden p-1 rounded-md text-[#9DBEBB] hover:text-[#EBF2FA] hover:bg-[#468189]/20 transition-colors"
           >
             <span className="material-symbols-outlined text-[18px]">close</span>
           </button>
@@ -74,7 +74,7 @@ export default function AdminSidebar({ open, onClose }) {
         <nav className="flex-1 py-3 px-3 overflow-y-auto sidebar-scroll">
           {navSections.map((section, idx) => (
             <div key={section.title} className={idx > 0 ? 'mt-5' : ''}>
-              <p className="px-2 mb-1 text-[10px] font-semibold uppercase tracking-wider text-zinc-400">{section.title}</p>
+              <p className="px-2 mb-1 text-[10px] font-semibold uppercase tracking-wider text-[#9DBEBB]/60">{section.title}</p>
               <div className="space-y-0.5">
                 {section.items.map((item) => (
                   <NavLink
@@ -84,15 +84,15 @@ export default function AdminSidebar({ open, onClose }) {
                     onClick={onClose}
                     className={({ isActive }) =>
                       `flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-[13px] font-medium transition-colors ${isActive
-                        ? 'bg-zinc-100 text-zinc-900'
-                        : 'text-zinc-500 hover:text-zinc-700 hover:bg-zinc-50'
+                        ? 'bg-[#468189]/25 text-[#EBF2FA]'
+                        : 'text-[#9DBEBB] hover:text-[#EBF2FA] hover:bg-[#468189]/15'
                       }`
                     }
                   >
                     {({ isActive }) => (
                       <>
                         <span
-                          className={`material-symbols-outlined text-[18px] ${isActive ? 'text-zinc-900' : 'text-zinc-400'}`}
+                          className={`material-symbols-outlined text-[18px] ${isActive ? 'text-[#EBF2FA]' : 'text-[#9DBEBB]'}`}
                           style={isActive ? { fontVariationSettings: "'FILL' 1" } : {}}
                         >
                           {item.icon}
@@ -107,21 +107,21 @@ export default function AdminSidebar({ open, onClose }) {
           ))}
         </nav>
 
-        <div className="border-t border-zinc-100 p-3 flex-shrink-0 space-y-2">
+        <div className="border-t border-[#EBF2FA]/8 p-3 shrink-0 space-y-2">
           <div className="px-2">
             <LanguageSwitcher variant="dark" />
           </div>
-          <div className="flex items-center gap-2.5 p-2 rounded-lg hover:bg-zinc-50 transition-colors group">
-            <div className="w-8 h-8 rounded-full bg-zinc-100 flex items-center justify-center text-zinc-600 font-semibold text-xs flex-shrink-0">
+          <div className="flex items-center gap-2.5 p-2 rounded-lg hover:bg-[#468189]/15 transition-colors group">
+            <div className="w-8 h-8 rounded-full bg-[#468189]/30 flex items-center justify-center text-[#EBF2FA] font-semibold text-xs shrink-0">
               {user?.firstName?.[0]}{user?.lastName?.[0]}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-[13px] font-medium text-zinc-900 truncate leading-tight">{user?.firstName} {user?.lastName}</p>
-              <p className="text-[10px] text-zinc-400 capitalize truncate leading-tight">{user?.role?.replace('_', ' ')}</p>
+              <p className="text-[13px] font-medium text-[#EBF2FA] truncate leading-tight">{user?.firstName} {user?.lastName}</p>
+              <p className="text-[10px] text-[#9DBEBB] capitalize truncate leading-tight">{user?.role?.replace('_', ' ')}</p>
             </div>
             <button
               onClick={handleLogout}
-              className="p-1 rounded-md text-zinc-400 hover:text-red-500 hover:bg-red-50 transition-colors opacity-0 group-hover:opacity-100"
+              className="p-1 rounded-md text-[#9DBEBB] hover:text-red-400 hover:bg-red-500/10 transition-colors opacity-0 group-hover:opacity-100"
               title={t('common.logout')}
             >
               <span className="material-symbols-outlined text-[16px]">logout</span>
