@@ -148,25 +148,20 @@
       "payment": "PAGO SEGURO"
     },
     "steps": {
-      "title": "Así de fácil comprar con TeVra",
-      "subtitle": "Sin trámites, sin complicaciones. Tú eliges, nosotros traemos.",
-      "step": "Paso",
-      "steps": [
+      "title": "Tu pedido en la puerta de tu casa",
+      "subtitle": "Un proceso transparente y seguro. Desde USA hasta tus manos sin complicaciones.",
+      "items": [
         {
-          "title": "Elige",
-          "description": "Navega por nuestros catálogos y encuentra el mejor producto que buscas."
+          "title": "Elige lo que quieras",
+          "desc": "Explora nuestro catálogo exclusivo o envíale a tu agente el link de cualquier producto de una tienda de USA."
         },
         {
-          "title": "¿No lo encuentras?",
-          "description": "Si no está en el catálogo, pega el link del producto de cualquier tienda USA y cotizamos por ti."
+          "title": "Cotiza y Paga",
+          "desc": "Tu agente calculará el precio exacto con envío incluido. Realiza tu pago 100% seguro."
         },
         {
-          "title": "Conecta",
-          "description": "Un agente verificado te brindará una cotización final con todo incluido hasta tu casa."
-        },
-        {
-          "title": "Recibe",
-          "description": "Relájate. Tu paquete llegará a tu domicilio en el tiempo acordado y con garantía total."
+          "title": "Recibe tu compra",
+          "desc": "Tu paquete viaja protegido directo a Perú. En 5 a 10 días hábiles lo recibirás en tus manos."
         }
       ]
     },

@@ -67,9 +67,9 @@ export default function CategoriesGrid() {
                   <div className="absolute inset-0 bg-linear-to-t from-[#031926]/90 via-[#031926]/20 to-transparent flex flex-col justify-end p-10">
                     <h4 className="text-[#F4E9CD] font-headline font-extrabold text-3xl">{cat.title}</h4>
                     <p className="text-[#F4E9CD]/70 mt-2">{cat.subtitle}</p>
-                    <button className="mt-6 w-fit bg-[#F4E9CD] text-[#031926] px-6 py-3 rounded-xl font-bold text-sm opacity-0 group-hover:opacity-100 transition-all translate-y-4 group-hover:translate-y-0 duration-500">
+                    <Link to="/catalogo" className="mt-6 w-fit bg-[#F4E9CD] text-[#031926] px-6 py-3 rounded-xl font-bold text-sm opacity-0 group-hover:opacity-100 transition-all translate-y-4 group-hover:translate-y-0 duration-500 block">
                       {t('home.categories.explore')}
-                    </button>
+                    </Link>
                   </div>
                 </div>
               )

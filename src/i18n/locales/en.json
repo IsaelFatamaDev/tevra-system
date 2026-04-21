@@ -148,25 +148,20 @@
       "payment": "SECURE PAYMENT"
     },
     "steps": {
-      "title": "It's that easy to shop with TeVra",
-      "subtitle": "No paperwork, no complications. You choose, we bring it to you.",
-      "step": "Step",
-      "steps": [
+      "title": "Your order delivered to your door",
+      "subtitle": "A transparent and secure process. From the USA to your hands without complications.",
+      "items": [
         {
-          "title": "Choose",
-          "description": "Browse our catalogs and find the best product you are looking for."
+          "title": "Choose what you want",
+          "desc": "Explore our exclusive catalog or send your agent the link to any product from a US store."
         },
         {
-          "title": "Can't find it?",
-          "description": "If it's not in the catalog, paste the product link from any US store and we will quote it for you."
+          "title": "Quote and Pay",
+          "desc": "Your agent will calculate the exact price with shipping included. Make your payment 100% secure."
         },
         {
-          "title": "Connect",
-          "description": "A verified agent will provide you with a final all-inclusive quote right to your door."
-        },
-        {
-          "title": "Receive",
-          "description": "Relax. Your package will arrive at your home within the agreed time frame and fully guaranteed."
+          "title": "Receive your purchase",
+          "desc": "Your package travels insured directly to Peru. We handle the paperwork. Receive it in 5 to 10 days!"
         }
       ]
     },

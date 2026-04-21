@@ -16,7 +16,7 @@ export default function HowItWorksSection() {
   const { ref: titleRef, isVisible: titleVisible } = useScrollReveal()
   const { ref: gridRef, isVisible: gridVisible } = useScrollReveal(0.05)
 
-  const steps = t('howItWorks.steps.items', { returnObjects: true })
+  const steps = t('home.steps.items', { returnObjects: true })
   if (!Array.isArray(steps)) return null
 
   return (
@@ -30,12 +30,12 @@ export default function HowItWorksSection() {
             </span>
           </div>
           <h2 className="font-headline font-extrabold text-primary tracking-tight mb-3" style={{ fontSize: 'clamp(1.8rem, 4vw, 2.8rem)' }}>
-            {t('howItWorks.steps.title')}
+            {t('home.steps.title')}
           </h2>
-          <p className="text-text-muted">{t('howItWorks.steps.subtitle')}</p>
+          <p className="text-text-muted">{t('home.steps.subtitle')}</p>
         </div>
 
-        <div ref={gridRef} className={`grid sm:grid-cols-2 lg:grid-cols-3 gap-5 reveal ${gridVisible ? 'visible' : ''}`}>
+        <div ref={gridRef} className={`grid sm:grid-cols-1 md:grid-cols-3 gap-5 reveal ${gridVisible ? 'visible' : ''}`}>
           {steps.map((step, i) => (
             <div
               key={i}
@@ -59,7 +59,7 @@ export default function HowItWorksSection() {
 
         <div className="text-center mt-12">
           <Link
-            to="/como-funciona"
+            to="/catalogo"
             className="inline-flex items-center gap-2 px-8 py-3.5 bg-primary text-[#EBF2FA] rounded-2xl font-headline font-bold hover:bg-secondary transition-colors shadow-md text-sm"
           >
             {t('howItWorks.exploreCta')}
