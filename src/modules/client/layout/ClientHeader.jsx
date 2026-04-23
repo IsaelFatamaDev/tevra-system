@@ -83,10 +83,11 @@ export default function ClientHeader() {
         <div className="flex items-center gap-2">
           <Link
             to="/"
-            className="p-2 rounded-xl text-[#468189] hover:bg-[#9DBEBB]/15 hover:text-[#031926] transition-colors"
-            title="Ir al sitio web"
+            className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-[#468189] hover:bg-[#9DBEBB]/15 hover:text-[#031926] transition-colors font-medium text-sm"
+            title={!isAgent ? "Seguir a comprar" : "Ir al sitio web"}
           >
             <span className="material-symbols-outlined text-[20px]">home</span>
+            {!isAgent && <span>Seguir a comprar</span>}
           </Link>
           <span className={`hidden sm:inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold text-white bg-linear-to-r ${roleColor}`}>
             {roleLabel}

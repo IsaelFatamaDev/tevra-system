@@ -18,6 +18,18 @@ const statusColors = {
   cancelled: 'bg-red-100 text-red-700',
 }
 
+function getTimelineProgress(currentStatus) {
+  if (currentStatus === 'cancelled') return -1;
+  if (['pending', 'confirmed', 'processing'].includes(currentStatus)) return 0;
+  if (['purchased_in_usa', 'shipped'].includes(currentStatus)) return 1;
+  if (['in_transit'].includes(currentStatus)) return 2;
+  if (['in_customs'].includes(currentStatus)) return 3;
+  if (['ready_for_delivery'].includes(currentStatus)) return 4;
+  if (['delivered'].includes(currentStatus)) return 5;
+
+  return 0;
+}
+
 export default function AgentOrders() {
   const { t } = useTranslation()
   const [orders, setOrders] = useState([])
@@ -25,6 +37,15 @@ export default function AgentOrders() {
   const [filter, setFilter] = useState('all')
   const [page, setPage] = useState(1)
   const [viewOrder, setViewOrder] = useState(null)
+
+  const timelineSteps = [
+    { id: 'pending', label: t('client.orders.detail.timeline.orderReceived'), icon: 'receipt_long' },
+    { id: 'purchased_in_usa', label: t('client.orders.detail.timeline.purchasedUSA'), icon: 'shopping_cart_checkout' },
+    { id: 'in_transit', label: t('client.orders.detail.timeline.traveling'), icon: 'flight_takeoff' },
+    { id: 'in_customs', label: t('client.orders.detail.timeline.inCustoms'), icon: 'inventory' },
+    { id: 'ready_for_delivery', label: t('client.orders.detail.timeline.readyDelivery'), icon: 'local_shipping' },
+    { id: 'delivered', label: t('client.orders.detail.timeline.delivered'), icon: 'check_circle' },
+  ]
 
   const handleViewOrder = async (order) => {
     try {
@@ -206,6 +227,54 @@ export default function AgentOrders() {
                         : viewOrder.shippingAddress || viewOrder.customer?.address || '—'}
                     </p>
                   </div>
+                </div>
+              </div>
+
+              {/* Advanced Timeline */}
+              <div className="bg-surface-container-low rounded-xl p-4">
+                <p className="text-[11px] text-text-muted font-semibold uppercase tracking-wider mb-4">{t('client.orders.detail.tracking')}</p>
+                <div className="relative pl-4">
+                  {viewOrder.status === 'cancelled' ? (
+                    <div className="flex items-start gap-4">
+                      <div className="w-8 h-8 rounded-full bg-red-100 text-red-600 flex items-center justify-center shrink-0 z-10 shadow-sm border border-white">
+                        <span className="material-symbols-outlined text-[16px]">cancel</span>
+                      </div>
+                      <div className="pt-1.5">
+                        <p className="font-bold text-on-background">{t('client.orders.detail.cancelled')}</p>
+                        <p className="text-xs text-text-muted mt-1">{t('client.orders.detail.cancelledDesc')}</p>
+                      </div>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="absolute left-8 top-4 bottom-4 w-px bg-outline-variant/50"></div>
+                      <div className="space-y-6">
+                        {timelineSteps.map((step, idx) => {
+                          const progress = getTimelineProgress(viewOrder.status);
+                          const isCompleted = idx <= progress;
+                          const isCurrent = idx === progress;
+
+                          return (
+                            <div key={step.id} className={`flex items-start gap-4 relative ${isCompleted ? 'opacity-100' : 'opacity-40 grayscale'}`}>
+                              {isCompleted && idx < timelineSteps.length - 1 && idx < progress && (
+                                <div className="absolute left-[15.5px] top-8 h-8 w-0.5 bg-primary -ml-[0.5px]"></div>
+                              )}
+                              <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 z-10 shadow-sm border-2 ${isCurrent ? 'bg-primary text-white border-primary ring-4 ring-primary/10' : (isCompleted ? 'bg-primary border-primary text-white' : 'bg-white border-outline-variant text-text-muted')}`}>
+                                <span className="material-symbols-outlined text-[14px]">
+                                  {isCompleted ? 'check' : step.icon}
+                                </span>
+                              </div>
+                              <div className="pt-1">
+                                <p className={`font-bold ${isCurrent ? 'text-on-background' : 'text-text-muted'}`}>{step.label}</p>
+                                {isCurrent && (
+                                  <p className="text-[11px] font-medium text-primary mt-1">{t('client.orders.detail.currentPhase')}</p>
+                                )}
+                              </div>
+                            </div>
+                          )
+                        })}
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
 

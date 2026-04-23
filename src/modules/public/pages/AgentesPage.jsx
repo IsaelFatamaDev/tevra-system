@@ -70,8 +70,7 @@ function HeroAgentes() {
             <img
               src={agentImage}
               alt="Agente TeVra"
-              className="relative rounded-3xl shadow-2xl object-cover w-full border-8 border-white/10"
-              style={{ aspectRatio: '4/5' }}
+              className="relative rounded-3xl shadow-2xl w-full h-auto border-8 border-white/10"
             />
           </div>
         </div>

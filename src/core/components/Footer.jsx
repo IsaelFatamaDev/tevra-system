@@ -19,8 +19,7 @@ export default function Footer() {
     {
       title: t('footer.sections.sell.title'),
       links: [
-        { label: t('footer.sections.sell.applyAgent'), href: '/agentes' },
-        { label: t('footer.sections.sell.agentProgram'), href: '/agentes#programa' },
+        { label: t('footer.sections.sell.agentProgram'), href: '/agentes' },
         { label: t('footer.sections.sell.aboutTevra'), href: '/empresa' },
       ],
     },
