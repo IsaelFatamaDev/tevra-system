@@ -47,7 +47,7 @@ export default function HeroSection() {
               {t('home.hero.exploreCatalog')}
             </Link>
             <Link
-              to="/directorio-agentes"
+              to="/cotizar-link"
               className="btn-ghost flex items-center gap-2"
               style={{ padding: 'clamp(0.75rem, 2vh, 1.1rem) clamp(1.5rem, 3vw, 2.25rem)', fontSize: 'clamp(0.875rem, 1.5vw, 1rem)' }}
             >

@@ -57,15 +57,12 @@ export default function AdminLayout() {
             <div className="flex items-center gap-1">
               <Link
                 to="/"
-                className="p-2 rounded-lg text-[#468189] hover:bg-[#9DBEBB]/20 hover:text-[#031926] transition-colors"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[#468189] hover:bg-[#9DBEBB]/20 hover:text-[#031926] transition-colors text-sm font-medium"
                 title="Ir al sitio web"
               >
-                <span className="material-symbols-outlined text-[20px]">home</span>
+                <span className="material-symbols-outlined text-[18px]">open_in_new</span>
+                Sitio web
               </Link>
-              <button className="relative p-2 rounded-lg text-[#468189] hover:bg-[#9DBEBB]/20 hover:text-[#031926] transition-colors">
-                <span className="material-symbols-outlined text-[20px]">notifications</span>
-                <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-[#468189] rounded-full ring-2 ring-white" />
-              </button>
 
               <div className="w-px h-5 bg-[#9DBEBB]/30 mx-1.5" />
 
