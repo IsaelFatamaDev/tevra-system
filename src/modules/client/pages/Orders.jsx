@@ -350,7 +350,7 @@ export default function ClientOrders() {
                     </div>
                     <div className="flex justify-between items-center text-slate-600">
                       <span>{t('client.orders.detail.tevraCost')}</span>
-                      <span className="font-semibold">${parseFloat(selectedOrder.tevraCommission || 0).toLocaleString()}</span>
+                      <span className="font-semibold">${parseFloat((parseFloat(selectedOrder.tevraCommission || 0) + parseFloat(selectedOrder.agentCommission || 0)).toFixed(2)).toLocaleString()}</span>
                     </div>
                     <div className="pt-4 mt-2 border-t border-slate-100 border-dashed flex justify-between items-center">
                       <span className="font-bold text-slate-900">{t('client.orders.detail.finalAmount')}</span>
@@ -405,6 +405,3 @@ export default function ClientOrders() {
     </div>
   )
 }
-
-
-

@@ -230,6 +230,10 @@ export default function AdminOrders() {
                 <div><p className="text-[11px] font-medium uppercase tracking-wider text-[#468189] mb-1">{t('admin.orders.estimatedDelivery')}</p><p className="font-medium text-[#031926]">{viewOrder.estimatedDeliveryDate ? new Date(viewOrder.estimatedDeliveryDate).toLocaleDateString('es-PE') : '—'}</p></div>
                 <div><p className="text-[11px] font-medium uppercase tracking-wider text-[#468189] mb-1">{t('admin.orders.subtotal')}</p><p className="font-medium text-[#031926]">${Number(viewOrder.subtotal || 0).toFixed(2)}</p></div>
                 <div><p className="text-[11px] font-medium uppercase tracking-wider text-[#468189] mb-1">{t('admin.orders.shipping')}</p><p className="font-medium text-[#031926]">${Number(viewOrder.shippingCost || 0).toFixed(2)}</p></div>
+                <div><p className="text-[11px] font-medium uppercase tracking-wider text-[#468189] mb-1">{t('admin.orders.tevraCost')}</p><p className="font-medium text-[#031926]">${Number(viewOrder.tevraCommission || 0).toFixed(2)}</p></div>
+                {Number(viewOrder.agentCommission || 0) > 0 && (
+                  <div><p className="text-[11px] font-medium uppercase tracking-wider text-[#468189] mb-1">{t('admin.orders.agentCommission')}</p><p className="font-medium text-[#031926]">${Number(viewOrder.agentCommission || 0).toFixed(2)}</p></div>
+                )}
                 <div><p className="text-[11px] font-medium uppercase tracking-wider text-[#468189] mb-1">{t('admin.orders.total')}</p><p className="font-semibold text-tevra-coral text-lg">${Number(viewOrder.total || 0).toFixed(2)}</p></div>
               </div>
 

@@ -827,6 +827,8 @@
       "estimatedDelivery": "Est. Delivery",
       "subtotal": "Subtotal",
       "shipping": "Shipping",
+      "tevraCost": "TeVra Commission",
+      "agentCommission": "Agent Commission",
       "total": "Total",
       "products": "Products",
       "quantity": "Qty:",
