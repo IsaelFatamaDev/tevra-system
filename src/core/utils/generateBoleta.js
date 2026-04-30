@@ -209,12 +209,40 @@ function renderInvoice(doc, order, finalH) {
   doc.text(usd(order.total), tx + totW - 5, y + 5.5, { align: 'right' })
   y += 16
 
-  if (order.agentCommission > 0) {
-    doc.setFontSize(6.5)
-    doc.setFont('helvetica', 'italic')
-    doc.setTextColor(...SUCCESS)
-    doc.text(`Agent commission: ${usd(order.agentCommission)}`, tx, y)
-    y += 5
+  if (order.agentCommission > 0 || order.etcFee > 0) {
+    y += 2
+    doc.setFillColor(...SURFACE)
+    doc.setDrawColor(...RULE)
+    doc.setLineWidth(0.2)
+    doc.roundedRect(tx, y - 1, totW, order.etcFee > 0 ? 18 : 7, 1, 1, 'FD')
+
+    doc.setFontSize(6)
+    doc.setFont('helvetica', 'bold')
+    doc.setTextColor(...INK_MUTED)
+    doc.text('COMMISSION BREAKDOWN', tx + 4, y + 3.5)
+    y += 6
+
+    if (order.agentCommission > 0) {
+      doc.setFontSize(6.5)
+      doc.setFont('helvetica', 'normal')
+      doc.setTextColor(...SUCCESS)
+      doc.text('Agent (12%):', tx + 4, y)
+      doc.text(usd(order.agentCommission), tx + totW - 4, y, { align: 'right' })
+      y += 4.5
+    }
+    if (order.etcFee > 0) {
+      doc.setTextColor(180, 100, 20)
+      doc.text('ETC Fund (3%):', tx + 4, y)
+      doc.text(usd(order.etcFee), tx + totW - 4, y, { align: 'right' })
+      y += 4.5
+    }
+    if (order.tevraProfitAmount > 0) {
+      doc.setTextColor(...ACCENT)
+      doc.text('TeVra (15%):', tx + 4, y)
+      doc.text(usd(order.tevraProfitAmount), tx + totW - 4, y, { align: 'right' })
+      y += 4.5
+    }
+    y += 2
   }
 
   if (order.notes) {

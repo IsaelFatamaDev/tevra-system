@@ -2,14 +2,33 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { TEVRA_SUPPORT_WHATSAPP, TEVRA_INSTAGRAM_URL } from '../../../core/config/constants'
+
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3001/api/v1'
+
 export default function ContactoPage() {
   const { t } = useTranslation()
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' })
   const [sent, setSent] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    setSent(true)
+    setError('')
+    setLoading(true)
+    try {
+      const res = await fetch(`${API_BASE}/contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      })
+      if (!res.ok) throw new Error('Error al enviar el mensaje')
+      setSent(true)
+    } catch {
+      setError('No se pudo enviar el mensaje. Intenta de nuevo o escríbenos por WhatsApp.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   const contactMethods = [
@@ -144,10 +163,13 @@ export default function ContactoPage() {
                         placeholder={t('contact.form.messagePlaceholder')}
                       />
                     </div>
-                    <button type="submit" className="w-full py-4 bg-primary text-white rounded-2xl font-headline font-bold text-sm hover:bg-secondary transition-colors shadow-lg flex items-center justify-center gap-2">
+                    <button type="submit" disabled={loading} className="w-full py-4 bg-primary text-white rounded-2xl font-headline font-bold text-sm hover:bg-secondary disabled:opacity-60 transition-colors shadow-lg flex items-center justify-center gap-2">
                       <span className="material-symbols-outlined text-base">send</span>
-                      {t('contact.form.send')}
+                      {loading ? 'Enviando...' : t('contact.form.send')}
                     </button>
+                    {error && (
+                      <p className="text-red-600 text-sm text-center">{error}</p>
+                    )}
                   </form>
                 </>
               )}

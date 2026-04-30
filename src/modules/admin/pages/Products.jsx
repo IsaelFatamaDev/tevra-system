@@ -7,7 +7,8 @@ import { useToast } from '../../../core/contexts/ToastContext'
 const API_BASE = import.meta.env.VITE_API_URL?.replace('/api/v1', '') || 'http://localhost:3001'
 const ITEMS_PER_PAGE = 10
 
-const EMPTY_FORM = { name: '', description: '', priceUsd: '', priceRefLocal: '', stockStatus: 'available', marginPct: '', isFeatured: false, categoryId: '', brandId: '' }
+const EMPTY_FORM = { name: '', description: '', descriptionEn: '', priceUsd: '', priceRefLocal: '', providerCostUsd: '', stockStatus: 'available', marginPct: '', isFeatured: false, categoryId: '', brandId: '' }
+const DEFAULT_GROSS_MARGIN = 30
 
 export default function AdminProducts() {
   const { t } = useTranslation()
@@ -70,8 +71,9 @@ export default function AdminProducts() {
   const openEdit = (prod) => {
     setSelected(prod)
     setForm({
-      name: prod.name || '', description: prod.description || '', priceUsd: prod.priceUsd || '',
-      priceRefLocal: prod.priceRefLocal || '', stockStatus: prod.stockStatus || 'available',
+      name: prod.name || '', description: prod.description || '', descriptionEn: prod.descriptionEn || '', priceUsd: prod.priceUsd || '',
+      priceRefLocal: prod.priceRefLocal || '', providerCostUsd: prod.providerCostUsd || '',
+      stockStatus: prod.stockStatus || 'available',
       marginPct: prod.marginPct || '', isFeatured: prod.isFeatured || false,
       categoryId: prod.category?.id || '', brandId: prod.brand?.id || '',
     })
@@ -356,10 +358,18 @@ export default function AdminProducts() {
               </div>
 
               <div>
-                <label className="block text-[11px] font-bold text-[#468189] uppercase tracking-widest mb-1.5">{t('admin.products.description')}</label>
+                <label className="block text-[11px] font-bold text-[#468189] uppercase tracking-widest mb-1.5">{t('admin.products.description')} <span className="text-[#9DBEBB] normal-case font-normal">(ES)</span></label>
                 <textarea value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} rows={3}
                   placeholder={t('admin.products.descriptionPlaceholder')}
                   className="w-full px-4 py-2.5 bg-white border border-[#9DBEBB]/20 rounded-xl text-sm focus:ring-2 focus:ring-[#9DBEBB]/15 focus:border-[#468189] outline-none transition-all resize-none placeholder:text-[#9DBEBB]" />
+              </div>
+
+              <div>
+                <label className="block text-[11px] font-bold text-[#468189] uppercase tracking-widest mb-1.5">{t('admin.products.descriptionEn')} <span className="text-[#9DBEBB] normal-case font-normal">(EN)</span></label>
+                <textarea value={form.descriptionEn} onChange={e => setForm({ ...form, descriptionEn: e.target.value })} rows={3}
+                  placeholder={t('admin.products.descriptionEnPlaceholder')}
+                  className="w-full px-4 py-2.5 bg-white border border-[#9DBEBB]/20 rounded-xl text-sm focus:ring-2 focus:ring-[#9DBEBB]/15 focus:border-[#468189] outline-none transition-all resize-none placeholder:text-[#9DBEBB]" />
+                <p className="text-[10px] text-[#9DBEBB] mt-1">{t('admin.products.descriptionEnHint')}</p>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
@@ -388,6 +398,27 @@ export default function AdminProducts() {
                 </div>
               </div>
 
+              {/* Provider Cost + Auto-Calc */}
+              <div>
+                <label className="block text-[11px] font-bold text-[#468189] uppercase tracking-widest mb-1.5">{t('admin.products.providerCostLabel')}</label>
+                <div className="relative flex items-center border border-[#9DBEBB]/20 rounded-xl focus-within:border-[#468189] focus-within:ring-2 focus-within:ring-[#9DBEBB]/15 transition-all">
+                  <span className="pl-4 text-[#468189] font-semibold">$</span>
+                  <input
+                    type="number" step="0.01"
+                    value={form.providerCostUsd}
+                    onChange={e => {
+                      const cost = parseFloat(e.target.value) || 0
+                      const margin = parseFloat(form.marginPct) || DEFAULT_GROSS_MARGIN
+                      const autoPrice = cost > 0 ? (cost / (1 - margin / 100)).toFixed(2) : ''
+                      setForm({ ...form, providerCostUsd: e.target.value, priceUsd: autoPrice })
+                      setFormErrors({ ...formErrors, priceUsd: '' })
+                    }}
+                    className="w-full pl-2 pr-4 py-2.5 bg-transparent text-sm font-semibold text-[#031926] outline-none" placeholder="0.00"
+                  />
+                </div>
+                <p className="text-[10px] text-[#9DBEBB] mt-1">{t('admin.products.providerCostHint')}</p>
+              </div>
+
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-[11px] font-bold text-[#468189] uppercase tracking-widest mb-1.5">{t('admin.products.priceUsdLabel')}</label>
@@ -412,8 +443,13 @@ export default function AdminProducts() {
                 <div>
                   <label className="block text-[11px] font-bold text-[#468189] uppercase tracking-widest mb-1.5">{t('admin.products.commissionPct')}</label>
                   <div className="relative flex items-center border border-[#9DBEBB]/20 rounded-xl focus-within:border-[#468189] focus-within:ring-2 focus-within:ring-[#9DBEBB]/15 transition-all">
-                    <input type="number" step="0.1" value={form.marginPct} onChange={e => setForm({ ...form, marginPct: e.target.value })}
-                      className="w-full pl-4 pr-8 py-2.5 bg-transparent text-sm font-semibold text-[#031926] outline-none" placeholder="10.0" />
+                    <input type="number" step="0.1" value={form.marginPct} onChange={e => {
+                      const margin = parseFloat(e.target.value) || DEFAULT_GROSS_MARGIN
+                      const cost = parseFloat(form.providerCostUsd) || 0
+                      const autoPrice = cost > 0 ? (cost / (1 - margin / 100)).toFixed(2) : form.priceUsd
+                      setForm({ ...form, marginPct: e.target.value, priceUsd: autoPrice })
+                    }}
+                      className="w-full pl-4 pr-8 py-2.5 bg-transparent text-sm font-semibold text-[#031926] outline-none" placeholder="30" />
                     <span className="absolute right-4 text-[#9DBEBB] font-bold">%</span>
                   </div>
                 </div>

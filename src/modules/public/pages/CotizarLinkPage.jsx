@@ -16,22 +16,22 @@ export default function CotizarLinkPage() {
 
   const buildWhatsAppMessage = () => {
     const agentName = selectedAgent
-      ? `${selectedAgent.name || 'Agente'}`
-      : 'equipo de TeVra'
+      ? `${selectedAgent.name || t('common.agent', 'Agente')}`
+      : t('cotizarLink.teamName', 'equipo de TeVra')
 
-    let msg = `Hola ${agentName}, me gustaría cotizar el siguiente producto de USA:\n\n`
+    let msg = `${t('cotizarLink.msgGreeting', { agentName })}\n\n`
     msg += `🔗 ${url.trim()}\n`
     if (notes.trim()) {
-      msg += `\n📝 ${notes.trim()}\n`
+      msg += `\n${t('cotizarLink.msgNotes', { notes: notes.trim() })}\n`
     }
-    msg += `\n¿Podrías darme el precio total con envío incluido hasta Perú? Gracias 🙏`
+    msg += `\n${t('cotizarLink.msgQuestion')}`
     return msg
   }
 
   const handleSend = () => {
     const phone = (selectedAgent?.whatsapp || '').replace(/[^0-9]/g, '')
     if (!phone) {
-      alert('Selecciona un agente con número de WhatsApp para enviar la cotización.')
+      alert(t('cotizarLink.noAgentAlert'))
       return
     }
     const msg = encodeURIComponent(buildWhatsAppMessage())
@@ -51,14 +51,14 @@ export default function CotizarLinkPage() {
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-secondary/10 rounded-full border border-secondary/20 mb-4">
             <span className="material-symbols-outlined text-secondary text-sm">link</span>
             <span className="text-secondary text-[11px] font-black uppercase tracking-widest">
-              Cotizar por Link
+              {t('cotizarLink.badge')}
             </span>
           </div>
           <h1 className="font-headline font-extrabold text-3xl text-primary mb-2">
-            ¿No encuentras lo que buscas?
+            {t('cotizarLink.title')}
           </h1>
           <p className="text-text-muted max-w-md mx-auto">
-            Pega el link del producto de cualquier tienda de USA y tu agente te cotizará el precio total con envío incluido.
+            {t('cotizarLink.subtitle')}
           </p>
         </div>
 
@@ -67,7 +67,7 @@ export default function CotizarLinkPage() {
           {/* URL Input */}
           <div>
             <label className="block text-sm font-bold text-primary mb-2">
-              Link del producto <span className="text-red-400">*</span>
+              {t('cotizarLink.linkLabel')} <span className="text-red-400">{t('cotizarLink.linkRequired')}</span>
             </label>
             <div className="flex items-center gap-3 px-4 py-3 rounded-xl border border-outline-variant/30 bg-surface-container-low focus-within:border-primary/50 transition-colors">
               <span className="material-symbols-outlined text-text-muted text-xl shrink-0">link</span>
@@ -75,7 +75,7 @@ export default function CotizarLinkPage() {
                 type="url"
                 value={url}
                 onChange={e => setUrl(e.target.value)}
-                placeholder="https://www.amazon.com/dp/..."
+                placeholder={t('cotizarLink.linkPlaceholder')}
                 className="flex-1 bg-transparent text-sm focus:outline-none placeholder:text-text-muted/50"
               />
               {isValidUrl && (
@@ -83,28 +83,28 @@ export default function CotizarLinkPage() {
               )}
             </div>
             <p className="text-xs text-text-muted mt-1.5">
-              Amazon, Nike, Apple, Walmart, eBay, Target y cualquier otra tienda USA.
+              {t('cotizarLink.linkHint')}
             </p>
           </div>
 
           {/* Notes */}
           <div>
             <label className="block text-sm font-bold text-primary mb-2">
-              Notas adicionales{' '}
-              <span className="text-text-muted font-normal">(opcional)</span>
+              {t('cotizarLink.notesLabel')}{' '}
+              <span className="text-text-muted font-normal">{t('cotizarLink.notesOptional')}</span>
             </label>
             <textarea
               value={notes}
               onChange={e => setNotes(e.target.value)}
               rows={3}
-              placeholder="Ej: talla M, color negro, modelo específico..."
+              placeholder={t('cotizarLink.notesPlaceholder')}
               className="w-full px-4 py-3 rounded-xl border border-outline-variant/30 bg-surface-container-low text-sm focus:outline-none focus:border-primary/50 transition-colors resize-none placeholder:text-text-muted/50"
             />
           </div>
 
           {/* Agent selection */}
           <div className="rounded-2xl border border-outline-variant/15 bg-surface-container p-4">
-            <p className="text-xs font-bold uppercase tracking-widest text-text-muted mb-3">Tu Agente</p>
+            <p className="text-xs font-bold uppercase tracking-widest text-text-muted mb-3">{t('cotizarLink.agentLabel')}</p>
             {selectedAgent ? (
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
@@ -122,19 +122,19 @@ export default function CotizarLinkPage() {
                   to="/directorio-agentes"
                   className="text-xs text-secondary font-bold hover:underline shrink-0"
                 >
-                  Cambiar
+                  {t('cotizarLink.changeAgent')}
                 </Link>
               </div>
             ) : (
               <div className="flex items-center justify-between gap-3">
                 <p className="text-sm text-text-muted">
-                  Selecciona un agente para enviar tu cotización
+                  {t('cotizarLink.agentSelectMsg')}
                 </p>
                 <Link
                   to="/directorio-agentes"
                   className="px-4 py-2 bg-primary text-white text-xs font-bold rounded-xl hover:bg-secondary transition-colors whitespace-nowrap"
                 >
-                  Elegir agente
+                  {t('cotizarLink.chooseAgent')}
                 </Link>
               </div>
             )}
@@ -145,14 +145,14 @@ export default function CotizarLinkPage() {
             <div>
               <p className="text-xs font-bold uppercase tracking-widest text-text-muted mb-2 flex items-center gap-2">
                 <span className="material-symbols-outlined text-sm">preview</span>
-                Vista previa del mensaje
+                {t('cotizarLink.previewLabel')}
               </p>
               <div className="bg-[#e5ddd5] rounded-xl p-4">
                 <div className="bg-[#dcf8c6] rounded-xl p-4 max-w-xs ml-auto shadow-sm">
                   <pre className="whitespace-pre-wrap text-xs text-gray-800 font-sans leading-relaxed">
                     {buildWhatsAppMessage()}
                   </pre>
-                  <p className="text-right text-[10px] text-gray-500 mt-2">Ahora ✓✓</p>
+                  <p className="text-right text-[10px] text-gray-500 mt-2">{t('cotizarLink.now')} ✓✓</p>
                 </div>
               </div>
             </div>
@@ -166,7 +166,7 @@ export default function CotizarLinkPage() {
               className="w-full bg-[#25D366] hover:bg-[#1ebd5e] text-white py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-lg shadow-green-200 disabled:opacity-40 disabled:cursor-not-allowed text-base"
             >
               <span className="material-symbols-outlined">chat</span>
-              Enviar cotización por WhatsApp
+              {t('cotizarLink.sendBtn')}
             </button>
           ) : (
             <Link
@@ -174,23 +174,23 @@ export default function CotizarLinkPage() {
               className="w-full bg-primary hover:bg-secondary text-white py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 transition-colors shadow-lg text-base"
             >
               <span className="material-symbols-outlined">login</span>
-              Inicia sesión para cotizar
+              {t('cotizarLink.loginBtn')}
             </Link>
           )}
 
           {!selectedAgent && isAuthenticated && isValidUrl && (
             <p className="text-center text-xs text-amber-600 font-medium">
-              Debes seleccionar un agente antes de enviar.
+              {t('cotizarLink.needAgent')}
             </p>
           )}
         </div>
 
         <p className="text-center text-xs text-text-muted mt-6">
-          También puedes{' '}
+          {t('cotizarLink.footer')}{' '}
           <Link to="/catalogo" className="text-secondary font-bold hover:underline">
-            explorar nuestro catálogo
+            {t('cotizarLink.footerLink')}
           </Link>{' '}
-          con miles de productos listos para cotizar.
+          {t('cotizarLink.footerEnd')}
         </p>
       </div>
     </main>

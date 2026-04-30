@@ -19,9 +19,12 @@ export default function ProductDetailPage() {
   const [reviewSubmitting, setReviewSubmitting] = useState(false)
   const [reviewSubmitted, setReviewSubmitted] = useState(false)
   const [reviewError, setReviewError] = useState('')
+  const [showReviewForm, setShowReviewForm] = useState(false)
   const { addItem } = useCart()
   const { isAuthenticated, user } = useAuth()
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+
+  const currentLang = i18n.language || 'es'
 
   useEffect(() => {
     setLoading(true)
@@ -192,7 +195,9 @@ export default function ProductDetailPage() {
             </div>
 
             {/* Description */}
-            <p className="text-on-surface-variant leading-relaxed text-sm">{product.description}</p>
+            <p className="text-on-surface-variant leading-relaxed text-sm">
+              {(currentLang.startsWith('en') && product.descriptionEn) ? product.descriptionEn : product.description}
+            </p>
 
             {/* Specifications */}
             {specs.length > 0 && (
@@ -270,71 +275,92 @@ export default function ProductDetailPage() {
           <p className="text-on-surface-variant text-sm mt-1">{t('product.reviewsDesc')}</p>
         </div>
 
-        {/* Review submission form */}
+        {/* Review submission */}
         {isAuthenticated ? (
-          <div className="bg-white rounded-2xl border border-outline-variant/20 p-6 shadow-sm">
-            <h3 className="font-headline font-bold text-primary text-lg mb-4">Deja tu reseña</h3>
-            {reviewSubmitted ? (
-              <div className="flex items-center gap-3 text-mint py-4">
-                <span className="material-symbols-outlined text-2xl">check_circle</span>
-                <p className="font-bold">¡Gracias por tu reseña! Será publicada pronto.</p>
-              </div>
-            ) : (
-              <form onSubmit={handleReviewSubmit} className="space-y-4">
-                <div>
-                  <p className="text-sm font-bold text-primary mb-2">Calificación</p>
-                  <div className="flex gap-1">
-                    {[1, 2, 3, 4, 5].map(star => (
-                      <button
-                        key={star}
-                        type="button"
-                        onClick={() => setReviewForm(f => ({ ...f, rating: star }))}
-                        className="text-2xl transition-transform hover:scale-110"
-                      >
-                        <span
-                          className="material-symbols-outlined text-amber-400"
-                          style={{ fontVariationSettings: star <= reviewForm.rating ? "'FILL' 1" : "'FILL' 0" }}
-                        >star</span>
-                      </button>
-                    ))}
+          <div>
+            {!showReviewForm && !reviewSubmitted && (
+              <button
+                onClick={() => setShowReviewForm(true)}
+                className="inline-flex items-center gap-2 px-6 py-3 border-2 border-primary text-primary rounded-xl font-headline font-bold text-sm hover:bg-primary hover:text-white transition-all"
+              >
+                <span className="material-symbols-outlined text-base">rate_review</span>
+                {t('product.leaveReview')}
+              </button>
+            )}
+            {showReviewForm && (
+              <div className="bg-white rounded-2xl border border-outline-variant/20 p-6 shadow-sm">
+                <h3 className="font-headline font-bold text-primary text-lg mb-4">{t('product.leaveReviewTitle')}</h3>
+                {reviewSubmitted ? (
+                  <div className="flex items-center gap-3 text-mint py-4">
+                    <span className="material-symbols-outlined text-2xl">check_circle</span>
+                    <p className="font-bold">{t('product.reviewThanks')}</p>
                   </div>
-                </div>
-                <input
-                  type="text"
-                  placeholder="Título (opcional)"
-                  value={reviewForm.title}
-                  onChange={e => setReviewForm(f => ({ ...f, title: e.target.value }))}
-                  className="w-full px-4 py-3 rounded-xl border border-outline-variant/30 bg-surface-container-low text-sm focus:outline-none focus:border-primary/50 transition-colors"
-                />
-                <textarea
-                  placeholder="Cuéntanos tu experiencia con este producto..."
-                  value={reviewForm.comment}
-                  onChange={e => setReviewForm(f => ({ ...f, comment: e.target.value }))}
-                  rows={4}
-                  required
-                  className="w-full px-4 py-3 rounded-xl border border-outline-variant/30 bg-surface-container-low text-sm focus:outline-none focus:border-primary/50 transition-colors resize-none"
-                />
-                {reviewError && <p className="text-red-500 text-xs">{reviewError}</p>}
-                <button
-                  type="submit"
-                  disabled={reviewSubmitting || !reviewForm.comment.trim()}
-                  className="px-8 py-3 bg-primary text-white rounded-xl font-headline font-bold text-sm hover:bg-secondary transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-                >
-                  {reviewSubmitting && <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />}
-                  {reviewSubmitting ? 'Enviando...' : 'Publicar reseña'}
-                </button>
-              </form>
+                ) : (
+                  <form onSubmit={handleReviewSubmit} className="space-y-4">
+                    <div>
+                      <p className="text-sm font-bold text-primary mb-2">{t('product.reviewRating')}</p>
+                      <div className="flex gap-1">
+                        {[1, 2, 3, 4, 5].map(star => (
+                          <button
+                            key={star}
+                            type="button"
+                            onClick={() => setReviewForm(f => ({ ...f, rating: star }))}
+                            className="text-2xl transition-transform hover:scale-110"
+                          >
+                            <span
+                              className="material-symbols-outlined text-amber-400"
+                              style={{ fontVariationSettings: star <= reviewForm.rating ? "'FILL' 1" : "'FILL' 0" }}
+                            >star</span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    <input
+                      type="text"
+                      placeholder={t('product.reviewTitlePlaceholder')}
+                      value={reviewForm.title}
+                      onChange={e => setReviewForm(f => ({ ...f, title: e.target.value }))}
+                      className="w-full px-4 py-3 rounded-xl border border-outline-variant/30 bg-surface-container-low text-sm focus:outline-none focus:border-primary/50 transition-colors"
+                    />
+                    <textarea
+                      placeholder={t('product.reviewCommentPlaceholder')}
+                      value={reviewForm.comment}
+                      onChange={e => setReviewForm(f => ({ ...f, comment: e.target.value }))}
+                      rows={4}
+                      required
+                      className="w-full px-4 py-3 rounded-xl border border-outline-variant/30 bg-surface-container-low text-sm focus:outline-none focus:border-primary/50 transition-colors resize-none"
+                    />
+                    {reviewError && <p className="text-red-500 text-xs">{reviewError}</p>}
+                    <div className="flex items-center gap-3">
+                      <button
+                        type="submit"
+                        disabled={reviewSubmitting || !reviewForm.comment.trim()}
+                        className="px-8 py-3 bg-primary text-white rounded-xl font-headline font-bold text-sm hover:bg-secondary transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                      >
+                        {reviewSubmitting && <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />}
+                        {reviewSubmitting ? t('product.reviewSubmitting') : t('product.reviewSubmit')}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setShowReviewForm(false)}
+                        className="px-4 py-3 text-text-muted text-sm hover:text-primary transition-colors"
+                      >
+                        {t('common.cancel', 'Cancelar')}
+                      </button>
+                    </div>
+                  </form>
+                )}
+              </div>
             )}
           </div>
         ) : (
-          <div className="bg-surface-container-low rounded-2xl border border-outline-variant/20 p-6 text-center">
-            <span className="material-symbols-outlined text-3xl text-text-muted mb-2 block">rate_review</span>
-            <p className="text-text-muted text-sm mb-3">Inicia sesión para dejar una reseña</p>
-            <Link to="/login" className="inline-flex items-center gap-2 px-6 py-2 bg-primary text-white rounded-xl font-bold text-sm hover:bg-secondary transition-colors">
-              <span className="material-symbols-outlined text-base">login</span>
-              Iniciar sesión
-            </Link>
-          </div>
+          <Link
+            to={`/login?redirect=/producto/${product?.slug}`}
+            className="inline-flex items-center gap-2 px-6 py-3 border-2 border-primary text-primary rounded-xl font-headline font-bold text-sm hover:bg-primary hover:text-white transition-all"
+          >
+            <span className="material-symbols-outlined text-base">rate_review</span>
+            {t('product.leaveReview')}
+          </Link>
         )}
 
         {/* Existing reviews */}

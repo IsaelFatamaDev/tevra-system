@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useCart } from '../../../core/hooks/useCart'
+import { useAuth } from '../../../core/contexts/AuthContext'
+import ReviewModal from '../../../core/components/ReviewModal'
 import agentsService from '../services/agents.service'
 import reviewsService from '../services/reviews.service'
 
@@ -10,9 +12,11 @@ export default function AgentProfilePage() {
   const navigate = useNavigate()
   const { t } = useTranslation()
   const { setSelectedAgent, items } = useCart()
+  const { user } = useAuth()
   const [agent, setAgent] = useState(null)
   const [loading, setLoading] = useState(true)
   const [reviews, setReviews] = useState([])
+  const [reviewModalOpen, setReviewModalOpen] = useState(false)
 
   useEffect(() => {
     setLoading(true)
@@ -22,23 +26,28 @@ export default function AgentProfilePage() {
       .finally(() => setLoading(false))
   }, [code])
 
-  useEffect(() => {
+  const loadReviews = () => {
     if (!agent?.id) return
     reviewsService.findByAgent(agent.id)
       .then(list => { if (Array.isArray(list)) setReviews(list) })
       .catch(() => { })
+  }
+
+  useEffect(() => {
+    loadReviews()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [agent?.id])
 
   const handleSelectAgent = () => {
     if (!agent) return
     const user = agent.user || agent || {}
-    const avatarUrl = agent.avatarUrl || user.avatar || user.avatarUrl || null;
+    const avatarUrl = agent.avatarUrl || agentUser.avatar || agentUser.avatarUrl || null;
     setSelectedAgent({
       id: agent.id,
       code: agent.referralCode || code,
-      name: `${user.firstName || ''} ${user.lastName || ''}`.trim(),
+      name: `${agentUser.firstName || ''} ${agentUser.lastName || ''}`.trim(),
       city: agent.city,
-      whatsapp: user.phone || agent.whatsapp || '',
+      whatsapp: agentUser.phone || agent.whatsapp || '',
       avatar: avatarUrl,
     })
     navigate(items.length > 0 ? '/cotizar' : '/catalogo')
@@ -62,10 +71,10 @@ export default function AgentProfilePage() {
     )
   }
 
-  const user = agent.user || agent || {}
-  const name = `${user.firstName || ''} ${user.lastName || ''}`.trim() || 'Agente TeVra'
-  const initials = `${(user.firstName || 'A')[0]}${(user.lastName || '')[0] || ''}`.toUpperCase()
-  const avatarUrl = agent.avatarUrl || user.avatar || user.avatarUrl || null;
+  const agentUser = agent.user || agent || {}
+  const name = `${agentUser.firstName || ''} ${agentUser.lastName || ''}`.trim() || 'Agente TeVra'
+  const initials = `${(agentUser.firstName || 'A')[0]}${(agentUser.lastName || '')[0] || ''}`.toUpperCase()
+  const avatarUrl = agent.avatarUrl || agentUser.avatar || agentUser.avatarUrl || null;
 
   return (
     <main className="min-h-screen bg-background-cream" style={{ paddingTop: 'clamp(3.5rem, 8vh, 5rem)' }}>
@@ -171,10 +180,27 @@ export default function AgentProfilePage() {
             )}
 
             {/* Reviews */}
-            {reviews.length > 0 && (
-              <div className="bg-surface-container-lowest rounded-2xl p-8 shadow-soft space-y-5">
-                <div className="flex items-center justify-between">
-                  <h2 className="font-headline font-bold text-lg text-primary">Reseñas</h2>
+            <div className="bg-surface-container-lowest rounded-2xl p-8 shadow-soft space-y-5">
+              <div className="flex items-center justify-between">
+                <h2 className="font-headline font-bold text-lg text-primary">Reseñas</h2>
+                <div className="flex items-center gap-3">
+                  {user ? (
+                    <button
+                      onClick={() => setReviewModalOpen(true)}
+                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-primary text-white text-xs font-bold hover:bg-secondary transition-colors"
+                    >
+                      <span className="material-symbols-outlined text-[14px]">rate_review</span>
+                      Dejar reseña
+                    </button>
+                  ) : (
+                    <Link
+                      to="/login"
+                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl border border-primary/20 text-primary text-xs font-bold hover:bg-primary/5 transition-colors"
+                    >
+                      <span className="material-symbols-outlined text-[14px]">rate_review</span>
+                      Dejar reseña
+                    </Link>
+                  )}
                   <div className="flex items-center gap-1.5">
                     <div className="flex text-amber-400">
                       {[...Array(5)].map((_, i) => (
@@ -185,47 +211,50 @@ export default function AgentProfilePage() {
                     <span className="text-xs text-text-muted">({reviews.length} reseñas)</span>
                   </div>
                 </div>
-                <div className="space-y-4">
-                  {reviews.map(review => (
-                    <div key={review.id} className="border-b border-outline-variant/10 pb-4 last:border-0 last:pb-0">
-                      <div className="flex items-start gap-3">
-                        <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary shrink-0">
-                          {(review.reviewer?.firstName?.[0] || 'C')}{(review.reviewer?.lastName?.[0] || '')}
+              </div>
+              {reviews.length === 0 && (
+                <p className="text-sm text-text-muted text-center py-4">Aún no hay reseñas. ¡Sé el primero!</p>
+              )}
+              <div className="space-y-4">
+                {reviews.map(review => (
+                  <div key={review.id} className="border-b border-outline-variant/10 pb-4 last:border-0 last:pb-0">
+                    <div className="flex items-start gap-3">
+                      <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary shrink-0">
+                        {(review.reviewer?.firstName?.[0] || 'C')}{(review.reviewer?.lastName?.[0] || '')}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between gap-2 mb-1">
+                          <span className="text-sm font-bold text-primary truncate">
+                            {review.reviewer?.firstName || 'Cliente'} {review.reviewer?.lastName?.[0] ? `${review.reviewer.lastName[0]}.` : ''}
+                          </span>
+                          <span className="text-xs text-text-muted shrink-0">
+                            {review.createdAt ? new Date(review.createdAt).toLocaleDateString('es-PE', { day: '2-digit', month: 'short', year: 'numeric' }) : ''}
+                          </span>
                         </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center justify-between gap-2 mb-1">
-                            <span className="text-sm font-bold text-primary truncate">
-                              {review.reviewer?.firstName || 'Cliente'} {review.reviewer?.lastName?.[0] ? `${review.reviewer.lastName[0]}.` : ''}
-                            </span>
-                            <span className="text-xs text-text-muted shrink-0">
-                              {review.createdAt ? new Date(review.createdAt).toLocaleDateString('es-PE', { day: '2-digit', month: 'short', year: 'numeric' }) : ''}
-                            </span>
-                          </div>
-                          <div className="flex text-amber-400 mb-1.5">
-                            {[...Array(review.rating || 5)].map((_, j) => (
-                              <span key={j} className="material-symbols-outlined text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
-                            ))}
-                          </div>
-                          {review.title && <p className="text-sm font-semibold text-primary mb-1">{review.title}</p>}
-                          {(review.body || review.comment) && (
-                            <p className="text-sm text-text-muted leading-relaxed">"{review.body || review.comment}"</p>
-                          )}
+                        <div className="flex text-amber-400 mb-1.5">
+                          {[...Array(review.rating || 5)].map((_, j) => (
+                            <span key={j} className="material-symbols-outlined text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                          ))}
                         </div>
+                        {review.title && <p className="text-sm font-semibold text-primary mb-1">{review.title}</p>}
+                        {(review.body || review.comment) && (
+                          <p className="text-sm text-text-muted leading-relaxed">"{review.body || review.comment}"</p>
+                        )}
                       </div>
                     </div>
-                  ))}
-                </div>
+                  </div>
+                ))}
               </div>
-            )}
+            </div>
           </div>
 
           {/* Right: Action card */}
           <div className="lg:col-span-1">
             <div className="bg-surface-container-lowest rounded-2xl p-6 shadow-soft sticky top-28 space-y-5">
-              <h3 className="font-headline font-bold text-lg text-primary">{t('agentProfile.quoteWith', { name: user.firstName || 'este agente' })}</h3>
+              <h3 className="font-headline font-bold text-lg text-primary">{t('agentProfile.quoteWith', { name: agentUser.firstName || 'este agente' })}</h3>
               <p className="text-sm text-text-muted">
                 {items.length > 0
-                  ? t('agentProfile.hasItemsDesc', { count: items.length, name: user.firstName || 'este agente' })
+                  ? t('agentProfile.hasItemsDesc', { count: items.length, name: agentUser.firstName || 'este agente' })
                   : t('agentProfile.noItemsDesc')}
               </p>
 
@@ -264,6 +293,15 @@ export default function AgentProfilePage() {
           </div>
         </div>
       </section>
+
+      <ReviewModal
+        isOpen={reviewModalOpen}
+        onClose={() => setReviewModalOpen(false)}
+        type="agent"
+        targetId={agent?.id}
+        targetName={name}
+        onSubmitted={() => { setReviewModalOpen(false); loadReviews() }}
+      />
     </main>
   )
 }

@@ -31,6 +31,7 @@ export function AuthProvider({ children }) {
           role: data.role,
           avatarUrl: data.avatarUrl,
           tenantId: data.tenantId,
+          emailVerified: data.emailVerified ?? true,
         };
         sessionStorage.setItem('tevra_user', JSON.stringify(validated));
         setUser(validated);
@@ -80,10 +81,15 @@ export function AuthProvider({ children }) {
         role: data.role,
         avatarUrl: data.avatarUrl,
         tenantId: data.tenantId,
+        emailVerified: data.emailVerified ?? true,
       };
       sessionStorage.setItem('tevra_user', JSON.stringify(updated));
       setUser(updated);
     } catch { /* ignore */ }
+  }, []);
+
+  const resendVerificationEmail = useCallback(async () => {
+    await api.post('/auth/resend-verification');
   }, []);
 
   const logout = useCallback(() => {
@@ -91,7 +97,7 @@ export function AuthProvider({ children }) {
   }, [clearSession]);
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout, refreshUser, isAuthenticated: !!user }}>
+    <AuthContext.Provider value={{ user, loading, login, register, logout, refreshUser, resendVerificationEmail, isAuthenticated: !!user }}>
       {children}
     </AuthContext.Provider>
   );

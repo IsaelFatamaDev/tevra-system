@@ -57,13 +57,20 @@ export default function HowItWorksSection() {
           ))}
         </div>
 
-        <div className="text-center mt-12">
+        <div className="flex flex-wrap justify-center gap-4 mt-12">
           <Link
             to="/catalogo"
             className="inline-flex items-center gap-2 px-8 py-3.5 bg-primary text-[#EBF2FA] rounded-2xl font-headline font-bold hover:bg-secondary transition-colors shadow-md text-sm"
           >
             {t('howItWorks.exploreCta')}
             <span className="material-symbols-outlined text-base">arrow_forward</span>
+          </Link>
+          <Link
+            to="/directorio-agentes"
+            className="inline-flex items-center gap-2 px-8 py-3.5 bg-white text-primary border border-primary/20 rounded-2xl font-headline font-bold hover:bg-primary/5 transition-colors shadow-md text-sm"
+          >
+            <span className="material-symbols-outlined text-base">support_agent</span>
+            {t('howItWorks.agentCta')}
           </Link>
         </div>
       </div>

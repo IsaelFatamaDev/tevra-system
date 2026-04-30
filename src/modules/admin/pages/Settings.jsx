@@ -22,6 +22,8 @@ export default function AdminSettings() {
     stripeEnabled: false, paypalEnabled: false,
     fiscalAddress: '', taxId: '', baseShippingRate: '', welcomeMessage: '',
     instagramUrl: '', facebookUrl: '', tiktokUrl: '', timezone: 'America/Lima', maxAgentZones: '',
+    grossMarginPct: '30', agentCommissionPct: '12', etcCommissionPct: '3',
+    exchangeRateBuy: '3.72', exchangeRateSell: '3.78',
   })
 
   useEffect(() => {
@@ -36,6 +38,11 @@ export default function AdminSettings() {
           whatsapp: data.settings?.whatsapp || '',
           currency: data.settings?.currency || 'USD',
           commissionPct: data.settings?.commissionPct || '',
+          grossMarginPct: data.settings?.grossMarginPct ?? '30',
+          agentCommissionPct: data.settings?.agentCommissionPct ?? '12',
+          etcCommissionPct: data.settings?.etcCommissionPct ?? '3',
+          exchangeRateBuy: data.settings?.exchangeRateBuy ?? '3.72',
+          exchangeRateSell: data.settings?.exchangeRateSell ?? '3.78',
           stripeEnabled: data.settings?.stripeEnabled || false,
           paypalEnabled: data.settings?.paypalEnabled || false,
           fiscalAddress: data.settings?.fiscalAddress || '',
@@ -326,7 +333,103 @@ export default function AdminSettings() {
           <h3 className="font-semibold text-[#031926] text-sm">{t('admin.settings.paymentsCommissions')}</h3>
           <p className="text-xs text-[#468189] mt-0.5">{t('admin.settings.paymentsHint')}</p>
         </div>
-        <div className="p-5 space-y-4">
+        <div className="p-5 space-y-5">
+
+          {/* Dynamic Commission Model */}
+          <div className="p-4 bg-[#EBF2FA]/40 rounded-xl border border-[#9DBEBB]/20 space-y-4">
+            <div>
+              <p className="text-xs font-bold text-[#031926] uppercase tracking-wider">{t('admin.settings.commissionModelTitle')}</p>
+              <p className="text-xs text-[#468189] mt-0.5">{t('admin.settings.commissionModelHint')}</p>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-xs font-medium text-[#468189] mb-1">{t('admin.settings.grossMarginPct')}</label>
+                <div className="relative">
+                  <input type="number" step="0.1" min="0" max="100" value={form.grossMarginPct}
+                    onChange={e => setForm({ ...form, grossMarginPct: e.target.value })}
+                    className="w-full px-3 py-2 pr-7 bg-white border border-[#9DBEBB]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#031926]/10 focus:border-[#468189] outline-none transition-all" placeholder="30" />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[#9DBEBB] font-bold">%</span>
+                </div>
+                <p className="text-[10px] text-[#9DBEBB] mt-1">{t('admin.settings.grossMarginHint')}</p>
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-[#468189] mb-1">{t('admin.settings.agentCommissionPct')}</label>
+                <div className="relative">
+                  <input type="number" step="0.1" min="0" max="100" value={form.agentCommissionPct}
+                    onChange={e => setForm({ ...form, agentCommissionPct: e.target.value })}
+                    className="w-full px-3 py-2 pr-7 bg-white border border-[#9DBEBB]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#031926]/10 focus:border-[#468189] outline-none transition-all" placeholder="12" />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[#9DBEBB] font-bold">%</span>
+                </div>
+                <p className="text-[10px] text-[#9DBEBB] mt-1">{t('admin.settings.agentCommissionHint')}</p>
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-[#468189] mb-1">{t('admin.settings.etcCommissionPct')}</label>
+                <div className="relative">
+                  <input type="number" step="0.1" min="0" max="100" value={form.etcCommissionPct}
+                    onChange={e => setForm({ ...form, etcCommissionPct: e.target.value })}
+                    className="w-full px-3 py-2 pr-7 bg-white border border-[#9DBEBB]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#031926]/10 focus:border-[#468189] outline-none transition-all" placeholder="3" />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[#9DBEBB] font-bold">%</span>
+                </div>
+                <p className="text-[10px] text-[#9DBEBB] mt-1">{t('admin.settings.etcCommissionHint')}</p>
+              </div>
+            </div>
+
+            {/* Exchange Rates */}
+            <div>
+              <p className="text-xs font-bold text-[#031926] mb-2">{t('admin.settings.exchangeRateTitle')}</p>
+              <div className="grid grid-cols-2 gap-4 max-w-xs">
+                <div>
+                  <label className="block text-xs font-medium text-[#468189] mb-1">{t('admin.settings.exchangeRateBuy')}</label>
+                  <div className="relative">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-[#9DBEBB] font-bold">S/</span>
+                    <input type="number" step="0.01" value={form.exchangeRateBuy}
+                      onChange={e => setForm({ ...form, exchangeRateBuy: e.target.value })}
+                      className="w-full pl-8 pr-3 py-2 bg-white border border-[#9DBEBB]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#031926]/10 focus:border-[#468189] outline-none transition-all" placeholder="3.72" />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-[#468189] mb-1">{t('admin.settings.exchangeRateSell')}</label>
+                  <div className="relative">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-[#9DBEBB] font-bold">S/</span>
+                    <input type="number" step="0.01" value={form.exchangeRateSell}
+                      onChange={e => setForm({ ...form, exchangeRateSell: e.target.value })}
+                      className="w-full pl-8 pr-3 py-2 bg-white border border-[#9DBEBB]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#031926]/10 focus:border-[#468189] outline-none transition-all" placeholder="3.78" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Live Preview */}
+            {(() => {
+              const margin = parseFloat(form.grossMarginPct) || 30
+              const agentPct = parseFloat(form.agentCommissionPct) || 12
+              const etcPct = parseFloat(form.etcCommissionPct) || 3
+              const providerCost = 100
+              const finalPrice = providerCost / (1 - margin / 100)
+              const agentAmt = finalPrice * agentPct / 100
+              const etcAmt = finalPrice * etcPct / 100
+              const tevraAmt = finalPrice - providerCost - agentAmt - etcAmt
+              return (
+                <div className="mt-2 p-3 bg-white rounded-lg border border-[#9DBEBB]/20">
+                  <p className="text-[10px] font-bold text-[#468189] uppercase tracking-wider mb-2">{t('admin.settings.commissionPreview')}</p>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                    {[
+                      { label: t('admin.settings.commissionPreviewFinal'), value: `$${finalPrice.toFixed(2)}`, color: 'bg-[#031926] text-white' },
+                      { label: t('admin.settings.commissionPreviewAgent'), value: `$${agentAmt.toFixed(2)} (${agentPct}%)`, color: 'bg-blue-50 text-blue-700' },
+                      { label: t('admin.settings.commissionPreviewEtc'), value: `$${etcAmt.toFixed(2)} (${etcPct}%)`, color: 'bg-amber-50 text-amber-700' },
+                      { label: t('admin.settings.commissionPreviewTevra'), value: `$${tevraAmt.toFixed(2)} (${(tevraAmt/finalPrice*100).toFixed(1)}%)`, color: 'bg-emerald-50 text-emerald-700' },
+                    ].map(item => (
+                      <div key={item.label} className={`p-2 rounded-lg text-center ${item.color}`}>
+                        <p className="text-[10px] font-medium opacity-80">{item.label}</p>
+                        <p className="text-xs font-bold mt-0.5">{item.value}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )
+            })()}
+          </div>
+
           <div className="max-w-xs">
             <label className="block text-xs font-medium text-[#468189] mb-1">{t('admin.settings.tevraCommissionPct')}</label>
             <input type="number" value={form.commissionPct} onChange={e => setForm({ ...form, commissionPct: e.target.value })}

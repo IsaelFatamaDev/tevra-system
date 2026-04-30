@@ -8,6 +8,7 @@ import Navbar from './core/components/Navbar'
 import Footer from './core/components/Footer'
 import WhatsAppButton from './core/components/WhatsAppButton'
 import ScrollToTop from './core/components/ScrollToTop'
+import VerificationBanner from './core/components/VerificationBanner'
 import { getDashboardPath } from './core/utils/roles'
 
 // Public pages
@@ -29,6 +30,7 @@ import ContactoPage from './modules/public/pages/ContactoPage'
 import ComoFuncionaPage from './modules/public/pages/ComoFuncionaPage'
 import TiendasPage from './modules/public/pages/TiendasPage'
 import CotizarLinkPage from './modules/public/pages/CotizarLinkPage'
+import EmailVerifiedPage from './modules/public/pages/EmailVerifiedPage'
 
 // Admin module
 import AdminLayout from './modules/admin/layout/AdminLayout'
@@ -105,6 +107,7 @@ function PublicLayout() {
         <Route path="/como-funciona" element={<ComoFuncionaPage />} />
         <Route path="/tiendas" element={<TiendasPage />} />
         <Route path="/cotizar-link" element={<CotizarLinkPage />} />
+        <Route path="/verificado" element={<EmailVerifiedPage />} />
       </Routes>
       {!isAuthPage && <Footer />}
       {!isAuthPage && <WhatsAppButton />}
@@ -116,6 +119,7 @@ function AppLayout() {
   return (
     <>
       <ScrollToTop />
+      <VerificationBanner />
       <Routes>
         {/* Admin routes */}
         <Route path="/admin" element={

@@ -237,12 +237,13 @@ export default function AgentDashboard() {
                     <th className="px-8 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">{t('agentDash.dashboard.tableHeaders.order')}</th>
                     <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest hidden sm:table-cell">{t('agentDash.dashboard.tableHeaders.client')}</th>
                     <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-right">{t('agentDash.dashboard.tableHeaders.amount')}</th>
+                    <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-right hidden sm:table-cell">{t('agentDash.dashboard.tableHeaders.commission')}</th>
                     <th className="px-8 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-center">{t('agentDash.dashboard.tableHeaders.status')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
                   {orders.length === 0 ? (
-                    <tr><td colSpan="4" className="px-8 py-10 text-center text-slate-400">{t('agentDash.dashboard.noOrders')}</td></tr>
+                    <tr><td colSpan="5" className="px-8 py-10 text-center text-slate-400">{t('agentDash.dashboard.noOrders')}</td></tr>
                   ) : orders.slice(0, 6).map((o) => (
                     <tr key={o.id} className="hover:bg-slate-50/50 transition-colors">
                       <td className="px-8 py-4 font-headline text-sm font-bold text-slate-900">
@@ -253,6 +254,13 @@ export default function AgentDashboard() {
                       </td>
                       <td className="px-6 py-4 text-right">
                         <span className="font-extrabold text-slate-900">${parseFloat(o.total || 0).toLocaleString()}</span>
+                      </td>
+                      <td className="px-6 py-4 text-right hidden sm:table-cell">
+                        {o.agentCommission != null && parseFloat(o.agentCommission) > 0 ? (
+                          <span className="font-bold text-emerald-600">${parseFloat(o.agentCommission).toLocaleString()}</span>
+                        ) : (
+                          <span className="text-slate-300 font-medium">—</span>
+                        )}
                       </td>
                       <td className="px-8 py-4 flex justify-center">
                         <span className={`inline-flex items-center justify-center px-3 py-1.5 rounded-full text-[10px] font-bold border ${statusClasses[o.status] || 'bg-slate-50 border-slate-200 text-slate-500'}`}>

@@ -119,16 +119,16 @@ export default function LoginPage() {
   return (
     <div className="min-h-dvh flex flex-col lg:flex-row-reverse">
 
-      {/* ── PANEL DERECHO: Branding ── */}
+      {/* ── PANEL DERECHO: Branding (fondo blanco) ── */}
       <div
         className="hidden lg:flex relative overflow-hidden flex-col lg:w-[45%] xl:w-[46%] lg:min-h-screen"
-        style={{ background: '#031926' }}
+        style={{ background: '#ffffff' }}
       >
-        {/* Animated gradient sweep */}
+        {/* Subtle light sweep */}
         <div
           className="absolute inset-0"
           style={{
-            background: 'linear-gradient(135deg, #031926 0%, #062c3d 40%, #0d4a5a 70%, #031926 100%)',
+            background: 'linear-gradient(135deg, #ffffff 0%, #f5fafa 40%, #edf6f6 70%, #ffffff 100%)',
             backgroundSize: '300% 300%',
             animation: 'gradientShift 8s ease infinite',
           }}
@@ -141,38 +141,33 @@ export default function LoginPage() {
           }
         `}</style>
 
-        {/* Accent right border */}
-        <div className="absolute right-0 top-0 bottom-0 w-px" style={{ background: 'linear-gradient(180deg, transparent 0%, rgba(70,129,137,0.35) 40%, rgba(70,129,137,0.35) 60%, transparent 100%)' }} />
+        {/* Accent left border */}
+        <div className="absolute left-0 top-0 bottom-0 w-px" style={{ background: 'linear-gradient(180deg, transparent 0%, rgba(70,129,137,0.3) 40%, rgba(70,129,137,0.3) 60%, transparent 100%)' }} />
 
         {/* Centered brand */}
         <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-12">
           <div className="flex flex-col items-center gap-7">
 
-            {/* Logo — grande y blanco */}
-            <div
-              className="w-32 h-32 xl:w-36 xl:h-36 rounded-3xl bg-white flex items-center justify-center"
-              style={{ boxShadow: '0 0 0 1px rgba(255,255,255,0.08), 0 32px 80px rgba(0,0,0,0.55), 0 0 60px rgba(70,129,137,0.15)' }}
-            >
-              <img src="/LogoTevra.png" alt="TeVra" className="w-20 h-20 xl:w-24 xl:h-24 object-contain" />
-            </div>
+            {/* Logo */}
+            <img src="/LogoTevra.png" alt="TeVra" className="w-44 h-44 xl:w-52 xl:h-52 object-contain" />
 
             {/* Brand name */}
             <div className="text-center">
-              <h1 className="font-headline font-black text-white leading-none" style={{ fontSize: '56px', letterSpacing: '-2.5px' }}>
-                Te<span style={{ color: '#77ACA2' }}>Vra</span>
+              <h1 className="font-headline font-black text-[#031926] leading-none" style={{ fontSize: '56px', letterSpacing: '-2.5px' }}>
+                Te<span style={{ color: '#468189' }}>Vra</span>
               </h1>
-              <p className="mt-3 text-white/30 text-[10px] font-bold uppercase tracking-[0.55em]">
+              <p className="mt-3 text-[#031926]/30 text-[10px] font-bold uppercase tracking-[0.55em]">
                 Importaciones · Premium
               </p>
             </div>
 
             {/* Divider */}
-            <div className="w-8 h-px" style={{ background: 'rgba(70,129,137,0.45)' }} />
+            <div className="w-8 h-px" style={{ background: 'rgba(70,129,137,0.4)' }} />
 
             {/* Tagline */}
-            <p className="text-center text-white/40 text-sm leading-7 max-w-55">
+            <p className="text-center text-[#031926]/50 text-sm leading-7 max-w-55">
               Productos originales desde<br />
-              <span className="text-white/70 font-medium">Estados Unidos</span><br />
+              <span className="text-[#031926]/75 font-medium">Estados Unidos</span><br />
               con tracking en tiempo real.
             </p>
 
@@ -181,40 +176,43 @@ export default function LoginPage() {
 
         {/* Bottom */}
         <div className="relative z-10 flex items-center justify-center pb-10 pt-6">
-          <p className="text-white/15 text-[11px] font-medium tracking-wider">tevra.ddns.net</p>
+          <p className="text-[#031926]/20 text-[11px] font-medium tracking-wider">tevra.ddns.net</p>
         </div>
       </div>
 
-      {/* ── PANEL IZQUIERDO: Formulario ── */}
-      <div className="flex-1 flex flex-col justify-center items-center min-h-dvh px-5 py-10 sm:px-8 md:px-12 lg:px-14 xl:px-20 bg-white overflow-y-auto">
+      {/* ── PANEL IZQUIERDO: Formulario (gradiente oscuro) ── */}
+      <div
+        className="flex-1 flex flex-col justify-center items-center min-h-dvh px-5 py-10 sm:px-8 md:px-12 lg:px-14 xl:px-20 overflow-y-auto"
+        style={{ background: 'linear-gradient(135deg, #031926 0%, #062c3d 45%, #0d4a5a 75%, #031926 100%)' }}
+      >
         {/* Mobile logo */}
         <div className="flex lg:hidden items-center gap-2 mb-8 self-start">
-          <div className="w-8 h-8 rounded-lg bg-linear-to-br from-[#031926] to-[#468189] flex items-center justify-center">
+          <div className="w-8 h-8 rounded-lg bg-white/15 flex items-center justify-center border border-white/20">
             <span className="text-white font-black text-[10px]">TV</span>
           </div>
-          <span className="font-headline font-extrabold text-xl text-[#031926]">
-            Te<span className="text-[#468189]">Vra</span>
+          <span className="font-headline font-extrabold text-xl text-white">
+            Te<span className="text-secondary-light">Vra</span>
           </span>
         </div>
 
         <div className="w-full max-w-105 space-y-6">
           {/* Header */}
           <div className="space-y-1">
-            <h2 className="font-headline text-2xl sm:text-3xl font-extrabold text-[#031926] leading-tight tracking-tight">
+            <h2 className="font-headline text-2xl sm:text-3xl font-extrabold text-white leading-tight tracking-tight">
               {isSignUp ? t('auth.createAccount') : t('auth.welcome')}
             </h2>
-            <p className="text-[#468189] text-sm">
+            <p className="text-secondary-light text-sm">
               {isSignUp ? t('auth.registerSubtitle') : t('auth.loginSubtitle')}
             </p>
           </div>
 
           {/* Toggle tabs */}
-          <div className="flex bg-gray-100 p-1 rounded-2xl gap-1">
+          <div className="flex bg-white/10 p-1 rounded-2xl gap-1">
             <button
               onClick={() => { setIsSignUp(false); setError('') }}
               className={`flex-1 py-2.5 rounded-xl font-headline font-bold text-sm transition-all duration-200 ${!isSignUp
-                ? 'bg-on-background text-surface shadow-md'
-                : 'text-secondary hover:text-on-background'
+                ? 'bg-white text-[#031926] shadow-md'
+                : 'text-white/60 hover:text-white'
                 }`}
             >
               {t('auth.signIn')}
@@ -222,8 +220,8 @@ export default function LoginPage() {
             <button
               onClick={() => { setIsSignUp(true); setError('') }}
               className={`flex-1 py-2.5 rounded-xl font-headline font-bold text-sm transition-all duration-200 ${isSignUp
-                ? 'bg-on-background text-surface shadow-md'
-                : 'text-secondary hover:text-on-background'
+                ? 'bg-white text-[#031926] shadow-md'
+                : 'text-white/60 hover:text-white'
                 }`}
             >
               {t('auth.register')}
@@ -232,7 +230,7 @@ export default function LoginPage() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && typeof error === 'string' && error.trim() && (
-              <div className="flex items-center gap-2 px-4 py-3 bg-red-50 border border-red-200 rounded-2xl text-red-700 text-sm">
+              <div className="flex items-center gap-2 px-4 py-3 bg-red-900/30 border border-red-400/30 rounded-2xl text-red-300 text-sm">
                 <span className="material-symbols-outlined text-base shrink-0">error</span>
                 {error}
               </div>
@@ -242,44 +240,44 @@ export default function LoginPage() {
               <>
                 <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
                   <div className="space-y-1">
-                    <label className="text-xs font-semibold uppercase tracking-wider text-text-muted">{t('auth.firstName')}</label>
+                    <label className="text-xs font-semibold uppercase tracking-wider text-white/50">{t('auth.firstName')}</label>
                     <div className="relative">
-                      <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-text-muted/50 text-[18px]">person</span>
+                      <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-white/40 text-[18px]">person</span>
                       <input
                         type="text"
                         required
                         value={firstName}
                         onChange={(e) => setFirstName(e.target.value)}
                         placeholder="Carlos"
-                        className="w-full pl-10 pr-3 py-3 bg-[#F8FAFB] border border-outline-variant/40 rounded-2xl text-sm text-on-background placeholder:text-text-muted/50 focus:outline-none focus:ring-2 focus:ring-secondary/25 focus:border-secondary focus:bg-white transition-all"
+                        className="w-full pl-10 pr-3 py-3 bg-white/10 border border-white/15 rounded-2xl text-sm text-white placeholder:text-white/35 focus:outline-none focus:ring-2 focus:ring-white/20 focus:border-white/30 focus:bg-white/15 transition-all"
                       />
                     </div>
                   </div>
                   <div className="space-y-1">
-                    <label className="text-xs font-semibold uppercase tracking-wider text-text-muted">{t('auth.lastName')}</label>
+                    <label className="text-xs font-semibold uppercase tracking-wider text-white/50">{t('auth.lastName')}</label>
                     <div className="relative">
-                      <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-text-muted/50 text-[18px]">badge</span>
+                      <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-white/40 text-[18px]">badge</span>
                       <input
                         type="text"
                         required
                         value={lastName}
                         onChange={(e) => setLastName(e.target.value)}
                         placeholder="Mendez"
-                        className="w-full pl-10 pr-3 py-3 bg-[#F8FAFB] border border-outline-variant/40 rounded-2xl text-sm text-on-background placeholder:text-text-muted/50 focus:outline-none focus:ring-2 focus:ring-secondary/25 focus:border-secondary focus:bg-white transition-all"
+                        className="w-full pl-10 pr-3 py-3 bg-white/10 border border-white/15 rounded-2xl text-sm text-white placeholder:text-white/35 focus:outline-none focus:ring-2 focus:ring-white/20 focus:border-white/30 focus:bg-white/15 transition-all"
                       />
                     </div>
                   </div>
                 </div>
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold uppercase tracking-wider text-text-muted">{t('auth.phone')}</label>
-                  <div className={`flex bg-[#F8FAFB] border rounded-2xl overflow-hidden transition-all focus-within:ring-2 focus-within:ring-secondary/25 focus-within:border-secondary focus-within:bg-white ${availabilityErrors.phone || availabilityErrors.whatsapp ? 'border-red-400' : 'border-outline-variant/40'}`}>
+                  <label className="text-xs font-semibold uppercase tracking-wider text-white/50">{t('auth.phone')}</label>
+                  <div className={`flex bg-white/10 border rounded-2xl overflow-hidden transition-all focus-within:ring-2 focus-within:ring-white/20 focus-within:border-white/30 focus-within:bg-white/15 ${availabilityErrors.phone || availabilityErrors.whatsapp ? 'border-red-400/60' : 'border-white/15'}`}>
                     <select
                       value={dialCode}
                       onChange={e => setDialCode(e.target.value)}
-                      className="bg-gray-100 border-r border-outline-variant/30 px-3 py-3 text-sm text-on-background focus:outline-none cursor-pointer shrink-0"
+                      className="bg-white/15 border-r border-white/10 px-3 py-3 text-sm text-white focus:outline-none cursor-pointer shrink-0"
                     >
                       {COUNTRY_CODES.map(c => (
-                        <option key={c.code} value={c.code}>
+                        <option key={c.code} value={c.code} className="bg-[#062c3d] text-white">
                           {c.flag} {c.code}
                         </option>
                       ))}
@@ -289,7 +287,7 @@ export default function LoginPage() {
                       value={phoneLocal}
                       onChange={e => setPhoneLocal(e.target.value.replace(/[^0-9 \-]/g, ''))}
                       placeholder="999 123 456"
-                      className="flex-1 px-3 py-3 bg-transparent text-sm text-on-background placeholder:text-text-muted/50 focus:outline-none"
+                      className="flex-1 px-3 py-3 bg-transparent text-sm text-white placeholder:text-white/35 focus:outline-none"
                     />
                     {checking.phone && <span className="self-center mr-3 w-3.5 h-3.5 border-2 border-secondary/40 border-t-secondary rounded-full animate-spin shrink-0" />}
                   </div>
@@ -304,11 +302,11 @@ export default function LoginPage() {
             )}
 
             <div className="space-y-1.5">
-              <label className="text-xs font-semibold uppercase tracking-wider text-text-muted">
+              <label className="text-xs font-semibold uppercase tracking-wider text-white/50">
                 {t('auth.email')}
               </label>
               <div className="relative">
-                <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-text-muted/50 text-[18px]">mail</span>
+                <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-white/40 text-[18px]">mail</span>
                 <input
                   type="email"
                   required
@@ -316,7 +314,7 @@ export default function LoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="correo@ejemplo.com"
-                  className={`w-full pl-10 pr-3 py-3 bg-[#F8FAFB] border rounded-2xl text-sm text-on-background placeholder:text-text-muted/50 focus:outline-none focus:ring-2 focus:ring-secondary/25 focus:border-secondary focus:bg-white transition-all ${isSignUp && availabilityErrors.email ? 'border-red-400' : 'border-outline-variant/40'}`}
+                  className={`w-full pl-10 pr-3 py-3 bg-white/10 border rounded-2xl text-sm text-white placeholder:text-white/35 focus:outline-none focus:ring-2 focus:ring-white/20 focus:border-white/30 focus:bg-white/15 transition-all ${isSignUp && availabilityErrors.email ? 'border-red-400/60' : 'border-white/15'}`}
                 />
                 {isSignUp && checking.email && <span className="absolute right-3.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 border-2 border-secondary/40 border-t-secondary rounded-full animate-spin" />}
               </div>
@@ -329,11 +327,11 @@ export default function LoginPage() {
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-semibold uppercase tracking-wider text-text-muted">
+              <label className="text-xs font-semibold uppercase tracking-wider text-white/50">
                 {t('auth.password')}
               </label>
               <div className="relative">
-                <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-text-muted/50 text-[18px]">lock</span>
+                <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-white/40 text-[18px]">lock</span>
                 <input
                   type={showPassword ? 'text' : 'password'}
                   required
@@ -341,12 +339,12 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full pl-10 pr-12 py-3 bg-[#F8FAFB] border border-outline-variant/40 rounded-2xl text-sm text-on-background placeholder:text-text-muted/50 focus:outline-none focus:ring-2 focus:ring-secondary/25 focus:border-secondary focus:bg-white transition-all"
+                  className="w-full pl-10 pr-12 py-3 bg-white/10 border border-white/15 rounded-2xl text-sm text-white placeholder:text-white/35 focus:outline-none focus:ring-2 focus:ring-white/20 focus:border-white/30 focus:bg-white/15 transition-all"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-text-muted/50 hover:text-on-background transition-colors"
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-colors"
                 >
                   <span className="material-symbols-outlined text-[18px]">
                     {showPassword ? 'visibility_off' : 'visibility'}
@@ -360,7 +358,7 @@ export default function LoginPage() {
                     {[1, 2, 3, 4].map(n => (
                       <div
                         key={n}
-                        className={`h-1.5 flex-1 rounded-full transition-all duration-300 ${n <= pwStrength ? pwColors[pwStrength] : 'bg-outline-variant/30'}`}
+                        className={`h-1.5 flex-1 rounded-full transition-all duration-300 ${n <= pwStrength ? pwColors[pwStrength] : 'bg-white/20'}`}
                       />
                     ))}
                   </div>
@@ -376,12 +374,12 @@ export default function LoginPage() {
             {!isSignUp && (
               <div className="flex items-center justify-between">
                 <label className="flex items-center gap-1.5 cursor-pointer">
-                  <input type="checkbox" className="w-3.5 h-3.5 rounded border-outline-variant accent-secondary" />
-                  <span className="text-xs text-text-muted">{t('auth.rememberMe')}</span>
+                  <input type="checkbox" className="w-3.5 h-3.5 rounded border-white/30 accent-secondary-light" />
+                  <span className="text-xs text-white/50">{t('auth.rememberMe')}</span>
                 </label>
                 <Link
                   to="/forgot-password"
-                  className="text-xs font-semibold text-secondary hover:text-secondary/80 transition-colors"
+                  className="text-xs font-semibold text-secondary-light hover:text-secondary-light/80 transition-colors"
                 >
                   {t('auth.forgotPassword')}
                 </Link>
@@ -391,7 +389,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full flex items-center justify-center gap-2 py-3.5 mt-1 bg-on-background hover:bg-secondary disabled:opacity-50 text-[#F4E9CD] font-headline font-bold text-sm uppercase tracking-wider rounded-2xl transition-all duration-200 shadow-[0_4px_24px_rgba(3,25,38,0.25)] hover:shadow-[0_6px_32px_rgba(70,129,137,0.35)] active:scale-[0.98]"
+              className="w-full flex items-center justify-center gap-2 py-3.5 mt-1 bg-white hover:bg-white/90 disabled:opacity-50 text-[#031926] font-headline font-bold text-sm uppercase tracking-wider rounded-2xl transition-all duration-200 shadow-[0_4px_24px_rgba(0,0,0,0.3)] hover:shadow-[0_6px_32px_rgba(255,255,255,0.15)] active:scale-[0.98]"
             >
               <span className="material-symbols-outlined text-[18px]">
                 {isSignUp ? 'person_add' : 'login'}
@@ -403,13 +401,13 @@ export default function LoginPage() {
           </form>
 
           <div className="flex items-center gap-3">
-            <div className="flex-1 h-px bg-outline-variant/30" />
-            <span className="text-xs text-text-muted font-medium whitespace-nowrap">{t('auth.orContinueWith')}</span>
-            <div className="flex-1 h-px bg-outline-variant/30" />
+            <div className="flex-1 h-px bg-white/15" />
+            <span className="text-xs text-white/40 font-medium whitespace-nowrap">{t('auth.orContinueWith')}</span>
+            <div className="flex-1 h-px bg-white/15" />
           </div>
 
           <div className="grid grid-cols-3 gap-2.5">
-            <button className="flex items-center justify-center gap-2 py-3 bg-white border border-outline-variant/30 rounded-2xl hover:border-secondary/40 hover:bg-gray-50 transition-all text-sm font-medium text-on-background">
+            <button className="flex items-center justify-center gap-2 py-3 bg-white/10 border border-white/15 rounded-2xl hover:border-white/30 hover:bg-white/15 transition-all text-sm font-medium text-white">
               <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
                 <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" />
                 <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
@@ -418,13 +416,13 @@ export default function LoginPage() {
               </svg>
               <span>Google</span>
             </button>
-            <button className="flex items-center justify-center gap-2 py-3 bg-white border border-outline-variant/30 rounded-2xl hover:border-secondary/40 hover:bg-gray-50 transition-all text-sm font-medium text-on-background">
+            <button className="flex items-center justify-center gap-2 py-3 bg-white/10 border border-white/15 rounded-2xl hover:border-white/30 hover:bg-white/15 transition-all text-sm font-medium text-white">
               <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
               </svg>
               <span>Apple</span>
             </button>
-            <button className="flex items-center justify-center gap-2 py-3 bg-white border border-outline-variant/30 rounded-2xl hover:border-secondary/40 hover:bg-gray-50 transition-all text-sm font-medium text-on-background">
+            <button className="flex items-center justify-center gap-2 py-3 bg-white/10 border border-white/15 rounded-2xl hover:border-white/30 hover:bg-white/15 transition-all text-sm font-medium text-white">
               <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
                 <path fill="#F25022" d="M1 1h10v10H1z" />
                 <path fill="#00A4EF" d="M13 1h10v10H13z" />
@@ -435,21 +433,21 @@ export default function LoginPage() {
             </button>
           </div>
 
-          <p className="text-center text-sm text-text-muted">
+          <p className="text-center text-sm text-white/50">
             {isSignUp ? t('auth.alreadyHaveAccount') : t('auth.dontHaveAccount')}{' '}
             <button
               type="button"
               onClick={() => { setIsSignUp(!isSignUp); setError('') }}
-              className="font-semibold text-secondary hover:text-secondary/80 transition-colors"
+              className="font-semibold text-secondary-light hover:text-secondary-light/80 transition-colors"
             >
               {isSignUp ? t('auth.signIn') : t('auth.createFree')}
             </button>
           </p>
 
-          <div className="pt-2 border-t border-outline-variant/20">
+          <div className="pt-2 border-t border-white/10">
             <Link
               to="/"
-              className="w-full flex items-center justify-center gap-1.5 text-text-muted hover:text-on-background font-medium text-xs py-2 transition-colors"
+              className="w-full flex items-center justify-center gap-1.5 text-white/40 hover:text-white font-medium text-xs py-2 transition-colors"
             >
               <span className="material-symbols-outlined text-sm">arrow_back</span>
               {t('auth.backToHome')}
