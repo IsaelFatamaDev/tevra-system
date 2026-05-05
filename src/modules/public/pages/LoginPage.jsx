@@ -149,25 +149,17 @@ export default function LoginPage() {
           <div className="flex flex-col items-center gap-7">
 
             {/* Logo */}
-            <img src="/LogoTevra.png" alt="TeVra" className="w-44 h-44 xl:w-52 xl:h-52 object-contain" />
-
-            {/* Brand name */}
-            <div className="text-center">
-              <h1 className="font-headline font-black text-[#031926] leading-none" style={{ fontSize: '56px', letterSpacing: '-2.5px' }}>
-                Te<span style={{ color: '#468189' }}>Vra</span>
-              </h1>
-              <p className="mt-3 text-[#031926]/30 text-[10px] font-bold uppercase tracking-[0.55em]">
-                Importaciones · Premium
-              </p>
-            </div>
-
-            {/* Divider */}
-            <div className="w-8 h-px" style={{ background: 'rgba(70,129,137,0.4)' }} />
+            <img 
+              src="/LogoTevra.png" 
+              alt="TeVra" 
+              className="w-64 h-64 xl:w-72 xl:h-72 object-contain" 
+              style={{ mixBlendMode: 'multiply' }}
+            />
 
             {/* Tagline */}
-            <p className="text-center text-[#031926]/50 text-sm leading-7 max-w-55">
+            <p className="text-center text-[#031926]/60 text-base sm:text-lg leading-relaxed max-w-lg mt-6">
               Productos originales desde<br />
-              <span className="text-[#031926]/75 font-medium">Estados Unidos</span><br />
+              <span className="text-[#031926] font-bold">Estados Unidos</span><br />
               con tracking en tiempo real.
             </p>
 
