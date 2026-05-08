@@ -186,7 +186,7 @@ export default function ClientSecurity() {
             <button
               onClick={handleProfileSave}
               disabled={profileSaving}
-              className="px-8 py-3.5 bg-slate-900 text-[#EBF2FA] rounded-2xl font-bold text-sm hover:bg-slate-800 transition-all shadow-[0_4px_20px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] disabled:opacity-50 flex items-center gap-2"
+              className="px-8 py-3.5 bg-slate-900 text-[#EEF4ED] rounded-2xl font-bold text-sm hover:bg-slate-800 transition-all shadow-[0_4px_20px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] disabled:opacity-50 flex items-center gap-2"
             >
               {profileSaving ? <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <span className="material-symbols-outlined text-[20px]">save</span>}
               {t('client.security.saveAllChanges')}
@@ -226,7 +226,7 @@ export default function ClientSecurity() {
             <button
               onClick={handlePasswordChange}
               disabled={pwSaving}
-              className="px-8 py-3.5 bg-slate-900 text-[#EBF2FA] rounded-2xl font-bold text-sm hover:bg-slate-800 transition-all shadow-[0_4px_20px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] disabled:opacity-50 flex items-center gap-2"
+              className="px-8 py-3.5 bg-slate-900 text-[#EEF4ED] rounded-2xl font-bold text-sm hover:bg-slate-800 transition-all shadow-[0_4px_20px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.15)] disabled:opacity-50 flex items-center gap-2"
             >
               {pwSaving ? <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <span className="material-symbols-outlined text-[20px]">enhanced_encryption</span>}
               {t('client.security.secureAccount')}

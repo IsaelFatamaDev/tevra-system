@@ -127,7 +127,7 @@ export default function LoginPage() {
         <div className="absolute inset-0 bg-white" />
 
         {/* Accent left border */}
-        <div className="absolute left-0 top-0 bottom-0 w-px" style={{ background: 'linear-gradient(180deg, transparent 0%, rgba(70,129,137,0.3) 40%, rgba(70,129,137,0.3) 60%, transparent 100%)' }} />
+        <div className="absolute left-0 top-0 bottom-0 w-px" style={{ background: 'linear-gradient(180deg, transparent 0%, rgba(141, 169, 196,0.3) 40%, rgba(141, 169, 196,0.3) 60%, transparent 100%)' }} />
 
         {/* Centered brand */}
         <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-12">
@@ -142,9 +142,9 @@ export default function LoginPage() {
             />
 
             {/* Tagline */}
-            <p className="text-center text-[#031926]/60 text-base sm:text-lg leading-relaxed max-w-lg mt-6">
+            <p className="text-center text-[#134074]/60 text-base sm:text-lg leading-relaxed max-w-lg mt-6">
               Productos originales desde<br />
-              <span className="text-[#031926] font-bold">Estados Unidos</span><br />
+              <span className="text-[#134074] font-bold">Estados Unidos</span><br />
               con tracking en tiempo real.
             </p>
 
@@ -153,14 +153,14 @@ export default function LoginPage() {
 
         {/* Bottom */}
         <div className="relative z-10 flex items-center justify-center pb-10 pt-6">
-          <p className="text-[#031926]/20 text-[11px] font-medium tracking-wider">tevra.ddns.net</p>
+          <p className="text-[#134074]/20 text-[11px] font-medium tracking-wider">tevra.ddns.net</p>
         </div>
       </div>
 
       {/* ── PANEL IZQUIERDO: Formulario (gradiente oscuro) ── */}
       <div
         className="flex-1 flex flex-col justify-center items-center min-h-dvh px-5 py-10 sm:px-8 md:px-12 lg:px-14 xl:px-20 overflow-y-auto"
-        style={{ background: 'linear-gradient(135deg, #031926 0%, #062c3d 45%, #0d4a5a 75%, #031926 100%)' }}
+        style={{ background: 'linear-gradient(135deg, #134074 0%, #13315C 45%, #8DA9C4 75%, #134074 100%)' }}
       >
         {/* Mobile logo */}
         <div className="flex lg:hidden items-center gap-2 mb-8 self-start">
@@ -188,7 +188,7 @@ export default function LoginPage() {
             <button
               onClick={() => { setIsSignUp(false); setError('') }}
               className={`flex-1 py-2.5 rounded-xl font-headline font-bold text-sm transition-all duration-200 ${!isSignUp
-                ? 'bg-white text-[#031926] shadow-md'
+                ? 'bg-white text-[#134074] shadow-md'
                 : 'text-white/60 hover:text-white'
                 }`}
             >
@@ -197,7 +197,7 @@ export default function LoginPage() {
             <button
               onClick={() => { setIsSignUp(true); setError('') }}
               className={`flex-1 py-2.5 rounded-xl font-headline font-bold text-sm transition-all duration-200 ${isSignUp
-                ? 'bg-white text-[#031926] shadow-md'
+                ? 'bg-white text-[#134074] shadow-md'
                 : 'text-white/60 hover:text-white'
                 }`}
             >
@@ -254,7 +254,7 @@ export default function LoginPage() {
                       className="bg-white/15 border-r border-white/10 px-3 py-3 text-sm text-white focus:outline-none cursor-pointer shrink-0"
                     >
                       {COUNTRY_CODES.map(c => (
-                        <option key={c.code} value={c.code} className="bg-[#062c3d] text-white">
+                        <option key={c.code} value={c.code} className="bg-[#13315C] text-white">
                           {c.flag} {c.code}
                         </option>
                       ))}
@@ -366,7 +366,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full flex items-center justify-center gap-2 py-3.5 mt-1 bg-white hover:bg-white/90 disabled:opacity-50 text-[#031926] font-headline font-bold text-sm uppercase tracking-wider rounded-2xl transition-all duration-200 shadow-[0_4px_24px_rgba(0,0,0,0.3)] hover:shadow-[0_6px_32px_rgba(255,255,255,0.15)] active:scale-[0.98]"
+              className="w-full flex items-center justify-center gap-2 py-3.5 mt-1 bg-white hover:bg-white/90 disabled:opacity-50 text-[#134074] font-headline font-bold text-sm uppercase tracking-wider rounded-2xl transition-all duration-200 shadow-[0_4px_24px_rgba(0,0,0,0.3)] hover:shadow-[0_6px_32px_rgba(255,255,255,0.15)] active:scale-[0.98]"
             >
               <span className="material-symbols-outlined text-[18px]">
                 {isSignUp ? 'person_add' : 'login'}

@@ -1,51 +1,61 @@
 @import "tailwindcss";
 
-/* ── Tevra Design System — Paleta Profesional ── */
-/* Ink Black:   #031926 | Teal:       #468189      */
-/* Muted Teal:  #77ACA2 | Ash Grey:   #9DBEBB      */
-/* Vanilla Cream: #EBF2FA                           */
+/* ── Tevra Design System â€” Paleta Profesional ── */
+/* Ink Black:   #134074 | Teal:       #8DA9C4      */
+/* Muted Teal:  #A5C0D8 | Ash Grey:   #C5D8E8      */
+/* Vanilla Cream: #EEF4ED                           */
 
 @theme {
      /* ── Brand Colors ── */
-     --color-primary: #031926;
-     --color-primary-dark: #010f17;
-     --color-primary-mid: #0d3349;
+     --color-primary: #134074;
+     --color-primary-dark: #0B2545;
+     --color-primary-mid: #13315C;
 
-     --color-secondary: #468189;
-     --color-secondary-light: #77ACA2;
-     --color-secondary-pale: #9DBEBB;
+     --color-secondary: #8DA9C4;
+     --color-secondary-light: #A5C0D8;
+     --color-secondary-pale: #C5D8E8;
 
-     --color-accent: #468189;
-     --color-accent-hover: #3a6e75;
-     --color-accent-gold: #d4a96a;
+     --color-accent: #8DA9C4;
+     --color-accent-hover: #B5952F;
+     --color-accent-gold: #D4AF37;
      --color-mint: #3eb489;
+
+     /* Status Colors */
+     --color-status-success: #10B981;
+     --color-status-info: #3B82F6;
+     --color-status-usa: #6366F1;
+     --color-status-warning: #F59E0B;
+     --color-status-pending: #8DA9C4;
+     --color-status-customs: #F97316;
+     --color-status-purple: #8B5CF6;
+     --color-status-error: #EF4444;
 
      /* ── Backgrounds ── */
      --color-background: #FFFF;
-     --color-background-cream: #EBF2FA;
-     --color-background-warm: #efe3bb;
+     --color-background-cream: #EEF4ED;
+     --color-background-warm: #F9F3DF;
 
      /* ── Surfaces ── */
      --color-surface: #ffffff;
      --color-surface-dim: #e8dfc9;
      --color-surface-container-lowest: #ffffff;
      --color-surface-container-low: #faf5eb;
-     --color-surface-container: #EBF2FA;
+     --color-surface-container: #EEF4ED;
      --color-surface-container-high: #ece2c5;
      --color-surface-container-highest: #e3d8b8;
 
      /* ── On Colors (texto sobre fondos) ── */
-     --color-on-background: #031926;
-     --color-on-surface: #031926;
-     --color-on-primary: #EBF2FA;
+     --color-on-background: #134074;
+     --color-on-surface: #134074;
+     --color-on-primary: #EEF4ED;
      --color-on-secondary: #ffffff;
-     --color-text-muted: #3d5a67;
-     --color-text-soft: #5a7a8a;
+     --color-text-muted: #13315C;
+     --color-text-soft: #8DA9C4;
 
      /* ── Borders ── */
-     --color-outline: #468189;
-     --color-outline-variant: #9DBEBB;
-     --color-outline-soft: rgba(70, 129, 137, 0.15);
+     --color-outline: #8DA9C4;
+     --color-outline-variant: #C5D8E8;
+     --color-outline-soft: rgba(141, 169, 196, 0.15);
 
      /* ── Typography ── */
      --font-headline: "Plus Jakarta Sans", sans-serif;
@@ -57,11 +67,11 @@
      --radius-3xl: 24px;
 
      /* ── Shadows ── */
-     --shadow-soft: 0 10px 40px -10px rgba(3, 25, 38, 0.10);
-     --shadow-premium: 0 20px 60px -15px rgba(3, 25, 38, 0.20);
-     --shadow-ambient: 0 20px 40px rgba(70, 129, 137, 0.08);
-     --shadow-teal: 0 10px 30px -8px rgba(70, 129, 137, 0.40);
-     --shadow-card: 0 2px 12px rgba(3, 25, 38, 0.06);
+     --shadow-soft: 0 10px 40px -10px rgba(19, 64, 116, 0.10);
+     --shadow-premium: 0 20px 60px -15px rgba(19, 64, 116, 0.20);
+     --shadow-ambient: 0 20px 40px rgba(141, 169, 196, 0.08);
+     --shadow-teal: 0 10px 30px -8px rgba(141, 169, 196, 0.40);
+     --shadow-card: 0 2px 12px rgba(19, 64, 116, 0.06);
 }
 
 /* ── Base ── */
@@ -72,8 +82,8 @@ body {
 }
 
 ::selection {
-     background-color: rgba(70, 129, 137, 0.20);
-     color: #031926;
+     background-color: rgba(212, 175, 55, 0.30);
+     color: #0B2545;
 }
 
 /* ── Icons ── */
@@ -108,37 +118,37 @@ body {
      background: transparent;
 }
 .sidebar-scroll::-webkit-scrollbar-thumb {
-     background: rgba(70, 129, 137, 0.25);
+     background: rgba(212, 175, 55, 0.35);
      border-radius: 2px;
 }
 .sidebar-scroll::-webkit-scrollbar-thumb:hover {
-     background: rgba(70, 129, 137, 0.45);
+     background: rgba(212, 175, 55, 0.60);
 }
 
 /* ── Landing page helpers ── */
 .hero-gradient {
-     background: linear-gradient(135deg, #031926 0%, #0d3349 50%, #468189 100%);
+     background: linear-gradient(135deg, #134074 0%, #13315C 50%, #8DA9C4 100%);
 }
 .bg-grid-pattern {
-     background-image: radial-gradient(rgba(244, 233, 205, 0.10) 1px, transparent 1px);
+     background-image: radial-gradient(rgba(212, 175, 55, 0.10) 1px, transparent 1px);
      background-size: 24px 24px;
 }
 .glass-card {
-     background: rgba(244, 233, 205, 0.06);
+     background: rgba(212, 175, 55, 0.06);
      backdrop-filter: blur(12px);
-     border: 1px solid rgba(244, 233, 205, 0.15);
+     border: 1px solid rgba(212, 175, 55, 0.15);
 }
 
 /* ── TEVRA PUBLIC PAGES EXCLUSIVE CLASSES ──
    Estas clases garantizan que no haya conflictos con el admin
 */
-.bg-tevra-cream { background-color: #EBF2FA; }
-.text-tevra-dark { color: #031926; }
-.text-tevra-muted { color: #3d5a67; }
+.bg-tevra-cream { background-color: #EEF4ED; }
+.text-tevra-dark { color: #134074; }
+.text-tevra-muted { color: #13315C; }
 
 .tevra-hero-gradient {
-     background: linear-gradient(145deg, #031926 0%, #0d3349 55%, #468189 100%);
-     color: #EBF2FA;
+     background: linear-gradient(145deg, #134074 0%, #13315C 55%, #8DA9C4 100%);
+     color: #EEF4ED;
      position: relative;
 }
 
@@ -146,31 +156,31 @@ body {
 .tevra-hero-overlay {
      position: absolute;
      inset: 0;
-     background-image: radial-gradient(rgba(244, 233, 205, 0.08) 1px, transparent 1px);
+     background-image: radial-gradient(rgba(212, 175, 55, 0.08) 1px, transparent 1px);
      background-size: 24px 24px;
      opacity: 0.6;
 }
 
 .bg-tevra-teal {
-     background-color: #468189;
+     background-color: #8DA9C4;
 }
 
 .text-tevra-teal {
-     color: #468189;
+     color: #8DA9C4;
 }
 
 .border-tevra-teal {
-     border-color: #468189;
+     border-color: #8DA9C4;
 }
 
 .shadow-tevra-teal {
-     box-shadow: 0 10px 30px -8px rgba(70, 129, 137, 0.45);
+     box-shadow: 0 10px 30px -8px rgba(141, 169, 196, 0.45);
 }
 
-.bg-tevra-coral { background-color: #468189; }
-.text-tevra-coral { color: #468189; }
-.border-tevra-coral { border-color: #468189; }
-.shadow-tevra-coral { box-shadow: 0 10px 25px -5px rgba(70, 129, 137, 0.40); }
+.bg-tevra-coral, .bg-tevra-gold { background-color: #D4AF37; }
+.text-tevra-coral, .text-tevra-gold { color: #D4AF37; }
+.border-tevra-coral, .border-tevra-gold { border-color: #D4AF37; }
+.shadow-tevra-coral, .shadow-tevra-gold { box-shadow: 0 10px 25px -5px rgba(212, 175, 55, 0.40); }
 
 @keyframes fade-up {
      from {
@@ -279,14 +289,14 @@ body {
      transition: box-shadow 0.15s ease, transform 0.15s ease;
 }
 .stat-card:hover {
-     box-shadow: 0 4px 16px rgba(70, 129, 137, 0.12);
+     box-shadow: 0 4px 16px rgba(141, 169, 196, 0.12);
      transform: translateY(-1px);
 }
 
-/* ─────────────────────────────────────────────────────────────────
-   TEVRA DESIGN SYSTEM — Componentes globales
-   Paleta: #031926 | #468189 | #77ACA2 | #9DBEBB | #EBF2FA
-───────────────────────────────────────────────────────────────── */
+/* ────────────────────────────────────────────────────────────────â”€
+   TEVRA DESIGN SYSTEM â€” Componentes globales
+   Paleta: #134074 | #8DA9C4 | #A5C0D8 | #C5D8E8 | #EEF4ED
+────────────────────────────────────────────────────────────────â”€ */
 
 /* ── Botones principales ── */
 .btn-primary {
@@ -295,7 +305,7 @@ body {
      justify-content: center;
      gap: 0.5rem;
      padding: 0.75rem 1.75rem;
-     background: linear-gradient(135deg, #468189 0%, #3a6e75 100%);
+     background: linear-gradient(135deg, #134074 0%, #13315C 100%);
      color: #ffffff;
      font-family: var(--font-headline);
      font-weight: 700;
@@ -304,20 +314,49 @@ body {
      border: none;
      cursor: pointer;
      transition: all 0.25s ease;
-     box-shadow: 0 4px 14px rgba(70, 129, 137, 0.30);
+     box-shadow: 0 4px 14px rgba(19, 64, 116, 0.30);
      text-decoration: none;
 }
 .btn-primary:hover {
-     background: linear-gradient(135deg, #3a6e75 0%, #2d5c63 100%);
-     box-shadow: 0 8px 24px rgba(70, 129, 137, 0.40);
+     background: linear-gradient(135deg, #13315C 0%, #0B2545 100%);
+     box-shadow: 0 8px 24px rgba(19, 64, 116, 0.40);
      transform: translateY(-2px);
 }
 .btn-primary:active {
      transform: translateY(0);
-     box-shadow: 0 2px 8px rgba(70, 129, 137, 0.25);
+     box-shadow: 0 2px 8px rgba(19, 64, 116, 0.25);
 }
 
-/* ── Botón secundario (outline) ── */
+/* ── Botones Dorados (Accents) ── */
+.btn-gold {
+     display: inline-flex;
+     align-items: center;
+     justify-content: center;
+     gap: 0.5rem;
+     padding: 0.75rem 1.75rem;
+     background: linear-gradient(135deg, #D4AF37 0%, #B5952F 100%);
+     color: #0B2545; /* Dark blue text on gold for high contrast */
+     font-family: var(--font-headline);
+     font-weight: 700;
+     font-size: 0.9375rem;
+     border-radius: 12px;
+     border: none;
+     cursor: pointer;
+     transition: all 0.25s ease;
+     box-shadow: 0 4px 14px rgba(212, 175, 55, 0.30);
+     text-decoration: none;
+}
+.btn-gold:hover {
+     background: linear-gradient(135deg, #B5952F 0%, #967A26 100%);
+     box-shadow: 0 8px 24px rgba(212, 175, 55, 0.40);
+     transform: translateY(-2px);
+}
+.btn-gold:active {
+     transform: translateY(0);
+     box-shadow: 0 2px 8px rgba(212, 175, 55, 0.25);
+}
+
+/* ── BotÃ³n secundario (outline) ── */
 .btn-secondary {
      display: inline-flex;
      align-items: center;
@@ -325,45 +364,46 @@ body {
      gap: 0.5rem;
      padding: 0.75rem 1.75rem;
      background: transparent;
-     color: #468189;
+     color: #8DA9C4;
      font-family: var(--font-headline);
      font-weight: 700;
      font-size: 0.9375rem;
      border-radius: 12px;
-     border: 1.5px solid #468189;
+     border: 1.5px solid #8DA9C4;
      cursor: pointer;
      transition: all 0.25s ease;
      text-decoration: none;
 }
 .btn-secondary:hover {
-     background: #468189;
-     color: #ffffff;
-     box-shadow: 0 4px 14px rgba(70, 129, 137, 0.25);
+     background: #D4AF37;
+     color: #0B2545;
+     border-color: #D4AF37;
+     box-shadow: 0 4px 14px rgba(212, 175, 55, 0.25);
      transform: translateY(-1px);
 }
 
-/* ── Botón ghost (sobre fondos oscuros) ── */
+/* ── BotÃ³n ghost (sobre fondos oscuros) ── */
 .btn-ghost {
      display: inline-flex;
      align-items: center;
      justify-content: center;
      gap: 0.5rem;
      padding: 0.75rem 1.75rem;
-     background: rgba(244, 233, 205, 0.10);
-     color: #EBF2FA;
+     background: rgba(212, 175, 55, 0.10);
+     color: #EEF4ED;
      font-family: var(--font-headline);
      font-weight: 700;
      font-size: 0.9375rem;
      border-radius: 12px;
-     border: 1.5px solid rgba(244, 233, 205, 0.20);
+     border: 1.5px solid rgba(212, 175, 55, 0.20);
      cursor: pointer;
      transition: all 0.25s ease;
      text-decoration: none;
      backdrop-filter: blur(8px);
 }
 .btn-ghost:hover {
-     background: rgba(244, 233, 205, 0.18);
-     border-color: rgba(244, 233, 205, 0.35);
+     background: rgba(212, 175, 55, 0.18);
+     border-color: rgba(212, 175, 55, 0.35);
      transform: translateY(-1px);
 }
 
@@ -371,19 +411,19 @@ body {
 .card {
      background: #ffffff;
      border-radius: 16px;
-     border: 1px solid rgba(157, 190, 187, 0.25);
+     border: 1px solid rgba(197, 216, 232, 0.25);
      box-shadow: var(--shadow-card);
      transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
 .card:hover {
-     box-shadow: 0 8px 24px rgba(70, 129, 137, 0.12);
+     box-shadow: 0 8px 24px rgba(141, 169, 196, 0.12);
      transform: translateY(-2px);
 }
 
 .card-cream {
-     background: #EBF2FA;
+     background: #EEF4ED;
      border-radius: 16px;
-     border: 1px solid rgba(157, 190, 187, 0.20);
+     border: 1px solid rgba(197, 216, 232, 0.20);
      box-shadow: var(--shadow-soft);
 }
 
@@ -399,33 +439,33 @@ body {
      letter-spacing: 0.04em;
      text-transform: uppercase;
 }
-.badge-teal    { background: rgba(70, 129, 137, 0.12); color: #468189; }
-.badge-success { background: rgba(70, 129, 137, 0.12); color: #2d7a68; }
+.badge-teal    { background: rgba(141, 169, 196, 0.12); color: #8DA9C4; }
+.badge-success { background: rgba(141, 169, 196, 0.12); color: #2d7a68; }
 .badge-warning { background: rgba(212, 169, 106, 0.15); color: #9a6f2a; }
 .badge-danger  { background: rgba(220, 80, 80, 0.10);  color: #c0392b; }
-.badge-neutral { background: rgba(157, 190, 187, 0.20); color: #3d5a67; }
+.badge-neutral { background: rgba(197, 216, 232, 0.20); color: #13315C; }
 
 /* ── Formularios ── */
 .input-field {
      width: 100%;
      padding: 0.75rem 1rem;
      background: #ffffff;
-     border: 1.5px solid rgba(157, 190, 187, 0.40);
+     border: 1.5px solid rgba(197, 216, 232, 0.40);
      border-radius: 10px;
      font-size: 0.9375rem;
-     color: #031926;
+     color: #134074;
      transition: border-color 0.2s, box-shadow 0.2s;
      outline: none;
 }
-.input-field::placeholder { color: #9DBEBB; }
+.input-field::placeholder { color: #C5D8E8; }
 .input-field:focus {
-     border-color: #468189;
-     box-shadow: 0 0 0 3px rgba(70, 129, 137, 0.15);
+     border-color: #D4AF37;
+     box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.20);
 }
 
-/* ── Sección de hero con gradiente premium ── */
+/* ── SecciÃ³n de hero con gradiente premium ── */
 .section-hero-teal {
-     background: linear-gradient(145deg, #031926 0%, #0d3349 50%, #1e6570 100%);
+     background: linear-gradient(145deg, #134074 0%, #13315C 50%, #13315C 100%);
      position: relative;
      overflow: hidden;
 }
@@ -436,22 +476,22 @@ body {
      right: -10%;
      width: 60%;
      height: 140%;
-     background: radial-gradient(ellipse, rgba(70, 129, 137, 0.25) 0%, transparent 70%);
+     background: radial-gradient(ellipse, rgba(212, 175, 55, 0.15) 0%, transparent 70%);
      pointer-events: none;
 }
 
-/* ── Gradiente de sección claro ── */
+/* ── Gradiente de secciÃ³n claro ── */
 .section-gradient-light {
-     background: linear-gradient(180deg, #ffffff 0%, #EBF2FA 100%);
+     background: linear-gradient(180deg, #ffffff 0%, #EEF4ED 100%);
 }
 .section-gradient-teal {
-     background: linear-gradient(135deg, #EBF2FA 0%, rgba(157, 190, 187, 0.30) 100%);
+     background: linear-gradient(135deg, #EEF4ED 0%, rgba(197, 216, 232, 0.30) 100%);
 }
 
-/* ── Línea decorativa ── */
+/* ── LÃ­nea decorativa ── */
 .divider-teal {
      height: 1px;
-     background: linear-gradient(90deg, transparent, #9DBEBB, transparent);
+     background: linear-gradient(90deg, transparent, #C5D8E8, transparent);
      opacity: 0.5;
 }
 
@@ -522,7 +562,7 @@ body {
 
 /* ── Tabla admin ── */
 .table-row-hover:hover {
-     background: rgba(244, 233, 205, 0.50);
+     background: rgba(212, 175, 55, 0.50);
 }
 
 /* ── Stat card ── */
@@ -530,7 +570,7 @@ body {
      transition: box-shadow 0.15s ease, transform 0.15s ease;
 }
 .stat-card:hover {
-     box-shadow: 0 4px 16px rgba(70, 129, 137, 0.12);
+     box-shadow: 0 4px 16px rgba(141, 169, 196, 0.12);
      transform: translateY(-1px);
 }
 
@@ -539,3 +579,5 @@ body {
      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
      mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
 }
+
+

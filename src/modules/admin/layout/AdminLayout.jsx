@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import AdminSidebar from './AdminSidebar'
@@ -33,23 +33,23 @@ export default function AdminLayout() {
   }
 
   return (
-    <div className="min-h-screen bg-[#EBF2FA]/20">
+    <div className="min-h-screen bg-[#EEF4ED]/20">
       <AdminSidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
       <div className="lg:pl-60">
-        <header className="sticky top-0 z-30 bg-white border-b border-[#9DBEBB]/20">
+        <header className="sticky top-0 z-30 bg-white border-b border-[#C5D8E8]/20">
           <div className="h-14 flex items-center justify-between px-4 lg:px-6">
             <div className="flex items-center gap-3">
               <button
                 onClick={() => setSidebarOpen(true)}
-                className="lg:hidden p-2 rounded-lg text-[#468189] hover:bg-[#9DBEBB]/20 transition-colors"
+                className="lg:hidden p-2 rounded-lg text-[#134074] hover:bg-[#C5D8E8]/20 transition-colors"
               >
                 <span className="material-symbols-outlined text-[20px]">menu</span>
               </button>
               {meta.title && (
                 <div className="flex items-center gap-2">
-                  <span className="material-symbols-outlined text-[18px] text-[#468189]">{meta.icon}</span>
-                  <h1 className="text-sm font-semibold text-[#031926]">{meta.title}</h1>
+                  <span className="material-symbols-outlined text-[18px] text-[#134074]">{meta.icon}</span>
+                  <h1 className="text-sm font-semibold text-[#134074]">{meta.title}</h1>
                 </div>
               )}
             </div>
@@ -57,32 +57,32 @@ export default function AdminLayout() {
             <div className="flex items-center gap-1">
               <Link
                 to="/"
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[#468189] hover:bg-[#9DBEBB]/20 hover:text-[#031926] transition-colors text-sm font-medium"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[#134074] hover:bg-[#C5D8E8]/20 hover:text-[#134074] transition-colors text-sm font-medium"
                 title="Ir al sitio web"
               >
                 <span className="material-symbols-outlined text-[18px]">open_in_new</span>
                 Sitio web
               </Link>
 
-              <div className="w-px h-5 bg-[#9DBEBB]/30 mx-1.5" />
+              <div className="w-px h-5 bg-[#C5D8E8]/30 mx-1.5" />
 
               <div className="flex items-center gap-2 pl-1">
                 {user?.avatarUrl ? (
                   <img src={user.avatarUrl} alt={user.firstName} className="w-7 h-7 rounded-full object-cover" />
                 ) : (
-                  <div className="w-7 h-7 rounded-full bg-[#468189]/15 flex items-center justify-center text-[#468189] font-semibold text-[11px]">
+                  <div className="w-7 h-7 rounded-full bg-[#8DA9C4]/15 flex items-center justify-center text-[#134074] font-semibold text-[11px]">
                     {user?.firstName?.[0]}{user?.lastName?.[0]}
                   </div>
                 )}
                 <div className="hidden sm:block">
-                  <p className="text-[13px] font-medium text-[#031926] leading-tight">{user?.firstName} {user?.lastName}</p>
-                  <p className="text-[10px] text-[#468189] capitalize leading-tight">{user?.role?.replace('_', ' ')}</p>
+                  <p className="text-[13px] font-medium text-[#134074] leading-tight">{user?.firstName} {user?.lastName}</p>
+                  <p className="text-[10px] text-[#134074] capitalize leading-tight">{user?.role?.replace('_', ' ')}</p>
                 </div>
               </div>
 
               <button
                 onClick={handleLogout}
-                className="ml-1 p-2 rounded-lg text-[#9DBEBB] hover:text-red-500 hover:bg-red-50 transition-colors"
+                className="ml-1 p-2 rounded-lg text-[#13315C] hover:text-red-500 hover:bg-red-50 transition-colors"
                 title={t('common.logout')}
               >
                 <span className="material-symbols-outlined text-[18px]">logout</span>
@@ -98,3 +98,4 @@ export default function AdminLayout() {
     </div>
   )
 }
+

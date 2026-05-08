@@ -142,7 +142,7 @@ function CalculadoraSection() {
               <p className="mt-4 text-xs text-text-muted">{t('agentes.calculator.disclaimer')}</p>
             </div>
           </div>
-          <div className="p-10 md:p-16 text-white" style={{ background: 'linear-gradient(135deg, #000f22 0%, #0a2540 100%)' }}>
+          <div className="p-10 md:p-16 text-white" style={{ background: 'linear-gradient(135deg, #000f22 0%, #134074 100%)' }}>
             <h3 className="text-xl font-bold mb-8">{t('agentes.calculator.quickRef')}</h3>
             <div className="space-y-1">
               {tablaIngresos.map((row) => (
@@ -266,7 +266,7 @@ function RegistroSection() {
             <Link
               to="/registro-agente"
               className="inline-flex items-center gap-3 text-white py-5 px-12 rounded-2xl font-headline font-bold text-lg hover:opacity-90 transition-all shadow-xl active:scale-[0.98]"
-              style={{ background: 'linear-gradient(135deg, #000f22 0%, #0a2540 100%)' }}
+              style={{ background: 'linear-gradient(135deg, #000f22 0%, #134074 100%)' }}
             >
               <span className="material-symbols-outlined">person_add</span>
               {t('agentes.register.startBtn')}

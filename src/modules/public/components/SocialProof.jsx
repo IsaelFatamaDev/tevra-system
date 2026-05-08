@@ -52,7 +52,7 @@ export default function SocialProof() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-          <div ref={leftRef} className={`bg-white p-10 rounded-3xl shadow-soft border border-[#9DBEBB]/20 reveal-left ${leftVisible ? 'visible' : ''}`}>
+          <div ref={leftRef} className={`bg-white p-10 rounded-3xl shadow-soft border border-[#C5D8E8]/20 reveal-left ${leftVisible ? 'visible' : ''}`}>
             <h3 className="font-headline font-extrabold text-xl mb-8 flex items-center gap-2">
               <span className="material-symbols-outlined text-secondary">flash_on</span>
               {t('home.social.recentSales')}
@@ -61,9 +61,9 @@ export default function SocialProof() {
               {recentSales.map((sale) => (
                 <div
                   key={sale.name}
-                  className="flex items-center gap-4 p-4 hover:bg-[#F4E9CD]/50 rounded-2xl transition-colors border border-transparent hover:border-[#9DBEBB]/20"
+                  className="flex items-center gap-4 p-4 hover:bg-[#F4E9CD]/50 rounded-2xl transition-colors border border-transparent hover:border-[#C5D8E8]/20"
                 >
-                  <div className="w-14 h-14 rounded-xl bg-[#9DBEBB]/20 overflow-hidden shrink-0">
+                  <div className="w-14 h-14 rounded-xl bg-[#C5D8E8]/20 overflow-hidden shrink-0">
                     <img alt={sale.name} className="w-full h-full object-cover" src={sale.image} />
                   </div>
                   <div className="grow">
@@ -79,7 +79,7 @@ export default function SocialProof() {
             </div>
           </div>
 
-          <div ref={rightRef} className={`p-10 rounded-3xl shadow-soft text-[#F4E9CD] relative overflow-hidden reveal-right ${rightVisible ? 'visible' : ''}`} style={{ background: 'linear-gradient(135deg, #031926 0%, #0d3349 60%, #468189 100%)' }}>
+          <div ref={rightRef} className={`p-10 rounded-3xl shadow-soft text-[#F4E9CD] relative overflow-hidden reveal-right ${rightVisible ? 'visible' : ''}`} style={{ background: 'linear-gradient(135deg, #134074 0%, #13315C 60%, #8DA9C4 100%)' }}>
             <div className="absolute top-0 right-0 p-8 opacity-10">
               <span className="material-symbols-outlined text-[120px]">support_agent</span>
             </div>

@@ -62,7 +62,7 @@ export default function TeVraReviews() {
         {reviews.length > 0 && (
           <div className={`grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-14 reveal ${isVisible ? 'visible' : ''}`}>
             {reviews.map((review, i) => (
-              <div key={review.id} className={`bg-white rounded-2xl p-6 shadow-soft border border-[#9DBEBB]/20 stagger-${Math.min(i + 1, 5)}`}>
+              <div key={review.id} className={`bg-white rounded-2xl p-6 shadow-soft border border-[#C5D8E8]/20 stagger-${Math.min(i + 1, 5)}`}>
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex text-amber-400">
                     {[...Array(review.rating || 5)].map((_, j) => (
@@ -96,7 +96,7 @@ export default function TeVraReviews() {
 
         <div className="max-w-2xl mx-auto">
           {isAuthenticated ? (
-            <div className="bg-white rounded-3xl border border-[#9DBEBB]/20 p-8 shadow-soft">
+            <div className="bg-white rounded-3xl border border-[#C5D8E8]/20 p-8 shadow-soft">
               <h3 className="font-headline font-bold text-primary text-xl mb-1">{t('teVraReviews.formTitle')}</h3>
               <p className="text-text-muted text-sm mb-6">{t('teVraReviews.formSubtitle')}</p>
               {submitted ? (
@@ -132,7 +132,7 @@ export default function TeVraReviews() {
                     placeholder={t('teVraReviews.titlePlaceholder')}
                     value={form.title}
                     onChange={e => setForm(f => ({ ...f, title: e.target.value }))}
-                    className="w-full px-4 py-3 rounded-xl border border-[#9DBEBB]/40 bg-[#F4E9CD]/30 text-sm focus:outline-none focus:border-secondary/60 transition-colors"
+                    className="w-full px-4 py-3 rounded-xl border border-[#C5D8E8]/40 bg-[#F4E9CD]/30 text-sm focus:outline-none focus:border-secondary/60 transition-colors"
                   />
                   <textarea
                     placeholder={t('teVraReviews.commentPlaceholder')}
@@ -140,7 +140,7 @@ export default function TeVraReviews() {
                     onChange={e => setForm(f => ({ ...f, comment: e.target.value }))}
                     rows={4}
                     required
-                    className="w-full px-4 py-3 rounded-xl border border-[#9DBEBB]/40 bg-[#F4E9CD]/30 text-sm focus:outline-none focus:border-secondary/60 transition-colors resize-none"
+                    className="w-full px-4 py-3 rounded-xl border border-[#C5D8E8]/40 bg-[#F4E9CD]/30 text-sm focus:outline-none focus:border-secondary/60 transition-colors resize-none"
                   />
                   {error && <p className="text-red-500 text-xs">{error}</p>}
                   <button
@@ -155,7 +155,7 @@ export default function TeVraReviews() {
               )}
             </div>
           ) : (
-            <div className="bg-white rounded-3xl border border-[#9DBEBB]/20 p-8 text-center shadow-soft">
+            <div className="bg-white rounded-3xl border border-[#C5D8E8]/20 p-8 text-center shadow-soft">
               <span className="material-symbols-outlined text-4xl text-text-muted mb-3 block">rate_review</span>
               <p className="font-headline font-bold text-primary text-lg mb-2">{t('teVraReviews.guestTitle')}</p>
               <p className="text-text-muted text-sm mb-5">{t('teVraReviews.guestDesc')}</p>

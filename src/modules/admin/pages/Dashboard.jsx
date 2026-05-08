@@ -1,4 +1,4 @@
-import { useAuth } from '../../../core/contexts/AuthContext'
+﻿import { useAuth } from '../../../core/contexts/AuthContext'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -7,13 +7,13 @@ import agentsService from '../../public/services/agents.service'
 
 const statusColors = {
   pending: 'bg-amber-100 text-amber-700',
-  confirmed: 'bg-[#468189]/10 text-[#468189]',
-  processing: 'bg-[#77ACA2]/15 text-[#468189]',
+  confirmed: 'bg-[#8DA9C4]/10 text-[#134074]',
+  processing: 'bg-[#A5C0D8]/15 text-[#134074]',
   shipped: 'bg-purple-100 text-purple-700',
   purchased_in_usa: 'bg-blue-100 text-blue-700',
   in_transit: 'bg-violet-100 text-violet-700',
   in_customs: 'bg-orange-100 text-orange-700',
-  ready_for_delivery: 'bg-[#9DBEBB]/20 text-[#031926]',
+  ready_for_delivery: 'bg-[#C5D8E8]/20 text-[#134074]',
   delivered: 'bg-emerald-100 text-emerald-700',
   cancelled: 'bg-red-100 text-red-700',
 }
@@ -96,18 +96,18 @@ export default function AdminDashboard() {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="text-center">
-          <div className="w-8 h-8 rounded-full border-2 border-[#9DBEBB]/30 border-t-[#468189] animate-spin mx-auto mb-3" />
-          <p className="text-sm text-[#468189]">{t('common.loading')}</p>
+          <div className="w-8 h-8 rounded-full border-2 border-[#C5D8E8]/30 border-t-[#8DA9C4] animate-spin mx-auto mb-3" />
+          <p className="text-sm text-[#134074]">{t('common.loading')}</p>
         </div>
       </div>
     )
   }
 
   const statCards = stats ? [
-    { title: t('admin.dashboard.stats.totalCustomers'), value: stats.totalCustomers ?? 0, icon: 'group', bg: 'bg-[#EBF2FA]', iconColor: 'text-[#031926]' },
-    { title: t('admin.dashboard.stats.activeAgents'), value: stats.totalAgents ?? 0, icon: 'support_agent', bg: 'bg-[#468189]/15', iconColor: 'text-[#468189]' },
-    { title: t('admin.dashboard.stats.totalOrders'), value: stats.totalOrders ?? 0, icon: 'package_2', bg: 'bg-[#9DBEBB]/20', iconColor: 'text-[#031926]' },
-    { title: t('admin.dashboard.stats.revenue'), value: `$${Number(stats.totalRevenue ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}`, icon: 'payments', bg: 'bg-[#031926]', iconColor: 'text-[#EBF2FA]' },
+    { title: t('admin.dashboard.stats.totalCustomers'), value: stats.totalCustomers ?? 0, icon: 'group', bg: 'bg-[#EEF4ED]', iconColor: 'text-[#134074]' },
+    { title: t('admin.dashboard.stats.activeAgents'), value: stats.totalAgents ?? 0, icon: 'support_agent', bg: 'bg-[#8DA9C4]/15', iconColor: 'text-[#134074]' },
+    { title: t('admin.dashboard.stats.totalOrders'), value: stats.totalOrders ?? 0, icon: 'package_2', bg: 'bg-[#C5D8E8]/20', iconColor: 'text-[#134074]' },
+    { title: t('admin.dashboard.stats.revenue'), value: `$${Number(stats.totalRevenue ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}`, icon: 'payments', bg: 'bg-[#134074]', iconColor: 'text-[#EEF4ED]' },
   ] : []
 
   const medals = ['🥇', '🥈', '🥉']
@@ -121,15 +121,15 @@ export default function AdminDashboard() {
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
         <div>
-          <h1 className="text-xl font-semibold text-[#031926]">{t('admin.dashboard.title')}</h1>
-          <p className="text-sm text-[#468189] mt-0.5">{t('admin.dashboard.welcome', { name: user?.firstName })}</p>
+          <h1 className="text-xl font-semibold text-[#134074]">{t('admin.dashboard.title')}</h1>
+          <p className="text-sm text-[#134074] mt-0.5">{t('admin.dashboard.welcome', { name: user?.firstName })}</p>
         </div>
         <div className="flex gap-2">
-          <button onClick={handleExportCSV} className="px-4 py-2 bg-white text-[#031926] font-medium rounded-lg border border-[#9DBEBB]/30 flex items-center gap-1.5 hover:bg-[#EBF2FA]/50 transition-colors text-sm">
+          <button onClick={handleExportCSV} className="px-4 py-2 bg-white text-[#134074] font-medium rounded-lg border border-[#C5D8E8]/30 flex items-center gap-1.5 hover:bg-[#EEF4ED]/50 transition-colors text-sm">
             <span className="material-symbols-outlined text-[16px]">file_download</span>
             {t('admin.dashboard.exportBtn')}
           </button>
-          <button onClick={() => navigate('/registro-agente')} className="px-4 py-2 bg-[#031926] text-[#EBF2FA] font-medium rounded-lg flex items-center gap-1.5 hover:bg-[#468189] transition-colors text-sm">
+          <button onClick={() => navigate('/registro-agente')} className="px-4 py-2 bg-[#134074] text-[#EEF4ED] font-medium rounded-lg flex items-center gap-1.5 hover:bg-[#8DA9C4] transition-colors text-sm">
             <span className="material-symbols-outlined text-[16px]">add</span>
             {t('admin.dashboard.newAgent')}
           </button>
@@ -139,14 +139,14 @@ export default function AdminDashboard() {
       {/* Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
         {statCards.map((s) => (
-          <div key={s.title} className="bg-white rounded-xl p-5 border border-[#9DBEBB]/20 stat-card">
+          <div key={s.title} className="bg-white rounded-xl p-5 border border-[#C5D8E8]/20 stat-card">
             <div className="flex items-center gap-3 mb-3">
               <div className={`w-9 h-9 rounded-lg ${s.bg} flex items-center justify-center`}>
                 <span className={`material-symbols-outlined text-[18px] ${s.iconColor}`}>{s.icon}</span>
               </div>
-              <p className="text-xs font-medium text-[#468189]">{s.title}</p>
+              <p className="text-xs font-medium text-[#134074]">{s.title}</p>
             </div>
-            <p className="text-2xl font-semibold text-[#031926]">{s.value}</p>
+            <p className="text-2xl font-semibold text-[#134074]">{s.value}</p>
           </div>
         ))}
       </div>
@@ -155,7 +155,7 @@ export default function AdminDashboard() {
       {stats?.ordersByStatus?.length > 0 && (
         <div className="flex flex-wrap gap-2">
           {stats.ordersByStatus.map((s) => (
-            <span key={s.status} className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold ${statusColors[s.status] || 'bg-[#9DBEBB]/10 text-[#468189]'}`}>
+            <span key={s.status} className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold ${statusColors[s.status] || 'bg-[#C5D8E8]/10 text-[#134074]'}`}>
               {statusLabels[s.status] || s.status}
               <span className="bg-white/60 px-1.5 py-0.5 rounded-full text-[10px] font-bold">{s.count}</span>
             </span>
@@ -166,11 +166,11 @@ export default function AdminDashboard() {
       {/* Charts + Top Agents */}
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
         {/* Revenue Chart */}
-        <div className="xl:col-span-2 bg-white rounded-xl border border-[#9DBEBB]/20 overflow-hidden">
-          <div className="flex items-center justify-between px-5 py-4 border-b border-[#9DBEBB]/10">
+        <div className="xl:col-span-2 bg-white rounded-xl border border-[#C5D8E8]/20 overflow-hidden">
+          <div className="flex items-center justify-between px-5 py-4 border-b border-[#C5D8E8]/10">
             <div>
-              <h3 className="text-sm font-semibold text-[#031926]">{t('admin.dashboard.salesPerformance')}</h3>
-              <p className="text-xs text-[#468189] mt-0.5">{t('admin.dashboard.monthlyRevenue')}</p>
+              <h3 className="text-sm font-semibold text-[#134074]">{t('admin.dashboard.salesPerformance')}</h3>
+              <p className="text-xs text-[#134074] mt-0.5">{t('admin.dashboard.monthlyRevenue')}</p>
             </div>
           </div>
           <div className="p-6">
@@ -182,14 +182,14 @@ export default function AdminDashboard() {
                   const months = { '01': t('common.months.jan'), '02': t('common.months.feb'), '03': t('common.months.mar'), '04': t('common.months.apr'), '05': t('common.months.may'), '06': t('common.months.jun'), '07': t('common.months.jul'), '08': t('common.months.aug'), '09': t('common.months.sep'), '10': t('common.months.oct'), '11': t('common.months.nov'), '12': t('common.months.dec') }
                   return (
                     <div key={i} className="flex-1 flex flex-col items-center gap-1 group/bar">
-                      <div className="text-[10px] text-[#468189] opacity-0 group-hover/bar:opacity-100 transition-opacity font-semibold">
+                      <div className="text-[10px] text-[#134074] opacity-0 group-hover/bar:opacity-100 transition-opacity font-semibold">
                         ${Number(r.revenue).toLocaleString()}
                       </div>
                       <div
-                        className="w-full rounded-t-md bg-[#468189] hover:bg-[#031926] transition-colors cursor-pointer min-h-1"
+                        className="w-full rounded-t-md bg-[#8DA9C4] hover:bg-[#134074] transition-colors cursor-pointer min-h-1"
                         style={{ height: `${Math.max(pct, 2)}%` }}
                       />
-                      <span className="text-[10px] text-[#9DBEBB] font-medium">{months[monthLabel] || monthLabel}</span>
+                      <span className="text-[10px] text-[#13315C] font-medium">{months[monthLabel] || monthLabel}</span>
                     </div>
                   )
                 })}
@@ -198,8 +198,8 @@ export default function AdminDashboard() {
               <div className="flex items-end gap-2 h-52">
                 {[40, 65, 45, 80, 55, 90, 70, 60, 85, 50, 75, 95].map((h, i) => (
                   <div key={i} className="flex-1 flex flex-col items-center gap-1">
-                    <div className="w-full rounded-t-md bg-[#9DBEBB]/40" style={{ height: `${h}%` }} />
-                    <span className="text-[10px] text-[#9DBEBB]">{['E', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'][i]}</span>
+                    <div className="w-full rounded-t-md bg-[#C5D8E8]/40" style={{ height: `${h}%` }} />
+                    <span className="text-[10px] text-[#13315C]">{['E', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'][i]}</span>
                   </div>
                 ))}
               </div>
@@ -208,10 +208,10 @@ export default function AdminDashboard() {
         </div>
 
         {/* Top Agents */}
-        <div className="bg-white rounded-xl border border-[#9DBEBB]/20">
-          <div className="px-5 py-4 border-b border-[#9DBEBB]/10">
-            <h3 className="text-sm font-semibold text-[#031926]">{t('admin.dashboard.topAgents')}</h3>
-            <p className="text-xs text-[#468189] mt-0.5">{t('admin.dashboard.topAgentsDesc')}</p>
+        <div className="bg-white rounded-xl border border-[#C5D8E8]/20">
+          <div className="px-5 py-4 border-b border-[#C5D8E8]/10">
+            <h3 className="text-sm font-semibold text-[#134074]">{t('admin.dashboard.topAgents')}</h3>
+            <p className="text-xs text-[#134074] mt-0.5">{t('admin.dashboard.topAgentsDesc')}</p>
           </div>
           <div className="p-4 space-y-2">
             {topAgents.length === 0 && (
@@ -226,11 +226,11 @@ export default function AdminDashboard() {
                   {i < 3 ? <span className="text-sm">{medals[i]}</span> : <span>{i + 1}</span>}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-[#031926] truncate">{a.displayName || t('admin.table.agent')}</p>
-                  <p className="text-xs text-[#468189]">{Number(a.totalOrders || 0)} {t('admin.dashboard.sales')}</p>
+                  <p className="text-sm font-semibold text-[#134074] truncate">{a.displayName || t('admin.table.agent')}</p>
+                  <p className="text-xs text-[#134074]">{Number(a.totalOrders || 0)} {t('admin.dashboard.sales')}</p>
                 </div>
                 <div className="text-right">
-                  <span className="text-sm font-bold text-[#031926]">${Number(a.totalRevenue || 0).toLocaleString()}</span>
+                  <span className="text-sm font-bold text-[#134074]">${Number(a.totalRevenue || 0).toLocaleString()}</span>
                   <p className="text-[10px] text-emerald-600 font-medium">${Number(a.totalCommission || 0).toLocaleString()} {t('admin.dashboard.commission')}</p>
                 </div>
               </div>
@@ -242,13 +242,13 @@ export default function AdminDashboard() {
       {/* Recent Orders + Pending Agents */}
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
         {/* Recent Orders */}
-        <div className="xl:col-span-2 bg-white rounded-xl border border-[#9DBEBB]/20 overflow-hidden">
-          <div className="flex items-center justify-between px-5 py-4 border-b border-[#9DBEBB]/10">
+        <div className="xl:col-span-2 bg-white rounded-xl border border-[#C5D8E8]/20 overflow-hidden">
+          <div className="flex items-center justify-between px-5 py-4 border-b border-[#C5D8E8]/10">
             <div>
-              <h3 className="text-sm font-semibold text-[#031926]">{t('admin.dashboard.recentOrders')}</h3>
-              <p className="text-xs text-[#468189] mt-0.5">{t('admin.dashboard.lastOrders')}</p>
+              <h3 className="text-sm font-semibold text-[#134074]">{t('admin.dashboard.recentOrders')}</h3>
+              <p className="text-xs text-[#134074] mt-0.5">{t('admin.dashboard.lastOrders')}</p>
             </div>
-            <button onClick={() => navigate('/admin/orders')} className="text-sm font-medium text-[#468189] hover:text-[#031926] transition-colors flex items-center gap-1">
+            <button onClick={() => navigate('/admin/orders')} className="text-sm font-medium text-[#134074] hover:text-[#134074] transition-colors flex items-center gap-1">
               {t('admin.dashboard.viewAll')}
               <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
             </button>
@@ -256,12 +256,12 @@ export default function AdminDashboard() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="bg-[#EBF2FA]/30">
-                  <th className="text-left px-6 py-3 text-xs font-semibold text-[#468189] uppercase tracking-wider">{t('admin.dashboard.tableHeaders.order')}</th>
-                  <th className="text-left px-4 py-3 text-xs font-semibold text-[#468189] uppercase tracking-wider">{t('admin.dashboard.tableHeaders.customer')}</th>
-                  <th className="text-left px-4 py-3 text-xs font-semibold text-[#468189] uppercase tracking-wider hidden md:table-cell">{t('admin.dashboard.tableHeaders.agent')}</th>
-                  <th className="text-right px-4 py-3 text-xs font-semibold text-[#468189] uppercase tracking-wider">{t('admin.dashboard.tableHeaders.amount')}</th>
-                  <th className="text-center px-4 py-3 text-xs font-semibold text-[#468189] uppercase tracking-wider">{t('admin.dashboard.tableHeaders.status')}</th>
+                <tr className="bg-[#EEF4ED]/30">
+                  <th className="text-left px-6 py-3 text-xs font-semibold text-[#134074] uppercase tracking-wider">{t('admin.dashboard.tableHeaders.order')}</th>
+                  <th className="text-left px-4 py-3 text-xs font-semibold text-[#134074] uppercase tracking-wider">{t('admin.dashboard.tableHeaders.customer')}</th>
+                  <th className="text-left px-4 py-3 text-xs font-semibold text-[#134074] uppercase tracking-wider hidden md:table-cell">{t('admin.dashboard.tableHeaders.agent')}</th>
+                  <th className="text-right px-4 py-3 text-xs font-semibold text-[#134074] uppercase tracking-wider">{t('admin.dashboard.tableHeaders.amount')}</th>
+                  <th className="text-center px-4 py-3 text-xs font-semibold text-[#134074] uppercase tracking-wider">{t('admin.dashboard.tableHeaders.status')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -272,20 +272,20 @@ export default function AdminDashboard() {
                   </td></tr>
                 )}
                 {recentOrders.map((o) => (
-                  <tr key={o.id} className="border-t border-[#9DBEBB]/10 hover:bg-[#EBF2FA]/20 transition-colors">
+                  <tr key={o.id} className="border-t border-[#C5D8E8]/10 hover:bg-[#EEF4ED]/20 transition-colors">
                     <td className="px-6 py-3.5">
-                      <span className="font-mono text-xs font-semibold text-[#468189]">{o.orderNumber || o.id?.slice(0, 8)}</span>
+                      <span className="font-mono text-xs font-semibold text-[#134074]">{o.orderNumber || o.id?.slice(0, 8)}</span>
                     </td>
                     <td className="px-4 py-3.5">
-                      <p className="font-medium text-[#031926] text-sm">{o.customer?.firstName || t('admin.dashboard.tableHeaders.customer')} {o.customer?.lastName || ''}</p>
-                      <p className="text-xs text-[#9DBEBB]">{o.customer?.email || ''}</p>
+                      <p className="font-medium text-[#134074] text-sm">{o.customer?.firstName || t('admin.dashboard.tableHeaders.customer')} {o.customer?.lastName || ''}</p>
+                      <p className="text-xs text-[#13315C]">{o.customer?.email || ''}</p>
                     </td>
-                    <td className="px-4 py-3.5 hidden md:table-cell text-[#9DBEBB] text-sm">
+                    <td className="px-4 py-3.5 hidden md:table-cell text-[#13315C] text-sm">
                       {o.agent ? `${o.agent.firstName || ''} ${o.agent.lastName || ''}`.trim() || '—' : '—'}
                     </td>
-                    <td className="px-4 py-3.5 text-right font-bold text-[#031926]">${Number(o.total || 0).toLocaleString()}</td>
+                    <td className="px-4 py-3.5 text-right font-bold text-[#134074]">${Number(o.total || 0).toLocaleString()}</td>
                     <td className="px-4 py-3.5 text-center">
-                      <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-semibold ${statusColors[o.status] || 'bg-[#9DBEBB]/10 text-[#468189]'}`}>
+                      <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-semibold ${statusColors[o.status] || 'bg-[#C5D8E8]/10 text-[#134074]'}`}>
                         {statusLabels[o.status] || o.status}
                       </span>
                     </td>
@@ -297,15 +297,15 @@ export default function AdminDashboard() {
         </div>
 
         {/* Pending Agent Applications */}
-        <div className="bg-white rounded-xl border border-[#9DBEBB]/20">
-          <div className="px-5 py-4 border-b border-[#9DBEBB]/10">
+        <div className="bg-white rounded-xl border border-[#C5D8E8]/20">
+          <div className="px-5 py-4 border-b border-[#C5D8E8]/10">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-sm font-semibold text-[#031926]">{t('admin.dashboard.requests')}</h3>
-                <p className="text-xs text-[#468189] mt-0.5">{t('admin.dashboard.pendingAgents')}</p>
+                <h3 className="text-sm font-semibold text-[#134074]">{t('admin.dashboard.requests')}</h3>
+                <p className="text-xs text-[#134074] mt-0.5">{t('admin.dashboard.pendingAgents')}</p>
               </div>
               {pendingAgents.length > 0 && (
-                <span className="bg-[#EBF2FA] text-[#031926] text-xs font-semibold px-2 py-0.5 rounded-full">
+                <span className="bg-[#EEF4ED] text-[#134074] text-xs font-semibold px-2 py-0.5 rounded-full">
                   {pendingAgents.length}
                 </span>
               )}
@@ -319,23 +319,23 @@ export default function AdminDashboard() {
               </div>
             )}
             {pendingAgents.map((a, i) => (
-              <div key={a.id || i} className="p-3 rounded-lg border border-[#9DBEBB]/20 hover:border-[#9DBEBB]/40 transition-colors">
+              <div key={a.id || i} className="p-3 rounded-lg border border-[#C5D8E8]/20 hover:border-[#C5D8E8]/40 transition-colors">
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="w-8 h-8 rounded-full bg-[#EBF2FA] flex items-center justify-center text-[#031926] font-semibold text-xs shrink-0">
+                  <div className="w-8 h-8 rounded-full bg-[#EEF4ED] flex items-center justify-center text-[#134074] font-semibold text-xs shrink-0">
                     {(a.firstName || a.fullName || '?')[0].toUpperCase()}{(a.lastName || '')[0]?.toUpperCase() || ''}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-[#031926] truncate">
+                    <p className="text-sm font-semibold text-[#134074] truncate">
                       {a.firstName && a.lastName ? `${a.firstName} ${a.lastName}` : a.fullName || t('admin.dashboard.noName')}
                     </p>
-                    <p className="text-xs text-[#468189]">{a.city || a.email || t('admin.dashboard.noInfo')}</p>
+                    <p className="text-xs text-[#134074]">{a.city || a.email || t('admin.dashboard.noInfo')}</p>
                   </div>
                 </div>
                 <div className="flex gap-2">
-                  <button onClick={() => handleApproveAgent(a)} className="flex-1 py-1.5 rounded-lg bg-[#031926] text-[#EBF2FA] text-xs font-medium hover:bg-[#468189] transition-colors">
+                  <button onClick={() => handleApproveAgent(a)} className="flex-1 py-1.5 rounded-lg bg-[#134074] text-[#EEF4ED] text-xs font-medium hover:bg-[#8DA9C4] transition-colors">
                     {t('common.approve')}
                   </button>
-                  <button onClick={() => handleRejectAgent(a)} className="flex-1 py-1.5 rounded-lg border border-[#9DBEBB]/30 text-[#468189] text-xs font-medium hover:bg-[#EBF2FA]/30 transition-colors">
+                  <button onClick={() => handleRejectAgent(a)} className="flex-1 py-1.5 rounded-lg border border-[#C5D8E8]/30 text-[#134074] text-xs font-medium hover:bg-[#EEF4ED]/30 transition-colors">
                     {t('common.reject')}
                   </button>
                 </div>
@@ -348,23 +348,24 @@ export default function AdminDashboard() {
       {/* Commission Summary */}
       {stats && (
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="bg-white rounded-xl border border-[#9DBEBB]/20 p-5">
-            <span className="material-symbols-outlined text-[#9DBEBB] text-xl mb-3 block">account_balance</span>
-            <p className="text-2xl font-semibold text-[#031926]">${Number(stats.totalTevraCommission ?? 0).toLocaleString()}</p>
-            <p className="text-xs text-[#468189] mt-1">{t('admin.dashboard.commissions.tevra')}</p>
+          <div className="bg-white rounded-xl border border-[#C5D8E8]/20 p-5">
+            <span className="material-symbols-outlined text-[#13315C] text-xl mb-3 block">account_balance</span>
+            <p className="text-2xl font-semibold text-[#134074]">${Number(stats.totalTevraCommission ?? 0).toLocaleString()}</p>
+            <p className="text-xs text-[#134074] mt-1">{t('admin.dashboard.commissions.tevra')}</p>
           </div>
-          <div className="bg-white rounded-xl border border-[#9DBEBB]/20 p-5">
-            <span className="material-symbols-outlined text-[#9DBEBB] text-xl mb-3 block">handshake</span>
-            <p className="text-2xl font-semibold text-[#031926]">${Number(stats.totalAgentCommission ?? 0).toLocaleString()}</p>
-            <p className="text-xs text-[#468189] mt-1">{t('admin.dashboard.commissions.agents')}</p>
+          <div className="bg-white rounded-xl border border-[#C5D8E8]/20 p-5">
+            <span className="material-symbols-outlined text-[#13315C] text-xl mb-3 block">handshake</span>
+            <p className="text-2xl font-semibold text-[#134074]">${Number(stats.totalAgentCommission ?? 0).toLocaleString()}</p>
+            <p className="text-xs text-[#134074] mt-1">{t('admin.dashboard.commissions.agents')}</p>
           </div>
-          <div className="bg-white rounded-xl border border-[#9DBEBB]/20 p-5">
-            <span className="material-symbols-outlined text-[#9DBEBB] text-xl mb-3 block">inventory_2</span>
-            <p className="text-2xl font-semibold text-[#031926]">{stats.totalProducts ?? 0}</p>
-            <p className="text-xs text-[#468189] mt-1">{t('admin.dashboard.commissions.products')}</p>
+          <div className="bg-white rounded-xl border border-[#C5D8E8]/20 p-5">
+            <span className="material-symbols-outlined text-[#13315C] text-xl mb-3 block">inventory_2</span>
+            <p className="text-2xl font-semibold text-[#134074]">{stats.totalProducts ?? 0}</p>
+            <p className="text-xs text-[#134074] mt-1">{t('admin.dashboard.commissions.products')}</p>
           </div>
         </div>
       )}
     </div>
   )
 }
+

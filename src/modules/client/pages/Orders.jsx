@@ -186,7 +186,7 @@ export default function ClientOrders() {
                   <p className="text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-0.5">{t('client.orders.estimatedTotal')}</p>
                   <p className="font-extrabold text-slate-900">${parseFloat(order.total || 0).toLocaleString()} <span className="text-xs text-slate-500 font-medium tracking-normal">USD</span></p>
                 </div>
-                <div className="w-8 h-8 rounded-full bg-slate-50 text-slate-400 flex items-center justify-center group-hover:bg-slate-900 group-hover:text-[#EBF2FA] transition-colors">
+                <div className="w-8 h-8 rounded-full bg-slate-50 text-slate-400 flex items-center justify-center group-hover:bg-slate-900 group-hover:text-[#EEF4ED] transition-colors">
                   <span className="material-symbols-outlined text-sm">arrow_forward</span>
                 </div>
               </div>
@@ -249,7 +249,7 @@ export default function ClientOrders() {
                         const text = encodeURIComponent(`Hola, te escribo sobre mi pedido ${selectedOrder.orderNumber}`);
                         if (phone) window.open(`https://wa.me/${phone}?text=${text}`, '_blank');
                       }}
-                      className="w-10 h-10 rounded-full bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366] hover:text-[#EBF2FA] border border-[#25D366]/20 flex items-center justify-center shrink-0 transition-all"
+                      className="w-10 h-10 rounded-full bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366] hover:text-[#EEF4ED] border border-[#25D366]/20 flex items-center justify-center shrink-0 transition-all"
                       title="WhatsApp"
                     >
                       <span className="material-symbols-outlined text-[20px]">chat</span>
@@ -287,7 +287,7 @@ export default function ClientOrders() {
                                   <div className="absolute left-[15.5px] top-8 h-8 w-0.5 bg-slate-800 -ml-[0.5px]"></div>
                                 )}
 
-                                <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 z-10 shadow-sm border-2 ${isCurrent ? 'bg-slate-900 text-[#EBF2FA] border-slate-900 ring-4 ring-slate-100' : (isCompleted ? 'bg-slate-900 border-slate-900 text-[#EBF2FA]' : 'bg-white border-slate-200 text-slate-400')}`}>
+                                <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 z-10 shadow-sm border-2 ${isCurrent ? 'bg-slate-900 text-[#EEF4ED] border-slate-900 ring-4 ring-slate-100' : (isCompleted ? 'bg-slate-900 border-slate-900 text-[#EEF4ED]' : 'bg-white border-slate-200 text-slate-400')}`}>
                                   <span className="material-symbols-outlined text-[14px]">
                                     {isCompleted ? 'check' : step.icon}
                                   </span>
@@ -380,7 +380,7 @@ export default function ClientOrders() {
                     ))}
                     <button
                       onClick={() => setReviewModal({ type: 'tevra', targetName: 'Servicio TeVra' })}
-                      className="flex items-center gap-1.5 px-3 py-2 bg-primary text-[#EBF2FA] border border-primary rounded-xl text-xs font-bold hover:bg-secondary transition-all"
+                      className="flex items-center gap-1.5 px-3 py-2 bg-primary text-[#EEF4ED] border border-primary rounded-xl text-xs font-bold hover:bg-secondary transition-all"
                     >
                       <span className="material-symbols-outlined text-[14px]">storefront</span>
                       Calificar TeVra

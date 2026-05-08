@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react'
+﻿import { useState, useEffect, useRef, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import api from '../../../core/services/api'
 
@@ -150,7 +150,7 @@ export default function AdminSettings() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-32">
-        <div className="w-6 h-6 border-2 border-[#9DBEBB]/20 border-t-[#468189] rounded-full animate-spin" />
+        <div className="w-6 h-6 border-2 border-[#C5D8E8]/20 border-t-[#8DA9C4] rounded-full animate-spin" />
       </div>
     )
   }
@@ -158,8 +158,8 @@ export default function AdminSettings() {
   return (
     <div className="max-w-3xl mx-auto space-y-5 platform-enter">
       <div>
-        <h2 className="text-xl font-semibold text-[#031926]">{t('admin.settings.title')}</h2>
-        <p className="text-sm text-[#468189] mt-0.5">{t('admin.settings.subtitle')}</p>
+        <h2 className="text-xl font-semibold text-[#134074]">{t('admin.settings.title')}</h2>
+        <p className="text-sm text-[#134074] mt-0.5">{t('admin.settings.subtitle')}</p>
       </div>
 
       {success && (
@@ -170,24 +170,24 @@ export default function AdminSettings() {
       )}
 
       {/* Logo / Branding */}
-      <div className="bg-white rounded-xl border border-[#9DBEBB]/20 overflow-hidden">
-        <div className="px-5 py-3.5 border-b border-[#9DBEBB]/10">
-          <h3 className="font-semibold text-[#031926] text-sm">{t('admin.settings.brandLogo')}</h3>
-          <p className="text-xs text-[#468189] mt-0.5">{t('admin.settings.logoHint')}</p>
+      <div className="bg-white rounded-xl border border-[#C5D8E8]/20 overflow-hidden">
+        <div className="px-5 py-3.5 border-b border-[#C5D8E8]/10">
+          <h3 className="font-semibold text-[#134074] text-sm">{t('admin.settings.brandLogo')}</h3>
+          <p className="text-xs text-[#134074] mt-0.5">{t('admin.settings.logoHint')}</p>
         </div>
         <div className="p-5 flex items-center gap-5">
-          <div className="w-20 h-20 rounded-lg bg-[#EBF2FA]/30 border border-[#9DBEBB]/20 flex items-center justify-center overflow-hidden shrink-0">
+          <div className="w-20 h-20 rounded-lg bg-[#EEF4ED]/30 border border-[#C5D8E8]/20 flex items-center justify-center overflow-hidden shrink-0">
             {logoUrl ? (
               <img src={logoUrl} alt="Logo" className="w-full h-full object-contain" />
             ) : (
-              <span className="material-symbols-outlined text-[#9DBEBB] text-3xl">image</span>
+              <span className="material-symbols-outlined text-[#13315C] text-3xl">image</span>
             )}
           </div>
           <div className="space-y-2">
             <input ref={logoInputRef} type="file" accept="image/*" onChange={handleLogoUpload} className="hidden" />
             <div className="flex gap-2">
               <button type="button" onClick={() => logoInputRef.current?.click()} disabled={uploadingLogo}
-                className="px-3.5 py-2 bg-[#031926] text-[#EBF2FA] text-xs font-medium rounded-lg hover:bg-primary-mid transition-colors disabled:opacity-50 flex items-center gap-1.5">
+                className="px-3.5 py-2 bg-[#134074] text-[#EEF4ED] text-xs font-medium rounded-lg hover:bg-primary-mid transition-colors disabled:opacity-50 flex items-center gap-1.5">
                 {uploadingLogo ? (
                   <><div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" /> {t('common.saving')}</>
                 ) : (
@@ -201,42 +201,42 @@ export default function AdminSettings() {
                 </button>
               )}
             </div>
-            <p className="text-xs text-[#9DBEBB]">{t('admin.settings.logoFileHint')}</p>
+            <p className="text-xs text-[#13315C]">{t('admin.settings.logoFileHint')}</p>
           </div>
         </div>
       </div>
 
       {/* Company Info */}
-      <div className="bg-white rounded-xl border border-[#9DBEBB]/20 overflow-hidden">
-        <div className="px-5 py-3.5 border-b border-[#9DBEBB]/10">
-          <h3 className="font-semibold text-[#031926] text-sm">{t('admin.settings.companyData')}</h3>
-          <p className="text-xs text-[#468189] mt-0.5">{t('admin.settings.companyDataHint')}</p>
+      <div className="bg-white rounded-xl border border-[#C5D8E8]/20 overflow-hidden">
+        <div className="px-5 py-3.5 border-b border-[#C5D8E8]/10">
+          <h3 className="font-semibold text-[#134074] text-sm">{t('admin.settings.companyData')}</h3>
+          <p className="text-xs text-[#134074] mt-0.5">{t('admin.settings.companyDataHint')}</p>
         </div>
         <div className="p-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="sm:col-span-2">
-            <label className="block text-xs font-medium text-[#468189] mb-1">{t('admin.settings.commercialName')}</label>
+            <label className="block text-xs font-medium text-[#134074] mb-1">{t('admin.settings.commercialName')}</label>
             <input type="text" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })}
-              className="w-full px-3 py-2 bg-[#EBF2FA]/30 border border-[#9DBEBB]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#031926]/10 focus:border-[#468189] outline-none transition-all" />
+              className="w-full px-3 py-2 bg-[#EEF4ED]/30 border border-[#C5D8E8]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#134074]/10 focus:border-[#8DA9C4] outline-none transition-all" />
           </div>
           <div>
-            <label className="block text-xs font-medium text-[#468189] mb-1">{t('admin.settings.supportEmail')}</label>
+            <label className="block text-xs font-medium text-[#134074] mb-1">{t('admin.settings.supportEmail')}</label>
             <input type="email" value={form.supportEmail} onChange={e => setForm({ ...form, supportEmail: e.target.value })}
-              className="w-full px-3 py-2 bg-[#EBF2FA]/30 border border-[#9DBEBB]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#031926]/10 focus:border-[#468189] outline-none transition-all" />
+              className="w-full px-3 py-2 bg-[#EEF4ED]/30 border border-[#C5D8E8]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#134074]/10 focus:border-[#8DA9C4] outline-none transition-all" />
           </div>
           <div>
-            <label className="block text-xs font-medium text-[#468189] mb-1">{t('admin.settings.supportPhone')}</label>
+            <label className="block text-xs font-medium text-[#134074] mb-1">{t('admin.settings.supportPhone')}</label>
             <input type="tel" value={form.supportPhone} onChange={e => setForm({ ...form, supportPhone: e.target.value })}
-              className="w-full px-3 py-2 bg-[#EBF2FA]/30 border border-[#9DBEBB]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#031926]/10 focus:border-[#468189] outline-none transition-all" />
+              className="w-full px-3 py-2 bg-[#EEF4ED]/30 border border-[#C5D8E8]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#134074]/10 focus:border-[#8DA9C4] outline-none transition-all" />
           </div>
           <div>
-            <label className="block text-xs font-medium text-[#468189] mb-1">{t('admin.settings.whatsapp')}</label>
+            <label className="block text-xs font-medium text-[#134074] mb-1">{t('admin.settings.whatsapp')}</label>
             <input type="tel" value={form.whatsapp} onChange={e => setForm({ ...form, whatsapp: e.target.value })}
-              className="w-full px-3 py-2 bg-[#EBF2FA]/30 border border-[#9DBEBB]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#031926]/10 focus:border-[#468189] outline-none transition-all" />
+              className="w-full px-3 py-2 bg-[#EEF4ED]/30 border border-[#C5D8E8]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#134074]/10 focus:border-[#8DA9C4] outline-none transition-all" />
           </div>
           <div>
-            <label className="block text-xs font-medium text-[#468189] mb-1">{t('admin.settings.mainCurrency')}</label>
+            <label className="block text-xs font-medium text-[#134074] mb-1">{t('admin.settings.mainCurrency')}</label>
             <select value={form.currency} onChange={e => setForm({ ...form, currency: e.target.value })}
-              className="w-full px-3 py-2 bg-[#EBF2FA]/30 border border-[#9DBEBB]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#031926]/10 focus:border-[#468189] outline-none transition-all">
+              className="w-full px-3 py-2 bg-[#EEF4ED]/30 border border-[#C5D8E8]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#134074]/10 focus:border-[#8DA9C4] outline-none transition-all">
               <option value="USD">{t('admin.settings.currencyUSD')}</option>
               <option value="PEN">{t('admin.settings.currencyPEN')}</option>
               <option value="MXN">{t('admin.settings.currencyMXN')}</option>
@@ -246,56 +246,56 @@ export default function AdminSettings() {
       </div>
 
       {/* Fiscal & Shipping */}
-      <div className="bg-white rounded-xl border border-[#9DBEBB]/20 overflow-hidden">
-        <div className="px-5 py-3.5 border-b border-[#9DBEBB]/10">
-          <h3 className="font-semibold text-[#031926] text-sm">{t('admin.settings.fiscalShipping')}</h3>
-          <p className="text-xs text-[#468189] mt-0.5">{t('admin.settings.fiscalHint')}</p>
+      <div className="bg-white rounded-xl border border-[#C5D8E8]/20 overflow-hidden">
+        <div className="px-5 py-3.5 border-b border-[#C5D8E8]/10">
+          <h3 className="font-semibold text-[#134074] text-sm">{t('admin.settings.fiscalShipping')}</h3>
+          <p className="text-xs text-[#134074] mt-0.5">{t('admin.settings.fiscalHint')}</p>
         </div>
         <div className="p-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-xs font-medium text-[#468189] mb-1">{t('admin.settings.taxId')}</label>
+            <label className="block text-xs font-medium text-[#134074] mb-1">{t('admin.settings.taxId')}</label>
             <input type="text" value={form.taxId} onChange={e => setForm({ ...form, taxId: e.target.value })}
-              className="w-full px-3 py-2 bg-[#EBF2FA]/30 border border-[#9DBEBB]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#031926]/10 focus:border-[#468189] outline-none transition-all" placeholder="20600000000" />
+              className="w-full px-3 py-2 bg-[#EEF4ED]/30 border border-[#C5D8E8]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#134074]/10 focus:border-[#8DA9C4] outline-none transition-all" placeholder="20600000000" />
           </div>
           <div>
-            <label className="block text-xs font-medium text-[#468189] mb-1">{t('admin.settings.baseShippingRate')}</label>
+            <label className="block text-xs font-medium text-[#134074] mb-1">{t('admin.settings.baseShippingRate')}</label>
             <input type="number" step="0.01" value={form.baseShippingRate} onChange={e => setForm({ ...form, baseShippingRate: e.target.value })}
-              className="w-full px-3 py-2 bg-[#EBF2FA]/30 border border-[#9DBEBB]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#031926]/10 focus:border-[#468189] outline-none transition-all" placeholder="5.00" />
+              className="w-full px-3 py-2 bg-[#EEF4ED]/30 border border-[#C5D8E8]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#134074]/10 focus:border-[#8DA9C4] outline-none transition-all" placeholder="5.00" />
           </div>
           <div className="sm:col-span-2">
-            <label className="block text-xs font-medium text-[#468189] mb-1">{t('admin.settings.fiscalAddress')}</label>
+            <label className="block text-xs font-medium text-[#134074] mb-1">{t('admin.settings.fiscalAddress')}</label>
             <input type="text" value={form.fiscalAddress} onChange={e => setForm({ ...form, fiscalAddress: e.target.value })}
-              className="w-full px-3 py-2 bg-[#EBF2FA]/30 border border-[#9DBEBB]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#031926]/10 focus:border-[#468189] outline-none transition-all" placeholder="Av. Principal 123, Lima, Perú" />
+              className="w-full px-3 py-2 bg-[#EEF4ED]/30 border border-[#C5D8E8]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#134074]/10 focus:border-[#8DA9C4] outline-none transition-all" placeholder="Av. Principal 123, Lima, Perú" />
           </div>
         </div>
       </div>
 
       {/* Social & Messaging */}
-      <div className="bg-white rounded-xl border border-[#9DBEBB]/20 overflow-hidden">
-        <div className="px-5 py-3.5 border-b border-[#9DBEBB]/10">
-          <h3 className="font-semibold text-[#031926] text-sm">{t('admin.settings.socialComm')}</h3>
-          <p className="text-xs text-[#468189] mt-0.5">{t('admin.settings.socialHint')}</p>
+      <div className="bg-white rounded-xl border border-[#C5D8E8]/20 overflow-hidden">
+        <div className="px-5 py-3.5 border-b border-[#C5D8E8]/10">
+          <h3 className="font-semibold text-[#134074] text-sm">{t('admin.settings.socialComm')}</h3>
+          <p className="text-xs text-[#134074] mt-0.5">{t('admin.settings.socialHint')}</p>
         </div>
         <div className="p-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-xs font-medium text-[#468189] mb-1">{t('admin.settings.instagram')}</label>
+            <label className="block text-xs font-medium text-[#134074] mb-1">{t('admin.settings.instagram')}</label>
             <input type="url" value={form.instagramUrl} onChange={e => setForm({ ...form, instagramUrl: e.target.value })}
-              className="w-full px-3 py-2 bg-[#EBF2FA]/30 border border-[#9DBEBB]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#031926]/10 focus:border-[#468189] outline-none transition-all" placeholder="https://instagram.com/tevra" />
+              className="w-full px-3 py-2 bg-[#EEF4ED]/30 border border-[#C5D8E8]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#134074]/10 focus:border-[#8DA9C4] outline-none transition-all" placeholder="https://instagram.com/tevra" />
           </div>
           <div>
-            <label className="block text-xs font-medium text-[#468189] mb-1">{t('admin.settings.facebook')}</label>
+            <label className="block text-xs font-medium text-[#134074] mb-1">{t('admin.settings.facebook')}</label>
             <input type="url" value={form.facebookUrl} onChange={e => setForm({ ...form, facebookUrl: e.target.value })}
-              className="w-full px-3 py-2 bg-[#EBF2FA]/30 border border-[#9DBEBB]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#031926]/10 focus:border-[#468189] outline-none transition-all" placeholder="https://facebook.com/tevra" />
+              className="w-full px-3 py-2 bg-[#EEF4ED]/30 border border-[#C5D8E8]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#134074]/10 focus:border-[#8DA9C4] outline-none transition-all" placeholder="https://facebook.com/tevra" />
           </div>
           <div>
-            <label className="block text-xs font-medium text-[#468189] mb-1">{t('admin.settings.tiktok')}</label>
+            <label className="block text-xs font-medium text-[#134074] mb-1">{t('admin.settings.tiktok')}</label>
             <input type="url" value={form.tiktokUrl} onChange={e => setForm({ ...form, tiktokUrl: e.target.value })}
-              className="w-full px-3 py-2 bg-[#EBF2FA]/30 border border-[#9DBEBB]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#031926]/10 focus:border-[#468189] outline-none transition-all" placeholder="https://tiktok.com/@tevra" />
+              className="w-full px-3 py-2 bg-[#EEF4ED]/30 border border-[#C5D8E8]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#134074]/10 focus:border-[#8DA9C4] outline-none transition-all" placeholder="https://tiktok.com/@tevra" />
           </div>
           <div>
-            <label className="block text-xs font-medium text-[#468189] mb-1">{t('admin.settings.timezone')}</label>
+            <label className="block text-xs font-medium text-[#134074] mb-1">{t('admin.settings.timezone')}</label>
             <select value={form.timezone} onChange={e => setForm({ ...form, timezone: e.target.value })}
-              className="w-full px-3 py-2 bg-[#EBF2FA]/30 border border-[#9DBEBB]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#031926]/10 focus:border-[#468189] outline-none transition-all">
+              className="w-full px-3 py-2 bg-[#EEF4ED]/30 border border-[#C5D8E8]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#134074]/10 focus:border-[#8DA9C4] outline-none transition-all">
               <option value="America/Lima">America/Lima (UTC-5)</option>
               <option value="America/Bogota">America/Bogota (UTC-5)</option>
               <option value="America/Mexico_City">America/Mexico_City (UTC-6)</option>
@@ -305,95 +305,95 @@ export default function AdminSettings() {
             </select>
           </div>
           <div className="sm:col-span-2">
-            <label className="block text-xs font-medium text-[#468189] mb-1">{t('admin.settings.agentWelcomeMessage')}</label>
+            <label className="block text-xs font-medium text-[#134074] mb-1">{t('admin.settings.agentWelcomeMessage')}</label>
             <textarea value={form.welcomeMessage} onChange={e => setForm({ ...form, welcomeMessage: e.target.value })} rows={3}
-              className="w-full px-3 py-2 bg-[#EBF2FA]/30 border border-[#9DBEBB]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#031926]/10 focus:border-[#468189] outline-none transition-all resize-none" placeholder="¡Bienvenido al equipo de agentes de TeVra! Estamos emocionados de tenerte..." />
+              className="w-full px-3 py-2 bg-[#EEF4ED]/30 border border-[#C5D8E8]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#134074]/10 focus:border-[#8DA9C4] outline-none transition-all resize-none" placeholder="¡Bienvenido al equipo de agentes de TeVra! Estamos emocionados de tenerte..." />
           </div>
         </div>
       </div>
 
       {/* Agent Limits */}
-      <div className="bg-white rounded-xl border border-[#9DBEBB]/20 overflow-hidden">
-        <div className="px-5 py-3.5 border-b border-[#9DBEBB]/10">
-          <h3 className="font-semibold text-[#031926] text-sm">{t('admin.settings.agentConfig')}</h3>
-          <p className="text-xs text-[#468189] mt-0.5">{t('admin.settings.agentConfigHint')}</p>
+      <div className="bg-white rounded-xl border border-[#C5D8E8]/20 overflow-hidden">
+        <div className="px-5 py-3.5 border-b border-[#C5D8E8]/10">
+          <h3 className="font-semibold text-[#134074] text-sm">{t('admin.settings.agentConfig')}</h3>
+          <p className="text-xs text-[#134074] mt-0.5">{t('admin.settings.agentConfigHint')}</p>
         </div>
         <div className="p-5">
           <div className="max-w-xs">
-            <label className="block text-xs font-medium text-[#468189] mb-1">{t('admin.settings.maxAgentZones')}</label>
+            <label className="block text-xs font-medium text-[#134074] mb-1">{t('admin.settings.maxAgentZones')}</label>
             <input type="number" value={form.maxAgentZones} onChange={e => setForm({ ...form, maxAgentZones: e.target.value })}
-              className="w-full px-3 py-2 bg-[#EBF2FA]/30 border border-[#9DBEBB]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#031926]/10 focus:border-[#468189] outline-none transition-all" placeholder="3" />
+              className="w-full px-3 py-2 bg-[#EEF4ED]/30 border border-[#C5D8E8]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#134074]/10 focus:border-[#8DA9C4] outline-none transition-all" placeholder="3" />
           </div>
         </div>
       </div>
 
       {/* Commissions & Payments */}
-      <div className="bg-white rounded-xl border border-[#9DBEBB]/20 overflow-hidden">
-        <div className="px-5 py-3.5 border-b border-[#9DBEBB]/10">
-          <h3 className="font-semibold text-[#031926] text-sm">{t('admin.settings.paymentsCommissions')}</h3>
-          <p className="text-xs text-[#468189] mt-0.5">{t('admin.settings.paymentsHint')}</p>
+      <div className="bg-white rounded-xl border border-[#C5D8E8]/20 overflow-hidden">
+        <div className="px-5 py-3.5 border-b border-[#C5D8E8]/10">
+          <h3 className="font-semibold text-[#134074] text-sm">{t('admin.settings.paymentsCommissions')}</h3>
+          <p className="text-xs text-[#134074] mt-0.5">{t('admin.settings.paymentsHint')}</p>
         </div>
         <div className="p-5 space-y-5">
 
           {/* Dynamic Commission Model */}
-          <div className="p-4 bg-[#EBF2FA]/40 rounded-xl border border-[#9DBEBB]/20 space-y-4">
+          <div className="p-4 bg-[#EEF4ED]/40 rounded-xl border border-[#C5D8E8]/20 space-y-4">
             <div>
-              <p className="text-xs font-bold text-[#031926] uppercase tracking-wider">{t('admin.settings.commissionModelTitle')}</p>
-              <p className="text-xs text-[#468189] mt-0.5">{t('admin.settings.commissionModelHint')}</p>
+              <p className="text-xs font-bold text-[#134074] uppercase tracking-wider">{t('admin.settings.commissionModelTitle')}</p>
+              <p className="text-xs text-[#134074] mt-0.5">{t('admin.settings.commissionModelHint')}</p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
-                <label className="block text-xs font-medium text-[#468189] mb-1">{t('admin.settings.grossMarginPct')}</label>
+                <label className="block text-xs font-medium text-[#134074] mb-1">{t('admin.settings.grossMarginPct')}</label>
                 <div className="relative">
                   <input type="number" step="0.1" min="0" max="100" value={form.grossMarginPct}
                     onChange={e => setForm({ ...form, grossMarginPct: e.target.value })}
-                    className="w-full px-3 py-2 pr-7 bg-white border border-[#9DBEBB]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#031926]/10 focus:border-[#468189] outline-none transition-all" placeholder="30" />
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[#9DBEBB] font-bold">%</span>
+                    className="w-full px-3 py-2 pr-7 bg-white border border-[#C5D8E8]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#134074]/10 focus:border-[#8DA9C4] outline-none transition-all" placeholder="30" />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[#13315C] font-bold">%</span>
                 </div>
-                <p className="text-[10px] text-[#9DBEBB] mt-1">{t('admin.settings.grossMarginHint')}</p>
+                <p className="text-[10px] text-[#13315C] mt-1">{t('admin.settings.grossMarginHint')}</p>
               </div>
               <div>
-                <label className="block text-xs font-medium text-[#468189] mb-1">{t('admin.settings.agentCommissionPct')}</label>
+                <label className="block text-xs font-medium text-[#134074] mb-1">{t('admin.settings.agentCommissionPct')}</label>
                 <div className="relative">
                   <input type="number" step="0.1" min="0" max="100" value={form.agentCommissionPct}
                     onChange={e => setForm({ ...form, agentCommissionPct: e.target.value })}
-                    className="w-full px-3 py-2 pr-7 bg-white border border-[#9DBEBB]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#031926]/10 focus:border-[#468189] outline-none transition-all" placeholder="12" />
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[#9DBEBB] font-bold">%</span>
+                    className="w-full px-3 py-2 pr-7 bg-white border border-[#C5D8E8]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#134074]/10 focus:border-[#8DA9C4] outline-none transition-all" placeholder="12" />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[#13315C] font-bold">%</span>
                 </div>
-                <p className="text-[10px] text-[#9DBEBB] mt-1">{t('admin.settings.agentCommissionHint')}</p>
+                <p className="text-[10px] text-[#13315C] mt-1">{t('admin.settings.agentCommissionHint')}</p>
               </div>
               <div>
-                <label className="block text-xs font-medium text-[#468189] mb-1">{t('admin.settings.etcCommissionPct')}</label>
+                <label className="block text-xs font-medium text-[#134074] mb-1">{t('admin.settings.etcCommissionPct')}</label>
                 <div className="relative">
                   <input type="number" step="0.1" min="0" max="100" value={form.etcCommissionPct}
                     onChange={e => setForm({ ...form, etcCommissionPct: e.target.value })}
-                    className="w-full px-3 py-2 pr-7 bg-white border border-[#9DBEBB]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#031926]/10 focus:border-[#468189] outline-none transition-all" placeholder="3" />
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[#9DBEBB] font-bold">%</span>
+                    className="w-full px-3 py-2 pr-7 bg-white border border-[#C5D8E8]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#134074]/10 focus:border-[#8DA9C4] outline-none transition-all" placeholder="3" />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[#13315C] font-bold">%</span>
                 </div>
-                <p className="text-[10px] text-[#9DBEBB] mt-1">{t('admin.settings.etcCommissionHint')}</p>
+                <p className="text-[10px] text-[#13315C] mt-1">{t('admin.settings.etcCommissionHint')}</p>
               </div>
             </div>
 
             {/* Exchange Rates */}
             <div>
-              <p className="text-xs font-bold text-[#031926] mb-2">{t('admin.settings.exchangeRateTitle')}</p>
+              <p className="text-xs font-bold text-[#134074] mb-2">{t('admin.settings.exchangeRateTitle')}</p>
               <div className="grid grid-cols-2 gap-4 max-w-xs">
                 <div>
-                  <label className="block text-xs font-medium text-[#468189] mb-1">{t('admin.settings.exchangeRateBuy')}</label>
+                  <label className="block text-xs font-medium text-[#134074] mb-1">{t('admin.settings.exchangeRateBuy')}</label>
                   <div className="relative">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-[#9DBEBB] font-bold">S/</span>
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-[#13315C] font-bold">S/</span>
                     <input type="number" step="0.01" value={form.exchangeRateBuy}
                       onChange={e => setForm({ ...form, exchangeRateBuy: e.target.value })}
-                      className="w-full pl-8 pr-3 py-2 bg-white border border-[#9DBEBB]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#031926]/10 focus:border-[#468189] outline-none transition-all" placeholder="3.72" />
+                      className="w-full pl-8 pr-3 py-2 bg-white border border-[#C5D8E8]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#134074]/10 focus:border-[#8DA9C4] outline-none transition-all" placeholder="3.72" />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-[#468189] mb-1">{t('admin.settings.exchangeRateSell')}</label>
+                  <label className="block text-xs font-medium text-[#134074] mb-1">{t('admin.settings.exchangeRateSell')}</label>
                   <div className="relative">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-[#9DBEBB] font-bold">S/</span>
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-[#13315C] font-bold">S/</span>
                     <input type="number" step="0.01" value={form.exchangeRateSell}
                       onChange={e => setForm({ ...form, exchangeRateSell: e.target.value })}
-                      className="w-full pl-8 pr-3 py-2 bg-white border border-[#9DBEBB]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#031926]/10 focus:border-[#468189] outline-none transition-all" placeholder="3.78" />
+                      className="w-full pl-8 pr-3 py-2 bg-white border border-[#C5D8E8]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#134074]/10 focus:border-[#8DA9C4] outline-none transition-all" placeholder="3.78" />
                   </div>
                 </div>
               </div>
@@ -410,11 +410,11 @@ export default function AdminSettings() {
               const etcAmt = finalPrice * etcPct / 100
               const tevraAmt = finalPrice - providerCost - agentAmt - etcAmt
               return (
-                <div className="mt-2 p-3 bg-white rounded-lg border border-[#9DBEBB]/20">
-                  <p className="text-[10px] font-bold text-[#468189] uppercase tracking-wider mb-2">{t('admin.settings.commissionPreview')}</p>
+                <div className="mt-2 p-3 bg-white rounded-lg border border-[#C5D8E8]/20">
+                  <p className="text-[10px] font-bold text-[#134074] uppercase tracking-wider mb-2">{t('admin.settings.commissionPreview')}</p>
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                     {[
-                      { label: t('admin.settings.commissionPreviewFinal'), value: `$${finalPrice.toFixed(2)}`, color: 'bg-[#031926] text-white' },
+                      { label: t('admin.settings.commissionPreviewFinal'), value: `$${finalPrice.toFixed(2)}`, color: 'bg-[#134074] text-white' },
                       { label: t('admin.settings.commissionPreviewAgent'), value: `$${agentAmt.toFixed(2)} (${agentPct}%)`, color: 'bg-blue-50 text-blue-700' },
                       { label: t('admin.settings.commissionPreviewEtc'), value: `$${etcAmt.toFixed(2)} (${etcPct}%)`, color: 'bg-amber-50 text-amber-700' },
                       { label: t('admin.settings.commissionPreviewTevra'), value: `$${tevraAmt.toFixed(2)} (${(tevraAmt/finalPrice*100).toFixed(1)}%)`, color: 'bg-emerald-50 text-emerald-700' },
@@ -431,38 +431,38 @@ export default function AdminSettings() {
           </div>
 
           <div className="max-w-xs">
-            <label className="block text-xs font-medium text-[#468189] mb-1">{t('admin.settings.tevraCommissionPct')}</label>
+            <label className="block text-xs font-medium text-[#134074] mb-1">{t('admin.settings.tevraCommissionPct')}</label>
             <input type="number" value={form.commissionPct} onChange={e => setForm({ ...form, commissionPct: e.target.value })}
-              className="w-full px-3 py-2 bg-[#EBF2FA]/30 border border-[#9DBEBB]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#031926]/10 focus:border-[#468189] outline-none transition-all" placeholder="15" />
+              className="w-full px-3 py-2 bg-[#EEF4ED]/30 border border-[#C5D8E8]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#134074]/10 focus:border-[#8DA9C4] outline-none transition-all" placeholder="15" />
           </div>
-          <div className="flex items-center justify-between p-3.5 bg-[#EBF2FA]/30 rounded-lg border border-[#9DBEBB]/20">
+          <div className="flex items-center justify-between p-3.5 bg-[#EEF4ED]/30 rounded-lg border border-[#C5D8E8]/20">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 bg-[#EBF2FA] rounded-lg flex items-center justify-center">
-                <span className="material-symbols-outlined text-[#468189] text-[18px]">credit_card</span>
+              <div className="w-9 h-9 bg-[#EEF4ED] rounded-lg flex items-center justify-center">
+                <span className="material-symbols-outlined text-[#134074] text-[18px]">credit_card</span>
               </div>
               <div>
-                <p className="font-medium text-sm text-[#031926]">{t('admin.settings.stripe')}</p>
-                <p className="text-xs text-[#468189]">{t('admin.settings.stripeDesc')}</p>
+                <p className="font-medium text-sm text-[#134074]">{t('admin.settings.stripe')}</p>
+                <p className="text-xs text-[#134074]">{t('admin.settings.stripeDesc')}</p>
               </div>
             </div>
             <label className="relative inline-flex items-center cursor-pointer">
               <input type="checkbox" className="sr-only peer" checked={form.stripeEnabled} onChange={e => setForm({ ...form, stripeEnabled: e.target.checked })} />
-              <div className="w-11 h-6 bg-[#9DBEBB]/40 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#031926]"></div>
+              <div className="w-11 h-6 bg-[#C5D8E8]/40 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#134074]"></div>
             </label>
           </div>
-          <div className="flex items-center justify-between p-3.5 bg-[#EBF2FA]/30 rounded-lg border border-[#9DBEBB]/20">
+          <div className="flex items-center justify-between p-3.5 bg-[#EEF4ED]/30 rounded-lg border border-[#C5D8E8]/20">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 bg-[#EBF2FA] rounded-lg flex items-center justify-center">
-                <span className="material-symbols-outlined text-[#468189] text-[18px]">account_balance_wallet</span>
+              <div className="w-9 h-9 bg-[#EEF4ED] rounded-lg flex items-center justify-center">
+                <span className="material-symbols-outlined text-[#134074] text-[18px]">account_balance_wallet</span>
               </div>
               <div>
-                <p className="font-medium text-sm text-[#031926]">{t('admin.settings.paypal')}</p>
-                <p className="text-xs text-[#468189]">{t('admin.settings.paypalDesc')}</p>
+                <p className="font-medium text-sm text-[#134074]">{t('admin.settings.paypal')}</p>
+                <p className="text-xs text-[#134074]">{t('admin.settings.paypalDesc')}</p>
               </div>
             </div>
             <label className="relative inline-flex items-center cursor-pointer">
               <input type="checkbox" className="sr-only peer" checked={form.paypalEnabled} onChange={e => setForm({ ...form, paypalEnabled: e.target.checked })} />
-              <div className="w-11 h-6 bg-[#9DBEBB]/40 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#031926]"></div>
+              <div className="w-11 h-6 bg-[#C5D8E8]/40 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#134074]"></div>
             </label>
           </div>
         </div>
@@ -470,36 +470,36 @@ export default function AdminSettings() {
 
       {/* Plan Info */}
       {tenant && (
-        <div className="bg-white rounded-xl border border-[#9DBEBB]/20 overflow-hidden">
-          <div className="px-5 py-3.5 border-b border-[#9DBEBB]/10">
-            <h3 className="font-semibold text-[#031926] text-sm">{t('admin.settings.currentPlan')}</h3>
+        <div className="bg-white rounded-xl border border-[#C5D8E8]/20 overflow-hidden">
+          <div className="px-5 py-3.5 border-b border-[#C5D8E8]/10">
+            <h3 className="font-semibold text-[#134074] text-sm">{t('admin.settings.currentPlan')}</h3>
           </div>
           <div className="p-5 flex items-center gap-4">
-            <div className="w-11 h-11 bg-[#EBF2FA] rounded-lg flex items-center justify-center">
-              <span className="material-symbols-outlined text-[#468189] text-xl">workspace_premium</span>
+            <div className="w-11 h-11 bg-[#EEF4ED] rounded-lg flex items-center justify-center">
+              <span className="material-symbols-outlined text-[#134074] text-xl">workspace_premium</span>
             </div>
             <div>
-              <p className="font-semibold text-[#031926] capitalize text-lg">{tenant.plan}</p>
-              <p className="text-xs text-[#468189]">Slug: {tenant.slug} · ID: {tenant.id?.slice(0, 8)}</p>
+              <p className="font-semibold text-[#134074] capitalize text-lg">{tenant.plan}</p>
+              <p className="text-xs text-[#134074]">Slug: {tenant.slug} · ID: {tenant.id?.slice(0, 8)}</p>
             </div>
           </div>
         </div>
       )}
 
       {/* WhatsApp Connection */}
-      <div className="bg-white rounded-xl border border-[#9DBEBB]/20 overflow-hidden">
-        <div className="px-5 py-3.5 border-b border-[#9DBEBB]/10 flex items-center justify-between">
+      <div className="bg-white rounded-xl border border-[#C5D8E8]/20 overflow-hidden">
+        <div className="px-5 py-3.5 border-b border-[#C5D8E8]/10 flex items-center justify-between">
           <div>
-            <h3 className="font-semibold text-[#031926] text-sm">{t('admin.settings.waTitle')}</h3>
-            <p className="text-xs text-[#468189] mt-0.5">{t('admin.settings.waSubtitle')}</p>
+            <h3 className="font-semibold text-[#134074] text-sm">{t('admin.settings.waTitle')}</h3>
+            <p className="text-xs text-[#134074] mt-0.5">{t('admin.settings.waSubtitle')}</p>
           </div>
           <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${waStatus === 'open' ? 'bg-emerald-50 text-emerald-700' :
               waStatus === 'connecting' ? 'bg-amber-50 text-amber-700' :
-                'bg-[#EBF2FA] text-[#468189]'
+                'bg-[#EEF4ED] text-[#134074]'
             }`}>
             <span className={`w-2 h-2 rounded-full ${waStatus === 'open' ? 'bg-emerald-500' :
                 waStatus === 'connecting' ? 'bg-amber-500 animate-pulse' :
-                  'bg-[#9DBEBB]'
+                  'bg-[#C5D8E8]'
               }`} />
             {waStatus === 'open' ? t('admin.settings.waConnected') :
               waStatus === 'connecting' ? t('admin.settings.waConnecting') :
@@ -520,8 +520,8 @@ export default function AdminSettings() {
                 <span className="material-symbols-outlined text-emerald-600 text-2xl" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
               </div>
               <div className="flex-1">
-                <p className="font-semibold text-[#031926] text-sm">{t('admin.settings.waActiveTitle')}</p>
-                <p className="text-xs text-[#468189] mt-0.5">{t('admin.settings.waActiveDesc')}</p>
+                <p className="font-semibold text-[#134074] text-sm">{t('admin.settings.waActiveTitle')}</p>
+                <p className="text-xs text-[#134074] mt-0.5">{t('admin.settings.waActiveDesc')}</p>
               </div>
               <button onClick={handleWaDisconnect} disabled={waLoading}
                 className="px-3.5 py-2 bg-red-50 text-red-600 text-xs font-medium rounded-lg hover:bg-red-100 transition-colors flex items-center gap-1.5 disabled:opacity-50">
@@ -531,27 +531,27 @@ export default function AdminSettings() {
             </div>
           ) : waQrCode ? (
             <div className="flex flex-col items-center gap-4 py-4">
-              <p className="text-sm text-[#468189] font-medium text-center">{t('admin.settings.waScanQr')}</p>
-              <div className="p-3 bg-white rounded-xl border-2 border-[#9DBEBB]/20 shadow-sm">
+              <p className="text-sm text-[#134074] font-medium text-center">{t('admin.settings.waScanQr')}</p>
+              <div className="p-3 bg-white rounded-xl border-2 border-[#C5D8E8]/20 shadow-sm">
                 <img src={waQrCode} alt="WhatsApp QR Code" className="w-56 h-56 object-contain" />
               </div>
-              <p className="text-xs text-[#9DBEBB] text-center max-w-sm">{t('admin.settings.waScanHint')}</p>
+              <p className="text-xs text-[#13315C] text-center max-w-sm">{t('admin.settings.waScanHint')}</p>
               <button onClick={handleWaConnect} disabled={waLoading}
-                className="text-xs text-[#468189] hover:text-[#031926] underline transition-colors">
+                className="text-xs text-[#134074] hover:text-[#134074] underline transition-colors">
                 {t('admin.settings.waRefreshQr')}
               </button>
             </div>
           ) : (
             <div className="flex flex-col items-center gap-4 py-6">
-              <div className="w-16 h-16 bg-[#EBF2FA]/30 rounded-2xl flex items-center justify-center border border-[#9DBEBB]/20">
-                <span className="material-symbols-outlined text-[#9DBEBB] text-3xl">qr_code_2</span>
+              <div className="w-16 h-16 bg-[#EEF4ED]/30 rounded-2xl flex items-center justify-center border border-[#C5D8E8]/20">
+                <span className="material-symbols-outlined text-[#13315C] text-3xl">qr_code_2</span>
               </div>
               <div className="text-center">
-                <p className="text-sm font-medium text-[#031926]">{t('admin.settings.waNotConnected')}</p>
-                <p className="text-xs text-[#9DBEBB] mt-1 max-w-sm">{t('admin.settings.waNotConnectedDesc')}</p>
+                <p className="text-sm font-medium text-[#134074]">{t('admin.settings.waNotConnected')}</p>
+                <p className="text-xs text-[#13315C] mt-1 max-w-sm">{t('admin.settings.waNotConnectedDesc')}</p>
               </div>
               <button onClick={handleWaConnect} disabled={waLoading}
-                className="px-5 py-2.5 bg-[#25D366] hover:bg-[#20bd5a] text-[#EBF2FA] text-sm font-semibold rounded-xl transition-colors flex items-center gap-2 disabled:opacity-50 shadow-sm">
+                className="px-5 py-2.5 bg-[#25D366] hover:bg-[#20bd5a] text-[#EEF4ED] text-sm font-semibold rounded-xl transition-colors flex items-center gap-2 disabled:opacity-50 shadow-sm">
                 {waLoading ? (
                   <><div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> {t('common.loading')}</>
                 ) : (
@@ -566,7 +566,7 @@ export default function AdminSettings() {
       {/* Save */}
       <div className="flex justify-end">
         <button onClick={handleSave} disabled={saving}
-          className="bg-[#031926] hover:bg-primary-mid disabled:opacity-50 text-[#EBF2FA] px-6 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 text-sm">
+          className="bg-[#134074] hover:bg-primary-mid disabled:opacity-50 text-[#EEF4ED] px-6 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 text-sm">
           {saving ? (
             <><div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> {t('common.saving')}</>
           ) : (
@@ -577,3 +577,4 @@ export default function AdminSettings() {
     </div>
   )
 }
+

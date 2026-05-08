@@ -26,7 +26,7 @@ export default function SplashScreen({ onFinish }) {
      return (
           <div
                className={`fixed inset-0 z-9999 flex flex-col items-center justify-center transition-opacity duration-500 ${phase === 'exit' ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
-               style={{ background: 'linear-gradient(135deg, #0a2540 0%, #0d1b2a 30%, #1a1a2e 60%, #0a2540 100%)' }}
+               style={{ background: 'linear-gradient(135deg, #134074 0%, #0B2545 30%, #0B2545 60%, #134074 100%)' }}
           >
                <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,107,107,0.08)_0%,transparent_50%)]" />
                <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(46,213,115,0.06)_0%,transparent_50%)]" />

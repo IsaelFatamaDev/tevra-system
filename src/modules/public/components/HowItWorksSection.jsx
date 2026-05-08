@@ -4,11 +4,11 @@ import useScrollReveal from '../../../core/hooks/useScrollReveal'
 
 const STEP_META = [
   { icon: 'search', color: 'bg-secondary', text: 'text-white' },
-  { icon: 'link', color: 'bg-primary', text: 'text-[#EBF2FA]' },
+  { icon: 'link', color: 'bg-primary', text: 'text-[#EEF4ED]' },
   { icon: 'support_agent', color: 'bg-secondary-light', text: 'text-primary' },
   { icon: 'payments', color: 'bg-secondary-pale', text: 'text-primary' },
   { icon: 'flight_takeoff', color: 'bg-secondary', text: 'text-white' },
-  { icon: 'home_pin', color: 'bg-primary', text: 'text-[#EBF2FA]' },
+  { icon: 'home_pin', color: 'bg-primary', text: 'text-[#EEF4ED]' },
 ]
 
 export default function HowItWorksSection() {
@@ -20,7 +20,7 @@ export default function HowItWorksSection() {
   if (!Array.isArray(steps)) return null
 
   return (
-    <section className="py-28 bg-[#EBF2FA]/30">
+    <section className="py-28 bg-[#EEF4ED]/30">
       <div className="max-w-7xl mx-auto px-4 sm:px-8">
         <div ref={titleRef} className={`text-center max-w-2xl mx-auto mb-16 reveal ${titleVisible ? 'visible' : ''}`}>
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-secondary/10 rounded-full border border-secondary/20 mb-4">
@@ -39,7 +39,7 @@ export default function HowItWorksSection() {
           {steps.map((step, i) => (
             <div
               key={i}
-              className={`bg-white rounded-2xl p-7 shadow-soft border border-[#9DBEBB]/20 hover:-translate-y-1 hover:shadow-premium transition-all duration-300 stagger-${Math.min(i + 1, 5)} flex gap-4`}
+              className={`bg-white rounded-2xl p-7 shadow-soft border border-[#C5D8E8]/20 hover:-translate-y-1 hover:shadow-premium transition-all duration-300 stagger-${Math.min(i + 1, 5)} flex gap-4`}
             >
               <div className={`w-11 h-11 ${STEP_META[i].color} ${STEP_META[i].text} rounded-xl flex items-center justify-center shrink-0 mt-0.5`}>
                 <span className="material-symbols-outlined text-xl">{STEP_META[i].icon}</span>
@@ -60,7 +60,7 @@ export default function HowItWorksSection() {
         <div className="flex flex-wrap justify-center gap-4 mt-12">
           <Link
             to="/catalogo"
-            className="inline-flex items-center gap-2 px-8 py-3.5 bg-primary text-[#EBF2FA] rounded-2xl font-headline font-bold hover:bg-secondary transition-colors shadow-md text-sm"
+            className="inline-flex items-center gap-2 px-8 py-3.5 bg-primary text-[#EEF4ED] rounded-2xl font-headline font-bold hover:bg-secondary transition-colors shadow-md text-sm"
           >
             {t('howItWorks.exploreCta')}
             <span className="material-symbols-outlined text-base">arrow_forward</span>

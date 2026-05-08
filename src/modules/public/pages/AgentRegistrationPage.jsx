@@ -126,10 +126,10 @@ export default function AgentRegistrationPage() {
 
   return (
     <div className="min-h-screen" style={{ background: '#F4F6F8' }}>
-      <header className="fixed top-0 w-full z-50 bg-[#031926]/95 backdrop-blur-md border-b border-white/10">
+      <header className="fixed top-0 w-full z-50 bg-[#134074]/95 backdrop-blur-md border-b border-white/10">
         <div className="flex justify-between items-center px-6 py-4 max-w-full mx-auto">
           <button onClick={() => navigate('/')} className="font-headline font-black text-xl text-white tracking-tight">
-            Te<span style={{ color: '#77ACA2' }}>Vra</span>
+            Te<span style={{ color: '#A5C0D8' }}>Vra</span>
           </button>
           <div className="flex items-center gap-4">
             <span className="text-white/40 font-semibold text-sm hidden sm:block">{t('agentRegistration.stepOf', { current: step + 1, total: 3 })}</span>
@@ -141,7 +141,7 @@ export default function AgentRegistrationPage() {
       <div className="flex min-h-screen pt-16">
         <aside
           className="hidden lg:flex flex-col w-72 sticky top-16 h-[calc(100vh-64px)] p-8"
-          style={{ background: 'linear-gradient(160deg, #031926 0%, #062c3d 50%, #0a3d52 100%)' }}
+          style={{ background: 'linear-gradient(160deg, #134074 0%, #13315C 50%, #0a3d52 100%)' }}
         >
           <div className="mb-10">
             <p className="text-white/40 text-[10px] font-bold uppercase tracking-[0.2em] mb-1">{t('agentRegistration.agentPortal')}</p>
@@ -162,7 +162,7 @@ export default function AgentRegistrationPage() {
                       : 'opacity-40'
                     }`}
                 >
-                  <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${isActive ? 'bg-[#468189]' : isDone ? 'bg-emerald-500/30' : 'bg-white/10'
+                  <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${isActive ? 'bg-[#8DA9C4]' : isDone ? 'bg-emerald-500/30' : 'bg-white/10'
                     }`}>
                     {isDone
                       ? <span className="material-symbols-outlined text-emerald-400 text-lg" style={{ fontVariationSettings: "'FILL' 1" }}>check</span>
@@ -186,7 +186,7 @@ export default function AgentRegistrationPage() {
                 <span className="text-sm font-black text-white">{progress}%</span>
               </div>
               <div className="w-full bg-white/10 h-2 rounded-full overflow-hidden">
-                <div className="h-full rounded-full transition-all duration-700" style={{ width: `${progress}%`, background: 'linear-gradient(90deg, #468189, #77ACA2)' }} />
+                <div className="h-full rounded-full transition-all duration-700" style={{ width: `${progress}%`, background: 'linear-gradient(90deg, #8DA9C4, #A5C0D8)' }} />
               </div>
             </div>
           </div>
@@ -235,17 +235,17 @@ function Step1({ form, set, onNext, valid, generatedUsername, availabilityErrors
   const inputCls = (hasError) =>
     `w-full px-4 py-3 rounded-xl border text-sm text-on-background placeholder:text-text-muted/50 bg-white focus:outline-none focus:ring-2 transition-all ${hasError
       ? 'border-red-400 focus:ring-red-200'
-      : 'border-gray-200 focus:ring-[#468189]/20 focus:border-[#468189]'
+      : 'border-gray-200 focus:ring-[#8DA9C4]/20 focus:border-[#8DA9C4]'
     }`
 
   return (
     <>
       <div className="mb-10">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#468189]/10 border border-[#468189]/20 mb-4">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#468189]" />
-          <span className="text-[#468189] text-[11px] font-bold uppercase tracking-widest">Paso 1 de 3</span>
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#8DA9C4]/10 border border-[#8DA9C4]/20 mb-4">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#8DA9C4]" />
+          <span className="text-[#8DA9C4] text-[11px] font-bold uppercase tracking-widest">Paso 1 de 3</span>
         </div>
-        <h1 className="text-3xl md:text-4xl font-extrabold text-[#031926] tracking-tight mb-3">
+        <h1 className="text-3xl md:text-4xl font-extrabold text-[#134074] tracking-tight mb-3">
           {t('agentRegistration.step1Title')}
         </h1>
         <p className="text-base text-gray-500 max-w-xl leading-relaxed">
@@ -256,10 +256,10 @@ function Step1({ form, set, onNext, valid, generatedUsername, availabilityErrors
       <div className="space-y-5">
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
           <div className="flex items-center gap-3 px-6 py-4 border-b border-gray-50">
-            <div className="w-9 h-9 rounded-xl bg-[#031926] flex items-center justify-center">
+            <div className="w-9 h-9 rounded-xl bg-[#134074] flex items-center justify-center">
               <span className="material-symbols-outlined text-white text-[18px]">id_card</span>
             </div>
-            <h3 className="font-bold text-[#031926] text-base">{t('agentRegistration.basicIdentity')}</h3>
+            <h3 className="font-bold text-[#134074] text-base">{t('agentRegistration.basicIdentity')}</h3>
           </div>
           <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-5">
             <div className="space-y-1.5">
@@ -298,7 +298,7 @@ function Step1({ form, set, onNext, valid, generatedUsername, availabilityErrors
               <div className="w-9 h-9 rounded-xl bg-amber-50 flex items-center justify-center">
                 <span className="material-symbols-outlined text-amber-600 text-[18px]">contact_page</span>
               </div>
-              <h3 className="font-bold text-[#031926] text-base">{t('agentRegistration.contact')}</h3>
+              <h3 className="font-bold text-[#134074] text-base">{t('agentRegistration.contact')}</h3>
             </div>
             <div className="p-6 space-y-4">
               <div className="space-y-1.5">
@@ -311,7 +311,7 @@ function Step1({ form, set, onNext, valid, generatedUsername, availabilityErrors
                     placeholder={t('agentRegistration.emailPlaceholder')}
                     type="email"
                   />
-                  {checking.email && <span className="absolute right-3.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 border-2 border-[#468189]/30 border-t-[#468189] rounded-full animate-spin" />}
+                  {checking.email && <span className="absolute right-3.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 border-2 border-[#8DA9C4]/30 border-t-[#8DA9C4] rounded-full animate-spin" />}
                 </div>
                 {availabilityErrors.email && (
                   <p className="text-xs text-red-500 font-medium flex items-center gap-1">
@@ -323,13 +323,13 @@ function Step1({ form, set, onNext, valid, generatedUsername, availabilityErrors
               <div className="space-y-1.5">
                 <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">
                   {t('agentRegistration.whatsappLabel')}
-                  <span className="ml-1.5 text-[10px] font-semibold text-[#468189] normal-case tracking-normal">· también tu teléfono de contacto</span>
+                  <span className="ml-1.5 text-[10px] font-semibold text-[#8DA9C4] normal-case tracking-normal">· también tu teléfono de contacto</span>
                 </label>
                 <div className="flex gap-2">
                   <select
                     value={form.countryCode}
                     onChange={(e) => set('countryCode', e.target.value)}
-                    className="px-3 py-3 rounded-xl border border-gray-200 bg-gray-50 text-sm font-bold text-[#031926] focus:outline-none focus:ring-2 focus:ring-[#468189]/20 focus:border-[#468189] transition-all shrink-0"
+                    className="px-3 py-3 rounded-xl border border-gray-200 bg-gray-50 text-sm font-bold text-[#134074] focus:outline-none focus:ring-2 focus:ring-[#8DA9C4]/20 focus:border-[#8DA9C4] transition-all shrink-0"
                   >
                     {COUNTRY_CODES.map(c => (
                       <option key={c.code} value={c.code}>{c.flag} {c.code}</option>
@@ -343,7 +343,7 @@ function Step1({ form, set, onNext, valid, generatedUsername, availabilityErrors
                       placeholder="999 123 456"
                       type="tel"
                     />
-                    {checking.whatsapp && <span className="absolute right-3.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 border-2 border-[#468189]/30 border-t-[#468189] rounded-full animate-spin" />}
+                    {checking.whatsapp && <span className="absolute right-3.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 border-2 border-[#8DA9C4]/30 border-t-[#8DA9C4] rounded-full animate-spin" />}
                   </div>
                 </div>
                 {availabilityErrors.whatsapp && (
@@ -361,7 +361,7 @@ function Step1({ form, set, onNext, valid, generatedUsername, availabilityErrors
               <div className="w-9 h-9 rounded-xl bg-red-50 flex items-center justify-center">
                 <span className="material-symbols-outlined text-red-500 text-[18px]">location_on</span>
               </div>
-              <h3 className="font-bold text-[#031926] text-base">{t('agentRegistration.operationCity')}</h3>
+              <h3 className="font-bold text-[#134074] text-base">{t('agentRegistration.operationCity')}</h3>
             </div>
             <div className="p-6">
               <div className="space-y-1.5 relative" ref={cityRef}>
@@ -381,9 +381,9 @@ function Step1({ form, set, onNext, valid, generatedUsername, availabilityErrors
                         key={city}
                         type="button"
                         onMouseDown={() => { set('city', city); setCitySuggestions([]) }}
-                        className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-[#031926] hover:bg-gray-50 transition-colors text-left"
+                        className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-[#134074] hover:bg-gray-50 transition-colors text-left"
                       >
-                        <span className="material-symbols-outlined text-sm text-[#468189]">location_on</span>
+                        <span className="material-symbols-outlined text-sm text-[#8DA9C4]">location_on</span>
                         {city}
                       </button>
                     ))}
@@ -400,15 +400,15 @@ function Step1({ form, set, onNext, valid, generatedUsername, availabilityErrors
             <div className="w-9 h-9 rounded-xl bg-indigo-50 flex items-center justify-center">
               <span className="material-symbols-outlined text-indigo-600 text-[18px]">lock</span>
             </div>
-            <h3 className="font-bold text-[#031926] text-base">{t('agentRegistration.accessCredentials')}</h3>
+            <h3 className="font-bold text-[#134074] text-base">{t('agentRegistration.accessCredentials')}</h3>
           </div>
           <div className="p-6 space-y-5">
             {generatedUsername && (
-              <div className="p-4 bg-[#468189]/5 rounded-xl border border-[#468189]/15 flex items-center gap-3">
-                <span className="material-symbols-outlined text-[#468189] text-xl">alternate_email</span>
+              <div className="p-4 bg-[#8DA9C4]/5 rounded-xl border border-[#8DA9C4]/15 flex items-center gap-3">
+                <span className="material-symbols-outlined text-[#8DA9C4] text-xl">alternate_email</span>
                 <div>
                   <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">{t('agentRegistration.yourUserWillBe')}</p>
-                  <p className="font-bold text-[#031926] font-mono text-sm mt-0.5">{form.email || generatedUsername}</p>
+                  <p className="font-bold text-[#134074] font-mono text-sm mt-0.5">{form.email || generatedUsername}</p>
                 </div>
               </div>
             )}
@@ -427,7 +427,7 @@ function Step1({ form, set, onNext, valid, generatedUsername, availabilityErrors
                 <button
                   type="button"
                   onClick={() => setShowPassword(v => !v)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#468189] transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#8DA9C4] transition-colors"
                 >
                   <span className="material-symbols-outlined text-[20px]">{showPassword ? 'visibility_off' : 'visibility'}</span>
                 </button>
@@ -481,7 +481,7 @@ function Step1({ form, set, onNext, valid, generatedUsername, availabilityErrors
                 <button
                   type="button"
                   onClick={() => setShowConfirm(v => !v)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#468189] transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#8DA9C4] transition-colors"
                 >
                   <span className="material-symbols-outlined text-[20px]">{showConfirm ? 'visibility_off' : 'visibility'}</span>
                 </button>
@@ -505,13 +505,13 @@ function Step1({ form, set, onNext, valid, generatedUsername, availabilityErrors
         <div className="flex items-center gap-4 p-5 bg-emerald-50 rounded-2xl border border-emerald-100">
           <span className="material-symbols-outlined text-emerald-600 text-3xl shrink-0" style={{ fontVariationSettings: "'FILL' 1" }}>verified</span>
           <div>
-            <h4 className="font-bold text-[#031926] text-sm">{t('agentRegistration.dataProtected')}</h4>
+            <h4 className="font-bold text-[#134074] text-sm">{t('agentRegistration.dataProtected')}</h4>
             <p className="text-xs text-gray-500 mt-0.5">{t('agentRegistration.dataProtectedDesc')}</p>
           </div>
         </div>
 
         <div className="pt-4 flex justify-between items-center gap-4">
-          <button type="button" onClick={() => window.history.back()} className="text-sm text-gray-400 font-semibold hover:text-[#031926] transition-colors">
+          <button type="button" onClick={() => window.history.back()} className="text-sm text-gray-400 font-semibold hover:text-[#134074] transition-colors">
             {t('agentRegistration.cancel')}
           </button>
           <button
@@ -519,7 +519,7 @@ function Step1({ form, set, onNext, valid, generatedUsername, availabilityErrors
             disabled={!valid || isChecking}
             onClick={onNext}
             className="flex items-center gap-2 px-8 py-3.5 rounded-2xl font-bold text-sm transition-all shadow-lg disabled:opacity-40 disabled:cursor-not-allowed"
-            style={{ background: !valid || isChecking ? undefined : 'linear-gradient(135deg, #031926 0%, #0a3d52 100%)', color: 'white' }}
+            style={{ background: !valid || isChecking ? undefined : 'linear-gradient(135deg, #134074 0%, #0a3d52 100%)', color: 'white' }}
           >
             {isChecking ? (
               <>
@@ -570,11 +570,11 @@ function Step2({ form, toggleCategory, toggleCoverage, set, onBack, onSubmit, su
     <>
       {/* Page header */}
       <div className="mb-10">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#468189]/10 border border-[#468189]/20 mb-4">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#468189]" />
-          <span className="text-[#468189] text-[11px] font-bold uppercase tracking-widest">Paso 2 de 3</span>
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#8DA9C4]/10 border border-[#8DA9C4]/20 mb-4">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#8DA9C4]" />
+          <span className="text-[#8DA9C4] text-[11px] font-bold uppercase tracking-widest">Paso 2 de 3</span>
         </div>
-        <h1 className="text-3xl md:text-4xl font-extrabold text-[#031926] tracking-tight mb-3">{t('agentRegistration.step2Title')}</h1>
+        <h1 className="text-3xl md:text-4xl font-extrabold text-[#134074] tracking-tight mb-3">{t('agentRegistration.step2Title')}</h1>
         <p className="text-base text-gray-500 max-w-xl leading-relaxed">{t('agentRegistration.step2Subtitle')}</p>
       </div>
 
@@ -586,23 +586,23 @@ function Step2({ form, toggleCategory, toggleCoverage, set, onBack, onSubmit, su
               <div className="w-9 h-9 rounded-xl bg-violet-50 flex items-center justify-center">
                 <span className="material-symbols-outlined text-violet-600 text-[18px]">category</span>
               </div>
-              <h3 className="font-bold text-[#031926] text-base">{t('agentRegistration.categoriesLabel')}</h3>
+              <h3 className="font-bold text-[#134074] text-base">{t('agentRegistration.categoriesLabel')}</h3>
             </div>
             <div className="p-6 grid grid-cols-2 md:grid-cols-3 gap-3">
               {apiCategories.map((cat) => (
                 <label
                   key={cat}
                   className={`flex items-center gap-3 p-3.5 rounded-xl border cursor-pointer transition-all ${form.categories.includes(cat)
-                    ? 'border-[#468189] bg-[#468189]/5 ring-1 ring-[#468189]/30'
+                    ? 'border-[#8DA9C4] bg-[#8DA9C4]/5 ring-1 ring-[#8DA9C4]/30'
                     : 'border-gray-200 hover:border-gray-300 bg-white'
                     }`}
                 >
-                  <div className={`w-4 h-4 rounded flex items-center justify-center shrink-0 border transition-all ${form.categories.includes(cat) ? 'bg-[#468189] border-[#468189]' : 'border-gray-300'
+                  <div className={`w-4 h-4 rounded flex items-center justify-center shrink-0 border transition-all ${form.categories.includes(cat) ? 'bg-[#8DA9C4] border-[#8DA9C4]' : 'border-gray-300'
                     }`}>
                     {form.categories.includes(cat) && <span className="material-symbols-outlined text-white text-[11px]" style={{ fontVariationSettings: "'FILL' 1, 'wght' 700" }}>check</span>}
                   </div>
                   <input type="checkbox" checked={form.categories.includes(cat)} onChange={() => toggleCategory(cat)} className="sr-only" />
-                  <span className="text-sm font-semibold text-[#031926]">{cat}</span>
+                  <span className="text-sm font-semibold text-[#134074]">{cat}</span>
                 </label>
               ))}
             </div>
@@ -614,7 +614,7 @@ function Step2({ form, toggleCategory, toggleCoverage, set, onBack, onSubmit, su
               <div className="w-9 h-9 rounded-xl bg-sky-50 flex items-center justify-center">
                 <span className="material-symbols-outlined text-sky-600 text-[18px]">map</span>
               </div>
-              <h3 className="font-bold text-[#031926] text-base">{t('agentRegistration.coverageZones')}</h3>
+              <h3 className="font-bold text-[#134074] text-base">{t('agentRegistration.coverageZones')}</h3>
             </div>
             <div className="p-6 space-y-4">
               <div className="flex gap-2">
@@ -622,14 +622,14 @@ function Step2({ form, toggleCategory, toggleCoverage, set, onBack, onSubmit, su
                   value={zoneInput}
                   onChange={(e) => setZoneInput(e.target.value)}
                   onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addZone() } }}
-                  className="flex-1 px-4 py-3 rounded-xl border border-gray-200 text-sm text-[#031926] placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#468189]/20 focus:border-[#468189] transition-all"
+                  className="flex-1 px-4 py-3 rounded-xl border border-gray-200 text-sm text-[#134074] placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#8DA9C4]/20 focus:border-[#8DA9C4] transition-all"
                   placeholder={t('agentRegistration.zoneInputPlaceholder')}
                 />
                 <button
                   type="button"
                   onClick={addZone}
                   className="px-5 py-3 rounded-xl font-bold text-sm text-white transition-all"
-                  style={{ background: 'linear-gradient(135deg, #031926 0%, #0a3d52 100%)' }}
+                  style={{ background: 'linear-gradient(135deg, #134074 0%, #0a3d52 100%)' }}
                 >
                   {t('agentRegistration.addZone')}
                 </button>
@@ -637,7 +637,7 @@ function Step2({ form, toggleCategory, toggleCoverage, set, onBack, onSubmit, su
               {form.coverageAreas.length > 0 && (
                 <div className="flex flex-wrap gap-2">
                   {form.coverageAreas.map((zone) => (
-                    <span key={zone} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-semibold bg-[#031926] text-white">
+                    <span key={zone} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-semibold bg-[#134074] text-white">
                       <span className="material-symbols-outlined text-[13px] text-secondary-light">location_on</span>
                       {zone}
                       <button type="button" onClick={() => removeZone(zone)} className="ml-1 hover:text-red-300 transition-colors">
@@ -657,13 +657,13 @@ function Step2({ form, toggleCategory, toggleCoverage, set, onBack, onSubmit, su
               <div className="w-9 h-9 rounded-xl bg-amber-50 flex items-center justify-center">
                 <span className="material-symbols-outlined text-amber-600 text-[18px]">edit_note</span>
               </div>
-              <h3 className="font-bold text-[#031926] text-base">{t('agentRegistration.bioLabel')}</h3>
+              <h3 className="font-bold text-[#134074] text-base">{t('agentRegistration.bioLabel')}</h3>
             </div>
             <div className="p-6">
               <textarea
                 value={form.motivation}
                 onChange={(e) => set('motivation', e.target.value.slice(0, 500))}
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm text-[#031926] placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#468189]/20 focus:border-[#468189] transition-all resize-none"
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm text-[#134074] placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#8DA9C4]/20 focus:border-[#8DA9C4] transition-all resize-none"
                 placeholder={t('agentRegistration.bioPlaceholder')}
                 rows={5}
               />
@@ -684,7 +684,7 @@ function Step2({ form, toggleCategory, toggleCoverage, set, onBack, onSubmit, su
 
           {/* Actions */}
           <div className="pt-2 flex justify-between items-center gap-4">
-            <button type="button" onClick={onBack} className="flex items-center gap-1.5 text-sm text-gray-400 font-semibold hover:text-[#031926] transition-colors">
+            <button type="button" onClick={onBack} className="flex items-center gap-1.5 text-sm text-gray-400 font-semibold hover:text-[#134074] transition-colors">
               <span className="material-symbols-outlined text-[16px]">arrow_back</span>
               {t('agentRegistration.back')}
             </button>
@@ -693,7 +693,7 @@ function Step2({ form, toggleCategory, toggleCoverage, set, onBack, onSubmit, su
               disabled={!valid || submitting}
               onClick={onSubmit}
               className="flex items-center gap-2 px-8 py-3.5 rounded-2xl font-bold text-sm text-white transition-all shadow-lg disabled:opacity-40 disabled:cursor-not-allowed"
-              style={{ background: !valid || submitting ? '#9ca3af' : 'linear-gradient(135deg, #031926 0%, #0a3d52 100%)' }}
+              style={{ background: !valid || submitting ? '#9ca3af' : 'linear-gradient(135deg, #134074 0%, #0a3d52 100%)' }}
             >
               {submitting ? (
                 <>
@@ -713,7 +713,7 @@ function Step2({ form, toggleCategory, toggleCoverage, set, onBack, onSubmit, su
         {/* Tips sidebar */}
         <div className="lg:col-span-5">
           <div className="sticky top-24 rounded-2xl overflow-hidden border border-gray-100 shadow-sm">
-            <div className="px-6 py-5" style={{ background: 'linear-gradient(160deg, #031926 0%, #062c3d 100%)' }}>
+            <div className="px-6 py-5" style={{ background: 'linear-gradient(160deg, #134074 0%, #13315C 100%)' }}>
               <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center mb-3">
                 <span className="material-symbols-outlined text-secondary-light text-xl" style={{ fontVariationSettings: "'FILL' 1" }}>lightbulb</span>
               </div>
@@ -727,9 +727,9 @@ function Step2({ form, toggleCategory, toggleCoverage, set, onBack, onSubmit, su
                 { num: '03', title: t('agentRegistration.tip3Title'), desc: t('agentRegistration.tip3Desc') },
               ].map(({ num, title, desc }) => (
                 <div key={num} className="flex gap-4">
-                  <span className="text-[#468189] font-black text-lg shrink-0">{num}</span>
+                  <span className="text-[#8DA9C4] font-black text-lg shrink-0">{num}</span>
                   <div>
-                    <p className="font-bold text-[#031926] text-sm mb-1">{title}</p>
+                    <p className="font-bold text-[#134074] text-sm mb-1">{title}</p>
                     <p className="text-gray-500 text-xs leading-relaxed">{desc}</p>
                   </div>
                 </div>
@@ -755,10 +755,10 @@ function Step3({ onBack }) {
   return (
     <>
       <div className="mb-10 text-center">
-        <div className="inline-flex w-20 h-20 rounded-full items-center justify-center mb-6" style={{ background: 'linear-gradient(135deg, #031926 0%, #0a3d52 100%)' }}>
+        <div className="inline-flex w-20 h-20 rounded-full items-center justify-center mb-6" style={{ background: 'linear-gradient(135deg, #134074 0%, #0a3d52 100%)' }}>
           <span className="material-symbols-outlined text-5xl text-secondary-light" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
         </div>
-        <h1 className="text-3xl md:text-4xl font-extrabold text-[#031926] tracking-tight mb-3">
+        <h1 className="text-3xl md:text-4xl font-extrabold text-[#134074] tracking-tight mb-3">
           {t('agentRegistration.successTitle')}
         </h1>
         <p className="text-gray-500 text-base max-w-md mx-auto leading-relaxed">
@@ -770,29 +770,29 @@ function Step3({ onBack }) {
         {/* Status card */}
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
           <div className="flex items-center justify-between px-6 py-4 border-b border-gray-50">
-            <h2 className="font-bold text-[#031926] text-base">{t('agentRegistration.applicationStatus')}</h2>
+            <h2 className="font-bold text-[#134074] text-base">{t('agentRegistration.applicationStatus')}</h2>
             <span className="bg-amber-100 text-amber-700 px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-widest">{t('agentRegistration.statusPending')}</span>
           </div>
           <div className="p-6 space-y-5">
             <div className="flex items-start gap-4 p-4 bg-amber-50 rounded-xl border border-amber-100">
               <span className="material-symbols-outlined text-amber-500 mt-0.5">schedule</span>
               <div>
-                <p className="font-bold text-[#031926] text-sm">{t('agentRegistration.statusInReview')}</p>
+                <p className="font-bold text-[#134074] text-sm">{t('agentRegistration.statusInReview')}</p>
                 <p className="text-xs text-gray-500 mt-0.5">{t('agentRegistration.reviewTime')}</p>
               </div>
             </div>
 
             <div>
-              <h3 className="text-sm font-bold text-[#031926] uppercase tracking-wider mb-4 flex items-center gap-2">
-                <span className="w-1 h-4 rounded-full bg-[#468189] inline-block" />
+              <h3 className="text-sm font-bold text-[#134074] uppercase tracking-wider mb-4 flex items-center gap-2">
+                <span className="w-1 h-4 rounded-full bg-[#8DA9C4] inline-block" />
                 {t('agentRegistration.nextSteps')}
               </h3>
               <div className="space-y-3">
                 {nextSteps.map((stepLabel, i) => (
                   <div key={i} className="flex items-center gap-3">
-                    <div className={`w-8 h-8 rounded-xl flex items-center justify-center text-xs font-black shrink-0 ${i === 0 ? 'bg-[#031926] text-white' : 'bg-gray-100 text-gray-400'
+                    <div className={`w-8 h-8 rounded-xl flex items-center justify-center text-xs font-black shrink-0 ${i === 0 ? 'bg-[#134074] text-white' : 'bg-gray-100 text-gray-400'
                       }`}>{i + 1}</div>
-                    <p className={`text-sm font-semibold flex-1 ${i === 0 ? 'text-[#031926]' : 'text-gray-400'}`}>{stepLabel}</p>
+                    <p className={`text-sm font-semibold flex-1 ${i === 0 ? 'text-[#134074]' : 'text-gray-400'}`}>{stepLabel}</p>
                     <span className="material-symbols-outlined text-sm text-gray-300">{i === 0 ? 'done' : 'hourglass_empty'}</span>
                   </div>
                 ))}
@@ -804,7 +804,7 @@ function Step3({ onBack }) {
         <button
           onClick={onBack}
           className="w-full py-4 rounded-2xl font-bold text-white flex items-center justify-center gap-2 transition-all shadow-lg"
-          style={{ background: 'linear-gradient(135deg, #031926 0%, #0a3d52 100%)' }}
+          style={{ background: 'linear-gradient(135deg, #134074 0%, #0a3d52 100%)' }}
         >
           {t('agentRegistration.backToCatalog')}
           <span className="material-symbols-outlined">arrow_forward</span>

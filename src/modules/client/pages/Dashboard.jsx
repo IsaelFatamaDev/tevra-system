@@ -109,7 +109,7 @@ export default function ClientDashboard() {
                   <span className="material-symbols-outlined text-3xl">support_agent</span>
                 )}
               </div>
-              <span className="absolute bottom-0 right-0 bg-emerald-500 text-[#EBF2FA] p-1 rounded-full text-[10px] flex items-center justify-center border-2 border-white shadow-sm">
+              <span className="absolute bottom-0 right-0 bg-emerald-500 text-[#EEF4ED] p-1 rounded-full text-[10px] flex items-center justify-center border-2 border-white shadow-sm">
                 <span className="material-symbols-outlined text-[10px]" style={{ fontVariationSettings: "'FILL' 1" }}>check</span>
               </span>
             </div>
@@ -119,7 +119,7 @@ export default function ClientDashboard() {
             </h3>
             {agent && (agent.whatsapp || agent.user?.whatsapp) ? (
               <a href={`https://wa.me/${(agent.whatsapp || agent.user?.whatsapp).replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer"
-                className="w-full bg-[#25D366]/10 text-[#1da851] py-3 px-6 rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-[#25D366] hover:text-[#EBF2FA] transition-all text-sm group">
+                className="w-full bg-[#25D366]/10 text-[#1da851] py-3 px-6 rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-[#25D366] hover:text-[#EEF4ED] transition-all text-sm group">
                 <span className="material-symbols-outlined text-[20px] group-hover:scale-110 transition-transform">chat</span>
                 {t('client.dashboard.askWhatsApp')}
               </a>
@@ -240,7 +240,7 @@ export default function ClientDashboard() {
                   <p className="text-slate-500 max-w-sm mb-6">{t('client.dashboard.noActiveOrdersDesc')}</p>
                   {agent && (agent.whatsapp || agent.user?.whatsapp) && (
                     <a href={`https://wa.me/${(agent.whatsapp || agent.user?.whatsapp).replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer"
-                      className="px-6 py-3 bg-slate-900 text-[#EBF2FA] rounded-xl font-bold text-sm hover:bg-slate-800 transition-colors inline-flex items-center gap-2">
+                      className="px-6 py-3 bg-slate-900 text-[#EEF4ED] rounded-xl font-bold text-sm hover:bg-slate-800 transition-colors inline-flex items-center gap-2">
                       {t('client.dashboard.writeAgent')}
                     </a>
                   )}
@@ -310,7 +310,7 @@ export default function ClientDashboard() {
               ].map((c, i) => c.active ? (
                 <Link key={i} to={c.to} className="bg-white rounded-3xl p-5 border border-slate-100 shadow-[0_2px_15px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)] hover:-translate-y-1 transition-all flex items-center gap-4 group">
                   <div className="w-12 h-12 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center shrink-0 group-hover:bg-slate-900 transition-colors">
-                    <span className="material-symbols-outlined text-slate-400 group-hover:text-[#EBF2FA] transition-colors">{c.icon}</span>
+                    <span className="material-symbols-outlined text-slate-400 group-hover:text-[#EEF4ED] transition-colors">{c.icon}</span>
                   </div>
                   <div className="flex-1">
                     <p className="text-sm font-bold text-slate-900">{c.label}</p>
