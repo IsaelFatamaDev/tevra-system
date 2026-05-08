@@ -6,6 +6,7 @@ import { useAuth } from '../../../core/contexts/AuthContext'
 import productsService from '../services/products.service'
 import reviewsService from '../services/reviews.service'
 import { TEVRA_SUPPORT_WHATSAPP } from '../../../core/config/constants'
+import { useTranslateContent } from '../../../core/hooks/useTranslateContent'
 
 export default function ProductDetailPage() {
   const { slug } = useParams()
@@ -25,6 +26,7 @@ export default function ProductDetailPage() {
   const { t, i18n } = useTranslation()
 
   const currentLang = i18n.language || 'es'
+  const translatedDescription = useTranslateContent(product?.description, 'es')
 
   useEffect(() => {
     setLoading(true)
@@ -196,7 +198,9 @@ export default function ProductDetailPage() {
 
             {/* Description */}
             <p className="text-on-surface-variant leading-relaxed text-sm">
-              {(currentLang.startsWith('en') && product.descriptionEn) ? product.descriptionEn : product.description}
+              {currentLang.startsWith('en')
+                ? (product.descriptionEn || translatedDescription)
+                : product.description}
             </p>
 
             {/* Specifications */}

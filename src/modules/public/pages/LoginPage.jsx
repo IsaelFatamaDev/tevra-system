@@ -121,25 +121,10 @@ export default function LoginPage() {
 
       {/* ── PANEL DERECHO: Branding (fondo blanco) ── */}
       <div
-        className="hidden lg:flex relative overflow-hidden flex-col lg:w-[45%] xl:w-[46%] lg:min-h-screen"
-        style={{ background: '#ffffff' }}
+        className="hidden lg:flex relative overflow-hidden flex-col lg:w-[45%] xl:w-[46%] lg:min-h-screen bg-white"
       >
-        {/* Subtle light sweep */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background: 'linear-gradient(135deg, #ffffff 0%, #f5fafa 40%, #edf6f6 70%, #ffffff 100%)',
-            backgroundSize: '300% 300%',
-            animation: 'gradientShift 8s ease infinite',
-          }}
-        />
-        <style>{`
-          @keyframes gradientShift {
-            0%   { background-position: 0% 50%; }
-            50%  { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-          }
-        `}</style>
+        {/* Right panel should be solid white */}
+        <div className="absolute inset-0 bg-white" />
 
         {/* Accent left border */}
         <div className="absolute left-0 top-0 bottom-0 w-px" style={{ background: 'linear-gradient(180deg, transparent 0%, rgba(70,129,137,0.3) 40%, rgba(70,129,137,0.3) 60%, transparent 100%)' }} />
@@ -149,10 +134,10 @@ export default function LoginPage() {
           <div className="flex flex-col items-center gap-7">
 
             {/* Logo */}
-            <img 
-              src="/LogoTevra.png" 
-              alt="TeVra" 
-              className="w-64 h-64 xl:w-72 xl:h-72 object-contain" 
+            <img
+              src="/LogoTevra.png"
+              alt="TeVra"
+              className="w-64 h-64 xl:w-72 xl:h-72 object-contain"
               style={{ mixBlendMode: 'multiply' }}
             />
 
