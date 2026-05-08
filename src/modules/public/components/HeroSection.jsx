@@ -75,7 +75,7 @@ export default function HeroSection() {
           <div className="relative z-10 rounded-4xl overflow-hidden shadow-[0_32px_80px_rgba(19, 64, 116,0.55)] border border-secondary-light/20 hover:scale-[1.02] transition-transform duration-700" style={{ maxHeight: '65vh', aspectRatio: '1/1' }}>
             <img
               className="w-full h-full object-cover object-center"
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDJ9-i5TKpvJCiOd1RqoQk3J8swgyDaPV_2WPnpzRJomq757yjmRyBa6wOSisMTs7OpI1qj27L-TkC0mOakFRwTfPlHlU6uzpSZGsn7Or29XzdZIVoMdtzVLWQxRUCpphXwDgkIaOn5A2sxGLvTd_PIKBar6z7OqSBLgZYdAmjfeYNZ_ZriCTksLG_f0GJk0lYjPjjbe9un3JVaQ_WgJJy47oHTvKe4gCsyGPLTneqtjhqZu8pz_y4df5fQucgJxdW6lmcyPB4o_BI"
+              src="/public/LogoHome.png"
               alt="Productos premium desde USA"
             />
             <div className="absolute inset-0 bg-linear-to-t from-[#134074]/50 via-transparent to-transparent" />
