@@ -75,7 +75,7 @@ export default function HeroSection() {
           <div className="relative z-10 rounded-4xl overflow-hidden shadow-[0_32px_80px_rgba(19, 64, 116,0.55)] border border-secondary-light/20 hover:scale-[1.02] transition-transform duration-700" style={{ maxHeight: '65vh', aspectRatio: '1/1' }}>
             <img
               className="w-full h-full object-cover object-center"
-              src="/public/LogoHome.png"
+              src="/LogoHome.png"
               alt="Productos premium desde USA"
             />
             <div className="absolute inset-0 bg-linear-to-t from-[#134074]/50 via-transparent to-transparent" />
