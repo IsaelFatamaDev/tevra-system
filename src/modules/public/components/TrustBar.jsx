@@ -20,20 +20,20 @@ export default function TrustBar() {
             style={{ width: 'max-content' }}
           >
             {[...brands, ...brands].map((brand, i) => (
-              <span key={`${brand}-${i}`} className="text-lg font-black text-[#134074] opacity-30 select-none tracking-widest">
+              <span key={`${brand}-${i}`} className="text-lg font-black text-[#134074] opacity-70 select-none tracking-widest">
                 {brand}
               </span>
             ))}
           </div>
         </div>
 
-        <div className="mt-10 pt-8 border-t border-[#C5D8E8]/20 flex flex-wrap justify-center gap-10 text-sm font-bold text-[#134074]/50 tracking-tight">
+        <div className="mt-10 pt-8 border-t border-[#C5D8E8]/20 flex flex-wrap justify-center gap-10 text-sm font-bold text-[#134074] tracking-tight">
           {badges.map((badge) => (
             <div key={badge.icon} className="flex items-center gap-2.5 group">
-              <div className="w-8 h-8 rounded-lg bg-[#8DA9C4]/10 flex items-center justify-center group-hover:bg-[#8DA9C4]/20 transition-colors">
+              <div className="w-8 h-8 rounded-lg bg-[#8DA9C4]/20 flex items-center justify-center group-hover:bg-[#8DA9C4]/30 transition-colors">
                 <span className="material-symbols-outlined text-[#8DA9C4] text-[18px]">{badge.icon}</span>
               </div>
-              <span className="text-text-muted">{badge.label}</span>
+              <span className="text-[#134074]">{badge.label}</span>
             </div>
           ))}
         </div>

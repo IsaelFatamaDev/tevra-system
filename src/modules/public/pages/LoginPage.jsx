@@ -159,8 +159,7 @@ export default function LoginPage() {
 
       {/* ── PANEL IZQUIERDO: Formulario (gradiente oscuro) ── */}
       <div
-        className="flex-1 flex flex-col justify-center items-center min-h-dvh px-5 py-10 sm:px-8 md:px-12 lg:px-14 xl:px-20 overflow-y-auto"
-        style={{ background: 'linear-gradient(135deg, #134074 0%, #13315C 45%, #8DA9C4 75%, #134074 100%)' }}
+        className="flex-1 flex flex-col justify-center items-center min-h-dvh px-5 py-10 sm:px-8 md:px-12 lg:px-14 xl:px-20 overflow-y-auto bg-primary"
       >
         {/* Mobile logo */}
         <div className="flex lg:hidden items-center gap-2 mb-8 self-start">

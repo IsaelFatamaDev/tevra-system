@@ -29,7 +29,7 @@ export default function Navbar() {
         <div className="flex justify-between items-center px-6 sm:px-8 py-3.5 max-w-7xl mx-auto w-full">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-linear-to-br from-[#134074] to-[#8DA9C4] flex items-center justify-center shadow-sm">
+            <div className="w-8 h-8 rounded-lg bg-[#134074] flex items-center justify-center shadow-sm">
               <span className="text-[#EEF4ED] font-black text-[10px] tracking-tight">TV</span>
             </div>
             <span className="font-headline font-extrabold text-xl tracking-tight text-[#134074] select-none">

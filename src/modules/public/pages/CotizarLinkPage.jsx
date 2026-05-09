@@ -48,9 +48,9 @@ export default function CotizarLinkPage() {
 
         {/* Header */}
         <div className="text-center mb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-secondary/10 rounded-full border border-secondary/20 mb-4">
-            <span className="material-symbols-outlined text-secondary text-sm">link</span>
-            <span className="text-secondary text-[11px] font-black uppercase tracking-widest">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#8DA9C4]/20 rounded-full border border-[#8DA9C4]/40 mb-4">
+            <span className="material-symbols-outlined text-primary text-sm">link</span>
+            <span className="text-primary text-[11px] font-black uppercase tracking-widest">
               {t('cotizarLink.badge')}
             </span>
           </div>

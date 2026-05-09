@@ -23,9 +23,9 @@ export default function HowItWorksSection() {
     <section className="py-28 bg-[#EEF4ED]/30">
       <div className="max-w-7xl mx-auto px-4 sm:px-8">
         <div ref={titleRef} className={`text-center max-w-2xl mx-auto mb-16 reveal ${titleVisible ? 'visible' : ''}`}>
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-secondary/10 rounded-full border border-secondary/20 mb-4">
-            <span className="material-symbols-outlined text-secondary text-sm">route</span>
-            <span className="text-secondary text-[11px] font-black uppercase tracking-widest">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#8DA9C4]/20 rounded-full border border-[#8DA9C4]/40 mb-4">
+            <span className="material-symbols-outlined text-primary text-sm">route</span>
+            <span className="text-primary text-[11px] font-black uppercase tracking-widest">
               {t('howItWorks.badge')}
             </span>
           </div>

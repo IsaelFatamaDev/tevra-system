@@ -49,9 +49,9 @@ export default function TeVraReviews() {
     <section ref={ref} className="py-24 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-8">
         <div className="text-center max-w-2xl mx-auto mb-14">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-secondary/10 rounded-full border border-secondary/20 mb-4">
-            <span className="material-symbols-outlined text-secondary text-sm">star</span>
-            <span className="text-secondary text-[11px] font-black uppercase tracking-widest">{t('teVraReviews.badge')}</span>
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#8DA9C4]/20 rounded-full border border-[#8DA9C4]/40 mb-4">
+            <span className="material-symbols-outlined text-primary text-sm">star</span>
+            <span className="text-primary text-[11px] font-black uppercase tracking-widest">{t('teVraReviews.badge')}</span>
           </div>
           <h2 className="font-headline font-extrabold text-primary tracking-tight mb-3" style={{ fontSize: 'clamp(1.8rem, 4vw, 2.8rem)' }}>
             {t('teVraReviews.title')}
