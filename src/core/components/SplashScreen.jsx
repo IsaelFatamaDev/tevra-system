@@ -63,7 +63,7 @@ export default function SplashScreen({ onFinish }) {
                          className={`transition-all duration-700 delay-200 flex flex-col items-center ${phase === 'loading' ? 'opacity-0 translate-y-6' : 'opacity-100 translate-y-0'}`}
                     >
                          <h1 className="font-headline text-5xl md:text-6xl font-extrabold text-white tracking-tighter">
-                              Te<span className="bg-gradient-to-r from-secondary to-[#ff8a8a] bg-clip-text text-transparent">Vra</span>
+                              TeVra
                          </h1>
                     </div>
 

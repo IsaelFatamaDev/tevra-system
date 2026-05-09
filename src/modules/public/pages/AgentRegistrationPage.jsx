@@ -128,8 +128,10 @@ export default function AgentRegistrationPage() {
     <div className="min-h-screen" style={{ background: '#F4F6F8' }}>
       <header className="fixed top-0 w-full z-50 bg-[#134074]/95 backdrop-blur-md border-b border-white/10">
         <div className="flex justify-between items-center px-6 py-4 max-w-full mx-auto">
-          <button onClick={() => navigate('/')} className="font-headline font-black text-xl text-white tracking-tight">
-            Te<span style={{ color: '#A5C0D8' }}>Vra</span>
+          <button onClick={() => navigate('/')}>
+            <span className="font-headline font-extrabold text-xl tracking-tight text-white select-none">
+              TeVra
+            </span>
           </button>
           <div className="flex items-center gap-4">
             <span className="text-white/40 font-semibold text-sm hidden sm:block">{t('agentRegistration.stepOf', { current: step + 1, total: 3 })}</span>

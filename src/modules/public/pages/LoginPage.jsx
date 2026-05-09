@@ -167,7 +167,7 @@ export default function LoginPage() {
             <span className="text-white font-black text-[10px]">TV</span>
           </div>
           <span className="font-headline font-extrabold text-xl text-white">
-            Te<span className="text-secondary-light">Vra</span>
+            TeVra
           </span>
         </div>
 

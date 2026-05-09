@@ -45,8 +45,8 @@ export default function Footer() {
             <div className="w-9 h-9 rounded-xl bg-linear-to-br from-[#8DA9C4] to-secondary-light flex items-center justify-center shadow-sm">
               <span className="text-white font-black text-[11px] tracking-tight">TV</span>
             </div>
-            <span className="font-headline font-extrabold text-2xl tracking-tight text-[#EEF4ED] select-none">
-              Te<span className="text-secondary-light">Vra</span>
+            <span className="font-headline font-extrabold text-2xl text-white tracking-tight select-none">
+              TeVra
             </span>
           </div>
           <p className="text-[#EEF4ED]/50 leading-relaxed mb-6 text-sm">

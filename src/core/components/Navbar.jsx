@@ -33,7 +33,7 @@ export default function Navbar() {
               <span className="text-[#EEF4ED] font-black text-[10px] tracking-tight">TV</span>
             </div>
             <span className="font-headline font-extrabold text-xl tracking-tight text-[#134074] select-none">
-              Te<span className="text-[#8DA9C4]">Vra</span>
+              TeVra
             </span>
           </Link>
 

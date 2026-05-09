@@ -43,8 +43,8 @@ export default function ClientHeader() {
             <div className={`w-7 h-7 rounded-lg flex items-center justify-center bg-linear-to-br ${roleColor} shadow-sm`}>
               <span className="text-white font-black text-[11px]">TV</span>
             </div>
-            <span className="font-headline text-base font-extrabold text-[#134074] tracking-tight">
-              Te<span className="text-[#8DA9C4]">Vra</span>
+            <span className="font-headline font-extrabold text-xl tracking-tight text-[#134074] select-none">
+              TeVra
             </span>
           </NavLink>
 

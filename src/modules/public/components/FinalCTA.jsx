@@ -9,7 +9,7 @@ export default function FinalCTA() {
   return (
     <section className="max-w-7xl mx-auto px-8 mb-32">
       <div ref={ref} className={`relative overflow-hidden rounded-[40px] p-12 md:p-24 text-center shadow-2xl reveal-scale ${isVisible ? 'visible' : ''}`}
-        style={{ background: 'linear-gradient(135deg, #134074 0%, #13315C 50%, #8DA9C4 100%)' }}
+        style={{ background: 'linear-gradient(135deg, #134074 0%, #0B2545 100%)' }}
       >
         {/* Decoraciones */}
         <div className="absolute -top-20 -left-20 w-96 h-96 bg-[#8DA9C4]/20 rounded-full blur-3xl pointer-events-none" />

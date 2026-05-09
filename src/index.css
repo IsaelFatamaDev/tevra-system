@@ -147,7 +147,7 @@ body {
 .text-tevra-muted { color: #13315C; }
 
 .tevra-hero-gradient {
-     background: linear-gradient(145deg, #134074 0%, #13315C 55%, #8DA9C4 100%);
+     background: linear-gradient(145deg, #134074 0%, #0B2545 100%);
      color: #EEF4ED;
      position: relative;
 }

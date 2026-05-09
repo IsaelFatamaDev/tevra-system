@@ -32,7 +32,7 @@ export default function PageTransition({ onDone }) {
                     <div className={`transition-all duration-500 delay-100 ${phase === 'show' ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'
                          }`}>
                          <h1 className="font-headline text-2xl font-extrabold text-white tracking-tighter">
-                              Te<span className="text-secondary">Vra</span>
+                              TeVra
                          </h1>
                     </div>
                </div>
