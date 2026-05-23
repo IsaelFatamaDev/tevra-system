@@ -1,4 +1,4 @@
-﻿import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import api from '../../../core/services/api'
 
@@ -24,6 +24,8 @@ export default function AdminSettings() {
     instagramUrl: '', facebookUrl: '', tiktokUrl: '', timezone: 'America/Lima', maxAgentZones: '',
     grossMarginPct: '30', agentCommissionPct: '12', etcCommissionPct: '3',
     exchangeRateBuy: '3.72', exchangeRateSell: '3.78',
+    // Platform URLs — configured by owner, consumed by backend for email redirects etc.
+    frontendUrl: '',
   })
 
   useEffect(() => {
@@ -54,6 +56,7 @@ export default function AdminSettings() {
           tiktokUrl: data.settings?.tiktokUrl || '',
           timezone: data.settings?.timezone || 'America/Lima',
           maxAgentZones: data.settings?.maxAgentZones || '',
+          frontendUrl: data.settings?.frontendUrl || '',
         })
       })
       .catch(err => console.error('Error fetching tenant', err))
@@ -464,6 +467,62 @@ export default function AdminSettings() {
               <input type="checkbox" className="sr-only peer" checked={form.paypalEnabled} onChange={e => setForm({ ...form, paypalEnabled: e.target.checked })} />
               <div className="w-11 h-6 bg-[#C5D8E8]/40 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#134074]"></div>
             </label>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Platform URLs ── */}
+      <div className="bg-white rounded-xl border border-[#C5D8E8]/20 overflow-hidden">
+        <div className="px-5 py-3.5 border-b border-[#C5D8E8]/10">
+          <h3 className="font-semibold text-[#134074] text-sm flex items-center gap-2">
+            <span className="material-symbols-outlined text-[18px]">link</span>
+            URLs de la plataforma
+          </h3>
+          <p className="text-xs text-[#134074] mt-0.5">
+            Configura las URLs que usa el sistema internamente. Estos valores se aplican a todos los correos, botones y redirects automáticamente.
+          </p>
+        </div>
+        <div className="p-5 space-y-4">
+          <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg flex items-start gap-2">
+            <span className="material-symbols-outlined text-amber-600 text-[18px] mt-0.5 shrink-0">info</span>
+            <p className="text-xs text-amber-800 leading-relaxed">
+              <strong>¿Para qué sirve esto?</strong> La URL del frontend se usa en los correos de verificación de cuenta (el botón "Confirmar mi cuenta" apunta a esta dirección). El WhatsApp de soporte aparece en todos los botones de chat de la plataforma.
+            </p>
+          </div>
+
+          <div>
+            <label className="block text-xs font-medium text-[#134074] mb-1">
+              URL del Frontend (dominio de producción)
+            </label>
+            <input
+              type="url"
+              value={form.frontendUrl}
+              onChange={e => setForm({ ...form, frontendUrl: e.target.value })}
+              placeholder="https://tevra.com"
+              className="w-full px-3 py-2 bg-[#EEF4ED]/30 border border-[#C5D8E8]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#134074]/10 focus:border-[#8DA9C4] outline-none transition-all"
+            />
+            <p className="text-[10px] text-[#13315C] mt-1">
+              Esta URL se usa en correos de verificación de email y otros links automáticos del sistema. Ejemplo: <code className="bg-slate-100 px-1 rounded">https://tevra.com</code>
+            </p>
+          </div>
+
+          <div>
+            <label className="block text-xs font-medium text-[#134074] mb-1">
+              WhatsApp de Soporte (número internacional sin +)
+            </label>
+            <div className="relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-[#13315C] font-bold">+</span>
+              <input
+                type="tel"
+                value={form.whatsapp}
+                onChange={e => setForm({ ...form, whatsapp: e.target.value })}
+                placeholder="51999000000"
+                className="w-full pl-8 pr-3 py-2 bg-[#EEF4ED]/30 border border-[#C5D8E8]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#134074]/10 focus:border-[#8DA9C4] outline-none transition-all"
+              />
+            </div>
+            <p className="text-[10px] text-[#13315C] mt-1">
+              Este número aparece en el botón de chat de soporte visible para agentes y clientes. Incluye código de país. Ejemplo: <code className="bg-slate-100 px-1 rounded">51999000000</code> (Perú)
+            </p>
           </div>
         </div>
       </div>

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../../../core/contexts/AuthContext'
+import { useSiteConfig } from '../../../core/contexts/SiteConfigContext'
 import dashboardService from '../../admin/services/dashboard.service'
 import api from '../../../core/services/api'
 
@@ -18,11 +19,14 @@ const statusClasses = {
 export default function AgentDashboard() {
   const { t } = useTranslation()
   const { user } = useAuth()
+  // Read WhatsApp support number from the DB via admin panel — no .env needed
+  const siteConfig = useSiteConfig()
   const [copied, setCopied] = useState(false)
   const [orders, setOrders] = useState([])
   const [commissions, setCommissions] = useState([])
   const [commissionSummary, setCommissionSummary] = useState({ totalEarned: 0, totalPaid: 0, totalPending: 0, count: 0 })
   const [agentProfile, setAgentProfile] = useState(null)
+  const [reviews, setReviews] = useState({ reviews: [], avgRating: 0, total: 0 })
   const [loading, setLoading] = useState(true)
   const [showOrderModal, setShowOrderModal] = useState(false)
   const [orderForm, setOrderForm] = useState({ customerEmail: '', productName: '', productLink: '', quantity: 1, unitPrice: '', notes: '' })
@@ -37,7 +41,9 @@ export default function AgentDashboard() {
       dashboardService.getAgentOrders().catch(() => []),
       dashboardService.getMyCommissions().catch(() => ({ commissions: [], summary: {} })),
       dashboardService.getAgentProfile().catch(() => null),
-    ]).then(([ordersRes, commissionsRes, profileRes]) => {
+      // BUG-06/10 FIX: Fetch reviews received by this agent
+      api.get('/reviews/agent/me').catch(() => ({ reviews: [], avgRating: 0, total: 0 })),
+    ]).then(([ordersRes, commissionsRes, profileRes, reviewsRes]) => {
       const orderList = ordersRes?.data || (Array.isArray(ordersRes) ? ordersRes : [])
       setOrders(orderList)
 
@@ -46,6 +52,7 @@ export default function AgentDashboard() {
       if (cData?.summary) setCommissionSummary(cData.summary)
 
       setAgentProfile(profileRes?.data || profileRes)
+      setReviews(reviewsRes || { reviews: [], avgRating: 0, total: 0 })
     }).finally(() => setLoading(false))
   }, [])
 
@@ -160,7 +167,8 @@ export default function AgentDashboard() {
               <span className="material-symbols-outlined text-[20px]">add_shopping_cart</span>
               {t('agentDash.dashboard.createOrder')}
             </button>
-            <a href="https://wa.me/50370001234" target="_blank" rel="noopener noreferrer"
+            {/* BUG-09 FIX: WhatsApp support number comes from Admin > Configuración */}
+            <a href={`https://wa.me/${(siteConfig.whatsapp || '').replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 px-6 py-3.5 bg-[#25d366]/20 text-[#25d366] hover:bg-[#25d366] hover:text-white rounded-2xl font-bold transition-all border border-[#25d366]/30">
               <span className="material-symbols-outlined text-[20px]">chat</span>
               {t('common.supportChat')}
@@ -306,6 +314,53 @@ export default function AgentDashboard() {
           </div>
         </div>
       )}
+
+      {/* BUG-06/10 FIX: Agent Reviews Section */}
+      <div className="bg-white rounded-[2rem] border border-slate-100 shadow-[0_2px_15px_rgba(0,0,0,0.02)] overflow-hidden">
+        <div className="flex items-center justify-between px-8 py-6 border-b border-slate-100">
+          <div>
+            <h3 className="font-headline font-extrabold text-slate-900 text-lg">Calificaciones Recibidas</h3>
+            <p className="text-xs text-slate-400 font-medium mt-1">Lo que dicen tus clientes sobre ti</p>
+          </div>
+          <div className="flex items-center gap-3 bg-slate-50 px-5 py-3 rounded-2xl border border-slate-100">
+            <span className="material-symbols-outlined text-amber-400 text-2xl" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+            <div>
+              <p className="text-2xl font-extrabold text-slate-900 font-headline">{reviews.avgRating?.toFixed(1) || '—'}</p>
+              <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{reviews.total || 0} reseñas</p>
+            </div>
+          </div>
+        </div>
+
+        {reviews.reviews?.length === 0 ? (
+          <div className="px-8 py-12 text-center">
+            <span className="material-symbols-outlined text-4xl text-slate-200 mb-2 block">reviews</span>
+            <p className="text-sm text-slate-400">Aún no tienes calificaciones</p>
+          </div>
+        ) : (
+          <div className="divide-y divide-slate-100">
+            {reviews.reviews.slice(0, 5).map((rev, i) => (
+              <div key={rev.id || i} className="px-8 py-5 flex items-start gap-4">
+                <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center shrink-0 font-bold text-slate-600 text-sm">
+                  {(rev.reviewer?.firstName || 'C')[0]}
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center justify-between mb-1">
+                    <p className="font-bold text-slate-800 text-sm">{rev.reviewer?.firstName || 'Cliente'} {rev.reviewer?.lastName || ''}</p>
+                    <div className="flex items-center gap-1">
+                      {[1, 2, 3, 4, 5].map(s => (
+                        <span key={s} className={`material-symbols-outlined text-[14px] ${s <= rev.rating ? 'text-amber-400' : 'text-slate-200'}`}
+                          style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                      ))}
+                    </div>
+                  </div>
+                  {rev.body && <p className="text-sm text-slate-500 leading-relaxed">{rev.body}</p>}
+                  <p className="text-[10px] text-slate-300 mt-1">{rev.createdAt ? new Date(rev.createdAt).toLocaleDateString('es-PE') : ''}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
 
       {showOrderModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">

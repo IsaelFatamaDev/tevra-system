@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import campaignsService from '../services/campaigns.service'
 import Pagination from '../../../core/components/Pagination'
@@ -26,6 +26,14 @@ export default function AdminCommunications() {
       .finally(() => setLoading(false))
   }
   useEffect(() => { fetchData() }, [])
+
+  const handleLaunch = async (id) => {
+    if (!window.confirm('¿Enviar esta campaña ahora a todos los destinatarios?')) return
+    try {
+      await campaignsService.launch(id)
+      fetchData()
+    } catch (err) { console.error('Error launching campaign', err) }
+  }
 
   const handleCreate = async () => {
     setSaving(true)
@@ -133,9 +141,16 @@ export default function AdminCommunications() {
                       <h4 className="font-medium text-[#134074] truncate text-sm">{camp.name}</h4>
                       <p className="text-xs text-[#134074] truncate">{(camp.recipientCount || 0).toLocaleString()} {t('admin.communications.recipients')} · {camp.audienceType}</p>
                     </div>
-                    <div className="text-right shrink-0">
+                    <div className="text-right shrink-0 flex flex-col items-end gap-1">
                       <p className="text-sm font-semibold text-[#134074]">{(camp.openCount || 0).toLocaleString()}</p>
                       <p className="text-[10px] text-[#134074]">{t('admin.communications.opensCount')}</p>
+                      {['draft', 'scheduled'].includes(camp.status) && (
+                        <button onClick={() => handleLaunch(camp.id)}
+                          className="mt-1 px-2.5 py-1 bg-[#134074] text-[#EEF4ED] text-[10px] font-bold rounded-md hover:bg-[#13315C] transition-colors flex items-center gap-1">
+                          <span className="material-symbols-outlined text-[12px]">send</span>
+                          Enviar
+                        </button>
+                      )}
                     </div>
                   </div>
                 )
@@ -262,4 +277,3 @@ export default function AdminCommunications() {
     </div>
   )
 }
-

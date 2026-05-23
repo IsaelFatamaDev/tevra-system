@@ -4,6 +4,28 @@ import api from '../../../core/services/api'
 
 const EMPTY_FORM = { label: '', recipientName: '', phone: '', addressLine1: '', addressLine2: '', city: '', state: '', country: '', zipCode: '', isDefault: false }
 
+function InputField({ label, field, type = 'text', placeholder = '', colSpan = false, form, setForm, errors }) {
+  return (
+    <div className={colSpan ? 'sm:col-span-2' : ''}>
+      <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">{label}</label>
+      <div className="relative">
+        <input
+          type={type}
+          value={form[field] ?? ''}
+          onChange={e => setForm(prev => ({ ...prev, [field]: e.target.value }))}
+          placeholder={placeholder}
+          autoComplete="off"
+          className={`w-full px-4 py-3.5 bg-slate-50 border rounded-2xl text-sm text-slate-900 font-medium placeholder:text-slate-400 focus:ring-4 focus:ring-slate-900/5 focus:border-slate-900 outline-none transition-all ${errors[field] ? 'border-red-300 focus:border-red-500 focus:ring-red-100' : 'border-slate-200'}`}
+        />
+        {errors[field] && (
+          <span className="absolute right-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-red-500 text-[18px]">error</span>
+        )}
+      </div>
+      {errors[field] && <p className="text-[11px] font-bold text-red-500 mt-1.5">{errors[field]}</p>}
+    </div>
+  )
+}
+
 export default function ClientAddresses() {
   const { t } = useTranslation()
   const [addresses, setAddresses] = useState([])
@@ -13,6 +35,7 @@ export default function ClientAddresses() {
   const [form, setForm] = useState(EMPTY_FORM)
   const [saving, setSaving] = useState(false)
   const [errors, setErrors] = useState({})
+  const [errorMsg, setErrorMsg] = useState(null)
 
   const fetchAddresses = () => {
     setLoading(true)
@@ -35,7 +58,7 @@ export default function ClientAddresses() {
     return Object.keys(e).length === 0
   }
 
-  const openCreate = () => { setForm({ ...EMPTY_FORM, country: t('client.addresses.defaultCountry') }); setErrors({}); setModal('create') }
+  const openCreate = () => { setForm({ ...EMPTY_FORM, country: t('client.addresses.defaultCountry') }); setErrors({}); setErrorMsg(null); setModal('create') }
   const openEdit = (addr) => {
     setSelected(addr)
     setForm({
@@ -51,18 +74,23 @@ export default function ClientAddresses() {
       isDefault: addr.isDefault || false,
     })
     setErrors({})
+    setErrorMsg(null)
     setModal('edit')
   }
 
   const handleSave = async () => {
     if (!validate()) return
     setSaving(true)
+    setErrorMsg(null)
     try {
       if (modal === 'create') await api.post('/users/me/addresses', form)
       else await api.put(`/users/me/addresses/${selected.id}`, form)
       fetchAddresses()
       setModal(null)
-    } catch (err) { console.error(err) }
+    } catch (err) {
+      setErrorMsg(err.message || 'Error al guardar la dirección. Verifica que estés conectado.')
+      console.error(err)
+    }
     finally { setSaving(false) }
   }
 
@@ -74,24 +102,8 @@ export default function ClientAddresses() {
     } catch (err) { console.error(err) }
   }
 
-  const InputField = ({ label, field, type = 'text', placeholder = '', colSpan = false }) => (
-    <div className={colSpan ? 'sm:col-span-2' : ''}>
-      <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">{label}</label>
-      <div className="relative">
-        <input
-          type={type}
-          value={form[field]}
-          onChange={e => setForm({ ...form, [field]: e.target.value })}
-          placeholder={placeholder}
-          className={`w-full px-4 py-3.5 bg-slate-50 border rounded-2xl text-sm text-slate-900 font-medium placeholder:text-slate-400 focus:ring-4 focus:ring-slate-900/5 focus:border-slate-900 outline-none transition-all ${errors[field] ? 'border-red-300 focus:border-red-500 focus:ring-red-100' : 'border-slate-200'}`}
-        />
-        {errors[field] && (
-          <span className="absolute right-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-red-500 text-[18px]">error</span>
-        )}
-      </div>
-      {errors[field] && <p className="text-[11px] font-bold text-red-500 mt-1.5">{errors[field]}</p>}
-    </div>
-  )
+  // BUG-03: InputField moved outside (above), this placeholder keeps spacing
+  const fieldProps = { form, setForm, errors }
 
   return (
     <div className="space-y-8 platform-enter max-w-6xl mx-auto pb-10">
@@ -205,28 +217,34 @@ export default function ClientAddresses() {
 
           {/* Form Body */}
           <div className="flex-1 overflow-y-auto no-scrollbar p-6 md:p-8 bg-slate-50/30">
+            {errorMsg && (
+              <div className="mb-4 p-3.5 bg-red-50 border border-red-200 rounded-2xl text-sm text-red-700 font-semibold flex items-center gap-2">
+                <span className="material-symbols-outlined text-[20px]">error</span>
+                {errorMsg}
+              </div>
+            )}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-6">
-              <InputField label={t('client.addresses.labelField')} field="label" placeholder={t('client.addresses.labelPlaceholder')} colSpan />
+              <InputField label={t('client.addresses.labelField')} field="label" placeholder={t('client.addresses.labelPlaceholder')} colSpan {...fieldProps} />
 
               <div className="sm:col-span-2 pt-4 pb-2">
                 <h4 className="text-xs font-bold text-slate-900 uppercase tracking-widest border-b border-slate-200 pb-2">{t('client.addresses.contactDetails')}</h4>
               </div>
 
-              <InputField label={t('client.addresses.recipientName')} field="recipientName" placeholder={t('client.addresses.recipientPlaceholder')} />
-              <InputField label={t('client.addresses.contactPhone')} field="phone" type="tel" placeholder="+51 999 999 999" />
+              <InputField label={t('client.addresses.recipientName')} field="recipientName" placeholder={t('client.addresses.recipientPlaceholder')} {...fieldProps} />
+              <InputField label={t('client.addresses.contactPhone')} field="phone" type="tel" placeholder="+51 999 999 999" {...fieldProps} />
 
               <div className="sm:col-span-2 pt-4 pb-2">
                 <h4 className="text-xs font-bold text-slate-900 uppercase tracking-widest border-b border-slate-200 pb-2">{t('client.addresses.deliveryHeading')}</h4>
               </div>
 
-              <InputField label={t('client.addresses.country')} field="country" />
-              <InputField label={t('client.addresses.zipCode')} field="zipCode" placeholder="15001" />
+              <InputField label={t('client.addresses.country')} field="country" {...fieldProps} />
+              <InputField label={t('client.addresses.zipCode')} field="zipCode" placeholder="15001" {...fieldProps} />
 
-              <InputField label={t('client.addresses.addressLine1')} field="addressLine1" placeholder={t('client.addresses.addressLine1Placeholder')} colSpan />
-              <InputField label={t('client.addresses.addressLine2')} field="addressLine2" placeholder={t('client.addresses.addressLine2Placeholder')} colSpan />
+              <InputField label={t('client.addresses.addressLine1')} field="addressLine1" placeholder={t('client.addresses.addressLine1Placeholder')} colSpan {...fieldProps} />
+              <InputField label={t('client.addresses.addressLine2')} field="addressLine2" placeholder={t('client.addresses.addressLine2Placeholder')} colSpan {...fieldProps} />
 
-              <InputField label={t('client.addresses.city')} field="city" placeholder="Lima" />
-              <InputField label={t('client.addresses.state')} field="state" placeholder="Lima" />
+              <InputField label={t('client.addresses.city')} field="city" placeholder="Lima" {...fieldProps} />
+              <InputField label={t('client.addresses.state')} field="state" placeholder="Lima" {...fieldProps} />
 
               <div className="sm:col-span-2 mt-4 bg-slate-100 p-5 rounded-2xl flex items-center justify-between border border-slate-200">
                 <div>

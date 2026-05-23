@@ -166,8 +166,8 @@ export default function AgentOrders() {
                           className="p-1.5 hover:bg-primary/10 rounded-lg transition-colors">
                           <span className="material-symbols-outlined text-[18px] text-text-muted hover:text-primary">visibility</span>
                         </button>
-                        {o.customer?.phone && (
-                          <a href={`https://wa.me/${o.customer.phone.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" title="WhatsApp"
+                        {(o.customer?.whatsapp || o.customer?.phone) && (
+                          <a href={`https://wa.me/${(o.customer.whatsapp || o.customer.phone).replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" title="WhatsApp cliente"
                             className="p-1.5 hover:bg-emerald-50 rounded-lg transition-colors">
                             <span className="material-symbols-outlined text-[18px] text-emerald-600">chat</span>
                           </a>

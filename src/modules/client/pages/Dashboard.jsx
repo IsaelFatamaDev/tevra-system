@@ -21,9 +21,12 @@ const statusClasses = {
 
 const trackingSteps = ['pending', 'confirmed', 'purchased_in_usa', 'in_transit', 'in_customs', 'ready_for_delivery', 'delivered']
 
+// BUG-04 FIX: 'pending' must return -1 so NO step is highlighted.
+// Previously it returned 0 making the first step look "completed".
 function getStepIndex(status) {
+  if (status === 'pending' || status === 'cancelled') return -1
   const idx = trackingSteps.indexOf(status)
-  return idx >= 0 ? idx : 0
+  return idx >= 0 ? idx : -1
 }
 
 export default function ClientDashboard() {

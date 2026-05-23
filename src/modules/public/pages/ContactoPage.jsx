@@ -1,12 +1,14 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { TEVRA_SUPPORT_WHATSAPP, TEVRA_INSTAGRAM_URL } from '../../../core/config/constants'
+import { useSiteConfig } from '../../../core/contexts/SiteConfigContext'
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3001/api/v1'
 
 export default function ContactoPage() {
   const { t } = useTranslation()
+  // All contact info from DB via Admin > Configuración — never hardcoded
+  const { whatsapp: supportWhatsapp, instagramUrl, supportEmail } = useSiteConfig()
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' })
   const [sent, setSent] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -31,29 +33,33 @@ export default function ContactoPage() {
     }
   }
 
+  // Only show methods the admin has actually configured
   const contactMethods = [
     {
       icon: 'mail',
       color: 'bg-secondary/10 text-secondary',
       title: t('contact.methods.email.title'),
-      value: 'soporte@tevra.com',
-      link: 'mailto:soporte@tevra.com',
+      value: supportEmail || 'soporte@tevra.com',
+      link: `mailto:${supportEmail || 'soporte@tevra.com'}`,
+      show: true,
     },
-    {
+    supportWhatsapp && {
       icon: 'chat',
       color: 'bg-mint/10 text-mint',
       title: 'WhatsApp',
       value: t('contact.methods.whatsapp.value'),
-      link: `https://wa.me/${TEVRA_SUPPORT_WHATSAPP.replace(/\D/g, '')}`,
+      link: `https://wa.me/${supportWhatsapp.replace(/\D/g, '')}`,
+      show: true,
     },
-    {
+    instagramUrl && {
       icon: 'public',
       color: 'bg-accent-gold/10 text-accent-gold',
       title: t('contact.methods.social.title'),
       value: '@tevra.tech',
-      link: TEVRA_INSTAGRAM_URL,
+      link: instagramUrl,
+      show: true,
     },
-  ]
+  ].filter(Boolean)
 
   return (
     <main className="min-h-screen bg-background-cream" style={{ paddingTop: 'clamp(3.5rem, 8vh, 5rem)' }}>

@@ -5,6 +5,7 @@ export const campaignsService = {
   getStats: () => api.get('/campaigns/stats'),
   create: (data) => api.post('/campaigns', data),
   update: (id, data) => api.put(`/campaigns/${id}`, data),
+  launch: (id) => api.post(`/campaigns/${id}/launch`),
 };
 
 export default campaignsService;

@@ -1,4 +1,4 @@
-﻿import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import productsService from '../../public/services/products.service'
 import Pagination from '../../../core/components/Pagination'
@@ -68,6 +68,8 @@ export default function AdminProducts() {
   const paginated = products.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE)
 
   const openCreate = () => { setForm(EMPTY_FORM); setImageFile(null); setImagePreview(null); setFormErrors({}); setModal('create') }
+  // BUG-15 FIX: Reset formErrors when opening edit so the save button
+  // is never stuck disabled from a previous failed edit attempt.
   const openEdit = (prod) => {
     setSelected(prod)
     setForm({
@@ -75,10 +77,12 @@ export default function AdminProducts() {
       priceRefLocal: prod.priceRefLocal || '', providerCostUsd: prod.providerCostUsd || '',
       stockStatus: prod.stockStatus || 'available',
       marginPct: prod.marginPct || '', isFeatured: prod.isFeatured || false,
-      categoryId: prod.category?.id || '', brandId: prod.brand?.id || '',
+      categoryId: prod.category?.id || prod.categoryId || '', brandId: prod.brand?.id || prod.brandId || '',
     })
     setImageFile(null)
     setImagePreview(getImageUrl(prod))
+    setFormErrors({})  // BUG-15 FIX: Clear any previous errors
+    setSaving(false)   // BUG-15 FIX: Reset saving state
     setModal('edit')
   }
   const openDelete = (prod) => { setSelected(prod); setModal('delete') }

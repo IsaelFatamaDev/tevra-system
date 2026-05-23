@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import productsService from '../../public/services/products.service'
 import Pagination from '../../../core/components/Pagination'
@@ -37,9 +37,11 @@ export default function AdminCategories() {
   const paginated = filtered.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE)
 
   const openCreate = () => { setForm(EMPTY_FORM); setModal('create') }
+  // BUG-16 FIX: Reset errors and saving state when opening edit modal
   const openEdit = (cat) => {
     setSelected(cat)
     setForm({ name: cat.name || '', slug: cat.slug || '', description: cat.description || '', icon: cat.icon || '' })
+    setSaving(false)  // BUG-16 FIX
     setModal('edit')
   }
 

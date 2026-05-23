@@ -3,13 +3,15 @@ import { useParams, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useCart } from '../../../core/hooks/useCart'
 import { useAuth } from '../../../core/contexts/AuthContext'
+import { useSiteConfig } from '../../../core/contexts/SiteConfigContext'
 import productsService from '../services/products.service'
 import reviewsService from '../services/reviews.service'
-import { TEVRA_SUPPORT_WHATSAPP } from '../../../core/config/constants'
 import { useTranslateContent } from '../../../core/hooks/useTranslateContent'
 
 export default function ProductDetailPage() {
   const { slug } = useParams()
+  // WhatsApp comes exclusively from Admin > Configuración — no .env or hardcoded values
+  const { whatsapp: supportWhatsapp } = useSiteConfig()
   const [product, setProduct] = useState(null)
   const [related, setRelated] = useState([])
   const [reviews, setReviews] = useState([])
@@ -77,7 +79,7 @@ export default function ProductDetailPage() {
   }
 
   const handleWhatsApp = () => {
-    if (!product) return
+    if (!product || !supportWhatsapp) return
     const msg = encodeURIComponent(
       `¡Hola! Me interesa este producto de TeVra:\n\n` +
       `*${product.name}*\n` +
@@ -85,7 +87,7 @@ export default function ProductDetailPage() {
       (product.brand ? `Marca: ${product.brand.name}\n` : '') +
       `\n¿Me pueden dar más información?`
     )
-    window.open(`https://wa.me/${TEVRA_SUPPORT_WHATSAPP.replace(/\D/g, '')}?text=${msg}`, '_blank')
+    window.open(`https://wa.me/${supportWhatsapp.replace(/\D/g, '')}?text=${msg}`, '_blank')
   }
 
   if (loading) {

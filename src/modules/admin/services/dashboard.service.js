@@ -14,6 +14,16 @@ export const dashboardService = {
   },
   getAgentStats: () => api.get('/agents/stats'),
   getOrderStats: () => api.get('/orders/stats'),
+  // Admin Commissions
+  getAllCommissions: (params = {}) => {
+    const q = new URLSearchParams();
+    if (params.agentId) q.set('agentId', params.agentId);
+    if (params.status) q.set('status', params.status);
+    return api.get(`/commissions${q.toString() ? `?${q}` : ''}`);
+  },
+  // BUG-11 FIX: Approve commission flow
+  approveCommission: (id) => api.patch(`/commissions/${id}/approve`),
+  markCommissionPaid: (id) => api.patch(`/commissions/${id}/paid`),
 
   // --- Client ---
   getMyOrders: () => api.get('/orders/my'),
