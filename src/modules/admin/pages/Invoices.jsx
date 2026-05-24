@@ -29,9 +29,12 @@ export default function AdminInvoices() {
   const loadProducts = async () => {
     try {
       const data = await productsService.findAll();
-      setAvailableProducts(data.data || data); // Adjust depending on pagination
+      // Handle different pagination formats (data.items, data.data, or direct array)
+      const productsArray = Array.isArray(data) ? data : (data?.items || data?.data || []);
+      setAvailableProducts(productsArray);
     } catch (err) {
       console.error(err);
+      setAvailableProducts([]);
     }
   };
 
