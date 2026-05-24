@@ -46,6 +46,8 @@ import AdminSettings from './modules/admin/pages/Settings'
 import AdminCategories from './modules/admin/pages/Categories'
 import AdminBrands from './modules/admin/pages/Brands'
 import AdminCommissions from './modules/admin/pages/Commissions'
+import AdminInvoices from './modules/admin/pages/Invoices'
+import AdminInbox from './modules/admin/pages/Inbox'
 
 // Client module
 import ClientLayout from './modules/client/layout/ClientLayout'
@@ -140,6 +142,8 @@ function AppLayout() {
           <Route path="communications" element={<AdminCommunications />} />
           {/* BUG-11 FIX: New commissions management route */}
           <Route path="commissions" element={<AdminCommissions />} />
+          <Route path="invoices" element={<AdminInvoices />} />
+          <Route path="inbox" element={<AdminInbox />} />
           <Route path="settings" element={<AdminSettings />} />
         </Route>
 

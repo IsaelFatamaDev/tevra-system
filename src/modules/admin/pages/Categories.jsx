@@ -40,7 +40,7 @@ export default function AdminCategories() {
   // BUG-16 FIX: Reset errors and saving state when opening edit modal
   const openEdit = (cat) => {
     setSelected(cat)
-    setForm({ name: cat.name || '', slug: cat.slug || '', description: cat.description || '', icon: cat.icon || '' })
+    setForm({ name: cat.name || '', slug: cat.slug || '', description: cat.description || '', icon: cat.imageUrl || cat.icon || '' })
     setSaving(false)  // BUG-16 FIX
     setModal('edit')
   }
@@ -128,7 +128,7 @@ export default function AdminCategories() {
                     <td className="px-5 py-3">
                       <div className="flex items-center gap-3">
                         <div className="w-9 h-9 rounded-lg bg-[#EEF4ED] flex items-center justify-center text-[#134074]">
-                          <span className="material-symbols-outlined text-[18px]">{cat.icon || 'category'}</span>
+                          <span className="material-symbols-outlined text-[18px]">{cat.imageUrl || cat.icon || 'category'}</span>
                         </div>
                         <span className="text-sm font-medium text-[#134074]">{cat.name}</span>
                       </div>

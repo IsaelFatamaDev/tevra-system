@@ -25,6 +25,7 @@ export default function AdminSidebar({ open, onClose }) {
         { to: '/admin/categories', icon: 'category', label: t('admin.sidebar.nav.categories') },
         { to: '/admin/brands', icon: 'storefront', label: t('admin.sidebar.nav.brands') },
         { to: '/admin/orders', icon: 'receipt_long', label: t('admin.sidebar.nav.orders') },
+        { to: '/admin/invoices', icon: 'receipt', label: 'Boletas Libres' },
         // BUG-11 FIX: New commissions management link
         { to: '/admin/commissions', icon: 'payments', label: 'Comisiones' },
       ],
@@ -32,6 +33,7 @@ export default function AdminSidebar({ open, onClose }) {
     {
       title: t('admin.sidebar.sections.engagement'),
       items: [
+        { to: '/admin/inbox', icon: 'forum', label: 'Inbox (WhatsApp)' },
         { to: '/admin/reviews', icon: 'star_rate', label: t('admin.sidebar.nav.reviews') },
         { to: '/admin/communications', icon: 'campaign', label: t('admin.sidebar.nav.campaigns') },
       ],

@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import ordersService from '../services/orders.service'
 import Pagination from '../../../core/components/Pagination'
 import generateBoleta from '../../../core/utils/generateBoleta'
+import excelService from '../../../core/services/excel.service'
 
 const ITEMS_PER_PAGE = 10
 
@@ -75,13 +76,9 @@ export default function AdminOrders() {
       o.status || '',
       Number(o.total || 0).toFixed(2),
     ])
-    const csv = [headers, ...rows].map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\n')
-    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' })
-    const link = document.createElement('a')
-    link.href = URL.createObjectURL(blob)
-    link.download = `pedidos_${new Date().toISOString().slice(0, 10)}.csv`
-    link.click()
-    URL.revokeObjectURL(link.href)
+    
+    // Lazy load or import dynamically, or we can just import at the top. Let's assume we imported it.
+    excelService.exportToCSV('Reporte de Pedidos', headers, rows, ['', '', '', '', '', 'TOTAL', Number(totalRevenue).toFixed(2)]);
   }
 
   const metrics = [

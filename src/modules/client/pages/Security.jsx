@@ -5,6 +5,25 @@ import api from '../../../core/services/api'
 import AvatarUpload from '../../../core/components/AvatarUpload'
 import { useFieldAvailability } from '../../../core/hooks/useFieldAvailability'
 
+const InputModern = ({ label, icon, value, onChange, error, placeholder, type = "text" }) => (
+  <div>
+    <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">{label}</label>
+    <div className="relative">
+      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+        <span className={`material-symbols-outlined text-[20px] ${error ? 'text-red-400' : 'text-slate-400'}`}>{icon}</span>
+      </div>
+      <input
+        type={type}
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+        className={`w-full pl-11 pr-4 py-3.5 bg-slate-50 border rounded-2xl text-sm text-slate-900 font-medium placeholder:text-slate-400 focus:ring-4 focus:ring-slate-900/5 focus:border-slate-900 outline-none transition-all ${error ? 'border-red-300 focus:border-red-500 focus:ring-red-100' : 'border-slate-200'}`}
+      />
+    </div>
+    {error && <p className="text-[11px] font-bold text-red-500 mt-1.5">{error}</p>}
+  </div>
+)
+
 export default function ClientSecurity() {
   const { t } = useTranslation()
   const { user, refreshUser } = useAuth()
@@ -90,25 +109,6 @@ export default function ClientSecurity() {
       setPwSaving(false)
     }
   }
-
-  const InputModern = ({ label, icon, value, onChange, error, placeholder, type = "text" }) => (
-    <div>
-      <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">{label}</label>
-      <div className="relative">
-        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-          <span className={`material-symbols-outlined text-[20px] ${error ? 'text-red-400' : 'text-slate-400'}`}>{icon}</span>
-        </div>
-        <input
-          type={type}
-          value={value}
-          onChange={onChange}
-          placeholder={placeholder}
-          className={`w-full pl-11 pr-4 py-3.5 bg-slate-50 border rounded-2xl text-sm text-slate-900 font-medium placeholder:text-slate-400 focus:ring-4 focus:ring-slate-900/5 focus:border-slate-900 outline-none transition-all ${error ? 'border-red-300 focus:border-red-500 focus:ring-red-100' : 'border-slate-200'}`}
-        />
-      </div>
-      {error && <p className="text-[11px] font-bold text-red-500 mt-1.5">{error}</p>}
-    </div>
-  )
 
   const tabs = [
     { id: 'profile', label: t('client.security.tabPersonalInfo'), icon: 'manage_accounts' },
