@@ -1,5 +1,5 @@
 import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+import autoTable from 'jspdf-autotable';
 
 // Configuración de colores corporativos de TeVra
 const colors = {
@@ -102,7 +102,7 @@ export const pdfService = {
       `S/ ${Number(item.subtotal).toFixed(2)}`
     ]);
 
-    doc.autoTable({
+    autoTable(doc, {
       startY: 85,
       head: [['Descripción', 'Cant.', 'P. Unitario', 'Subtotal']],
       body: tableData,
@@ -167,7 +167,7 @@ export const pdfService = {
     doc.text(`Reporte generado el: ${new Date().toLocaleString()}`, 14, 40);
 
     // Table
-    doc.autoTable({
+    autoTable(doc, {
       startY: 45,
       head: [columns],
       body: data,
@@ -248,7 +248,7 @@ export const pdfService = {
       ['Clientes Activos', String(stats?.totalCustomers || 0)]
     ];
 
-    doc.autoTable({
+    autoTable(doc, {
       startY: 55,
       body: metricsData,
       theme: 'grid',
@@ -274,7 +274,7 @@ export const pdfService = {
         `S/ ${Number(a.totalRevenue || 0).toFixed(2)}`
       ]);
 
-      doc.autoTable({
+      autoTable(doc, {
         startY: currentY + 5,
         head: [['Agente', 'Pedidos', 'Ingresos']],
         body: agentRows,
@@ -300,7 +300,7 @@ export const pdfService = {
         c.totalOrders
       ]);
 
-      doc.autoTable({
+      autoTable(doc, {
         startY: currentY + 5,
         head: [['Ciudad / Ubicación', 'Pedidos Registrados']],
         body: cityRows,
