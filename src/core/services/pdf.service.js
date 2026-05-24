@@ -23,7 +23,7 @@ export const pdfService = {
     let logoUrl = null;
     let tenantName = 'TeVra';
     try {
-      const configRes = await api.get('/tenants/public-config/' + (invoice.tenantId || ''));
+      const configRes = await api.get('/tenants/current/public-config');
       if (configRes && configRes.logoUrl) logoUrl = configRes.logoUrl;
       if (configRes && configRes.name) tenantName = configRes.name;
     } catch (e) {
@@ -193,7 +193,7 @@ export const pdfService = {
     let logoUrl = null;
     let tenantName = 'TeVra';
     try {
-      const configRes = await api.get('/tenants/public-config/' + (tenantId || ''));
+      const configRes = await api.get('/tenants/current/public-config');
       if (configRes && configRes.logoUrl) logoUrl = configRes.logoUrl;
       if (configRes && configRes.name) tenantName = configRes.name;
     } catch (e) {

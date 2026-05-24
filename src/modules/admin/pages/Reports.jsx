@@ -87,7 +87,7 @@ export default function AdminReports() {
           </div>
           <button onClick={handleExportPDF} className="flex items-center gap-2 bg-[#134074] hover:bg-[#13315C] text-white px-4 py-2 rounded-lg transition-colors">
           <span className="material-symbols-outlined text-[18px]">download</span>
-          {t('admin.reports.export')}
+          {t('common.export')}
         </button>
         </div>
       </section>
