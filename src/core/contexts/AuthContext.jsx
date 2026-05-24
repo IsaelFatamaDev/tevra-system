@@ -7,16 +7,16 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const clearSession = useCallback(() => {
-    sessionStorage.removeItem('tevra_token');
-    sessionStorage.removeItem('tevra_refresh');
-    sessionStorage.removeItem('tevra_user');
+    const clearSession = useCallback(() => {
+    localStorage.removeItem('tevra_token');
+    localStorage.removeItem('tevra_refresh');
+    localStorage.removeItem('tevra_user');
     setUser(null);
   }, []);
 
   // Validate token on mount by calling /users/me
   useEffect(() => {
-    const token = sessionStorage.getItem('tevra_token');
+    const token = localStorage.getItem('tevra_token');
     if (!token) {
       setLoading(false);
       return;
@@ -33,7 +33,7 @@ export function AuthProvider({ children }) {
           tenantId: data.tenantId,
           emailVerified: data.emailVerified ?? true,
         };
-        sessionStorage.setItem('tevra_user', JSON.stringify(validated));
+        localStorage.setItem('tevra_user', JSON.stringify(validated));
         setUser(validated);
       })
       .catch(() => {
@@ -47,9 +47,9 @@ export function AuthProvider({ children }) {
       email,
       password,
     });
-    sessionStorage.setItem('tevra_token', data.accessToken);
-    sessionStorage.setItem('tevra_refresh', data.refreshToken);
-    sessionStorage.setItem('tevra_user', JSON.stringify(data.user));
+    localStorage.setItem('tevra_token', data.accessToken);
+    localStorage.setItem('tevra_refresh', data.refreshToken);
+    localStorage.setItem('tevra_user', JSON.stringify(data.user));
     setUser(data.user);
     return data.user;
   }, []);
@@ -63,9 +63,9 @@ export function AuthProvider({ children }) {
       phone,
       whatsapp,
     });
-    sessionStorage.setItem('tevra_token', data.accessToken);
-    sessionStorage.setItem('tevra_refresh', data.refreshToken);
-    sessionStorage.setItem('tevra_user', JSON.stringify(data.user));
+    localStorage.setItem('tevra_token', data.accessToken);
+    localStorage.setItem('tevra_refresh', data.refreshToken);
+    localStorage.setItem('tevra_user', JSON.stringify(data.user));
     setUser(data.user);
     return data.user;
   }, []);
@@ -83,7 +83,7 @@ export function AuthProvider({ children }) {
         tenantId: data.tenantId,
         emailVerified: data.emailVerified ?? true,
       };
-      sessionStorage.setItem('tevra_user', JSON.stringify(updated));
+      localStorage.setItem('tevra_user', JSON.stringify(updated));
       setUser(updated);
     } catch { /* ignore */ }
   }, []);

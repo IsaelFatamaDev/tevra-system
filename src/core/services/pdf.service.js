@@ -10,22 +10,70 @@ const colors = {
   text: [51, 51, 51],
 };
 
+import api from './api';
+
 export const pdfService = {
   /**
    * Genera un recibo/boleta en PDF
    */
-  generateInvoicePDF: (invoice) => {
+  generateInvoicePDF: async (invoice) => {
     const doc = new jsPDF();
     
+    // Fetch tenant config to get logo
+    let logoUrl = null;
+    let tenantName = 'TeVra';
+    try {
+      const configRes = await api.get('/tenants/public-config/' + (invoice.tenantId || ''));
+      if (configRes && configRes.logoUrl) logoUrl = configRes.logoUrl;
+      if (configRes && configRes.name) tenantName = configRes.name;
+    } catch (e) {
+      console.warn("Could not fetch tenant config for PDF logo");
+    }
+
     // Header background
     doc.setFillColor(...colors.primary);
     doc.rect(0, 0, 210, 40, 'F');
     
     // Logo / Title
-    doc.setTextColor(255, 255, 255);
-    doc.setFontSize(24);
-    doc.setFont('helvetica', 'bold');
-    doc.text('TeVra', 14, 25);
+    if (logoUrl) {
+      try {
+        // Create an Image element to load the logo
+        const img = new Image();
+        img.crossOrigin = 'Anonymous';
+        await new Promise((resolve, reject) => {
+          img.onload = resolve;
+          img.onerror = reject;
+          img.src = logoUrl;
+        });
+        
+        // Calculate dimensions to fit in max 40x20
+        const maxWidth = 40;
+        const maxHeight = 20;
+        let w = img.width;
+        let h = img.height;
+        if (w > maxWidth) {
+          h = Math.round((h * maxWidth) / w);
+          w = maxWidth;
+        }
+        if (h > maxHeight) {
+          w = Math.round((w * maxHeight) / h);
+          h = maxHeight;
+        }
+        // Center vertically in header
+        const yPos = 20 - (h / 2);
+        doc.addImage(img, 'PNG', 14, yPos, w, h);
+      } catch (e) {
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(24);
+        doc.setFont('helvetica', 'bold');
+        doc.text(tenantName, 14, 25);
+      }
+    } else {
+      doc.setTextColor(255, 255, 255);
+      doc.setFontSize(24);
+      doc.setFont('helvetica', 'bold');
+      doc.text(tenantName, 14, 25);
+    }
     
     // Invoice details (Right aligned in header)
     doc.setFontSize(10);
@@ -46,7 +94,8 @@ export const pdfService = {
     if (invoice.address) doc.text(`Dirección: ${invoice.address}`, 14, 74);
 
     // Items Table
-    const tableData = invoice.items.map(item => [
+    const items = typeof invoice.items === 'string' ? JSON.parse(invoice.items) : (invoice.items || []);
+    const tableData = items.map(item => [
       item.name,
       item.quantity.toString(),
       `S/ ${Number(item.unitPrice).toFixed(2)}`,

@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useToast } from '../../../core/contexts/ToastContext';
 import invoicesService from '../services/invoices.service';
 import pdfService from '../../../core/services/pdf.service';
+import productsService from '../../public/services/products.service';
 
 export default function AdminInvoices() {
   const { t } = useTranslation();
@@ -18,10 +19,21 @@ export default function AdminInvoices() {
     notes: '',
     items: [{ name: '', quantity: 1, unitPrice: 0 }],
   });
+  const [availableProducts, setAvailableProducts] = useState([]);
 
   useEffect(() => {
     loadInvoices();
+    loadProducts();
   }, []);
+
+  const loadProducts = async () => {
+    try {
+      const data = await productsService.findAll();
+      setAvailableProducts(data.data || data); // Adjust depending on pagination
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const loadInvoices = async () => {
     try {
@@ -53,6 +65,15 @@ export default function AdminInvoices() {
     setForm(prev => {
       const newItems = [...prev.items];
       newItems[index][field] = value;
+      
+      // Auto-fill price if a product is selected
+      if (field === 'name') {
+        const selectedProd = availableProducts.find(p => p.name === value);
+        if (selectedProd) {
+          newItems[index].unitPrice = Number(selectedProd.price || 0);
+        }
+      }
+      
       return { ...prev, items: newItems };
     });
   };
@@ -102,9 +123,9 @@ export default function AdminInvoices() {
     }
   };
 
-  const handleExportPDF = (invoice) => {
+  const handleExportPDF = async (invoice) => {
     try {
-      pdfService.generateInvoicePDF(invoice);
+      await pdfService.generateInvoicePDF(invoice);
       addToast('PDF generado correctamente', 'success');
     } catch (err) {
       console.error(err);
@@ -242,14 +263,22 @@ export default function AdminInvoices() {
                   {form.items.map((item, idx) => (
                     <div key={idx} className="flex gap-3 items-start">
                       <div className="flex-1">
-                        <input
-                          required
-                          placeholder="Descripción del producto/servicio"
-                          type="text"
-                          value={item.name}
-                          onChange={e => handleItemChange(idx, 'name', e.target.value)}
-                          className="w-full bg-white border border-[#C5D8E8]/50 rounded-lg px-3 py-2 text-sm outline-none focus:border-[#134074]"
-                        />
+                        <div className="relative">
+                          <input
+                            required
+                            list={`products-list-${idx}`}
+                            placeholder="Descripción del producto/servicio (escribe o selecciona)"
+                            type="text"
+                            value={item.name}
+                            onChange={e => handleItemChange(idx, 'name', e.target.value)}
+                            className="w-full bg-white border border-[#C5D8E8]/50 rounded-lg px-3 py-2 text-sm outline-none focus:border-[#134074]"
+                          />
+                          <datalist id={`products-list-${idx}`}>
+                            {Array.isArray(availableProducts) && availableProducts.map(p => (
+                              <option key={p.id} value={p.name} />
+                            ))}
+                          </datalist>
+                        </div>
                       </div>
                       <div className="w-24">
                         <input
