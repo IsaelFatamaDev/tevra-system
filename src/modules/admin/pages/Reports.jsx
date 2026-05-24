@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import dashboardService from '../services/dashboard.service'
 import api from '../../../core/services/api'
+import pdfService from '../../../core/services/pdf.service'
 
 export default function AdminReports() {
   const { t } = useTranslation()
@@ -34,30 +35,27 @@ export default function AdminReports() {
 
   useEffect(() => { fetchData(period) }, [period])
 
-  const handleExportCSV = () => {
-    const rows = [['Metric', 'Value']]
-    if (stats) {
-      rows.push([t('admin.reports.totalOrders'), stats.totalOrders || 0])
-      rows.push([t('admin.reports.totalRevenue'), stats.totalRevenue || 0])
-      rows.push([t('admin.reports.tevraCommission'), stats.totalTevraCommission || 0])
-      rows.push([t('admin.reports.activeAgents'), stats.totalAgents || 0])
-      rows.push([t('admin.reports.customersSubtitle'), stats.totalCustomers || 0])
+  const handleExportPDF = async () => {
+    try {
+      const userStr = localStorage.getItem('tevra_user');
+      let tenantId = '';
+      if (userStr) {
+        const user = JSON.parse(userStr);
+        tenantId = user.tenantId || '';
+      }
+      
+      await pdfService.generateDashboardReportPDF(
+        tenantId,
+        period,
+        stats,
+        topAgents,
+        cities,
+        t
+      );
+    } catch (err) {
+      console.error("Error generating PDF report:", err);
+      alert('Error al generar el reporte PDF');
     }
-    rows.push([])
-    rows.push([t('admin.table.agent'), t('admin.table.orders'), t('admin.table.revenue')])
-    topAgents.forEach(a => rows.push([a.displayName, a.totalOrders, a.totalRevenue]))
-    rows.push([])
-    rows.push([t('admin.reports.topCities'), t('admin.table.orders')])
-    cities.forEach(c => rows.push([c.city || t('admin.reports.noCity'), c.totalOrders]))
-
-    const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\n')
-    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = `reporte-tevra-${period}.csv`
-    a.click()
-    URL.revokeObjectURL(url)
   }
 
   const metricCards = stats ? [
@@ -87,10 +85,10 @@ export default function AdminReports() {
               </button>
             ))}
           </div>
-          <button onClick={handleExportCSV} className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#134074] text-[#EEF4ED] font-medium text-sm hover:bg-[#13315C] transition-colors">
-            <span className="material-symbols-outlined text-[16px]">download</span>
-            {t('common.export')}
-          </button>
+          <button onClick={handleExportPDF} className="flex items-center gap-2 bg-[#134074] hover:bg-[#13315C] text-white px-4 py-2 rounded-lg transition-colors">
+          <span className="material-symbols-outlined text-[18px]">download</span>
+          {t('admin.reports.export')}
+        </button>
         </div>
       </section>
 

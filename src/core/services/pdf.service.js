@@ -181,6 +181,146 @@ export const pdfService = {
     });
 
     doc.save(`${filename}.pdf`);
+  },
+
+  /**
+   * Genera un reporte de Dashboard completo (Métricas y Múltiples Tablas)
+   */
+  generateDashboardReportPDF: async (tenantId, period, stats, topAgents, cities, t) => {
+    const doc = new jsPDF();
+    
+    // Fetch tenant config to get logo
+    let logoUrl = null;
+    let tenantName = 'TeVra';
+    try {
+      const configRes = await api.get('/tenants/public-config/' + (tenantId || ''));
+      if (configRes && configRes.logoUrl) logoUrl = configRes.logoUrl;
+      if (configRes && configRes.name) tenantName = configRes.name;
+    } catch (e) {
+      console.warn("Could not fetch tenant config for PDF logo");
+    }
+
+    // Header Background
+    doc.setFillColor(...colors.primary);
+    doc.rect(0, 0, 210, 35, 'F');
+    
+    // Logo / Title
+    if (logoUrl) {
+      try {
+        const img = new Image();
+        img.crossOrigin = 'Anonymous';
+        await new Promise((resolve, reject) => {
+          img.onload = resolve; img.onerror = reject; img.src = logoUrl;
+        });
+        const maxWidth = 30; const maxHeight = 15;
+        let w = img.width; let h = img.height;
+        if (w > maxWidth) { h = Math.round((h * maxWidth) / w); w = maxWidth; }
+        if (h > maxHeight) { w = Math.round((w * maxHeight) / h); h = maxHeight; }
+        const yPos = 17.5 - (h / 2);
+        doc.addImage(img, 'PNG', 14, yPos, w, h);
+      } catch (e) {
+        doc.setTextColor(255, 255, 255); doc.setFontSize(22); doc.setFont('helvetica', 'bold');
+        doc.text(tenantName, 14, 23);
+      }
+    } else {
+      doc.setTextColor(255, 255, 255); doc.setFontSize(22); doc.setFont('helvetica', 'bold');
+      doc.text(tenantName, 14, 23);
+    }
+    
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(14);
+    doc.text('Reporte de Rendimiento', 196, 20, { align: 'right' });
+    doc.setFontSize(9);
+    doc.setFont('helvetica', 'normal');
+    doc.text(`Período: ${period} | Generado: ${new Date().toLocaleDateString()}`, 196, 26, { align: 'right' });
+
+    // Global Metrics Section
+    doc.setTextColor(...colors.primary);
+    doc.setFontSize(14);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Métricas Globales', 14, 50);
+
+    const metricsData = [
+      ['Total Pedidos', String(stats?.totalOrders || 0)],
+      ['Ingresos Totales', `S/ ${Number(stats?.totalRevenue || 0).toFixed(2)}`],
+      ['Comisión Total', `S/ ${Number(stats?.totalTevraCommission || 0).toFixed(2)}`],
+      ['Agentes Activos', String(stats?.totalAgents || 0)],
+      ['Clientes Activos', String(stats?.totalCustomers || 0)]
+    ];
+
+    doc.autoTable({
+      startY: 55,
+      body: metricsData,
+      theme: 'grid',
+      styles: { fontSize: 10, cellPadding: 4 },
+      columnStyles: {
+        0: { fontStyle: 'bold', fillColor: [240, 245, 249], textColor: colors.primary, cellWidth: 100 },
+        1: { halign: 'right', fontStyle: 'bold', textColor: [51, 51, 51] }
+      }
+    });
+
+    let currentY = doc.lastAutoTable.finalY + 15;
+
+    // Top Agents Table
+    if (topAgents && topAgents.length > 0) {
+      doc.setTextColor(...colors.primary);
+      doc.setFontSize(14);
+      doc.setFont('helvetica', 'bold');
+      doc.text('Mejores Agentes', 14, currentY);
+
+      const agentRows = topAgents.map(a => [
+        a.displayName, 
+        a.totalOrders, 
+        `S/ ${Number(a.totalRevenue || 0).toFixed(2)}`
+      ]);
+
+      doc.autoTable({
+        startY: currentY + 5,
+        head: [['Agente', 'Pedidos', 'Ingresos']],
+        body: agentRows,
+        theme: 'striped',
+        headStyles: { fillColor: colors.secondary, textColor: 255, fontStyle: 'bold' },
+        styles: { fontSize: 9 },
+        columnStyles: { 1: { halign: 'center' }, 2: { halign: 'right' } }
+      });
+      currentY = doc.lastAutoTable.finalY + 15;
+    }
+
+    // Top Cities Table
+    if (cities && cities.length > 0) {
+      if (currentY > 250) { doc.addPage(); currentY = 20; }
+      
+      doc.setTextColor(...colors.primary);
+      doc.setFontSize(14);
+      doc.setFont('helvetica', 'bold');
+      doc.text('Rendimiento por Ciudad', 14, currentY);
+
+      const cityRows = cities.map(c => [
+        c.city || 'Sin Ciudad', 
+        c.totalOrders
+      ]);
+
+      doc.autoTable({
+        startY: currentY + 5,
+        head: [['Ciudad / Ubicación', 'Pedidos Registrados']],
+        body: cityRows,
+        theme: 'striped',
+        headStyles: { fillColor: colors.secondary, textColor: 255, fontStyle: 'bold' },
+        styles: { fontSize: 9 },
+        columnStyles: { 1: { halign: 'center' } }
+      });
+    }
+
+    // Footer
+    const pageCount = doc.internal.getNumberOfPages();
+    for (let i = 1; i <= pageCount; i++) {
+      doc.setPage(i);
+      doc.setFontSize(8);
+      doc.setTextColor(150);
+      doc.text(`Reporte Oficial TeVra - Página ${i} de ${pageCount}`, 105, 285, { align: 'center' });
+    }
+
+    doc.save(`reporte-tevra-${period}.pdf`);
   }
 };
 
