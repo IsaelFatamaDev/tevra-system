@@ -28,7 +28,8 @@ export default function ReviewModal({ isOpen, onClose, type, targetId, targetNam
     try {
       await reviewsService.create({
         type,
-        targetId: targetId || undefined,
+        ...(type === 'agent' ? { agentId: targetId } : {}),
+        ...(type === 'product' ? { productId: targetId } : {}),
         rating,
         title: title.trim() || undefined,
         comment: comment.trim(),

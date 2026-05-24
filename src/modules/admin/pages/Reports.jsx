@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import dashboardService from '../services/dashboard.service'
 import api from '../../../core/services/api'
@@ -50,8 +50,8 @@ export default function AdminReports() {
     rows.push([t('admin.reports.topCities'), t('admin.table.orders')])
     cities.forEach(c => rows.push([c.city || t('admin.reports.noCity'), c.totalOrders]))
 
-    const csv = rows.map(r => r.join(',')).join('\n')
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
+    const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\n')
+    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
