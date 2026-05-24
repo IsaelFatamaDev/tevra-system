@@ -42,7 +42,7 @@ export default function ComoFuncionaPage() {
                 <Link to="/catalogo" className="px-8 py-4 bg-secondary text-white rounded-2xl font-headline font-bold hover:-translate-y-0.5 transition-all shadow-lg shadow-secondary/30">
                   {t('howItWorks.exploreCta')}
                 </Link>
-                <Link to="/agentes" className="px-8 py-4 glass-card text-white rounded-2xl font-headline font-bold hover:bg-white/10 transition-all">
+                <Link to="/directorio-agentes" className="px-8 py-4 glass-card text-white rounded-2xl font-headline font-bold hover:bg-white/10 transition-all">
                   {t('howItWorks.agentCta')}
                 </Link>
               </div>
