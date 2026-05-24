@@ -4,7 +4,7 @@ import productsService from '../../public/services/products.service'
 import Pagination from '../../../core/components/Pagination'
 import { useToast } from '../../../core/contexts/ToastContext'
 
-const API_BASE = import.meta.env.VITE_API_URL?.replace('/api/v1', '') || 'http://localhost:3001'
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3001/api/v1';
 const ITEMS_PER_PAGE = 10
 
 const EMPTY_FORM = { name: '', description: '', descriptionEn: '', priceUsd: '', priceRefLocal: '', providerCostUsd: '', stockStatus: 'available', marginPct: '', isFeatured: false, categoryId: '', brandId: '' }
@@ -523,4 +523,3 @@ export default function AdminProducts() {
     </div>
   )
 }
-
