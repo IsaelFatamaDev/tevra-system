@@ -355,7 +355,7 @@ export default function AdminProducts() {
                 <div className={`relative flex items-center transition-all rounded-xl border ${formErrors.name ? 'border-red-300 ring-2 ring-red-100' : 'border-[#C5D8E8]/20 focus-within:border-[#8DA9C4] focus-within:ring-2 focus-within:ring-[#C5D8E8]/15'}`}>
                   <input value={form.name} onChange={e => { setForm({ ...form, name: e.target.value }); setFormErrors({ ...formErrors, name: '' }) }}
                     placeholder={t('admin.products.namePlaceholder')}
-                    className="w-full px-4 py-2.5 bg-transparent text-sm text-[#134074] outline-none placeholder:text-[#13315C]" />
+                    className="w-full px-4 py-2.5 bg-transparent text-sm text-[#134074] outline-none placeholder:text-[#A5C0D8]" />
                   {formErrors.name && <span className="material-symbols-outlined text-red-500 text-[18px] pr-3">error</span>}
                 </div>
                 {formErrors.name && <p className="text-xs text-red-500 font-medium mt-1.5 ml-1 flex items-center gap-1"><span className="material-symbols-outlined text-[14px]">info</span>{formErrors.name}</p>}
@@ -365,14 +365,14 @@ export default function AdminProducts() {
                 <label className="block text-[11px] font-bold text-[#134074] uppercase tracking-widest mb-1.5">{t('admin.products.description')} <span className="text-[#13315C] normal-case font-normal">(ES)</span></label>
                 <textarea value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} rows={3}
                   placeholder={t('admin.products.descriptionPlaceholder')}
-                  className="w-full px-4 py-2.5 bg-white border border-[#C5D8E8]/20 rounded-xl text-sm focus:ring-2 focus:ring-[#C5D8E8]/15 focus:border-[#8DA9C4] outline-none transition-all resize-none placeholder:text-[#13315C]" />
+                  className="w-full px-4 py-2.5 bg-white border border-[#C5D8E8]/20 rounded-xl text-sm focus:ring-2 focus:ring-[#C5D8E8]/15 focus:border-[#8DA9C4] outline-none transition-all resize-none placeholder:text-[#A5C0D8]" />
               </div>
 
               <div>
                 <label className="block text-[11px] font-bold text-[#134074] uppercase tracking-widest mb-1.5">{t('admin.products.descriptionEn')} <span className="text-[#13315C] normal-case font-normal">(EN)</span></label>
                 <textarea value={form.descriptionEn} onChange={e => setForm({ ...form, descriptionEn: e.target.value })} rows={3}
                   placeholder={t('admin.products.descriptionEnPlaceholder')}
-                  className="w-full px-4 py-2.5 bg-white border border-[#C5D8E8]/20 rounded-xl text-sm focus:ring-2 focus:ring-[#C5D8E8]/15 focus:border-[#8DA9C4] outline-none transition-all resize-none placeholder:text-[#13315C]" />
+                  className="w-full px-4 py-2.5 bg-white border border-[#C5D8E8]/20 rounded-xl text-sm focus:ring-2 focus:ring-[#C5D8E8]/15 focus:border-[#8DA9C4] outline-none transition-all resize-none placeholder:text-[#A5C0D8]" />
                 <p className="text-[10px] text-[#13315C] mt-1">{t('admin.products.descriptionEnHint')}</p>
               </div>
 

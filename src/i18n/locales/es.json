@@ -1083,7 +1083,9 @@
       "phoneRequired": "Teléfono requerido",
       "addressRequired": "Dirección requerida",
       "cityRequired": "Ciudad requerida",
-      "stateRequired": "Departamento/Provincia requerida"
+      "stateRequired": "Departamento/Provincia requerida",
+      "cancel": "Cancelar",
+      "save": "Guardar"
     },
     "security": {
       "title": "Privacidad y Seguridad",

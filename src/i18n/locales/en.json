@@ -1198,7 +1198,9 @@
       "phoneRequired": "Phone is required",
       "addressRequired": "Address is required",
       "cityRequired": "City is required",
-      "stateRequired": "State/Province is required"
+      "stateRequired": "State/Province is required",
+      "cancel": "Cancel",
+      "save": "Save"
     },
     "security": {
       "title": "Privacy and Security",

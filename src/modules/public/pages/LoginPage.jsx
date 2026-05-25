@@ -225,7 +225,7 @@ export default function LoginPage() {
                         value={firstName}
                         onChange={(e) => setFirstName(e.target.value)}
                         placeholder="Carlos"
-                        className="w-full pl-10 pr-3 py-3 bg-white/10 border border-white/15 rounded-2xl text-sm text-white placeholder:text-white/35 focus:outline-none focus:ring-2 focus:ring-white/20 focus:border-white/30 focus:bg-white/15 transition-all"
+                        className="dark-autofill w-full pl-10 pr-3 py-3 bg-white/10 border border-white/15 rounded-2xl text-sm text-white placeholder:text-white/35 focus:outline-none focus:ring-2 focus:ring-white/20 focus:border-white/30 focus:bg-white/15 transition-all"
                       />
                     </div>
                   </div>
