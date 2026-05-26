@@ -35,7 +35,7 @@ export default function AgentProfilePage() {
 
   useEffect(() => {
     loadReviews()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
   }, [agent?.id])
 
   const handleSelectAgent = () => {
@@ -78,7 +78,7 @@ export default function AgentProfilePage() {
 
   return (
     <main className="min-h-screen bg-background-cream" style={{ paddingTop: 'clamp(3.5rem, 8vh, 5rem)' }}>
-      {/* Breadcrumbs */}
+      {}
       <div className="max-w-5xl mx-auto px-4 sm:px-8 pt-8 pb-4">
         <nav className="flex items-center gap-2 text-xs text-on-surface-variant">
           <Link to="/" className="hover:text-primary transition-colors">{t('agentProfile.breadcrumbHome')}</Link>
@@ -91,9 +91,9 @@ export default function AgentProfilePage() {
 
       <section className="max-w-5xl mx-auto px-4 sm:px-8 pb-16">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-          {/* Left: Profile info */}
+          {}
           <div className="lg:col-span-2 space-y-8">
-            {/* Header card */}
+            {}
             <div className="bg-surface-container-lowest rounded-2xl p-8 shadow-soft">
               <div className="flex items-center gap-6 mb-6">
                 <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
@@ -127,7 +127,7 @@ export default function AgentProfilePage() {
                 </div>
               </div>
 
-              {/* Stats */}
+              {}
               <div className="grid grid-cols-3 gap-4">
                 <div className="bg-surface-container rounded-xl p-4 text-center">
                   <span className="block text-2xl font-black text-primary">{agent.totalSales || 0}</span>
@@ -144,7 +144,7 @@ export default function AgentProfilePage() {
               </div>
             </div>
 
-            {/* Bio */}
+            {}
             {agent.bio && (
               <div className="bg-surface-container-lowest rounded-2xl p-8 shadow-soft space-y-4">
                 <h2 className="font-headline font-bold text-lg text-primary">{t('agentProfile.aboutMe')}</h2>
@@ -152,7 +152,7 @@ export default function AgentProfilePage() {
               </div>
             )}
 
-            {/* Specializations */}
+            {}
             {agent.specializationCategories?.length > 0 && (
               <div className="bg-surface-container-lowest rounded-2xl p-8 shadow-soft space-y-4">
                 <h2 className="font-headline font-bold text-lg text-primary">{t('agentProfile.specialties')}</h2>
@@ -164,7 +164,7 @@ export default function AgentProfilePage() {
               </div>
             )}
 
-            {/* Coverage areas */}
+            {}
             {agent.coverageAreas?.length > 0 && (
               <div className="bg-surface-container-lowest rounded-2xl p-8 shadow-soft space-y-4">
                 <h2 className="font-headline font-bold text-lg text-primary">{t('agentProfile.coverageAreas')}</h2>
@@ -179,7 +179,7 @@ export default function AgentProfilePage() {
               </div>
             )}
 
-            {/* Reviews */}
+            {}
             <div className="bg-surface-container-lowest rounded-2xl p-8 shadow-soft space-y-5">
               <div className="flex items-center justify-between">
                 <h2 className="font-headline font-bold text-lg text-primary">Reseñas</h2>
@@ -248,7 +248,7 @@ export default function AgentProfilePage() {
             </div>
           </div>
 
-          {/* Right: Action card */}
+          {}
           <div className="lg:col-span-1">
             <div className="bg-surface-container-lowest rounded-2xl p-6 shadow-soft sticky top-28 space-y-5">
               <h3 className="font-headline font-bold text-lg text-primary">{t('agentProfile.quoteWith', { name: agentUser.firstName || 'este agente' })}</h3>

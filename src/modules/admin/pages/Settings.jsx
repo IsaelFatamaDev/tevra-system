@@ -24,7 +24,7 @@ export default function AdminSettings() {
     instagramUrl: '', facebookUrl: '', tiktokUrl: '', timezone: 'America/Lima', maxAgentZones: '',
     grossMarginPct: '30', agentCommissionPct: '12', etcCommissionPct: '3',
     exchangeRateBuy: '3.72', exchangeRateSell: '3.78',
-    // Platform URLs — configured by owner, consumed by backend for email redirects etc.
+    
     frontendUrl: '',
   })
 
@@ -73,7 +73,7 @@ export default function AdminSettings() {
       const res = await api.upload('/media/upload?entityType=tenant_logo', fd)
       const url = res.url || res.publicUrl
       setLogoUrl(url)
-      // Persist immediately
+      
       const { name, ...settings } = form
       await api.put('/tenants/current/settings', { name, settings: { ...settings, logoUrl: url } })
     } catch (err) { console.error('Logo upload failed', err) }
@@ -98,7 +98,7 @@ export default function AdminSettings() {
     finally { setSaving(false) }
   }
 
-  /* ── WhatsApp functions ── */
+  
   const checkWaStatus = useCallback(async () => {
     try {
       const data = await api.get('/whatsapp/status')
@@ -115,15 +115,15 @@ export default function AdminSettings() {
     setWaLoading(true)
     setWaError(null)
     try {
-      // Try to create instance first (idempotent)
-      try { await api.post('/whatsapp/instance') } catch { /* may already exist */ }
-      // Get QR code
+      
+      try { await api.post('/whatsapp/instance') } catch {  }
+      
       const data = await api.get('/whatsapp/qrcode')
       const qr = data?.base64 || data?.qrcode?.base64 || data?.code || null
       if (qr) {
         setWaQrCode(qr.startsWith('data:') ? qr : `data:image/png;base64,${qr}`)
         setWaStatus('connecting')
-        // Start polling for connection
+        
         if (waIntervalRef.current) clearInterval(waIntervalRef.current)
         waIntervalRef.current = setInterval(checkWaStatus, 5000)
       } else {
@@ -144,7 +144,7 @@ export default function AdminSettings() {
     finally { setWaLoading(false) }
   }
 
-  // Check WA status on mount + cleanup
+  
   useEffect(() => {
     checkWaStatus()
     return () => { if (waIntervalRef.current) clearInterval(waIntervalRef.current) }
@@ -172,7 +172,7 @@ export default function AdminSettings() {
         </div>
       )}
 
-      {/* Logo / Branding */}
+      {}
       <div className="bg-white rounded-xl border border-[#C5D8E8]/20 overflow-hidden">
         <div className="px-5 py-3.5 border-b border-[#C5D8E8]/10">
           <h3 className="font-semibold text-[#134074] text-sm">{t('admin.settings.brandLogo')}</h3>
@@ -209,7 +209,7 @@ export default function AdminSettings() {
         </div>
       </div>
 
-      {/* Company Info */}
+      {}
       <div className="bg-white rounded-xl border border-[#C5D8E8]/20 overflow-hidden">
         <div className="px-5 py-3.5 border-b border-[#C5D8E8]/10">
           <h3 className="font-semibold text-[#134074] text-sm">{t('admin.settings.companyData')}</h3>
@@ -248,7 +248,7 @@ export default function AdminSettings() {
         </div>
       </div>
 
-      {/* Fiscal & Shipping */}
+      {}
       <div className="bg-white rounded-xl border border-[#C5D8E8]/20 overflow-hidden">
         <div className="px-5 py-3.5 border-b border-[#C5D8E8]/10">
           <h3 className="font-semibold text-[#134074] text-sm">{t('admin.settings.fiscalShipping')}</h3>
@@ -273,7 +273,7 @@ export default function AdminSettings() {
         </div>
       </div>
 
-      {/* Social & Messaging */}
+      {}
       <div className="bg-white rounded-xl border border-[#C5D8E8]/20 overflow-hidden">
         <div className="px-5 py-3.5 border-b border-[#C5D8E8]/10">
           <h3 className="font-semibold text-[#134074] text-sm">{t('admin.settings.socialComm')}</h3>
@@ -315,7 +315,7 @@ export default function AdminSettings() {
         </div>
       </div>
 
-      {/* Agent Limits */}
+      {}
       <div className="bg-white rounded-xl border border-[#C5D8E8]/20 overflow-hidden">
         <div className="px-5 py-3.5 border-b border-[#C5D8E8]/10">
           <h3 className="font-semibold text-[#134074] text-sm">{t('admin.settings.agentConfig')}</h3>
@@ -330,7 +330,7 @@ export default function AdminSettings() {
         </div>
       </div>
 
-      {/* Commissions & Payments */}
+      {}
       <div className="bg-white rounded-xl border border-[#C5D8E8]/20 overflow-hidden">
         <div className="px-5 py-3.5 border-b border-[#C5D8E8]/10">
           <h3 className="font-semibold text-[#134074] text-sm">{t('admin.settings.paymentsCommissions')}</h3>
@@ -338,7 +338,7 @@ export default function AdminSettings() {
         </div>
         <div className="p-5 space-y-5">
 
-          {/* Dynamic Commission Model */}
+          {}
           <div className="p-4 bg-[#EEF4ED]/40 rounded-xl border border-[#C5D8E8]/20 space-y-4">
             <div>
               <p className="text-xs font-bold text-[#134074] uppercase tracking-wider">{t('admin.settings.commissionModelTitle')}</p>
@@ -377,7 +377,7 @@ export default function AdminSettings() {
               </div>
             </div>
 
-            {/* Exchange Rates */}
+            {}
             <div>
               <p className="text-xs font-bold text-[#134074] mb-2">{t('admin.settings.exchangeRateTitle')}</p>
               <div className="grid grid-cols-2 gap-4 max-w-xs">
@@ -402,7 +402,7 @@ export default function AdminSettings() {
               </div>
             </div>
 
-            {/* Live Preview */}
+            {}
             {(() => {
               const margin = parseFloat(form.grossMarginPct) || 30
               const agentPct = parseFloat(form.agentCommissionPct) || 12
@@ -471,7 +471,7 @@ export default function AdminSettings() {
         </div>
       </div>
 
-      {/* ── Platform URLs ── */}
+      {}
       <div className="bg-white rounded-xl border border-[#C5D8E8]/20 overflow-hidden">
         <div className="px-5 py-3.5 border-b border-[#C5D8E8]/10">
           <h3 className="font-semibold text-[#134074] text-sm flex items-center gap-2">
@@ -502,7 +502,7 @@ export default function AdminSettings() {
               className="w-full px-3 py-2 bg-[#EEF4ED]/30 border border-[#C5D8E8]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#134074]/10 focus:border-[#8DA9C4] outline-none transition-all"
             />
             <p className="text-[10px] text-[#13315C] mt-1">
-              Esta URL se usa en correos de verificación de email y otros links automáticos del sistema. Ejemplo: <code className="bg-slate-100 px-1 rounded">https://tevra.com</code>
+              Esta URL se usa en correos de verificación de email y otros links automáticos del sistema. Ejemplo: <code className="bg-slate-100 px-1 rounded">https:
             </p>
           </div>
 
@@ -527,7 +527,7 @@ export default function AdminSettings() {
         </div>
       </div>
 
-      {/* Plan Info */}
+      {}
       {tenant && (
         <div className="bg-white rounded-xl border border-[#C5D8E8]/20 overflow-hidden">
           <div className="px-5 py-3.5 border-b border-[#C5D8E8]/10">
@@ -545,7 +545,7 @@ export default function AdminSettings() {
         </div>
       )}
 
-      {/* WhatsApp Connection */}
+      {}
       <div className="bg-white rounded-xl border border-[#C5D8E8]/20 overflow-hidden">
         <div className="px-5 py-3.5 border-b border-[#C5D8E8]/10 flex items-center justify-between">
           <div>
@@ -622,7 +622,7 @@ export default function AdminSettings() {
         </div>
       </div>
 
-      {/* Save */}
+      {}
       <div className="flex justify-end">
         <button onClick={handleSave} disabled={saving}
           className="bg-[#134074] hover:bg-primary-mid disabled:opacity-50 text-[#EEF4ED] px-6 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 text-sm">

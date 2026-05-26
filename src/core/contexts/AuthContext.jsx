@@ -14,7 +14,7 @@ export function AuthProvider({ children }) {
     setUser(null);
   }, []);
 
-  // Validate token on mount by calling /users/me
+  
   useEffect(() => {
     const token = localStorage.getItem('tevra_token');
     if (!token) {
@@ -85,7 +85,7 @@ export function AuthProvider({ children }) {
       };
       localStorage.setItem('tevra_user', JSON.stringify(updated));
       setUser(updated);
-    } catch { /* ignore */ }
+    } catch {  }
   }, []);
 
   const resendVerificationEmail = useCallback(async () => {

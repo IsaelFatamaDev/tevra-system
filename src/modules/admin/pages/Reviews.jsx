@@ -73,13 +73,13 @@ export default function AdminReviews() {
 
   return (
     <div className="max-w-7xl mx-auto space-y-5 platform-enter">
-      {/* Header */}
+      {}
       <div>
         <h2 className="text-xl font-semibold text-[#134074]">{t('admin.reviews.title')}</h2>
         <p className="text-sm text-[#134074] mt-0.5">{t('admin.reviews.subtitle')}</p>
       </div>
 
-      {/* Metrics */}
+      {}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         <div className="bg-white p-4 rounded-xl border border-[#C5D8E8]/20 flex items-center gap-3 stat-card">
           <div className="w-9 h-9 rounded-lg bg-[#EEF4ED] text-[#134074] flex items-center justify-center shrink-0">
@@ -124,7 +124,7 @@ export default function AdminReviews() {
         </div>
       </div>
 
-      {/* Table */}
+      {}
       <div className="bg-white rounded-xl border border-[#C5D8E8]/20 overflow-hidden">
         <div className="p-4 border-b border-[#C5D8E8]/10 flex flex-col sm:flex-row gap-3">
           <div className="relative flex-1">
@@ -274,7 +274,7 @@ export default function AdminReviews() {
               </div>
             </div>
 
-            {/* Body */}
+            {}
             <div className="px-6 py-5 space-y-4">
               {viewReview.title && (
                 <p className="font-bold text-[#134074] text-base">{viewReview.title}</p>
@@ -290,7 +290,7 @@ export default function AdminReviews() {
               )}
             </div>
 
-            {/* Actions */}
+            {}
             <div className="px-6 pb-6 flex items-center justify-between gap-3">
               <button onClick={() => handleDeleteReview(viewReview.id)}
                 className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-red-600 bg-red-50 hover:bg-red-100 rounded-xl transition-colors">

@@ -599,3 +599,6 @@ input:-webkit-autofill:active{
 }
 
 
+
+input::placeholder, textarea::placeholder { color: #A0AEC0 !important; font-style: italic; opacity: 0.8 !important; }
+

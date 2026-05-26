@@ -9,7 +9,7 @@ export default function HeroSection() {
     <section className="tevra-hero-gradient flex items-center overflow-hidden" style={{ minHeight: '100svh', paddingTop: 'clamp(4rem, 10vh, 6rem)' }}>
       <div className="tevra-hero-overlay" />
 
-      {/* Decorative glow */}
+      {}
       <div className="absolute top-1/4 right-0 w-150 h-150 rounded-full bg-secondary/15 blur-[120px] pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-100 h-100 rounded-full bg-secondary-light/10 blur-[100px] pointer-events-none" />
 

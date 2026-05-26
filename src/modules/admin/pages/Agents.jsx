@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import agentsService from '../../public/services/agents.service'
 import Pagination from '../../../core/components/Pagination'
 import { useToast } from '../../../core/contexts/ToastContext'
+import api from '../../../core/services/api'
 
 const ITEMS_PER_PAGE = 10
 
@@ -32,6 +33,7 @@ export default function AdminAgents() {
   const [rejectStep, setRejectStep] = useState(false)
   const [rejectNotes, setRejectNotes] = useState('')
   const { addToast } = useToast()
+  const [agentReviews, setAgentReviews] = useState({ reviews: [], avgRating: 0, total: 0 })
 
   const fetchAgents = useCallback(() => {
     setLoading(true)
@@ -63,6 +65,13 @@ export default function AdminAgents() {
     fetchApplications()
     return () => clearTimeout(timer)
   }, [search, statusFilter, cityFilter, fetchAgents, fetchApplications])
+
+  useEffect(() => {
+    if (!viewAgent?.id) { setAgentReviews({ reviews: [], avgRating: 0, total: 0 }); return }
+    api.get(`/reviews/agent/${viewAgent.id}`)
+      .then(data => setAgentReviews(data || { reviews: [], avgRating: 0, total: 0 }))
+      .catch(() => setAgentReviews({ reviews: [], avgRating: 0, total: 0 }))
+  }, [viewAgent?.id])
 
   const totalPages = Math.ceil(total / ITEMS_PER_PAGE)
   const paginated = agents.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE)
@@ -128,7 +137,7 @@ export default function AdminAgents() {
         </div>
       </div>
 
-      {/* Metrics */}
+      {}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         {[
           { label: t('admin.agents.active'), value: activeCount, icon: 'groups' },
@@ -148,9 +157,9 @@ export default function AdminAgents() {
         ))}
       </div>
 
-      {/* Layout */}
+      {}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 items-start">
-        {/* Main Table */}
+        {}
         <div className="lg:col-span-2 bg-white rounded-xl border border-[#C5D8E8]/20 overflow-hidden">
           <div className="p-4 border-b border-[#C5D8E8]/10 flex flex-col sm:flex-row gap-3">
             <div className="relative flex-1">
@@ -253,7 +262,7 @@ export default function AdminAgents() {
             </div>
           )}
 
-          {/* Pagination */}
+          {}
           <div className="px-5 py-3 border-t border-[#C5D8E8]/10 flex flex-col sm:flex-row justify-between items-center gap-3">
             <span className="text-xs text-[#134074]">
               {t('admin.pagination.showing')} <span className="font-medium">{Math.min((page - 1) * ITEMS_PER_PAGE + 1, total)}-{Math.min(page * ITEMS_PER_PAGE, total)}</span> {t('admin.pagination.of')} <span className="font-medium">{total}</span> {t('admin.pagination.agents')}
@@ -262,9 +271,9 @@ export default function AdminAgents() {
           </div>
         </div>
 
-        {/* Sidebar */}
+        {}
         <div className="space-y-5">
-          {/* Pending Applications */}
+          {}
           <div className="bg-white p-4 rounded-xl border border-[#C5D8E8]/20">
             <div className="flex justify-between items-center mb-3">
               <h4 className="text-sm font-semibold text-[#134074]">{t('admin.agents.pendingApplications')}</h4>
@@ -295,7 +304,7 @@ export default function AdminAgents() {
         </div>
       </div>
 
-      {/* Review Application Modal */}
+      {}
       {reviewApp && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
           <div className="absolute inset-0 bg-[#134074]/40 backdrop-blur-sm" onClick={() => { setReviewApp(null); setRejectStep(false); setRejectNotes('') }} />
@@ -349,7 +358,7 @@ export default function AdminAgents() {
                     </div>
                   </div>
 
-                  {/* Motivation */}
+                  {}
                   {reviewApp.motivation && (
                     <div className="p-3 bg-[#EEF4ED]/40 rounded-xl border border-[#C5D8E8]/10">
                       <p className="text-[10px] font-bold uppercase tracking-wider text-[#13315C] mb-1.5">Motivación</p>
@@ -357,7 +366,7 @@ export default function AdminAgents() {
                     </div>
                   )}
 
-                  {/* Categories */}
+                  {}
                   {reviewApp.categories?.length > 0 && (
                     <div>
                       <p className="text-[10px] font-bold uppercase tracking-wider text-[#13315C] mb-2">Categorías de interés</p>
@@ -369,7 +378,7 @@ export default function AdminAgents() {
                     </div>
                   )}
 
-                  {/* Coverage areas */}
+                  {}
                   {reviewApp.coverageAreas?.length > 0 && (
                     <div>
                       <p className="text-[10px] font-bold uppercase tracking-wider text-[#13315C] mb-2">Zonas de cobertura</p>
@@ -382,7 +391,7 @@ export default function AdminAgents() {
                   )}
                 </>
               ) : (
-                /* Reject step */
+                
                 <div className="space-y-4">
                   <div className="flex items-start gap-3 p-3 bg-red-50 rounded-xl border border-red-100">
                     <span className="material-symbols-outlined text-red-500 text-[20px] shrink-0 mt-0.5">warning</span>
@@ -407,7 +416,7 @@ export default function AdminAgents() {
               )}
             </div>
 
-            {/* Footer */}
+            {}
             <div className="px-6 py-4 border-t border-[#C5D8E8]/10 flex justify-between items-center gap-3 rounded-b-2xl bg-[#EEF4ED]/20">
               {!rejectStep ? (
                 <>
@@ -447,7 +456,7 @@ export default function AdminAgents() {
         </div>
       )}
 
-      {/* View Agent Modal */}
+      {}
       {viewAgent && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
           <div className="absolute inset-0 bg-[#134074]/40 backdrop-blur-sm transition-opacity" onClick={() => setViewAgent(null)} />
@@ -508,12 +517,44 @@ export default function AdminAgents() {
                   </div>
                 </div>
               )}
+
+              {}
+              <div className="p-4 bg-[#EEF4ED]/30 border border-[#C5D8E8]/10 rounded-xl">
+                <div className="flex items-center justify-between mb-3">
+                  <p className="text-[11px] font-bold uppercase tracking-wider text-[#134074]">Reseñas recibidas</p>
+                  <span className="flex items-center gap-1.5">
+                    <span className="material-symbols-outlined text-amber-400 text-[16px]" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                    <strong className="text-[#134074] text-sm">{Number(agentReviews.avgRating || 0).toFixed(1)}</strong>
+                    <span className="text-xs text-[#13315C]">({agentReviews.total || 0} reseñas)</span>
+                  </span>
+                </div>
+                {!agentReviews.reviews?.length ? (
+                  <p className="text-xs text-[#13315C] text-center py-3">Sin reseñas aún</p>
+                ) : (
+                  <div className="space-y-2 max-h-40 overflow-y-auto">
+                    {agentReviews.reviews.slice(0, 5).map((rev, i) => (
+                      <div key={rev.id || i} className="bg-white rounded-lg p-3 border border-[#C5D8E8]/10">
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="text-xs font-bold text-[#134074]">{rev.reviewer?.firstName || rev.user?.firstName || 'Cliente'} {rev.reviewer?.lastName || rev.user?.lastName || ''}</span>
+                          <div className="flex gap-0.5">
+                            {[1, 2, 3, 4, 5].map(s => (
+                              <span key={s} className={`material-symbols-outlined text-[11px] ${s <= (rev.rating || 5) ? 'text-amber-400' : 'text-[#C5D8E8]'}`}
+                                style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                            ))}
+                          </div>
+                        </div>
+                        {(rev.body || rev.comment) && <p className="text-xs text-[#134074] leading-relaxed">{rev.body || rev.comment}</p>}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
 
             <div className="p-5 border-t border-[#C5D8E8]/10 flex flex-col sm:flex-row justify-between items-center gap-4 bg-white rounded-b-2xl">
               <div className="flex flex-wrap gap-2 w-full sm:w-auto justify-center sm:justify-start">
                 {viewAgent.phone && (
-                  <a href={`https://wa.me/${viewAgent.phone.replace(/\D/g, '')}`} target="_blank" rel="noreferrer"
+                  <a href={`https:
                     className="px-4 py-2 bg-[#25D366]/10 text-[#075E54] hover:bg-[#25D366]/20 font-bold text-sm rounded-xl transition-colors flex items-center gap-1.5 flex-1 sm:flex-none justify-center">
                     <span className="material-symbols-outlined text-[16px]">chat</span> {t('admin.agents.whatsapp')}
                   </a>
@@ -529,7 +570,7 @@ export default function AdminAgents() {
         </div>
       )}
 
-      {/* Change Status Modal */}
+      {}
       {statusModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
           <div className="absolute inset-0 bg-[#134074]/40 backdrop-blur-sm transition-opacity" onClick={() => setStatusModal(null)} />

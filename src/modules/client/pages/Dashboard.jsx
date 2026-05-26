@@ -21,8 +21,8 @@ const statusClasses = {
 
 const trackingSteps = ['pending', 'confirmed', 'purchased_in_usa', 'in_transit', 'in_customs', 'ready_for_delivery', 'delivered']
 
-// BUG-04 FIX: 'pending' must return -1 so NO step is highlighted.
-// Previously it returned 0 making the first step look "completed".
+
+
 function getStepIndex(status) {
   if (status === 'pending' || status === 'cancelled') return -1
   const idx = trackingSteps.indexOf(status)
@@ -87,7 +87,7 @@ export default function ClientDashboard() {
   return (
     <div className="space-y-10 platform-enter max-w-6xl mx-auto pb-10">
 
-      {/* Hero Welcome + Agent Card */}
+      {}
       <section className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         <div className="lg:col-span-8 flex flex-col justify-center">
           <h1 className="font-headline text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight mb-4">
@@ -154,7 +154,7 @@ export default function ClientDashboard() {
         </div>
       ) : (
         <>
-          {/* Stats Grid */}
+          {}
           <section className="grid grid-cols-1 sm:grid-cols-3 gap-5">
             {[
               { title: t('client.dashboard.stats.inTransit'), value: inTransitCount, icon: 'local_shipping', color: 'text-indigo-600', bg: 'bg-indigo-50 border-indigo-100' },
@@ -173,7 +173,7 @@ export default function ClientDashboard() {
             ))}
           </section>
 
-          {/* Active Order Tracking */}
+          {}
           {mainActiveOrder && (
             <section className="bg-white rounded-[2rem] p-8 shadow-[0_8px_30px_rgba(0,0,0,0.04)] border border-slate-100 relative overflow-hidden">
               <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-slate-200 via-slate-800 to-slate-200"></div>
@@ -203,7 +203,7 @@ export default function ClientDashboard() {
                     </div>
                   </div>
 
-                  {/* Progress Bar Premium */}
+                  {}
                   {mainActiveOrder.status !== 'cancelled' && (
                     <div className="mb-2">
                       <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden shadow-inner">
@@ -229,13 +229,13 @@ export default function ClientDashboard() {
             </section>
           )}
 
-          {/* Grid for Quick Actions & Empty state combined if needed */}
+          {}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
 
-            {/* Main Column */}
+            {}
             <div className="lg:col-span-8 space-y-8">
 
-              {/* Empty Active Orders */}
+              {}
               {!mainActiveOrder && (
                 <div className="bg-slate-50 rounded-3xl border border-slate-100 p-12 text-center flex flex-col items-center justify-center min-h-[300px]">
                   <span className="material-symbols-outlined text-5xl text-slate-300 mb-4">maps_ugc</span>
@@ -250,7 +250,7 @@ export default function ClientDashboard() {
                 </div>
               )}
 
-              {/* Recent Orders Table */}
+              {}
               <section className="bg-white rounded-[2rem] border border-slate-100 shadow-[0_8px_30px_rgba(0,0,0,0.03)] overflow-hidden">
                 <div className="px-8 py-6 border-b border-slate-100 flex items-center justify-between bg-white">
                   <h3 className="font-headline font-extrabold text-slate-900 text-lg">{t('client.dashboard.orderHistory')}</h3>
@@ -303,7 +303,7 @@ export default function ClientDashboard() {
               </section>
             </div>
 
-            {/* Sidebar Actions Column */}
+            {}
             <div className="lg:col-span-4 space-y-4">
               <h3 className="font-headline font-bold text-slate-900 mb-4 px-1">{t('client.dashboard.quickActions.title')}</h3>
               {[

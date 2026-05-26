@@ -14,7 +14,7 @@ const defaultConfig = {
   supportEmail: null,
   supportPhone: null,
   name: 'TeVra',
-  // Platform settings — configured from Admin > Configuración > Comisiones / URLs
+  
   currency: 'USD',
   timezone: 'America/Lima',
   welcomeMessage: '',
@@ -45,7 +45,7 @@ export function SiteConfigProvider({ children }) {
         if (!data) return
         const body = data.data !== undefined ? data.data : data
         setConfig({
-          // Contact & social — all from DB, no fallbacks to hardcoded values
+          
           whatsapp: body.whatsapp || null,
           instagramUrl: body.instagramUrl || null,
           facebookUrl: body.facebookUrl || null,
@@ -53,7 +53,7 @@ export function SiteConfigProvider({ children }) {
           supportEmail: body.supportEmail || null,
           supportPhone: body.supportPhone || null,
           name: body.name || 'TeVra',
-          // Platform settings
+          
           currency: body.currency || 'USD',
           timezone: body.timezone || 'America/Lima',
           welcomeMessage: body.welcomeMessage || '',

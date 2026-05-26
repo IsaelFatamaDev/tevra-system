@@ -46,7 +46,7 @@ export default function CotizarLinkPage() {
     >
       <div className="max-w-2xl mx-auto px-4 sm:px-6 py-14">
 
-        {/* Header */}
+        {}
         <div className="text-center mb-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#8DA9C4]/20 rounded-full border border-[#8DA9C4]/40 mb-4">
             <span className="material-symbols-outlined text-primary text-sm">link</span>
@@ -64,7 +64,7 @@ export default function CotizarLinkPage() {
 
         <div className="bg-surface-container-lowest rounded-3xl border border-outline-variant/15 shadow-soft p-8 space-y-6">
 
-          {/* URL Input */}
+          {}
           <div>
             <label className="block text-sm font-bold text-primary mb-2">
               {t('cotizarLink.linkLabel')} <span className="text-red-400">{t('cotizarLink.linkRequired')}</span>
@@ -87,7 +87,7 @@ export default function CotizarLinkPage() {
             </p>
           </div>
 
-          {/* Notes */}
+          {}
           <div>
             <label className="block text-sm font-bold text-primary mb-2">
               {t('cotizarLink.notesLabel')}{' '}
@@ -102,7 +102,7 @@ export default function CotizarLinkPage() {
             />
           </div>
 
-          {/* Agent selection */}
+          {}
           <div className="rounded-2xl border border-outline-variant/15 bg-surface-container p-4">
             <p className="text-xs font-bold uppercase tracking-widest text-text-muted mb-3">{t('cotizarLink.agentLabel')}</p>
             {selectedAgent ? (
@@ -140,7 +140,7 @@ export default function CotizarLinkPage() {
             )}
           </div>
 
-          {/* Message preview */}
+          {}
           {isValidUrl && (
             <div>
               <p className="text-xs font-bold uppercase tracking-widest text-text-muted mb-2 flex items-center gap-2">
@@ -158,7 +158,7 @@ export default function CotizarLinkPage() {
             </div>
           )}
 
-          {/* Actions */}
+          {}
           {isAuthenticated ? (
             <button
               onClick={handleSend}

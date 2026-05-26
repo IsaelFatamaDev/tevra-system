@@ -8,7 +8,7 @@ function getTenantId() {
       const user = JSON.parse(stored);
       if (user?.tenantId) return user.tenantId;
     }
-  } catch { /* ignore */ }
+  } catch {  }
   return DEFAULT_TENANT;
 }
 

@@ -118,7 +118,7 @@ export default function AdminDashboard() {
 
   return (
     <div className="space-y-6 platform-enter">
-      {/* Page Header */}
+      {}
       <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
         <div>
           <h1 className="text-xl font-semibold text-[#134074]">{t('admin.dashboard.title')}</h1>
@@ -136,7 +136,7 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      {/* Metric Cards */}
+      {}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
         {statCards.map((s) => (
           <div key={s.title} className="bg-white rounded-xl p-5 border border-[#C5D8E8]/20 stat-card">
@@ -151,7 +151,7 @@ export default function AdminDashboard() {
         ))}
       </div>
 
-      {/* Orders by Status badges */}
+      {}
       {stats?.ordersByStatus?.length > 0 && (
         <div className="flex flex-wrap gap-2">
           {stats.ordersByStatus.map((s) => (
@@ -163,9 +163,9 @@ export default function AdminDashboard() {
         </div>
       )}
 
-      {/* Charts + Top Agents */}
+      {}
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-        {/* Revenue Chart */}
+        {}
         <div className="xl:col-span-2 bg-white rounded-xl border border-[#C5D8E8]/20 overflow-hidden">
           <div className="flex items-center justify-between px-5 py-4 border-b border-[#C5D8E8]/10">
             <div>
@@ -207,7 +207,7 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        {/* Top Agents */}
+        {}
         <div className="bg-white rounded-xl border border-[#C5D8E8]/20">
           <div className="px-5 py-4 border-b border-[#C5D8E8]/10">
             <h3 className="text-sm font-semibold text-[#134074]">{t('admin.dashboard.topAgents')}</h3>
@@ -239,9 +239,9 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      {/* Recent Orders + Pending Agents */}
+      {}
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-        {/* Recent Orders */}
+        {}
         <div className="xl:col-span-2 bg-white rounded-xl border border-[#C5D8E8]/20 overflow-hidden">
           <div className="flex items-center justify-between px-5 py-4 border-b border-[#C5D8E8]/10">
             <div>
@@ -345,7 +345,7 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      {/* Commission Summary */}
+      {}
       {stats && (
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="bg-white rounded-xl border border-[#C5D8E8]/20 p-5">

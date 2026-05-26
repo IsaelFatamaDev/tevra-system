@@ -88,7 +88,7 @@ export default function AdminInvoices() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Calculate subtotals before submitting
+      
       const itemsWithSubtotals = form.items.map(item => ({
         ...item,
         subtotal: item.quantity * item.unitPrice

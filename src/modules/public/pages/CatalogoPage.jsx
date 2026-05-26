@@ -22,15 +22,19 @@ function ProductCard({ producto, onClick }) {
   const { t } = useTranslation()
 
   const imgUrl = producto.images?.[0]
-  const savings = producto.marginPct ? Math.round(producto.marginPct) : null
-
+  
+  const price = Number(producto.priceUsd || 0);
+  const priceSoles = Number(producto.priceLocal || price * 3.80);
+  const refPrice = Number(producto.priceRefLocal || priceSoles * 1.2);
+  const ahorraSoles = refPrice > priceSoles ? (refPrice - priceSoles) : 0;
+  
   const handleAddToCart = (e) => {
     e.stopPropagation()
     addItem({
       productId: producto.id,
       slug: producto.slug,
       name: producto.name,
-      price: Number(producto.priceUsd || 0),
+      price: price,
       image: producto.images?.[0] || '',
       brand: producto.brand?.name || '',
       qty: 1,
@@ -42,58 +46,93 @@ function ProductCard({ producto, onClick }) {
   return (
     <div
       onClick={onClick}
-      className="bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col cursor-pointer group"
+      className="bg-white p-4 sm:p-5 border border-slate-200 hover:shadow-xl hover:border-slate-300 transition-all duration-300 flex flex-col cursor-pointer group relative h-full"
     >
-      <div className="relative overflow-hidden bg-slate-50" style={{ aspectRatio: '4/3' }}>
+      <div className="flex justify-between items-start mb-2 absolute top-4 left-4 right-4 z-10">
+        <div className="bg-[#0046be] text-white text-[10px] font-bold px-2 py-0.5 rounded-sm">
+          {producto.brand?.name ? `Marca: ${producto.brand.name}` : 'Oferta Exclusiva'}
+        </div>
+        <button onClick={(e) => e.stopPropagation()} className="text-slate-400 hover:text-red-500 transition-colors">
+          <span className="material-symbols-outlined text-[22px]">favorite</span>
+        </button>
+      </div>
+
+      <div className="w-full aspect-square mb-4 pt-6 px-4">
         {imgUrl ? (
-          <img src={imgUrl} alt={producto.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+          <img src={imgUrl} alt={producto.name} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-slate-300">
+          <div className="w-full h-full flex items-center justify-center bg-slate-50 text-slate-300">
             <span className="material-symbols-outlined text-5xl">image</span>
           </div>
         )}
-        {producto.category && (
-          <span className="absolute top-2 left-2 bg-white/90 backdrop-blur-sm text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded-lg text-slate-600 border border-white">
-            {producto.category?.name || producto.category}
-          </span>
-        )}
-        {savings && (
-          <span className="absolute top-2 right-2 bg-emerald-500 text-white text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded-lg">
-            Ahorra {savings}%
-          </span>
-        )}
-        <div className="absolute inset-0 bg-linear-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
       </div>
 
-      <div className="p-4 flex flex-col flex-1 gap-2">
-        {producto.brand && (
-          <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{producto.brand.name}</span>
-        )}
-        <h3 className="font-bold text-slate-900 text-sm leading-tight line-clamp-2 flex-1">{producto.name}</h3>
+      <h3 className="text-[#0046be] group-hover:underline text-sm font-semibold line-clamp-3 mb-3 leading-snug">
+        {producto.brand?.name ? `${producto.brand.name} - ` : ''}{producto.name}
+      </h3>
 
-        <StarRating rating={producto.avgRating || 0} count={producto.reviewCount || 0} />
+      <div className="flex gap-1.5 mb-3">
+        <div className="w-6 h-6 rounded-sm border-2 border-[#0046be] bg-[#f0f0f0]"></div>
+        <div className="w-6 h-6 rounded-sm border border-slate-300 bg-[#333333]"></div>
+        <div className="w-6 h-6 rounded-sm border border-slate-300 bg-[#e0c6a8]"></div>
+      </div>
 
-        <div className="flex items-end justify-between mt-1">
-          <div>
-            <span className="font-black text-lg text-slate-900">${Number(producto.priceUsd || 0).toFixed(0)}</span>
-            <span className="text-xs text-slate-400 ml-1">USD</span>
+      <div className="flex items-center gap-1.5 mb-3">
+        <StarRating rating={producto.avgRating || 4.8} count={producto.reviewCount || 124} />
+      </div>
+
+      <div className="mt-auto">
+        <div className="flex items-end gap-2">
+          <span className="font-bold text-2xl text-slate-900 tracking-tight">S/ {priceSoles.toLocaleString('es-PE', {minimumFractionDigits:2, maximumFractionDigits:2})}</span>
+          <span className="text-slate-500 font-medium text-sm mb-0.5">${price.toFixed(2)}</span>
+        </div>
+        
+        {ahorraSoles > 0 && (
+          <div className="text-[#bb0628] font-bold text-xs mt-1">
+            Ahorra S/ {ahorraSoles.toLocaleString('es-PE', {minimumFractionDigits:2, maximumFractionDigits:2})}
           </div>
-          {producto.priceRefLocal && (
-            <span className="text-[10px] text-slate-400 line-through">S/ {Number(producto.priceRefLocal).toLocaleString()}</span>
-          )}
+        )}
+        
+        {ahorraSoles > 0 && (
+          <div className="text-slate-500 text-[11px] mt-0.5">
+            Valor de referencia: S/ {refPrice.toLocaleString('es-PE', {minimumFractionDigits:2, maximumFractionDigits:2})}
+          </div>
+        )}
+
+        <div className="bg-[#e5f5e5] text-[#006600] font-bold text-[10px] px-2 py-1 rounded-sm inline-flex items-center gap-1 mt-2 mb-3">
+          + Ofertas para ti
+          <span className="material-symbols-outlined text-[12px]">chevron_right</span>
         </div>
 
-        <button
-          onClick={handleAddToCart}
-          className={`w-full mt-1 py-2.5 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 ${
-            added
-              ? 'bg-emerald-500 text-white'
-              : 'bg-slate-900 text-white hover:bg-secondary'
-          }`}
-        >
-          <span className="material-symbols-outlined text-base">{added ? 'check_circle' : 'chat'}</span>
-          {added ? 'Agregado' : t('catalog.card.addToCart')}
-        </button>
+        <div className="space-y-1 mb-4">
+          <div className="flex items-center gap-1.5 text-xs text-slate-700">
+            <span className="material-symbols-outlined text-[16px]">storefront</span>
+            Envío internacional en 5-10 días
+          </div>
+          <div className="flex items-center gap-1.5 text-xs text-slate-700">
+            <span className="material-symbols-outlined text-[16px]">local_shipping</span>
+            <span className="font-bold">Consíguelo seguro - GRATIS</span>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2 mt-2">
+          <button
+            onClick={handleAddToCart}
+            className={`flex-1 py-2.5 px-4 rounded font-bold text-sm transition-all flex items-center justify-center gap-2 shadow-sm ${
+              added
+                ? 'bg-emerald-600 text-white'
+                : 'bg-[#ffe000] hover:bg-[#f5d900] text-slate-900'
+            }`}
+          >
+            <span className="material-symbols-outlined text-[18px]">{added ? 'check_circle' : 'shopping_cart'}</span>
+            {added ? 'Agregado' : 'Añadir a la cesta'}
+          </button>
+          
+          <label className="flex items-center justify-center border border-slate-300 rounded cursor-pointer w-10 h-10 hover:bg-slate-50 shrink-0" title="Comparar">
+            <input type="checkbox" className="sr-only" />
+            <span className="material-symbols-outlined text-slate-500 text-[20px]">compare_arrows</span>
+          </label>
+        </div>
       </div>
     </div>
   )
@@ -395,7 +434,7 @@ export default function CatalogoPage() {
         )}
       </div>
 
-      {/* Bottom CTA */}
+      {}
       <div className="bg-primary py-12 mt-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="text-white text-center sm:text-left">

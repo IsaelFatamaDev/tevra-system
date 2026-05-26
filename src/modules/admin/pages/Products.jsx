@@ -3,11 +3,12 @@ import { useTranslation } from 'react-i18next'
 import productsService from '../../public/services/products.service'
 import Pagination from '../../../core/components/Pagination'
 import { useToast } from '../../../core/contexts/ToastContext'
+import { useSiteConfig } from '../../../core/contexts/SiteConfigContext'
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3001/api/v1';
 const ITEMS_PER_PAGE = 10
 
-const EMPTY_FORM = { name: '', description: '', descriptionEn: '', priceUsd: '', priceRefLocal: '', providerCostUsd: '', stockStatus: 'available', marginPct: '', isFeatured: false, categoryId: '', brandId: '' }
+const EMPTY_FORM = { name: '', description: '', descriptionEn: '', priceUsd: '', priceRefLocal: '', providerCostUsd: '', stockStatus: 'available', marginPct: '', isFeatured: false, categoryId: '', brandId: '', images: [] }
 const DEFAULT_GROSS_MARGIN = 30
 
 export default function AdminProducts() {
@@ -32,12 +33,10 @@ export default function AdminProducts() {
   const [selected, setSelected] = useState(null)
   const [form, setForm] = useState(EMPTY_FORM)
   const [saving, setSaving] = useState(false)
-  const [imageFile, setImageFile] = useState(null)
-  const [imagePreview, setImagePreview] = useState(null)
-  const [uploading, setUploading] = useState(false)
   const [formErrors, setFormErrors] = useState({})
   const fileRef = useRef(null)
   const { addToast } = useToast()
+  const { exchangeRateSell } = useSiteConfig()
 
   const fetchData = useCallback(() => {
     setLoading(true)
@@ -67,9 +66,9 @@ export default function AdminProducts() {
   const totalPages = Math.ceil(total / ITEMS_PER_PAGE)
   const paginated = products.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE)
 
-  const openCreate = () => { setForm(EMPTY_FORM); setImageFile(null); setImagePreview(null); setFormErrors({}); setModal('create') }
-  // BUG-15 FIX: Reset formErrors when opening edit so the save button
-  // is never stuck disabled from a previous failed edit attempt.
+  const openCreate = () => { setForm(EMPTY_FORM); setFormErrors({}); setModal('create') }
+  
+  
   const openEdit = (prod) => {
     setSelected(prod)
     setForm({
@@ -78,22 +77,26 @@ export default function AdminProducts() {
       stockStatus: prod.stockStatus || 'available',
       marginPct: prod.marginPct || '', isFeatured: prod.isFeatured || false,
       categoryId: prod.category?.id || prod.categoryId || '', brandId: prod.brand?.id || prod.brandId || '',
+      images: prod.images || [],
     })
-    setImageFile(null)
-    setImagePreview(getImageUrl(prod))
     setFormErrors({})  // BUG-15 FIX: Clear any previous errors
     setSaving(false)   // BUG-15 FIX: Reset saving state
     setModal('edit')
   }
   const openDelete = (prod) => { setSelected(prod); setModal('delete') }
 
-  const handleFileChange = (e) => {
+  const handleAddImage = (e) => {
     const file = e.target.files?.[0]
     if (!file) return
-    setImageFile(file)
     const reader = new FileReader()
-    reader.onload = (ev) => setImagePreview(ev.target.result)
+    reader.onload = (ev) => {
+      setForm(prev => ({ ...prev, images: [...(prev.images || []), ev.target.result] }))
+    }
     reader.readAsDataURL(file)
+  }
+
+  const handleRemoveImage = (index) => {
+    setForm(prev => ({ ...prev, images: (prev.images || []).filter((_, i) => i !== index) }))
   }
 
   const getImageUrl = (prod) => {
@@ -120,19 +123,8 @@ export default function AdminProducts() {
 
     setSaving(true)
     try {
-      let product
-      if (modal === 'create') product = await productsService.create(form)
-      else product = await productsService.update(selected.id, form)
-      if (imageFile && product?.id) {
-        setUploading(true)
-        const base64 = await new Promise((resolve) => {
-          const reader = new FileReader()
-          reader.onload = (e) => resolve(e.target.result)
-          reader.readAsDataURL(imageFile)
-        })
-        await productsService.uploadImage(product.id, base64)
-        setUploading(false)
-      }
+      if (modal === 'create') await productsService.create(form)
+      else await productsService.update(selected.id, form)
       fetchData()
       setModal(null)
       addToast(modal === 'create' ? t('admin.products.created') : t('admin.products.updated'))
@@ -140,7 +132,7 @@ export default function AdminProducts() {
       console.error(err)
       addToast(t('admin.products.processError'), 'error')
     }
-    finally { setSaving(false); setUploading(false) }
+    finally { setSaving(false) }
   }
 
   const handleDelete = async () => {
@@ -175,7 +167,7 @@ export default function AdminProducts() {
 
   return (
     <div className="max-w-7xl mx-auto space-y-5 platform-enter">
-      {/* Header */}
+      {}
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4">
         <div>
           <h2 className="text-xl font-semibold text-[#134074]">{t('admin.products.title')}</h2>
@@ -186,7 +178,7 @@ export default function AdminProducts() {
         </button>
       </div>
 
-      {/* Metrics */}
+      {}
       <div className="grid grid-cols-3 gap-3">
         {[
           { label: t('admin.products.totalProducts'), value: totalProducts, icon: 'inventory_2' },
@@ -205,7 +197,7 @@ export default function AdminProducts() {
         ))}
       </div>
 
-      {/* Table */}
+      {}
       <div className="bg-white rounded-xl border border-[#C5D8E8]/20 overflow-hidden">
         <div className="p-4 border-b border-[#C5D8E8]/10 flex flex-col sm:flex-row gap-3">
           <div className="relative flex-1">
@@ -312,7 +304,7 @@ export default function AdminProducts() {
         </div>
       </div>
 
-      {/* Create / Edit Modal */}
+      {}
       {(modal === 'create' || modal === 'edit') && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-[#134074]/40 backdrop-blur-sm transition-opacity" onClick={() => setModal(null)} />
@@ -328,52 +320,62 @@ export default function AdminProducts() {
             </div>
 
             <div className="p-6 overflow-y-auto space-y-5">
-              {/* Image Upload */}
-              <div className="bg-[#EEF4ED]/30 p-4 rounded-xl border border-[#C5D8E8]/10 flex items-center gap-5">
-                <div onClick={() => fileRef.current?.click()}
-                  className="w-20 h-20 rounded-xl bg-white border-2 border-dashed border-[#C5D8E8]/20 flex flex-col items-center justify-center cursor-pointer hover:border-tevra-coral hover:bg-tevra-coral/5 transition-all overflow-hidden group">
-                  {imagePreview ? (
-                    <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
-                  ) : (
-                    <>
-                      <span className="material-symbols-outlined text-[#13315C] group-hover:text-tevra-coral/70 transition-colors">add_photo_alternate</span>
-                    </>
-                  )}
-                </div>
-                <div className="flex-1">
-                  <h4 className="text-sm font-semibold text-[#134074]">{t('admin.products.mainImage')}</h4>
-                  <p className="text-[11px] text-[#134074] mt-0.5 mb-2">{t('admin.products.imageHint')}</p>
-                  <button onClick={() => fileRef.current?.click()} className="text-[11px] font-bold text-tevra-coral hover:underline uppercase tracking-wide">
-                    {imagePreview ? t('admin.products.changeImage') : t('admin.products.selectImage')}
+              {}
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <label className="block text-[11px] font-bold text-[#134074] uppercase tracking-widest">{t('admin.products.mainImage')}</label>
+                  <button onClick={() => fileRef.current?.click()} className="text-[11px] font-bold text-tevra-coral hover:underline uppercase tracking-wide flex items-center gap-1">
+                    <span className="material-symbols-outlined text-[14px]">add_photo_alternate</span>
+                    Añadir Imagen
                   </button>
-                  <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleFileChange} />
+                  <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleAddImage} />
                 </div>
+                
+                {(!form.images || form.images.length === 0) ? (
+                  <div onClick={() => fileRef.current?.click()} className="w-full h-24 rounded-xl bg-[#EEF4ED]/30 border-2 border-dashed border-[#C5D8E8]/30 flex flex-col items-center justify-center cursor-pointer hover:border-tevra-coral hover:bg-tevra-coral/5 transition-all group">
+                    <span className="material-symbols-outlined text-[#13315C] group-hover:text-tevra-coral/70 transition-colors">add_photo_alternate</span>
+                    <span className="text-[10px] text-[#13315C] mt-1 font-medium">Click para añadir imagen</span>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-4 gap-3">
+                    {form.images.map((imgUrl, idx) => (
+                      <div key={idx} className="relative group rounded-xl overflow-hidden border border-[#C5D8E8]/20 bg-[#EEF4ED]/30 aspect-square">
+                        <img src={imgUrl.startsWith('data:') || imgUrl.startsWith('http') ? imgUrl : `${API_BASE}${imgUrl}`} alt={`Product ${idx}`} className="w-full h-full object-cover" />
+                        <button onClick={() => handleRemoveImage(idx)} className="absolute top-1 right-1 w-6 h-6 rounded-full bg-red-500/90 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600">
+                          <span className="material-symbols-outlined text-[14px]">close</span>
+                        </button>
+                        {idx === 0 && <span className="absolute bottom-1 left-1 bg-tevra-coral text-white text-[9px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider">Principal</span>}
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
-              <div>
-                <label className="block text-[11px] font-bold text-[#134074] uppercase tracking-widest mb-1.5">{t('admin.products.commercialName')}</label>
-                <div className={`relative flex items-center transition-all rounded-xl border ${formErrors.name ? 'border-red-300 ring-2 ring-red-100' : 'border-[#C5D8E8]/20 focus-within:border-[#8DA9C4] focus-within:ring-2 focus-within:ring-[#C5D8E8]/15'}`}>
-                  <input value={form.name} onChange={e => { setForm({ ...form, name: e.target.value }); setFormErrors({ ...formErrors, name: '' }) }}
-                    placeholder={t('admin.products.namePlaceholder')}
-                    className="w-full px-4 py-2.5 bg-transparent text-sm text-[#134074] outline-none placeholder:text-[#A5C0D8]" />
-                  {formErrors.name && <span className="material-symbols-outlined text-red-500 text-[18px] pr-3">error</span>}
+              <div className="grid grid-cols-2 gap-4">
+                <div className="col-span-2">
+                  <label className="block text-[11px] font-bold text-[#134074] uppercase tracking-widest mb-1.5">{t('admin.products.commercialName')}</label>
+                  <div className={`relative flex items-center transition-all rounded-xl border ${formErrors.name ? 'border-red-300 ring-2 ring-red-100' : 'border-[#C5D8E8]/20 focus-within:border-[#8DA9C4] focus-within:ring-2 focus-within:ring-[#C5D8E8]/15'}`}>
+                    <input value={form.name} onChange={e => { setForm({ ...form, name: e.target.value }); setFormErrors({ ...formErrors, name: '' }) }}
+                      placeholder={t('admin.products.namePlaceholder')}
+                      className="w-full px-4 py-2.5 bg-transparent text-sm text-[#134074] outline-none placeholder:text-[#A5C0D8]" />
+                    {formErrors.name && <span className="material-symbols-outlined text-red-500 text-[18px] pr-3">error</span>}
+                  </div>
+                  {formErrors.name && <p className="text-xs text-red-500 font-medium mt-1.5 ml-1 flex items-center gap-1"><span className="material-symbols-outlined text-[14px]">info</span>{formErrors.name}</p>}
                 </div>
-                {formErrors.name && <p className="text-xs text-red-500 font-medium mt-1.5 ml-1 flex items-center gap-1"><span className="material-symbols-outlined text-[14px]">info</span>{formErrors.name}</p>}
-              </div>
 
-              <div>
-                <label className="block text-[11px] font-bold text-[#134074] uppercase tracking-widest mb-1.5">{t('admin.products.description')} <span className="text-[#13315C] normal-case font-normal">(ES)</span></label>
-                <textarea value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} rows={3}
-                  placeholder={t('admin.products.descriptionPlaceholder')}
-                  className="w-full px-4 py-2.5 bg-white border border-[#C5D8E8]/20 rounded-xl text-sm focus:ring-2 focus:ring-[#C5D8E8]/15 focus:border-[#8DA9C4] outline-none transition-all resize-none placeholder:text-[#A5C0D8]" />
-              </div>
+                <div>
+                  <label className="block text-[11px] font-bold text-[#134074] uppercase tracking-widest mb-1.5">{t('admin.products.description')} <span className="text-[#13315C] normal-case font-normal">(ES)</span></label>
+                  <textarea value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} rows={4}
+                    placeholder={t('admin.products.descriptionPlaceholder')}
+                    className="w-full px-4 py-2.5 bg-white border border-[#C5D8E8]/20 rounded-xl text-sm focus:ring-2 focus:ring-[#C5D8E8]/15 focus:border-[#8DA9C4] outline-none transition-all resize-none placeholder:text-[#A5C0D8]" />
+                </div>
 
-              <div>
-                <label className="block text-[11px] font-bold text-[#134074] uppercase tracking-widest mb-1.5">{t('admin.products.descriptionEn')} <span className="text-[#13315C] normal-case font-normal">(EN)</span></label>
-                <textarea value={form.descriptionEn} onChange={e => setForm({ ...form, descriptionEn: e.target.value })} rows={3}
-                  placeholder={t('admin.products.descriptionEnPlaceholder')}
-                  className="w-full px-4 py-2.5 bg-white border border-[#C5D8E8]/20 rounded-xl text-sm focus:ring-2 focus:ring-[#C5D8E8]/15 focus:border-[#8DA9C4] outline-none transition-all resize-none placeholder:text-[#A5C0D8]" />
-                <p className="text-[10px] text-[#13315C] mt-1">{t('admin.products.descriptionEnHint')}</p>
+                <div>
+                  <label className="block text-[11px] font-bold text-[#134074] uppercase tracking-widest mb-1.5">{t('admin.products.descriptionEn')} <span className="text-[#13315C] normal-case font-normal">(EN)</span></label>
+                  <textarea value={form.descriptionEn} onChange={e => setForm({ ...form, descriptionEn: e.target.value })} rows={4}
+                    placeholder={t('admin.products.descriptionEnPlaceholder')}
+                    className="w-full px-4 py-2.5 bg-white border border-[#C5D8E8]/20 rounded-xl text-sm focus:ring-2 focus:ring-[#C5D8E8]/15 focus:border-[#8DA9C4] outline-none transition-all resize-none placeholder:text-[#A5C0D8]" />
+                </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
@@ -402,7 +404,7 @@ export default function AdminProducts() {
                 </div>
               </div>
 
-              {/* Provider Cost + Auto-Calc */}
+              {}
               <div>
                 <label className="block text-[11px] font-bold text-[#134074] uppercase tracking-widest mb-1.5">{t('admin.products.providerCostLabel')}</label>
                 <div className="relative flex items-center border border-[#C5D8E8]/20 rounded-xl focus-within:border-[#8DA9C4] focus-within:ring-2 focus-within:ring-[#C5D8E8]/15 transition-all">
@@ -414,7 +416,7 @@ export default function AdminProducts() {
                       const cost = parseFloat(e.target.value) || 0
                       const margin = parseFloat(form.marginPct) || DEFAULT_GROSS_MARGIN
                       const autoPrice = cost > 0 ? (cost / (1 - margin / 100)).toFixed(2) : ''
-                      setForm({ ...form, providerCostUsd: e.target.value, priceUsd: autoPrice })
+                      setForm({ ...form, providerCostUsd: e.target.value, priceUsd: autoPrice, priceRefLocal: autoPrice ? (Number(autoPrice) * (exchangeRateSell || 3.78)).toFixed(2) : '' })
                       setFormErrors({ ...formErrors, priceUsd: '' })
                     }}
                     className="w-full pl-2 pr-4 py-2.5 bg-transparent text-sm font-semibold text-[#134074] outline-none" placeholder="0.00"
@@ -428,7 +430,7 @@ export default function AdminProducts() {
                   <label className="block text-[11px] font-bold text-[#134074] uppercase tracking-widest mb-1.5">{t('admin.products.priceUsdLabel')}</label>
                   <div className={`relative flex items-center transition-all rounded-xl border ${formErrors.priceUsd ? 'border-red-300 ring-2 ring-red-100' : 'border-[#C5D8E8]/20 focus-within:border-[#8DA9C4] focus-within:ring-2 focus-within:ring-[#C5D8E8]/15'}`}>
                     <span className="pl-4 text-[#134074] font-semibold">$</span>
-                    <input type="number" step="0.01" value={form.priceUsd} onChange={e => { setForm({ ...form, priceUsd: e.target.value }); setFormErrors({ ...formErrors, priceUsd: '' }) }}
+                    <input type="number" step="0.01" value={form.priceUsd} onChange={e => { setForm({ ...form, priceUsd: e.target.value, priceRefLocal: (Number(e.target.value) * (exchangeRateSell || 3.78)).toFixed(2) }); setFormErrors({ ...formErrors, priceUsd: '' }) }}
                       className="w-full pl-2 pr-4 py-2.5 bg-transparent text-sm font-semibold text-[#134074] outline-none" placeholder="0.00" />
                   </div>
                   {formErrors.priceUsd && <p className="text-xs text-red-500 font-medium mt-1.5 ml-1 flex items-center gap-1"><span className="material-symbols-outlined text-[14px]">info</span>{formErrors.priceUsd}</p>}
@@ -440,6 +442,7 @@ export default function AdminProducts() {
                     <input type="number" step="0.01" value={form.priceRefLocal} onChange={e => setForm({ ...form, priceRefLocal: e.target.value })}
                       className="w-full pl-2 pr-4 py-2.5 bg-transparent text-sm font-semibold text-[#134074] outline-none" placeholder="0.00" />
                   </div>
+                  <p className="text-[10px] text-[#13315C] mt-1">Tasa actual: S/ {(exchangeRateSell || 3.78).toFixed(2)} por USD · Calculado automáticamente</p>
                 </div>
               </div>
 
@@ -485,19 +488,19 @@ export default function AdminProducts() {
               <button type="button" onClick={() => setModal(null)} className="px-5 py-2.5 bg-white border border-[#C5D8E8]/20 text-sm font-medium text-[#134074] hover:bg-[#EEF4ED]/30 hover:text-[#134074] rounded-xl transition-colors shadow-sm">{t('common.cancel')}</button>
               <button type="submit" onClick={handleSave} disabled={saving}
                 className="px-6 py-2.5 bg-[#134074] hover:bg-[#13315C] focus:ring-4 focus:ring-[#134074]/20 disabled:opacity-50 disabled:hover:translate-y-0 text-[#EEF4ED] rounded-xl font-semibold text-sm transition-all shadow-md hover:-translate-y-0.5 flex items-center gap-2">
-                {(saving || uploading) ? (
+                {saving ? (
                   <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                 ) : (
                   <span className="material-symbols-outlined text-[18px]">save</span>
                 )}
-                {uploading ? t('common.uploading') : saving ? t('common.saving') : modal === 'create' ? t('admin.products.createProduct') : t('admin.users.saveChanges')}
+                {saving ? t('common.saving') : modal === 'create' ? t('admin.products.createProduct') : t('admin.users.saveChanges')}
               </button>
             </div>
           </div>
         </div>
       )}
 
-      {/* Delete Confirmation */}
+      {}
       {modal === 'delete' && selected && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-[#134074]/40 backdrop-blur-sm transition-opacity" onClick={() => setModal(null)} />

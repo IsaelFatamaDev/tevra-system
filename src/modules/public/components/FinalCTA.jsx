@@ -11,7 +11,7 @@ export default function FinalCTA() {
       <div ref={ref} className={`relative overflow-hidden rounded-[40px] p-12 md:p-24 text-center shadow-2xl reveal-scale ${isVisible ? 'visible' : ''}`}
         style={{ background: 'linear-gradient(135deg, #134074 0%, #0B2545 100%)' }}
       >
-        {/* Decoraciones */}
+        {}
         <div className="absolute -top-20 -left-20 w-96 h-96 bg-[#8DA9C4]/20 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute -bottom-20 -right-20 w-96 h-96 bg-tevra-gold/20 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute inset-0 opacity-30" style={{ backgroundImage: 'radial-gradient(rgba(212, 175, 55,0.08) 1px, transparent 1px)', backgroundSize: '24px 24px' }} />

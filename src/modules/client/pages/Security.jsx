@@ -118,13 +118,13 @@ export default function ClientSecurity() {
   return (
     <div className="space-y-8 platform-enter max-w-4xl mx-auto pb-10">
 
-      {/* Header */}
+      {}
       <div>
         <h1 className="font-headline text-3xl font-extrabold text-slate-900 tracking-tight">{t('client.security.title')}</h1>
         <p className="text-slate-500 mt-1">{t('client.security.subtitle')}</p>
       </div>
 
-      {/* Tabs */}
+      {}
       <div className="flex gap-2 p-1 bg-slate-100/50 border border-slate-200 rounded-2xl w-max max-w-full overflow-x-auto">
         {tabs.map(tb => (
           <button
@@ -140,7 +140,7 @@ export default function ClientSecurity() {
         ))}
       </div>
 
-      {/* Tab Content: Profile */}
+      {}
       {tab === 'profile' && (
         <div className="bg-white rounded-4xl p-8 shadow-[0_2px_20px_rgba(0,0,0,0.02)] border border-slate-100">
 
@@ -195,7 +195,7 @@ export default function ClientSecurity() {
         </div>
       )}
 
-      {/* Tab Content: Password */}
+      {}
       {tab === 'password' && (
         <div className="bg-white rounded-4xl p-8 shadow-[0_2px_20px_rgba(0,0,0,0.02)] border border-slate-100 max-w-2xl">
           <div className="flex items-center gap-4 mb-6">

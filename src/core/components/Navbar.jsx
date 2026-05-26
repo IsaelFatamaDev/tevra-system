@@ -27,7 +27,7 @@ export default function Navbar() {
     <>
       <nav className="fixed top-0 w-full z-50 bg-white/90 backdrop-blur-md border-b border-[#C5D8E8]/25 shadow-[0_1px_16px_rgba(19, 64, 116,0.06)]">
         <div className="flex justify-between items-center px-6 sm:px-8 py-3.5 max-w-7xl mx-auto w-full">
-          {/* Logo */}
+          {}
           <Link to="/" className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg bg-[#134074] flex items-center justify-center shadow-sm">
               <span className="text-[#EEF4ED] font-black text-[10px] tracking-tight">TV</span>
@@ -37,7 +37,7 @@ export default function Navbar() {
             </span>
           </Link>
 
-          {/* Nav links */}
+          {}
           <div className="hidden md:flex gap-1 items-center">
             {navLinks.map((link) => (
               <Link
@@ -50,7 +50,7 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* Actions */}
+          {}
           <div className="flex items-center gap-3">
             <LanguageSwitcher variant="dark" />
 
@@ -82,7 +82,7 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Mobile menu */}
+        {}
         {mobileOpen && (
           <div className="md:hidden bg-white border-t border-[#C5D8E8]/25 px-6 py-5 space-y-1">
             {navLinks.map((link) => (

@@ -1,12 +1,4 @@
-/**
- * LibreTranslate integration for dynamic content translation.
- * Self-hosted instance should be set in VITE_LIBRETRANSLATE_URL.
- * Falls back to the public demo instance (rate-limited).
- *
- * Usage:
- *   import translateService from './translate.service'
- *   const translated = await translateService.translate('Hello world', 'en', 'es')
- */
+
 
 const BASE_URL = import.meta.env.VITE_LIBRETRANSLATE_URL || 'https://libretranslate.com'
 const API_KEY  = import.meta.env.VITE_LIBRETRANSLATE_KEY || ''
@@ -41,18 +33,12 @@ async function translate(text, source = 'auto', target = 'es') {
   }
 }
 
-/**
- * Translate multiple texts in one batch request.
- * Returns array of translated strings in same order.
- */
+
 async function translateBatch(texts, source = 'auto', target = 'es') {
   return Promise.all(texts.map(t => translate(t, source, target)))
 }
 
-/**
- * Detect language of a text.
- * Returns: [{ language: 'es', confidence: 0.99 }, ...]
- */
+
 async function detect(text) {
   try {
     const body = { q: text }
@@ -69,9 +55,7 @@ async function detect(text) {
   }
 }
 
-/**
- * Get list of supported languages from the LibreTranslate instance.
- */
+
 async function getSupportedLanguages() {
   try {
     const res = await fetch(`${BASE_URL}/languages`)

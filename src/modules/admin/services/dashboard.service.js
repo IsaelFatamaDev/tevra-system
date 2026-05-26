@@ -1,7 +1,7 @@
 import api from '../../../core/services/api';
 
 export const dashboardService = {
-  // --- Admin ---
+  
   getAdminStats: () => api.get('/analytics/dashboard'),
   getTopAgents: (limit = 5) => api.get(`/analytics/top-agents?limit=${limit}`),
   getRevenueByMonth: (period) => api.get(`/analytics/revenue-by-month${period ? `?period=${period}` : ''}`),
@@ -14,23 +14,23 @@ export const dashboardService = {
   },
   getAgentStats: () => api.get('/agents/stats'),
   getOrderStats: () => api.get('/orders/stats'),
-  // Admin Commissions
+  
   getAllCommissions: (params = {}) => {
     const q = new URLSearchParams();
     if (params.agentId) q.set('agentId', params.agentId);
     if (params.status) q.set('status', params.status);
     return api.get(`/commissions${q.toString() ? `?${q}` : ''}`);
   },
-  // BUG-11 FIX: Approve commission flow
+  
   approveCommission: (id) => api.patch(`/commissions/${id}/approve`),
   markCommissionPaid: (id) => api.patch(`/commissions/${id}/paid`),
 
-  // --- Client ---
+  
   getMyOrders: () => api.get('/orders/my'),
   getMyProfile: () => api.get('/users/me'),
   getMyAddresses: () => api.get('/users/me/addresses'),
 
-  // --- Agent ---
+  
   getAgentProfile: () => api.get('/agents/me'),
   getAgentOrders: () => api.get('/orders/agent'),
   getMyCommissions: () => api.get('/commissions/my'),

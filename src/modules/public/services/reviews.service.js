@@ -33,23 +33,17 @@ const reviewsService = {
     return data?.items || data?.reviews || (Array.isArray(data) ? data : [])
   },
 
-  /** Public: get approved reviews for a product — normalizes to array */
-  findByProduct: async (productId) => {
+    findByProduct: async (productId) => {
     const data = await publicGet(`/reviews/product/${productId}`)
     return data?.reviews || data?.items || (Array.isArray(data) ? data : [])
   },
 
-  /** Public: get approved reviews for an agent — normalizes to array */
-  findByAgent: async (agentId) => {
+    findByAgent: async (agentId) => {
     const data = await publicGet(`/reviews/agent/${agentId}`)
     return data?.reviews || data?.items || (Array.isArray(data) ? data : [])
   },
 
-  /**
-   * Submit a review.
-   * Maps `comment` → `body` so the backend entity field is satisfied.
-   */
-  create: (data) => {
+    create: (data) => {
     const payload = {
       rating: data.rating,
       title: data.title || undefined,
@@ -62,14 +56,11 @@ const reviewsService = {
     return api.post('/reviews', payload);
   },
 
-  /** Mark review as helpful (public action) */
-  markHelpful: (id) => api.patch(`/reviews/${id}/helpful`),
+    markHelpful: (id) => api.patch(`/reviews/${id}/helpful`),
 
-  /** Approve or reject a review (admin only) */
-  moderate: (id, action) => api.patch(`/reviews/${id}/moderate`, { action }),
+    moderate: (id, action) => api.patch(`/reviews/${id}/moderate`, { action }),
 
-  /** Delete a review (admin only) */
-  remove: (id) => api.delete(`/reviews/${id}`),
+    remove: (id) => api.delete(`/reviews/${id}`),
 };
 
 export default reviewsService;

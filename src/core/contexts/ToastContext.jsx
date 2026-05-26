@@ -9,7 +9,7 @@ export function ToastProvider({ children }) {
     const id = Date.now().toString() + Math.random().toString();
     setToasts(prev => [...prev, { id, message, type }]);
     
-    // Auto-dismiss after 4 seconds
+    
     setTimeout(() => {
       setToasts(prev => prev.filter(t => t.id !== id));
     }, 4000);

@@ -89,7 +89,7 @@ export default function AdminUsers() {
         <p className="text-sm text-[#134074] mt-0.5">{t('admin.users.subtitle')}</p>
       </div>
 
-      {/* Metrics */}
+      {}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         {metrics.map((m, i) => (
           <div key={i} className="bg-white p-4 rounded-xl border border-[#C5D8E8]/20 flex items-center gap-3 stat-card">
@@ -104,7 +104,7 @@ export default function AdminUsers() {
         ))}
       </div>
 
-      {/* Table */}
+      {}
       <div className="bg-white rounded-xl border border-[#C5D8E8]/20 overflow-hidden">
         <div className="p-4 border-b border-[#C5D8E8]/10 flex flex-col sm:flex-row gap-3">
           <div className="relative flex-1">
@@ -206,7 +206,7 @@ export default function AdminUsers() {
         </div>
       </div>
 
-      {/* Edit User Modal */}
+      {}
       {editUser && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
           <div className="absolute inset-0 bg-[#134074]/40 backdrop-blur-sm transition-opacity" onClick={() => setEditUser(null)} />

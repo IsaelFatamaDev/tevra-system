@@ -37,7 +37,7 @@ export default function AgentCommissions() {
         <p className="text-sm text-text-muted mt-1">{t('agentDash.commissions.subtitle')}</p>
       </div>
 
-      {/* Summary cards */}
+      {}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         {[
           { label: t('agentDash.commissions.totalEarned'), value: `$${Number(summary.totalEarned || 0).toLocaleString()}`, icon: 'account_balance_wallet', color: 'text-emerald-600 bg-emerald-50' },
@@ -126,7 +126,7 @@ export default function AgentCommissions() {
         </div>
       )}
 
-      {/* Commission Detail Modal */}
+      {}
       {viewCommission && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
           <div className="bg-white rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.15)] w-full max-w-sm">

@@ -216,7 +216,7 @@ export default function AgentRegistrationPage() {
   )
 }
 
-/* =========== STEP 1: Personal Info =========== */
+
 function Step1({ form, set, onNext, valid, generatedUsername, availabilityErrors, checking, isChecking }) {
   const { t } = useTranslation()
   const [citySuggestions, setCitySuggestions] = useState([])
@@ -415,7 +415,7 @@ function Step1({ form, set, onNext, valid, generatedUsername, availabilityErrors
               </div>
             )}
 
-            {/* Password input + strength */}
+            {}
             <div className="space-y-2">
               <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">{t('agentRegistration.password')}</label>
               <div className="relative">
@@ -435,7 +435,7 @@ function Step1({ form, set, onNext, valid, generatedUsername, availabilityErrors
                 </button>
               </div>
 
-              {/* Strength bar */}
+              {}
               {form.password.length > 0 && (() => {
                 const reqs = [form.password.length >= 8, /[A-Z]/.test(form.password), /[0-9]/.test(form.password)]
                 const met = reqs.filter(Boolean).length
@@ -455,7 +455,7 @@ function Step1({ form, set, onNext, valid, generatedUsername, availabilityErrors
               })()}
             </div>
 
-            {/* Requirements grid */}
+            {}
             <div className="grid grid-cols-3 gap-2">
               {[
                 { ok: form.password.length >= 8, icon: 'pin', label: t('agentRegistration.passwordReq8') },
@@ -469,7 +469,7 @@ function Step1({ form, set, onNext, valid, generatedUsername, availabilityErrors
               ))}
             </div>
 
-            {/* Confirm password */}
+            {}
             <div className="space-y-1.5">
               <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">{t('agentRegistration.confirmPassword')}</label>
               <div className="relative">
@@ -541,7 +541,7 @@ function Step1({ form, set, onNext, valid, generatedUsername, availabilityErrors
   )
 }
 
-/* =========== STEP 2: Professional Profile =========== */
+
 function Step2({ form, toggleCategory, toggleCoverage, set, onBack, onSubmit, submitting, error, valid }) {
   const { t } = useTranslation()
   const [apiCategories, setApiCategories] = useState([])
@@ -570,7 +570,7 @@ function Step2({ form, toggleCategory, toggleCoverage, set, onBack, onSubmit, su
 
   return (
     <>
-      {/* Page header */}
+      {}
       <div className="mb-10">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#8DA9C4]/10 border border-[#8DA9C4]/20 mb-4">
           <span className="w-1.5 h-1.5 rounded-full bg-[#8DA9C4]" />
@@ -582,7 +582,7 @@ function Step2({ form, toggleCategory, toggleCoverage, set, onBack, onSubmit, su
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         <div className="lg:col-span-7 space-y-5">
-          {/* Categories */}
+          {}
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
             <div className="flex items-center gap-3 px-6 py-4 border-b border-gray-50">
               <div className="w-9 h-9 rounded-xl bg-violet-50 flex items-center justify-center">
@@ -610,7 +610,7 @@ function Step2({ form, toggleCategory, toggleCoverage, set, onBack, onSubmit, su
             </div>
           </div>
 
-          {/* Coverage */}
+          {}
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
             <div className="flex items-center gap-3 px-6 py-4 border-b border-gray-50">
               <div className="w-9 h-9 rounded-xl bg-sky-50 flex items-center justify-center">
@@ -653,7 +653,7 @@ function Step2({ form, toggleCategory, toggleCoverage, set, onBack, onSubmit, su
             </div>
           </div>
 
-          {/* Bio */}
+          {}
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
             <div className="flex items-center gap-3 px-6 py-4 border-b border-gray-50">
               <div className="w-9 h-9 rounded-xl bg-amber-50 flex items-center justify-center">
@@ -684,7 +684,7 @@ function Step2({ form, toggleCategory, toggleCoverage, set, onBack, onSubmit, su
             </div>
           )}
 
-          {/* Actions */}
+          {}
           <div className="pt-2 flex justify-between items-center gap-4">
             <button type="button" onClick={onBack} className="flex items-center gap-1.5 text-sm text-gray-400 font-semibold hover:text-[#134074] transition-colors">
               <span className="material-symbols-outlined text-[16px]">arrow_back</span>
@@ -712,7 +712,7 @@ function Step2({ form, toggleCategory, toggleCoverage, set, onBack, onSubmit, su
           </div>
         </div>
 
-        {/* Tips sidebar */}
+        {}
         <div className="lg:col-span-5">
           <div className="sticky top-24 rounded-2xl overflow-hidden border border-gray-100 shadow-sm">
             <div className="px-6 py-5" style={{ background: 'linear-gradient(160deg, #134074 0%, #13315C 100%)' }}>
@@ -744,7 +744,7 @@ function Step2({ form, toggleCategory, toggleCoverage, set, onBack, onSubmit, su
   )
 }
 
-/* =========== STEP 3: Confirmation =========== */
+
 function Step3({ onBack }) {
   const { t } = useTranslation()
 
@@ -769,7 +769,7 @@ function Step3({ onBack }) {
       </div>
 
       <div className="max-w-xl mx-auto space-y-4">
-        {/* Status card */}
+        {}
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
           <div className="flex items-center justify-between px-6 py-4 border-b border-gray-50">
             <h2 className="font-bold text-[#134074] text-base">{t('agentRegistration.applicationStatus')}</h2>
@@ -781,6 +781,17 @@ function Step3({ onBack }) {
               <div>
                 <p className="font-bold text-[#134074] text-sm">{t('agentRegistration.statusInReview')}</p>
                 <p className="text-xs text-gray-500 mt-0.5">{t('agentRegistration.reviewTime')}</p>
+              </div>
+            </div>
+
+            {}
+            <div className="flex items-start gap-4 p-4 bg-blue-50 rounded-xl border border-blue-100">
+              <span className="material-symbols-outlined text-blue-500 mt-0.5" style={{ fontVariationSettings: "'FILL' 1" }}>mark_email_read</span>
+              <div>
+                <p className="font-bold text-[#134074] text-sm">Confirmación por correo en 24 horas hábiles</p>
+                <p className="text-xs text-gray-500 mt-0.5">
+                  Nuestro equipo revisará tu solicitud y recibirás un correo de aprobación o rechazo con los pasos a seguir. Revisa también tu carpeta de spam.
+                </p>
               </div>
             </div>
 

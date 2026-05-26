@@ -11,7 +11,7 @@ import ScrollToTop from './core/components/ScrollToTop'
 import VerificationBanner from './core/components/VerificationBanner'
 import { getDashboardPath } from './core/utils/roles'
 
-// Public pages
+
 import HomePage from './modules/public/pages/HomePage'
 import LoginPage from './modules/public/pages/LoginPage'
 import AgentesPage from './modules/public/pages/AgentesPage'
@@ -32,7 +32,7 @@ import TiendasPage from './modules/public/pages/TiendasPage'
 import CotizarLinkPage from './modules/public/pages/CotizarLinkPage'
 import EmailVerifiedPage from './modules/public/pages/EmailVerifiedPage'
 
-// Admin module
+
 import AdminLayout from './modules/admin/layout/AdminLayout'
 import AdminDashboard from './modules/admin/pages/Dashboard'
 import AdminUsers from './modules/admin/pages/Users'
@@ -49,14 +49,14 @@ import AdminCommissions from './modules/admin/pages/Commissions'
 import AdminInvoices from './modules/admin/pages/Invoices'
 import AdminInbox from './modules/admin/pages/Inbox'
 
-// Client module
+
 import ClientLayout from './modules/client/layout/ClientLayout'
 import ClientDashboard from './modules/client/pages/Dashboard'
 import ClientOrders from './modules/client/pages/Orders'
 import ClientAddresses from './modules/client/pages/Addresses'
 import ClientSecurity from './modules/client/pages/Security'
 
-// Agent module
+
 import AgentLayout from './modules/agent/layout/AgentLayout'
 import AgentDashboard from './modules/agent/pages/Dashboard'
 import AgentOrders from './modules/agent/pages/Orders'
@@ -84,7 +84,7 @@ function RedirectIfAuthenticated({ children }) {
   return children
 }
 
-/* ---------- layouts ---------- */
+
 function PublicLayout() {
   const location = useLocation()
   const isAuthPage = location.pathname === '/login'
@@ -124,7 +124,7 @@ function AppLayout() {
       <ScrollToTop />
       <VerificationBanner />
       <Routes>
-        {/* Admin routes */}
+        {}
         <Route path="/admin" element={
           <ProtectedRoute roles={['super_admin', 'admin']}>
             <AdminLayout />
@@ -140,14 +140,14 @@ function AppLayout() {
           <Route path="reviews" element={<AdminReviews />} />
           <Route path="reports" element={<AdminReports />} />
           <Route path="communications" element={<AdminCommunications />} />
-          {/* BUG-11 FIX: New commissions management route */}
+          {}
           <Route path="commissions" element={<AdminCommissions />} />
           <Route path="invoices" element={<AdminInvoices />} />
           <Route path="inbox" element={<AdminInbox />} />
           <Route path="settings" element={<AdminSettings />} />
         </Route>
 
-        {/* Client routes */}
+        {}
         <Route path="/mi-cuenta" element={
           <ProtectedRoute roles={['customer']}>
             <ClientLayout />
@@ -159,7 +159,7 @@ function AppLayout() {
           <Route path="seguridad" element={<ClientSecurity />} />
         </Route>
 
-        {/* Agent routes */}
+        {}
         <Route path="/agente" element={
           <ProtectedRoute roles={['agent']}>
             <AgentLayout />
@@ -172,10 +172,10 @@ function AppLayout() {
           <Route path="seguridad" element={<AgentSecurity />} />
         </Route>
 
-        {/* Agent Registration (standalone layout) */}
+        {}
         <Route path="/registro-agente" element={<AgentRegistrationPage />} />
 
-        {/* Public routes */}
+        {}
         <Route path="/*" element={<PublicLayout />} />
       </Routes>
     </>

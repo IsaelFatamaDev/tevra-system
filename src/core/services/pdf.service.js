@@ -1,25 +1,22 @@
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
-// Configuración de colores corporativos de TeVra
+
 const colors = {
-  primary: [19, 64, 116], // #134074
-  secondary: [13, 49, 92], // #0d315c
-  accent: [165, 192, 216], // #a5c0d8
-  background: [238, 244, 237], // #eef4ed
+  primary: [19, 64, 116], 
+  secondary: [13, 49, 92], 
+  accent: [165, 192, 216], 
+  background: [238, 244, 237], 
   text: [51, 51, 51],
 };
 
 import api from './api';
 
 export const pdfService = {
-  /**
-   * Genera un recibo/boleta en PDF
-   */
-  generateInvoicePDF: async (invoice) => {
+    generateInvoicePDF: async (invoice) => {
     const doc = new jsPDF();
     
-    // Fetch tenant config to get logo
+    
     let logoUrl = null;
     let tenantName = 'TeVra';
     try {
@@ -30,14 +27,14 @@ export const pdfService = {
       console.warn("Could not fetch tenant config for PDF logo");
     }
 
-    // Header background
+    
     doc.setFillColor(...colors.primary);
     doc.rect(0, 0, 210, 40, 'F');
     
-    // Logo / Title
+    
     if (logoUrl) {
       try {
-        // Create an Image element to load the logo
+        
         const img = new Image();
         img.crossOrigin = 'Anonymous';
         await new Promise((resolve, reject) => {
@@ -46,7 +43,7 @@ export const pdfService = {
           img.src = logoUrl;
         });
         
-        // Calculate dimensions to fit in max 40x20
+        
         const maxWidth = 40;
         const maxHeight = 20;
         let w = img.width;
@@ -59,7 +56,7 @@ export const pdfService = {
           w = Math.round((w * maxHeight) / h);
           h = maxHeight;
         }
-        // Center vertically in header
+        
         const yPos = 20 - (h / 2);
         doc.addImage(img, 'PNG', 14, yPos, w, h);
       } catch (e) {
@@ -75,13 +72,13 @@ export const pdfService = {
       doc.text(tenantName, 14, 25);
     }
     
-    // Invoice details (Right aligned in header)
+    
     doc.setFontSize(10);
     doc.setFont('helvetica', 'normal');
     doc.text(`BOLETA: ${invoice.invoiceNumber}`, 196, 20, { align: 'right' });
     doc.text(`FECHA: ${new Date(invoice.createdAt).toLocaleDateString()}`, 196, 26, { align: 'right' });
 
-    // Customer Info
+    
     doc.setTextColor(...colors.text);
     doc.setFontSize(12);
     doc.setFont('helvetica', 'bold');
@@ -93,7 +90,7 @@ export const pdfService = {
     if (invoice.documentNumber) doc.text(`Documento: ${invoice.documentNumber}`, 14, 68);
     if (invoice.address) doc.text(`Dirección: ${invoice.address}`, 14, 74);
 
-    // Items Table
+    
     const items = typeof invoice.items === 'string' ? JSON.parse(invoice.items) : (invoice.items || []);
     const tableData = items.map(item => [
       item.name,
@@ -124,13 +121,13 @@ export const pdfService = {
       },
     });
 
-    // Totals
+    
     const finalY = doc.lastAutoTable.finalY + 10;
     doc.setFontSize(12);
     doc.setFont('helvetica', 'bold');
     doc.text(`TOTAL A PAGAR: S/ ${Number(invoice.totalAmount).toFixed(2)}`, 196, finalY, { align: 'right' });
 
-    // Footer
+    
     if (invoice.notes) {
       doc.setFontSize(10);
       doc.setFont('helvetica', 'italic');
@@ -142,17 +139,14 @@ export const pdfService = {
     doc.setTextColor(150);
     doc.text('Gracias por su preferencia - TeVra LLC', 105, 280, { align: 'center' });
 
-    // Download
+    
     doc.save(`boleta_${invoice.invoiceNumber}.pdf`);
   },
 
-  /**
-   * Genera un reporte tabular (e.g. Órdenes)
-   */
-  generateReportPDF: (title, columns, data, filename) => {
+    generateReportPDF: (title, columns, data, filename) => {
     const doc = new jsPDF();
 
-    // Header
+    
     doc.setFillColor(...colors.primary);
     doc.rect(0, 0, 210, 30, 'F');
     doc.setTextColor(255, 255, 255);
@@ -160,13 +154,13 @@ export const pdfService = {
     doc.setFont('helvetica', 'bold');
     doc.text(`TeVra - ${title}`, 14, 20);
 
-    // Date
+    
     doc.setTextColor(...colors.text);
     doc.setFontSize(10);
     doc.setFont('helvetica', 'normal');
     doc.text(`Reporte generado el: ${new Date().toLocaleString()}`, 14, 40);
 
-    // Table
+    
     autoTable(doc, {
       startY: 45,
       head: [columns],
@@ -183,13 +177,10 @@ export const pdfService = {
     doc.save(`${filename}.pdf`);
   },
 
-  /**
-   * Genera un reporte de Dashboard completo (Métricas y Múltiples Tablas)
-   */
-  generateDashboardReportPDF: async (tenantId, period, stats, topAgents, cities, t) => {
+    generateDashboardReportPDF: async (tenantId, period, stats, topAgents, cities, t) => {
     const doc = new jsPDF();
     
-    // Fetch tenant config to get logo
+    
     let logoUrl = null;
     let tenantName = 'TeVra';
     try {
@@ -200,11 +191,11 @@ export const pdfService = {
       console.warn("Could not fetch tenant config for PDF logo");
     }
 
-    // Header Background
+    
     doc.setFillColor(...colors.primary);
     doc.rect(0, 0, 210, 35, 'F');
     
-    // Logo / Title
+    
     if (logoUrl) {
       try {
         const img = new Image();
@@ -234,7 +225,7 @@ export const pdfService = {
     doc.setFont('helvetica', 'normal');
     doc.text(`Período: ${period} | Generado: ${new Date().toLocaleDateString()}`, 196, 26, { align: 'right' });
 
-    // Global Metrics Section
+    
     doc.setTextColor(...colors.primary);
     doc.setFontSize(14);
     doc.setFont('helvetica', 'bold');
@@ -261,7 +252,7 @@ export const pdfService = {
 
     let currentY = doc.lastAutoTable.finalY + 15;
 
-    // Top Agents Table
+    
     if (topAgents && topAgents.length > 0) {
       doc.setTextColor(...colors.primary);
       doc.setFontSize(14);
@@ -286,7 +277,7 @@ export const pdfService = {
       currentY = doc.lastAutoTable.finalY + 15;
     }
 
-    // Top Cities Table
+    
     if (cities && cities.length > 0) {
       if (currentY > 250) { doc.addPage(); currentY = 20; }
       
@@ -311,7 +302,7 @@ export const pdfService = {
       });
     }
 
-    // Footer
+    
     const pageCount = doc.internal.getNumberOfPages();
     for (let i = 1; i <= pageCount; i++) {
       doc.setPage(i);

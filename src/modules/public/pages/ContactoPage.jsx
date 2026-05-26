@@ -7,7 +7,7 @@ const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3001/api/v1'
 
 export default function ContactoPage() {
   const { t } = useTranslation()
-  // All contact info from DB via Admin > Configuración — never hardcoded
+  
   const { whatsapp: supportWhatsapp, instagramUrl, supportEmail } = useSiteConfig()
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' })
   const [sent, setSent] = useState(false)
@@ -33,7 +33,7 @@ export default function ContactoPage() {
     }
   }
 
-  // Only show methods the admin has actually configured
+  
   const contactMethods = [
     {
       icon: 'mail',
@@ -81,7 +81,7 @@ export default function ContactoPage() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-8 py-12 sm:py-16">
         <div className="grid lg:grid-cols-3 gap-8">
-          {/* Contact methods */}
+          {}
           <div className="space-y-5">
             <h2 className="font-headline font-bold text-2xl text-primary mb-6">{t('contact.howToReach')}</h2>
             {contactMethods.map((m) => (
@@ -107,7 +107,7 @@ export default function ContactoPage() {
             </div>
           </div>
 
-          {/* Form */}
+          {}
           <div className="lg:col-span-2">
             <div className="bg-surface-container-lowest rounded-3xl p-8 sm:p-10 shadow-soft border border-outline-variant/20">
               {sent ? (

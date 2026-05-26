@@ -18,21 +18,21 @@ export default function AdminInbox() {
     loadConversations();
 
     // Connect to WebSocket using the backend URL
-    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+    const API_URL = import.meta.env.VITE_API_URL || 'http:
     const socket = io(API_URL);
 
     socket.on('connect', () => {
-      // Join admin room for the current tenant
+      
       if (user?.tenantId) {
         socket.emit('join_admin_room', { tenantId: user.tenantId });
       }
     });
 
     socket.on('whatsapp_message_received', (msg) => {
-      // Re-fetch conversations to update the left pane
+      
       loadConversations();
       
-      // If we are currently chatting with this person, append message
+      
       setActivePhone((currentActive) => {
         if (currentActive === msg.phoneNumber) {
           setMessages((prev) => [...prev, msg]);
@@ -71,7 +71,7 @@ export default function AdminInbox() {
       const data = await inboxService.getMessages(phone);
       setMessages(data);
       await inboxService.markAsRead(phone);
-      // Reload conversations to update unread counts (if any)
+      
       loadConversations();
     } catch (err) {
       console.error(err);
@@ -93,7 +93,7 @@ export default function AdminInbox() {
 
   return (
     <div className="flex h-[calc(100vh-100px)] bg-white rounded-xl shadow-sm border border-[#C5D8E8]/30 overflow-hidden">
-      {/* Left Pane - Conversations */}
+      {}
       <div className="w-1/3 border-r border-[#C5D8E8]/30 flex flex-col bg-[#FAFAFA]">
         <div className="p-4 border-b border-[#C5D8E8]/30 bg-white">
           <h2 className="text-lg font-bold text-[#134074]">{t('admin.inbox.title', 'Bandeja de Entrada')}</h2>
@@ -130,7 +130,7 @@ export default function AdminInbox() {
         </div>
       </div>
 
-      {/* Right Pane - Chat */}
+      {}
       <div className="flex-1 flex flex-col bg-[#F5F7FB]">
         {activePhone ? (
           <>

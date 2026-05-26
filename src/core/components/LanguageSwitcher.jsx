@@ -1,10 +1,6 @@
 import { useTranslation } from 'react-i18next'
 
-/**
- * LanguageSwitcher – pill toggle between ES and EN.
- * Pass variant="light" for dark backgrounds (Navbar/Footer),
- * variant="dark" (default) for light backgrounds (Admin/Client headers).
- */
+
 export default function LanguageSwitcher({ variant = 'dark' }) {
   const { i18n } = useTranslation()
   const current = i18n.language?.startsWith('en') ? 'en' : 'es'

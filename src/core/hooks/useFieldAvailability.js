@@ -42,7 +42,7 @@ export function useFieldAvailability(fields, excludeUserId = null, debounceMs = 
           headers: { 'x-tenant-id': tenantId },
         })
         const body = await res.json()
-        // API wraps field errors inside body.data; top-level keys (success, timestamp) are not errors
+        
         const fieldErrors = (body && typeof body.data === 'object' && body.data !== null) ? body.data : {}
         setErrors(fieldErrors)
       } catch {}

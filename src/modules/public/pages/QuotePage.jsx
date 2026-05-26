@@ -105,14 +105,14 @@ export default function QuotePage() {
     const msg = encodeURIComponent(buildWhatsAppMessage(orderNumber))
     window.open(`https://wa.me/${phone}?text=${msg}`, '_blank')
     clearCart();
-    // Redirect to the client's active orders
+    
     navigate('/mi-cuenta/pedidos')
   }
 
   return (
     <main className="min-h-screen bg-background-cream" style={{ paddingTop: 'clamp(3.5rem, 8vh, 5rem)' }}>
       <div className="max-w-4xl mx-auto px-4 sm:px-8 py-12">
-        {/* Header */}
+        {}
         <div className="text-center mb-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/5 rounded-full border border-primary/10 mb-4">
             <span className="material-symbols-outlined text-primary text-sm">receipt_long</span>
@@ -123,7 +123,7 @@ export default function QuotePage() {
         </div>
 
         <div className="grid lg:grid-cols-5 gap-8">
-          {/* Products list */}
+          {}
           <div className="lg:col-span-3 space-y-4">
             <h2 className="font-headline font-bold text-lg text-primary flex items-center gap-2">
               <span className="material-symbols-outlined text-xl">shopping_bag</span>
@@ -149,7 +149,7 @@ export default function QuotePage() {
               </div>
             ))}
 
-            {/* Totals */}
+            {}
             <div className="bg-surface-container-lowest rounded-xl p-5 shadow-soft space-y-3">
               <div className="flex justify-between text-sm">
                 <span className="text-text-muted">{t('quote.subtotal')}</span>
@@ -166,7 +166,7 @@ export default function QuotePage() {
             </div>
           </div>
 
-          {/* Agent + CTA */}
+          {}
           <div className="lg:col-span-2">
             <div className="bg-surface-container-lowest rounded-2xl p-6 shadow-soft sticky top-28 space-y-6">
               <h2 className="font-headline font-bold text-lg text-primary">{t('quote.yourAgent')}</h2>
@@ -236,7 +236,7 @@ export default function QuotePage() {
           </div>
         </div>
 
-        {/* WhatsApp preview */}
+        {}
         <div className="mt-12 bg-surface-container-lowest rounded-2xl p-8 shadow-soft">
           <h3 className="font-headline font-bold text-lg text-primary mb-4 flex items-center gap-2">
             <span className="material-symbols-outlined">preview</span>

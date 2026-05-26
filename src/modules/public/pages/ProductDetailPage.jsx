@@ -10,7 +10,7 @@ import { useTranslateContent } from '../../../core/hooks/useTranslateContent'
 
 export default function ProductDetailPage() {
   const { slug } = useParams()
-  // WhatsApp comes exclusively from Admin > Configuración — no .env or hardcoded values
+  
   const { whatsapp: supportWhatsapp } = useSiteConfig()
   const [product, setProduct] = useState(null)
   const [related, setRelated] = useState([])
@@ -36,7 +36,7 @@ export default function ProductDetailPage() {
       .then(data => {
         setProduct(data)
         setActiveImg(0)
-        // Fetch related products by same category
+        
         if (data?.category?.slug) {
           productsService.findAll({ category: data.category.slug, limit: 4 })
             .then(r => {
@@ -45,7 +45,7 @@ export default function ProductDetailPage() {
             })
             .catch(() => { })
         }
-        // Fetch product reviews (public — no auth needed)
+        
         reviewsService.findByProduct(data.id)
           .then(list => setReviews(list))
           .catch(() => { })
@@ -114,7 +114,7 @@ export default function ProductDetailPage() {
 
   return (
     <main className="min-h-screen bg-[#fff8f1]" style={{ paddingTop: 'clamp(3.5rem, 8vh, 5rem)' }}>
-      {/* Breadcrumbs */}
+      {}
       <div className="max-w-7xl mx-auto px-4 sm:px-8 pt-8 pb-4">
         <nav className="flex items-center gap-2 text-xs text-on-surface-variant">
           <Link to="/" className="hover:text-primary transition-colors">Home</Link>
@@ -131,10 +131,10 @@ export default function ProductDetailPage() {
         </nav>
       </div>
 
-      {/* Product Main Section */}
+      {}
       <section className="max-w-7xl mx-auto px-4 sm:px-8 pb-16">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 lg:gap-16">
-          {/* Left: Image Gallery (3/5) */}
+          {}
           <div className="lg:col-span-3 space-y-4">
             <div className="bg-white rounded-2xl overflow-hidden aspect-square flex items-center justify-center p-8 border border-outline-variant/10">
               {images.length > 0 ? (
@@ -166,14 +166,14 @@ export default function ProductDetailPage() {
             )}
           </div>
 
-          {/* Right: Product Info (2/5) */}
+          {}
           <div className="lg:col-span-2 lg:sticky lg:top-28 self-start space-y-6">
             {product.brand && (
               <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-text-muted">{product.brand.name}</p>
             )}
             <h1 className="font-headline text-3xl lg:text-4xl font-extrabold text-primary leading-tight">{product.name}</h1>
 
-            {/* Rating placeholder */}
+            {}
             <div className="flex items-center gap-2">
               <div className="flex text-amber-400">
                 {[...Array(5)].map((_, i) => (
@@ -183,7 +183,7 @@ export default function ProductDetailPage() {
               <span className="text-xs text-text-muted">({reviews.length} {t('product.reviews')})</span>
             </div>
 
-            {/* Price */}
+            {}
             <div className="space-y-2">
               <div className="flex items-baseline gap-3">
                 <span className="text-4xl font-black text-secondary">US$ {Number(product.priceUsd || 0).toFixed(0)}</span>
@@ -198,12 +198,35 @@ export default function ProductDetailPage() {
               )}
             </div>
 
-            {/* Description */}
-            <p className="text-on-surface-variant leading-relaxed text-sm">
-              {currentLang.startsWith('en')
+            {}
+            {(() => {
+              const desc = currentLang.startsWith('en')
                 ? (product.descriptionEn || translatedDescription)
-                : product.description}
-            </p>
+                : product.description
+              if (!desc) return null
+              const lines = desc.split('\n').filter(l => l.trim())
+              return (
+                <div className="space-y-1.5 text-sm text-on-surface-variant leading-relaxed">
+                  {lines.map((line, i) => {
+                    const trimmed = line.trim()
+                    
+                    if (trimmed.startsWith('-') || trimmed.startsWith('—') || trimmed.startsWith('•')) {
+                      return (
+                        <div key={i} className="flex items-start gap-2">
+                          <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary/60 shrink-0" />
+                          <span>{trimmed.replace(/^[-—•]\s*/, '')}</span>
+                        </div>
+                      )
+                    }
+                    // Lines in ALL CAPS (3+ chars) become bold section headers
+                    if (trimmed.length >= 3 && trimmed === trimmed.toUpperCase() && /[A-Z]/.test(trimmed) && !/\d/.test(trimmed)) {
+                      return <p key={i} className="font-bold text-primary text-xs uppercase tracking-wide mt-3 mb-0.5">{trimmed}</p>
+                    }
+                    return <p key={i}>{trimmed}</p>
+                  })}
+                </div>
+              )
+            })()}
 
             {/* Specifications */}
             {specs.length > 0 && (
@@ -220,7 +243,7 @@ export default function ProductDetailPage() {
               </div>
             )}
 
-            {/* Add to Cart + Agent Card */}
+            {}
             <div className="space-y-4">
               <button
                 onClick={() => {

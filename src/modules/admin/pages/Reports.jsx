@@ -35,6 +35,20 @@ export default function AdminReports() {
 
   useEffect(() => { fetchData(period) }, [period])
 
+  const handleExportExcel = async () => {
+    try {
+      const { excelService } = await import('../../../core/services/excel.service')
+      await excelService.exportTemplate({
+        topAgents,
+        revenueByMonth,
+        categories
+      })
+    } catch (err) {
+      console.error("Error generating Excel:", err);
+      alert('Error al generar el reporte Excel');
+    }
+  }
+
   const handleExportPDF = async () => {
     try {
       const userStr = localStorage.getItem('tevra_user');
@@ -70,7 +84,7 @@ export default function AdminReports() {
 
   return (
     <div className="max-w-7xl mx-auto w-full space-y-5 platform-enter">
-      {/* Header & Filters */}
+      {}
       <section className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
           <h2 className="text-xl font-semibold text-[#134074]">{t('admin.reports.title')}</h2>
@@ -85,14 +99,18 @@ export default function AdminReports() {
               </button>
             ))}
           </div>
-          <button onClick={handleExportPDF} className="flex items-center gap-2 bg-[#134074] hover:bg-[#13315C] text-white px-4 py-2 rounded-lg transition-colors">
-          <span className="material-symbols-outlined text-[18px]">download</span>
-          {t('common.export')}
-        </button>
+          <button onClick={handleExportExcel} className="flex items-center gap-2 bg-[#EEF4ED] hover:bg-[#C5D8E8] text-[#134074] px-4 py-2 rounded-lg transition-colors font-medium text-sm">
+            <span className="material-symbols-outlined text-[18px]">table_chart</span>
+            Excel
+          </button>
+          <button onClick={handleExportPDF} className="flex items-center gap-2 bg-[#134074] hover:bg-[#13315C] text-white px-4 py-2 rounded-lg transition-colors text-sm">
+            <span className="material-symbols-outlined text-[18px]">picture_as_pdf</span>
+            PDF
+          </button>
         </div>
       </section>
 
-      {/* Metric Cards Grid */}
+      {}
       <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
         {metricCards.map((card, i) => (
           <div key={i} className="bg-white p-4 rounded-xl border border-[#C5D8E8]/20 stat-card">
@@ -108,7 +126,7 @@ export default function AdminReports() {
         ))}
       </section>
 
-      {/* Charts Section */}
+      {}
       <section className="grid grid-cols-1 lg:grid-cols-3 gap-5">
         <div className="lg:col-span-2 bg-white p-5 rounded-xl border border-[#C5D8E8]/20 relative overflow-hidden">
           <div className="flex justify-between items-start mb-5 relative z-10">
@@ -121,7 +139,7 @@ export default function AdminReports() {
               <span className="text-xs font-medium text-[#134074]">{t('admin.reports.salesLabel')}</span>
             </div>
           </div>
-          {/* Dynamic Bar Chart */}
+          {}
           <div className="h-48 sm:h-64 flex items-end gap-1 mt-4 relative">
             {revenueByMonth.length > 0 ? (() => {
               const maxRev = Math.max(...revenueByMonth.map(m => Number(m.revenue) || 0), 1)
@@ -200,7 +218,7 @@ export default function AdminReports() {
         </div>
       </section>
 
-      {/* Insights */}
+      {}
       <section className="grid grid-cols-1 lg:grid-cols-5 gap-5">
         <div className="lg:col-span-3 bg-white rounded-xl border border-[#C5D8E8]/20 overflow-hidden">
           <div className="p-4 border-b border-[#C5D8E8]/10 flex justify-between items-center">

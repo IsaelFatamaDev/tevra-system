@@ -37,7 +37,7 @@ export default function AdminCategories() {
   const paginated = filtered.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE)
 
   const openCreate = () => { setForm(EMPTY_FORM); setModal('create') }
-  // BUG-16 FIX: Reset errors and saving state when opening edit modal
+  
   const openEdit = (cat) => {
     setSelected(cat)
     setForm({ name: cat.name || '', slug: cat.slug || '', description: cat.description || '', icon: cat.imageUrl || cat.icon || '' })
@@ -70,7 +70,7 @@ export default function AdminCategories() {
 
   return (
     <div className="max-w-5xl mx-auto space-y-5 platform-enter">
-      {/* Header */}
+      {}
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4">
         <div>
           <h2 className="text-xl font-semibold text-[#134074]">{t('admin.categories.title')}</h2>
@@ -81,7 +81,7 @@ export default function AdminCategories() {
         </button>
       </div>
 
-      {/* Metric */}
+      {}
       <div className="flex gap-3">
         <div className="bg-white p-4 rounded-xl border border-[#C5D8E8]/20 flex items-center gap-3 stat-card">
           <div className="w-9 h-9 rounded-lg bg-[#EEF4ED] text-[#134074] flex items-center justify-center shrink-0">
@@ -94,7 +94,7 @@ export default function AdminCategories() {
         </div>
       </div>
 
-      {/* Table */}
+      {}
       <div className="bg-white rounded-xl border border-[#C5D8E8]/20 overflow-hidden">
         <div className="p-4 border-b border-[#C5D8E8]/10">
           <div className="relative max-w-sm">
@@ -150,7 +150,7 @@ export default function AdminCategories() {
         <Pagination page={page} totalPages={totalPages} onPageChange={p => setPage(p)} />
       </div>
 
-      {/* Modal */}
+      {}
       {modal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-[#134074]/40 backdrop-blur-sm transition-opacity" onClick={() => setModal(null)} />

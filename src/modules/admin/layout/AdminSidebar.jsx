@@ -26,7 +26,7 @@ export default function AdminSidebar({ open, onClose }) {
         { to: '/admin/brands', icon: 'storefront', label: t('admin.sidebar.nav.brands') },
         { to: '/admin/orders', icon: 'receipt_long', label: t('admin.sidebar.nav.orders') },
         { to: '/admin/invoices', icon: 'receipt', label: 'Boletas Libres' },
-        // BUG-11 FIX: New commissions management link
+        
         { to: '/admin/commissions', icon: 'payments', label: 'Comisiones' },
       ],
     },

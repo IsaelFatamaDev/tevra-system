@@ -7,18 +7,18 @@ export default function EmailVerifiedPage() {
   const { t } = useTranslation()
   const [searchParams] = useSearchParams()
   const token = searchParams.get('token')
-  // BUG-01 FIX: Support ?status= redirect from backend in addition to ?token= direct call
+  
   const statusParam = searchParams.get('status')
   const [status, setStatus] = useState(() => {
-    // If backend already resolved and sent status param, use it directly
+    
     if (statusParam === 'success') return 'success'
     if (statusParam === 'error') return 'error'
-    // Otherwise fall back to legacy token flow
+    
     return token ? 'loading' : 'success'
   })
 
   useEffect(() => {
-    // Only run the API call if we have a token and no pre-resolved status
+    
     if (!token || statusParam) return
     api.get(`/auth/verify-email?token=${token}`)
       .then(() => setStatus('success'))

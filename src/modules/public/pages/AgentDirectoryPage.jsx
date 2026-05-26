@@ -34,7 +34,7 @@ function AgentCard({ agent }) {
         )}
       </div>
 
-      {/* Rating */}
+      {}
       <div className="flex items-center gap-2 mb-3">
         <div className="flex text-amber-400">
           {[...Array(5)].map((_, i) => (
@@ -44,12 +44,12 @@ function AgentCard({ agent }) {
         <span className="text-xs text-text-muted">({agent.ratingCount || 0})</span>
       </div>
 
-      {/* Bio */}
+      {}
       {agent.bio && (
         <p className="text-sm text-text-muted leading-relaxed line-clamp-2 mb-4">{agent.bio}</p>
       )}
 
-      {/* Categories */}
+      {}
       {agent.specializationCategories?.length > 0 && (
         <div className="flex flex-wrap gap-1.5 mb-4">
           {agent.specializationCategories.slice(0, 3).map(cat => (
@@ -61,7 +61,7 @@ function AgentCard({ agent }) {
         </div>
       )}
 
-      {/* Stats */}
+      {}
       <div className="flex items-center gap-4 text-xs text-text-muted mb-5 mt-auto">
         <div className="flex items-center gap-1">
           <span className="material-symbols-outlined text-sm text-mint">shopping_bag</span>
@@ -75,7 +75,7 @@ function AgentCard({ agent }) {
         )}
       </div>
 
-      {/* CTA */}
+      {}
       <Link
         to={`/agente/${agent.referralCode || agent.id}`}
         className="w-full bg-primary text-white py-3 rounded-xl font-headline font-bold text-sm flex items-center justify-center gap-2 hover:bg-secondary transition-colors"
@@ -150,7 +150,7 @@ export default function AgentDirectoryPage() {
         </div>
       </section>
 
-      {/* Filter bar */}
+      {}
       {availableCities.length > 0 && (
         <div className="sticky top-[clamp(3.5rem,8vh,5rem)] z-40 bg-surface-container-lowest/95 backdrop-blur-md border-b border-outline-variant/20">
           <div className="max-w-7xl mx-auto px-4 sm:px-8 py-3 overflow-x-auto no-scrollbar">
@@ -181,7 +181,7 @@ export default function AgentDirectoryPage() {
         </div>
       )}
 
-      {/* Grid */}
+      {}
       <section className="max-w-7xl mx-auto px-4 sm:px-8 py-12 sm:py-16">
         {!loading && filtered.length === 0 ? (
           <div className="text-center py-24">
@@ -204,7 +204,7 @@ export default function AgentDirectoryPage() {
         )}
       </section>
 
-      {/* CTA */}
+      {}
       <section className="bg-primary py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-8 flex flex-col sm:flex-row items-center justify-between gap-8">
           <div className="text-white">

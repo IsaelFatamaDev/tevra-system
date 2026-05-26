@@ -20,7 +20,7 @@ const resolveAddr = (addr) => {
   return String(addr)
 }
 
-function renderInvoice(doc, order, finalH) {
+function renderInvoice(doc, order, finalH, options = {}) {
   const W   = 148
   const pad = 10
 
@@ -209,7 +209,7 @@ function renderInvoice(doc, order, finalH) {
   doc.text(usd(order.total), tx + totW - 5, y + 5.5, { align: 'right' })
   y += 16
 
-  if (order.agentCommission > 0 || order.etcFee > 0) {
+  if (!options.hideCommissionBreakdown && (order.agentCommission > 0 || order.etcFee > 0)) {
     y += 2
     doc.setFillColor(...SURFACE)
     doc.setDrawColor(...RULE)
@@ -297,18 +297,18 @@ function renderInvoice(doc, order, finalH) {
   return { orderNum, contentEndY: y }
 }
 
-export default async function generateInvoice(order, tenantInfo = {}) {
+export default async function generateInvoice(order, options = {}, tenantInfo = {}) {
   const W        = 148
   const FOOTER_H = 22
   const MARGIN   = 4
 
   const probe = new jsPDF({ unit: 'mm', format: [W, 400], orientation: 'portrait' })
-  const { orderNum, contentEndY } = renderInvoice(probe, order, null)
+  const { orderNum, contentEndY } = renderInvoice(probe, order, null, options)
 
   const exactH = contentEndY + MARGIN + FOOTER_H
 
   const doc = new jsPDF({ unit: 'mm', format: [W, exactH], orientation: 'portrait' })
-  renderInvoice(doc, order, exactH)
+  renderInvoice(doc, order, exactH, options)
 
   doc.save(`invoice-${orderNum}.pdf`)
 }

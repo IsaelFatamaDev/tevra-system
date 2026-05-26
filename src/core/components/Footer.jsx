@@ -35,7 +35,7 @@ export default function Footer() {
 
   return (
     <footer className="bg-[#134074] text-[#EEF4ED] pt-20 pb-10 w-full relative overflow-hidden">
-      {/* Degradado decorativo */}
+      {}
       <div className="absolute top-0 left-0 w-full h-px bg-linear-to-r from-transparent via-[#8DA9C4]/40 to-transparent" />
       <div className="absolute top-0 right-0 w-96 h-96 bg-[#8DA9C4]/5 rounded-full blur-3xl pointer-events-none" />
 

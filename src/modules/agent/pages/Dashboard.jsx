@@ -19,7 +19,7 @@ const statusClasses = {
 export default function AgentDashboard() {
   const { t } = useTranslation()
   const { user } = useAuth()
-  // Read WhatsApp support number from the DB via admin panel — no .env needed
+  
   const siteConfig = useSiteConfig()
   const [copied, setCopied] = useState(false)
   const [orders, setOrders] = useState([])
@@ -33,6 +33,11 @@ export default function AgentDashboard() {
   const [orderSaving, setOrderSaving] = useState(false)
   const [orderErrors, setOrderErrors] = useState({})
   const [orderMsg, setOrderMsg] = useState(null)
+
+  const [bankInfo, setBankInfo] = useState({ bankName: '', accountType: '', accountNumber: '', cci: '' })
+  const [documents, setDocuments] = useState([])
+  const [savingBankInfo, setSavingBankInfo] = useState(false)
+  const [bankInfoMsg, setBankInfoMsg] = useState(null)
 
   const referralLink = `${window.location.origin}/ref/${agentProfile?.referralCode || user?.id?.slice(0, 8) || 'agent'}`
 
@@ -51,7 +56,11 @@ export default function AgentDashboard() {
       setCommissions(cData?.commissions || (Array.isArray(cData) ? cData : []))
       if (cData?.summary) setCommissionSummary(cData.summary)
 
-      setAgentProfile(profileRes?.data || profileRes)
+      const profileData = profileRes?.data || profileRes
+      setAgentProfile(profileData)
+      if (profileData?.bankInfo) setBankInfo(profileData.bankInfo)
+      if (profileData?.documents) setDocuments(profileData.documents)
+
       setReviews(reviewsRes || { reviews: [], avgRating: 0, total: 0 })
     }).finally(() => setLoading(false))
   }, [])
@@ -117,6 +126,33 @@ export default function AgentDashboard() {
     ? Number(agentProfile.totalSales)
     : orders.length
 
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0]
+    if (!file) return
+    const reader = new FileReader()
+    reader.onloadend = () => {
+      setDocuments(prev => [...prev, { name: file.name, url: reader.result }])
+    }
+    reader.readAsDataURL(file)
+  }
+
+  const removeDocument = (index) => {
+    setDocuments(prev => prev.filter((_, i) => i !== index))
+  }
+
+  const handleSaveBankInfo = async () => {
+    setSavingBankInfo(true)
+    setBankInfoMsg(null)
+    try {
+      await api.put(`/agents/${agentProfile.id}`, { bankInfo, documents })
+      setBankInfoMsg({ type: 'success', text: 'Información bancaria actualizada correctamente' })
+    } catch (err) {
+      setBankInfoMsg({ type: 'error', text: err.message || 'Error al actualizar información' })
+    } finally {
+      setSavingBankInfo(false)
+    }
+  }
+
   return (
     <div className="space-y-8 platform-enter max-w-7xl mx-auto pb-10">
 
@@ -168,7 +204,7 @@ export default function AgentDashboard() {
               {t('agentDash.dashboard.createOrder')}
             </button>
             {/* BUG-09 FIX: WhatsApp support number comes from Admin > Configuración */}
-            <a href={`https://wa.me/${(siteConfig.whatsapp || '').replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer"
+            <a href={`https:
               className="flex items-center justify-center gap-2 px-6 py-3.5 bg-[#25d366]/20 text-[#25d366] hover:bg-[#25d366] hover:text-white rounded-2xl font-bold transition-all border border-[#25d366]/30">
               <span className="material-symbols-outlined text-[20px]">chat</span>
               {t('common.supportChat')}
@@ -177,7 +213,7 @@ export default function AgentDashboard() {
         </div>
       </div>
 
-      {/* Analytics & Referral Grid */}
+      {}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
         <div className="lg:col-span-2 grid grid-cols-2 gap-4 sm:gap-6">
@@ -215,7 +251,7 @@ export default function AgentDashboard() {
               <span className="material-symbols-outlined text-[18px]">{copied ? 'check_circle' : 'content_copy'}</span>
               {copied ? t('agentDash.dashboard.copiedBtn') : t('agentDash.dashboard.copyBtn')}
             </button>
-            <button onClick={() => { window.open(`https://wa.me/?text=${encodeURIComponent(t('agentDash.dashboard.shareBtn', { link: referralLink }))}`, '_blank') }}
+            <button onClick={() => { window.open(`https://wa.me/?text=${encodeURIComponent(`¡Únete a TeVra! Importa tecnología y productos desde USA a los mejores precios. Regístrate con mi enlace: ${referralLink}`)}`, '_blank') }}
               className="flex flex-col items-center justify-center gap-1.5 p-3 rounded-2xl bg-[#25d366]/10 text-[#1da851] font-bold text-xs hover:bg-[#25d366]/20 transition-colors">
               <span className="material-symbols-outlined text-[18px]">chat</span>
               {t('agentDash.dashboard.shareWhatsApp')}
@@ -224,13 +260,13 @@ export default function AgentDashboard() {
         </div>
       </div>
 
-      {/* Orders List & Recent Commissions */}
+      {}
       {loading ? (
         <div className="flex justify-center py-20"><div className="animate-spin w-10 h-10 rounded-full border-4 border-slate-200 border-t-slate-800" /></div>
       ) : (
         <div className="grid lg:grid-cols-3 gap-6 pt-4">
 
-          {/* Active Orders Quick-View */}
+          {}
           <div className="lg:col-span-2 bg-white rounded-[2rem] border border-slate-100 shadow-[0_2px_15px_rgba(0,0,0,0.02)] overflow-hidden">
             <div className="flex items-center justify-between px-8 py-6 border-b border-slate-100 bg-white">
               <div>
@@ -282,7 +318,7 @@ export default function AgentDashboard() {
             </div>
           </div>
 
-          {/* Quick Commissions Viewer */}
+          {}
           <div className="bg-white rounded-[2rem] border border-slate-100 shadow-[0_2px_15px_rgba(0,0,0,0.02)] flex flex-col">
             <div className="px-8 py-6 border-b border-slate-100 flex items-center justify-between">
               <h3 className="font-headline font-extrabold text-slate-900 text-lg">{t('agentDash.dashboard.commissionsTitle')}</h3>
@@ -315,7 +351,7 @@ export default function AgentDashboard() {
         </div>
       )}
 
-      {/* BUG-06/10 FIX: Agent Reviews Section */}
+      {}
       <div className="bg-white rounded-[2rem] border border-slate-100 shadow-[0_2px_15px_rgba(0,0,0,0.02)] overflow-hidden">
         <div className="flex items-center justify-between px-8 py-6 border-b border-slate-100">
           <div>
@@ -360,6 +396,100 @@ export default function AgentDashboard() {
             ))}
           </div>
         )}
+      </div>
+
+      {/* Cuenta Bancaria y Documentos Section */}
+      <div className="bg-white rounded-[2rem] border border-slate-100 shadow-[0_2px_15px_rgba(0,0,0,0.02)] overflow-hidden">
+        <div className="flex items-center justify-between px-8 py-6 border-b border-slate-100 bg-slate-50">
+          <div>
+            <h3 className="font-headline font-extrabold text-slate-900 text-lg">Cuenta Bancaria y Documentos</h3>
+            <p className="text-xs text-slate-400 font-medium mt-1">Configura donde recibirás tus comisiones y adjunta tus documentos</p>
+          </div>
+          <span className="w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-400">
+            <span className="material-symbols-outlined text-[20px]">account_balance</span>
+          </span>
+        </div>
+        
+        <div className="p-8">
+          {bankInfoMsg && (
+            <div className={`mb-6 p-4 rounded-2xl text-sm font-bold flex items-center gap-3 border ${bankInfoMsg.type === 'success' ? 'bg-emerald-50 text-emerald-700 border-emerald-100' : 'bg-red-50 text-red-700 border-red-100'}`}>
+              <span className="material-symbols-outlined">{bankInfoMsg.type === 'success' ? 'check_circle' : 'gpp_bad'}</span>
+              {bankInfoMsg.text}
+            </div>
+          )}
+
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="space-y-5">
+              <h4 className="font-bold text-slate-900 flex items-center gap-2 mb-4">
+                <span className="material-symbols-outlined text-indigo-500">payments</span>
+                Información Bancaria
+              </h4>
+              <div>
+                <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">Banco</label>
+                <input value={bankInfo.bankName || ''} onChange={e => setBankInfo({ ...bankInfo, bankName: e.target.value })}
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-medium focus:ring-slate-900/5 focus:border-slate-900 outline-none focus:ring-4 transition-all" placeholder="Ej. BCP, Interbank" />
+              </div>
+              <div>
+                <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">Tipo de Cuenta</label>
+                <input value={bankInfo.accountType || ''} onChange={e => setBankInfo({ ...bankInfo, accountType: e.target.value })}
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-medium focus:ring-slate-900/5 focus:border-slate-900 outline-none focus:ring-4 transition-all" placeholder="Ej. Ahorros Soles" />
+              </div>
+              <div>
+                <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">Número de Cuenta</label>
+                <input value={bankInfo.accountNumber || ''} onChange={e => setBankInfo({ ...bankInfo, accountNumber: e.target.value })}
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-medium focus:ring-slate-900/5 focus:border-slate-900 outline-none focus:ring-4 transition-all" placeholder="Número de cuenta" />
+              </div>
+              <div>
+                <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">CCI (Código de Cuenta Interbancario)</label>
+                <input value={bankInfo.cci || ''} onChange={e => setBankInfo({ ...bankInfo, cci: e.target.value })}
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-medium focus:ring-slate-900/5 focus:border-slate-900 outline-none focus:ring-4 transition-all" placeholder="CCI" />
+              </div>
+            </div>
+
+            <div className="space-y-5">
+              <h4 className="font-bold text-slate-900 flex items-center gap-2 mb-4">
+                <span className="material-symbols-outlined text-sky-500">description</span>
+                Documentos
+              </h4>
+              <p className="text-sm text-slate-500 mb-4">Sube tu copia de DNI, Declaración Jurada, u otros documentos requeridos para pago de comisiones.</p>
+              
+              <div className="border-2 border-dashed border-slate-200 rounded-2xl p-6 text-center hover:bg-slate-50 transition-colors">
+                <input type="file" id="docUpload" className="hidden" onChange={handleFileUpload} accept="image/*,.pdf" />
+                <label htmlFor="docUpload" className="cursor-pointer flex flex-col items-center gap-2">
+                  <span className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-slate-400">
+                    <span className="material-symbols-outlined">upload_file</span>
+                  </span>
+                  <span className="text-sm font-bold text-slate-700">Subir Documento</span>
+                  <span className="text-[10px] text-slate-400 uppercase tracking-widest">JPG, PNG o PDF</span>
+                </label>
+              </div>
+
+              {documents?.length > 0 && (
+                <div className="space-y-2 mt-4">
+                  <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-widest">Documentos Subidos</label>
+                  {documents.map((doc, idx) => (
+                    <div key={idx} className="flex items-center justify-between p-3 bg-slate-50 border border-slate-100 rounded-xl">
+                      <div className="flex items-center gap-3 overflow-hidden">
+                        <span className="material-symbols-outlined text-slate-400">draft</span>
+                        <span className="text-sm font-medium text-slate-700 truncate">{doc.name || `Documento ${idx + 1}`}</span>
+                      </div>
+                      <button onClick={() => removeDocument(idx)} className="text-red-500 hover:bg-red-50 p-1.5 rounded-lg transition-colors flex items-center justify-center">
+                        <span className="material-symbols-outlined text-[18px]">delete</span>
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="mt-8 pt-6 border-t border-slate-100 flex justify-end">
+            <button onClick={handleSaveBankInfo} disabled={savingBankInfo} className="px-6 py-3 bg-slate-900 hover:bg-slate-800 disabled:opacity-50 text-white rounded-2xl font-bold text-sm transition-all flex items-center justify-center gap-2 shadow-[0_4px_20px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.2)]">
+              {savingBankInfo ? <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <span className="material-symbols-outlined text-[20px]">save</span>}
+              Guardar Información
+            </button>
+          </div>
+        </div>
       </div>
 
       {showOrderModal && (

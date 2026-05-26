@@ -119,21 +119,21 @@ export default function LoginPage() {
   return (
     <div className="min-h-dvh flex flex-col lg:flex-row-reverse">
 
-      {/* ── PANEL DERECHO: Branding (fondo blanco) ── */}
+      {}
       <div
         className="hidden lg:flex relative overflow-hidden flex-col lg:w-[45%] xl:w-[46%] lg:min-h-screen bg-white"
       >
-        {/* Right panel should be solid white */}
+        {}
         <div className="absolute inset-0 bg-white" />
 
-        {/* Accent left border */}
+        {}
         <div className="absolute left-0 top-0 bottom-0 w-px" style={{ background: 'linear-gradient(180deg, transparent 0%, rgba(141, 169, 196,0.3) 40%, rgba(141, 169, 196,0.3) 60%, transparent 100%)' }} />
 
-        {/* Centered brand */}
+        {}
         <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-12">
           <div className="flex flex-col items-center gap-7">
 
-            {/* Logo */}
+            {}
             <img
               src="/LogoTevra.png"
               alt="TeVra"
@@ -141,7 +141,7 @@ export default function LoginPage() {
               style={{ mixBlendMode: 'multiply' }}
             />
 
-            {/* Tagline */}
+            {}
             <p className="text-center text-[#134074]/60 text-base sm:text-lg leading-relaxed max-w-lg mt-6">
               Productos originales desde<br />
               <span className="text-[#134074] font-bold">Estados Unidos</span><br />
@@ -151,17 +151,17 @@ export default function LoginPage() {
           </div>
         </div>
 
-        {/* Bottom */}
+        {}
         <div className="relative z-10 flex items-center justify-center pb-10 pt-6">
           <p className="text-[#134074]/20 text-[11px] font-medium tracking-wider">tevra.ddns.net</p>
         </div>
       </div>
 
-      {/* ── PANEL IZQUIERDO: Formulario (gradiente oscuro) ── */}
+      {}
       <div
         className="flex-1 flex flex-col justify-center items-center min-h-dvh px-5 py-10 sm:px-8 md:px-12 lg:px-14 xl:px-20 overflow-y-auto bg-primary"
       >
-        {/* Mobile logo */}
+        {}
         <div className="flex lg:hidden items-center gap-2 mb-8 self-start">
           <div className="w-8 h-8 rounded-lg bg-white/15 flex items-center justify-center border border-white/20">
             <span className="text-white font-black text-[10px]">TV</span>
@@ -172,7 +172,7 @@ export default function LoginPage() {
         </div>
 
         <div className="w-full max-w-105 space-y-6">
-          {/* Header */}
+          {}
           <div className="space-y-1">
             <h2 className="font-headline text-2xl sm:text-3xl font-extrabold text-white leading-tight tracking-tight">
               {isSignUp ? t('auth.createAccount') : t('auth.welcome')}
@@ -182,7 +182,7 @@ export default function LoginPage() {
             </p>
           </div>
 
-          {/* Toggle tabs */}
+          {}
           <div className="flex bg-white/10 p-1 rounded-2xl gap-1">
             <button
               onClick={() => { setIsSignUp(false); setError('') }}

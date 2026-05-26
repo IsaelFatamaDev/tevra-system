@@ -83,7 +83,7 @@ export default function ClientOrders() {
         <p className="text-slate-500 mt-1">{t('client.orders.subtitle')}</p>
       </div>
 
-      {/* Tabs / Filters */}
+      {}
       <div className="flex gap-2 p-1 bg-slate-100/50 border border-slate-200 rounded-2xl w-max max-w-full overflow-x-auto">
         {[
           { value: 'all', label: t('client.orders.filters.all') },
@@ -103,7 +103,7 @@ export default function ClientOrders() {
         ))}
       </div>
 
-      {/* Orders List */}
+      {}
       {loading ? (
         <div className="flex justify-center py-20">
           <div className="w-10 h-10 border-4 border-slate-200 border-t-slate-800 rounded-full animate-spin" />
@@ -257,7 +257,7 @@ export default function ClientOrders() {
                   </div>
                 </div>
 
-                {/* Advanced Timeline */}
+                {}
                 <div className="px-8 py-8">
                   <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-6">{t('client.orders.detail.tracking')}</p>
                   <div className="relative">
@@ -282,7 +282,7 @@ export default function ClientOrders() {
 
                             return (
                               <div key={step.id} className={`flex items-start gap-4 relative ${isCompleted ? 'opacity-100' : 'opacity-40 grayscale'}`}>
-                                {/* Connector line overlay for active stuff */}
+                                {}
                                 {isCompleted && idx < timelineSteps.length - 1 && idx < progress && (
                                   <div className="absolute left-[15.5px] top-8 h-8 w-0.5 bg-slate-800 -ml-[0.5px]"></div>
                                 )}
@@ -307,7 +307,7 @@ export default function ClientOrders() {
                   </div>
                 </div>
 
-                {/* Items */}
+                {}
                 <div className="px-6 py-4 bg-slate-50/50">
                   <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4 px-2">{t('client.orders.detail.productDetails')}</p>
                   <div className="space-y-3">
@@ -332,7 +332,7 @@ export default function ClientOrders() {
                   </div>
                 </div>
 
-                {/* Summary */}
+                {}
                 <div className="px-8 py-8 border-t border-slate-100 bg-white">
                   <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-5">{t('client.orders.detail.financialSummary')}</p>
                   <div className="space-y-3 text-sm">

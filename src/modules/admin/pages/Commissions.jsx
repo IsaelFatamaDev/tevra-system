@@ -1,10 +1,12 @@
-// BUG-11 FIX: Admin Commissions Management Page
-// Allows approving (pending → approved) and marking as paid (approved → paid)
+
+
 import { useState, useEffect, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useToast } from '../../../core/contexts/ToastContext'
 import dashboardService from '../services/dashboard.service'
 import Pagination from '../../../core/components/Pagination'
+import generateBoleta from '../../../core/utils/generateBoleta'
+import excelService from '../../../core/services/excel.service'
 
 const STATUS_COLORS = {
   pending: 'bg-amber-50 text-amber-700 border-amber-200',
@@ -76,15 +78,51 @@ export default function AdminCommissions() {
     setSaving(prev => ({ ...prev, [id]: null }))
   }
 
+  const handleGenerateBoleta = (c) => {
+    generateBoleta({
+      orderNumber: `COM-${c.id?.slice(0, 6).toUpperCase()}`,
+      id: c.id,
+      customer: {
+        firstName: c.agent?.firstName || 'Agente',
+        lastName: c.agent?.lastName || '',
+        email: c.agent?.email || '',
+      },
+      agent: null,
+      items: [{
+        productName: `Comisión por pedido #${c.orderId?.slice(0, 8) || ''}`,
+        quantity: 1,
+        unitPrice: c.amount,
+        totalPrice: c.amount,
+      }],
+      subtotal: c.amount,
+      shippingCost: 0,
+      total: c.amount,
+      status: 'paid',
+      createdAt: c.paidAt || c.createdAt,
+    }, { hideCommissionBreakdown: true })
+  }
+
+  const handleExportExcel = () => {
+    
+    const formattedData = commissions.map(c => [
+      c.orderId?.slice(0, 8) || c.id,
+      c.amount * (1 / 0.12), 
+      (c.amount * (1 / 0.12)) * 0.15, 
+      c.amount, 
+      (c.amount * (1 / 0.12)) * 0.03 
+    ])
+    excelService.exportTemplate({ comisiones: formattedData })
+  }
+
   return (
     <div className="max-w-7xl mx-auto space-y-5 platform-enter">
-      {/* Header */}
+      {}
       <div>
         <h2 className="text-xl font-semibold text-[#134074]">Gestión de Comisiones</h2>
         <p className="text-sm text-[#134074] mt-0.5">Aprueba y registra pagos de comisiones a agentes</p>
       </div>
 
-      {/* Summary Cards */}
+      {}
       <div className="grid grid-cols-3 gap-3">
         {[
           { label: 'Pendientes', value: `$${totalPending.toFixed(2)}`, color: 'text-amber-600', bg: 'bg-amber-50 border-amber-100', icon: 'pending_actions' },
@@ -101,17 +139,23 @@ export default function AdminCommissions() {
         ))}
       </div>
 
-      {/* Filters */}
-      <div className="bg-white rounded-xl border border-[#C5D8E8]/20 p-4 flex gap-2 flex-wrap">
-        {['', 'pending', 'approved', 'paid'].map(s => (
-          <button key={s} onClick={() => setStatusFilter(s)}
-            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${statusFilter === s ? 'bg-[#134074] text-[#EEF4ED]' : 'bg-[#EEF4ED]/50 text-[#134074] hover:bg-[#EEF4ED] border border-[#C5D8E8]/20'}`}>
-            {s === '' ? 'Todos' : STATUS_LABELS[s] || s}
-          </button>
-        ))}
+      {}
+      <div className="bg-white rounded-xl border border-[#C5D8E8]/20 p-4 flex gap-2 flex-wrap items-center justify-between">
+        <div className="flex gap-2">
+          {['', 'pending', 'approved', 'paid'].map(s => (
+            <button key={s} onClick={() => setStatusFilter(s)}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${statusFilter === s ? 'bg-[#134074] text-[#EEF4ED]' : 'bg-[#EEF4ED]/50 text-[#134074] hover:bg-[#EEF4ED] border border-[#C5D8E8]/20'}`}>
+              {s === '' ? 'Todos' : STATUS_LABELS[s] || s}
+            </button>
+          ))}
+        </div>
+        <button onClick={handleExportExcel} className="px-3 py-1.5 bg-[#1da851] hover:bg-[#199446] text-white text-xs font-bold rounded-lg transition-colors flex items-center gap-1.5 shadow-sm">
+          <span className="material-symbols-outlined text-[16px]">download</span>
+          Exportar a Excel
+        </button>
       </div>
 
-      {/* Table */}
+      {}
       <div className="bg-white rounded-xl border border-[#C5D8E8]/20 overflow-hidden">
         {loading ? (
           <div className="flex justify-center py-16"><div className="w-6 h-6 border-2 border-[#C5D8E8]/20 border-t-[#8DA9C4] rounded-full animate-spin" /></div>
@@ -137,8 +181,15 @@ export default function AdminCommissions() {
               <tbody className="divide-y divide-[#C5D8E8]/10">
                 {paginated.map(c => (
                   <tr key={c.id} className="hover:bg-[#EEF4ED]/20 transition-colors">
-                    <td className="px-5 py-3 font-medium text-[#134074]">
-                      {c.agentId ? c.agentId.slice(0, 8) : '—'}
+                    <td className="px-5 py-3">
+                      <div>
+                        <p className="font-semibold text-[#134074] text-sm">
+                          {c.agent
+                            ? `${c.agent.firstName || ''} ${c.agent.lastName || ''}`.trim() || c.agentId?.slice(0, 8)
+                            : (c.agentId?.slice(0, 8) || '—')}
+                        </p>
+                        {c.agent?.email && <p className="text-xs text-[#13315C]">{c.agent.email}</p>}
+                      </div>
                     </td>
                     <td className="px-5 py-3 font-mono text-xs text-[#13315C]">
                       {c.orderId ? c.orderId.slice(0, 8) : '—'}
@@ -156,7 +207,7 @@ export default function AdminCommissions() {
                       {c.createdAt ? new Date(c.createdAt).toLocaleDateString('es-PE', { day: '2-digit', month: 'short', year: 'numeric' }) : '—'}
                     </td>
                     <td className="px-5 py-3">
-                      <div className="flex justify-end gap-2">
+                      <div className="flex justify-end gap-2 items-center">
                         {c.status === 'pending' && (
                           <button onClick={() => handleApprove(c.id)} disabled={!!saving[c.id]}
                             className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg transition-colors disabled:opacity-50 flex items-center gap-1">
@@ -176,7 +227,19 @@ export default function AdminCommissions() {
                           </button>
                         )}
                         {(c.status === 'paid' || c.status === 'cancelled') && (
-                          <span className="text-xs text-[#13315C]">{c.status === 'paid' ? `Pagado ${c.paidAt ? new Date(c.paidAt).toLocaleDateString('es-PE') : ''}` : 'Cancelado'}</span>
+                          <span className="text-xs text-[#13315C]">
+                            {c.status === 'paid' ? `Pagado ${c.paidAt ? new Date(c.paidAt).toLocaleDateString('es-PE') : ''}` : 'Cancelado'}
+                          </span>
+                        )}
+                        {c.status === 'paid' && (
+                          <button
+                            onClick={() => handleGenerateBoleta(c)}
+                            className="px-2.5 py-1.5 text-xs font-bold text-[#134074] bg-[#EEF4ED] hover:bg-[#C5D8E8]/30 rounded-lg transition-colors flex items-center gap-1"
+                            title="Generar boleta de comisión"
+                          >
+                            <span className="material-symbols-outlined text-[14px]">receipt_long</span>
+                            Boleta
+                          </button>
                         )}
                       </div>
                     </td>

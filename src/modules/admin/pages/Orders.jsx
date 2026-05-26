@@ -90,7 +90,7 @@ export default function AdminOrders() {
 
   return (
     <div className="max-w-7xl mx-auto space-y-5 platform-enter">
-      {/* Header */}
+      {}
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4">
         <div>
           <h2 className="text-xl font-semibold text-[#134074]">{t('admin.orders.title')}</h2>
@@ -101,7 +101,7 @@ export default function AdminOrders() {
         </button>
       </div>
 
-      {/* Metrics */}
+      {}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         {metrics.map((m, i) => (
           <div key={i} className="bg-white p-4 rounded-xl border border-[#C5D8E8]/20 flex items-center gap-3 stat-card">
@@ -116,7 +116,7 @@ export default function AdminOrders() {
         ))}
       </div>
 
-      {/* Table Card */}
+      {}
       <div className="bg-white rounded-xl border border-[#C5D8E8]/20 overflow-hidden">
         <div className="p-4 border-b border-[#C5D8E8]/10 flex flex-col sm:flex-row gap-3">
           <div className="relative flex-1">
@@ -205,7 +205,7 @@ export default function AdminOrders() {
         </div>
       </div>
 
-      {/* View Order Modal */}
+      {}
       {viewOrder && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-[#134074]/40 backdrop-blur-sm transition-opacity" onClick={() => setViewOrder(null)} />
@@ -273,7 +273,7 @@ export default function AdminOrders() {
         </div>
       )}
 
-      {/* Change Status Modal */}
+      {}
       {statusModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-[#134074]/40 backdrop-blur-sm transition-opacity" onClick={() => setStatusModal(null)} />

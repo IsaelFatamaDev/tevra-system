@@ -77,7 +77,7 @@ export default function AdminCommunications() {
 
   return (
     <div className="max-w-7xl mx-auto space-y-5 platform-enter">
-      {/* Header */}
+      {}
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4">
         <div>
           <h2 className="text-xl font-semibold text-[#134074]">{t('admin.communications.title')}</h2>
@@ -89,7 +89,7 @@ export default function AdminCommunications() {
         </button>
       </div>
 
-      {/* Stats */}
+      {}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         {[
           { label: t('admin.communications.totalReach'), value: (stats?.totalReach || 0).toLocaleString(), icon: 'hub' },
@@ -113,7 +113,7 @@ export default function AdminCommunications() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 items-start">
-        {/* Campaigns List */}
+        {}
         <div className="lg:col-span-2 space-y-3">
           <h3 className="text-sm font-semibold text-[#134074]">{t('admin.communications.recentCampaigns')}</h3>
 
@@ -160,9 +160,9 @@ export default function AdminCommunications() {
           <Pagination page={page} totalPages={totalPages} onPageChange={p => setPage(p)} />
         </div>
 
-        {/* Sidebar */}
+        {}
         <div className="space-y-5">
-          {/* Quick Templates */}
+          {}
           <div className="bg-white p-4 rounded-xl border border-[#C5D8E8]/20">
             <h3 className="text-sm font-semibold text-[#134074] mb-3">{t('admin.communications.quickTemplates')}</h3>
             <div className="grid grid-cols-2 gap-2">
@@ -180,7 +180,7 @@ export default function AdminCommunications() {
             </div>
           </div>
 
-          {/* Segmentation */}
+          {}
           <div className="bg-[#134074] text-[#EEF4ED] p-4 rounded-xl overflow-hidden relative">
             <div className="relative z-10">
               <h3 className="text-sm font-semibold mb-1.5">{t('admin.communications.segmentation')}</h3>
@@ -200,7 +200,7 @@ export default function AdminCommunications() {
             </div>
           </div>
 
-          {/* Deliverability */}
+          {}
           <div className="bg-white p-4 rounded-xl border border-[#C5D8E8]/20">
             <div className="flex items-center gap-2 mb-3">
               <span className="material-symbols-outlined text-emerald-500 text-[18px]">mail_lock</span>
@@ -217,7 +217,7 @@ export default function AdminCommunications() {
         </div>
       </div>
 
-      {/* Create Campaign Modal */}
+      {}
       {showCreate && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 p-4">
           <div className="bg-white rounded-xl shadow-lg w-full max-w-md max-h-[90vh] overflow-y-auto">

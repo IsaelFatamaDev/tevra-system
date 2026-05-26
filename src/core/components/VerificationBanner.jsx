@@ -5,7 +5,7 @@ import { useAuth } from '../contexts/AuthContext'
 export default function VerificationBanner() {
   const { user, resendVerificationEmail } = useAuth()
   const { t } = useTranslation()
-  const [status, setStatus] = useState('idle') // idle | sending | sent
+  const [status, setStatus] = useState('idle') 
 
   if (!user || user.emailVerified !== false) return null
 

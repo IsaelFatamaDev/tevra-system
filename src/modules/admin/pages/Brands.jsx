@@ -97,7 +97,7 @@ export default function AdminBrands() {
 
   return (
     <div className="max-w-5xl mx-auto space-y-5 platform-enter">
-      {/* Header */}
+      {}
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4">
         <div>
           <h2 className="text-xl font-semibold text-[#134074]">{t('admin.brands.title')}</h2>
@@ -108,7 +108,7 @@ export default function AdminBrands() {
         </button>
       </div>
 
-      {/* Metric */}
+      {}
       <div className="flex gap-3">
         <div className="bg-white p-4 rounded-xl border border-[#C5D8E8]/20 flex items-center gap-3 stat-card">
           <div className="w-9 h-9 rounded-lg bg-[#EEF4ED] text-[#134074] flex items-center justify-center shrink-0">
@@ -121,7 +121,7 @@ export default function AdminBrands() {
         </div>
       </div>
 
-      {/* Table */}
+      {}
       <div className="bg-white rounded-xl border border-[#C5D8E8]/20 overflow-hidden">
         <div className="p-4 border-b border-[#C5D8E8]/10">
           <div className="relative max-w-sm">
@@ -183,14 +183,14 @@ export default function AdminBrands() {
           </div>
         )}
 
-        {/* Pagination footer */}
+        {}
         <div className="px-5 py-3 border-t border-[#C5D8E8]/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[#134074]">
           <span>{t('admin.pagination.showing')} {Math.min((page - 1) * ITEMS_PER_PAGE + 1, filtered.length)}-{Math.min(page * ITEMS_PER_PAGE, filtered.length)} {t('admin.pagination.of')} {filtered.length}</span>
           <Pagination page={page} totalPages={totalPages} onPageChange={p => setPage(p)} />
         </div>
       </div>
 
-      {/* Create/Edit Modal */}
+      {}
       {(modal === 'create' || modal === 'edit') && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-[#134074]/40 backdrop-blur-sm transition-opacity" onClick={() => setModal(null)} />
@@ -203,7 +203,7 @@ export default function AdminBrands() {
             </div>
 
             <div className="p-6 space-y-4">
-              {/* Logo upload */}
+              {}
               <div>
                 <label className="block text-[11px] font-bold text-[#134074] uppercase tracking-widest mb-1.5">{t('admin.brands.logoLabel')}</label>
                 <input type="file" ref={fileRef} accept="image/*" className="hidden" onChange={handleFileChange} />
@@ -244,7 +244,7 @@ export default function AdminBrands() {
         </div>
       )}
 
-      {/* Delete Modal */}
+      {}
       {modal === 'delete' && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-[#134074]/40 backdrop-blur-sm transition-opacity" onClick={() => setModal(null)} />

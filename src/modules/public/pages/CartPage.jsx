@@ -35,7 +35,7 @@ export default function CartPage() {
   return (
     <main className="min-h-screen bg-background-cream" style={{ paddingTop: 'clamp(3.5rem, 8vh, 5rem)' }}>
       <div className="max-w-5xl mx-auto px-4 sm:px-8 py-12">
-        {/* Header */}
+        {}
         <div className="flex items-center justify-between mb-10">
           <div>
             <h1 className="font-headline font-extrabold text-3xl text-primary">{t('cart.title')}</h1>
@@ -48,7 +48,7 @@ export default function CartPage() {
         </div>
 
         <div className="grid lg:grid-cols-3 gap-8">
-          {/* Cart Items */}
+          {}
           <div className="lg:col-span-2 space-y-4">
             {items.map(item => (
               <div key={item.productId} className="bg-surface-container-lowest rounded-2xl p-5 flex gap-5 shadow-soft">
@@ -97,7 +97,7 @@ export default function CartPage() {
             ))}
           </div>
 
-          {/* Summary */}
+          {}
           <div className="lg:col-span-1">
             <div className="bg-surface-container-lowest rounded-2xl p-6 shadow-soft sticky top-28 space-y-6">
               <h2 className="font-headline font-bold text-lg text-primary">{t('cart.summary')}</h2>
@@ -117,7 +117,7 @@ export default function CartPage() {
                 </div>
               </div>
 
-              {/* Agent info if selected */}
+              {}
               {selectedAgent && (
                 <div className="bg-surface-container rounded-xl p-4 flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">

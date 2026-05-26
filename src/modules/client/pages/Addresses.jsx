@@ -204,7 +204,7 @@ export default function ClientAddresses() {
         {/* Panel */}
         <div className={`absolute inset-y-0 right-0 w-full max-w-lg bg-white shadow-2xl flex flex-col transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${modal ? 'translate-x-0' : 'translate-x-[110%]'}`}>
 
-          {/* Header */}
+          {}
           <div className="flex items-center justify-between p-6 md:p-8 border-b border-slate-100 bg-white z-10 shrink-0">
             <div>
               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">{t('client.addresses.title')}</p>
@@ -215,7 +215,7 @@ export default function ClientAddresses() {
             </button>
           </div>
 
-          {/* Form Body */}
+          {}
           <div className="flex-1 overflow-y-auto no-scrollbar p-6 md:p-8 bg-slate-50/30">
             {errorMsg && (
               <div className="mb-4 p-3.5 bg-red-50 border border-red-200 rounded-2xl text-sm text-red-700 font-semibold flex items-center gap-2">
@@ -259,7 +259,7 @@ export default function ClientAddresses() {
             </div>
           </div>
 
-          {/* Footer Save */}
+          {}
           <div className="p-6 md:p-8 bg-white border-t border-slate-100 shrink-0 flex gap-4">
             <button onClick={() => setModal(null)} className="flex-1 py-4 text-sm font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-2xl transition-colors">{t('client.addresses.cancel')}</button>
             <button onClick={handleSave} disabled={saving} className="flex-1 py-4 bg-slate-900 hover:bg-slate-800 disabled:opacity-50 text-[#EEF4ED] rounded-2xl font-bold text-sm transition-all flex items-center justify-center gap-2 shadow-[0_4px_20px_rgba(0,0,0,0.1)]">

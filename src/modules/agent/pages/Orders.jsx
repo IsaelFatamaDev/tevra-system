@@ -86,7 +86,7 @@ export default function AgentOrders() {
         </div>
       </div>
 
-      {/* Quick stats */}
+      {}
       <div className="grid grid-cols-3 gap-4">
         {[
           { label: t('agentDash.orders.totalOrders'), value: orders.length, icon: 'package_2' },
@@ -183,7 +183,7 @@ export default function AgentOrders() {
         </div>
       )}
 
-      {/* Order Detail Modal */}
+      {}
       {viewOrder && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
           <div className="bg-white rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.15)] w-full max-w-2xl max-h-[90vh] overflow-y-auto">
@@ -326,12 +326,12 @@ export default function AgentOrders() {
 
             {/* Footer Actions */}
             <div className="p-4 border-t border-gray-100 flex justify-end gap-2">
-              <button onClick={() => generateBoleta(viewOrder)}
+              <button onClick={() => generateBoleta(viewOrder, { hideCommissionBreakdown: true })}
                 className="px-4 py-2 text-sm font-bold text-primary bg-primary/10 hover:bg-primary/10 rounded-lg flex items-center gap-1.5 transition-colors">
                 <span className="material-symbols-outlined text-[18px]">receipt_long</span> {t('agentDash.orders.generateBoleta')}
               </button>
               {viewOrder.customer?.phone && (
-                <a href={`https://wa.me/${viewOrder.customer.phone.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer"
+                <a href={`https:
                   className="px-4 py-2 text-sm font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 rounded-lg flex items-center gap-1.5 transition-colors">
                   <span className="material-symbols-outlined text-[18px]">chat</span> WhatsApp
                 </a>

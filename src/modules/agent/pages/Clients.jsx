@@ -17,7 +17,7 @@ export default function AgentClients() {
       .finally(() => setLoading(false))
   }, [])
 
-  // Extract unique clients from orders
+  
   const clientsMap = new Map()
   orders.forEach(o => {
     if (o.customer?.id && !clientsMap.has(o.customer.id)) {
