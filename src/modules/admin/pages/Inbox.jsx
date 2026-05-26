@@ -18,7 +18,7 @@ export default function AdminInbox() {
     loadConversations();
 
     // Connect to WebSocket using the backend URL
-    const API_URL = import.meta.env.VITE_API_URL || 'http:
+    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
     const socket = io(API_URL);
 
     socket.on('connect', () => {

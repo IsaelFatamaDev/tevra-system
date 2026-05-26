@@ -554,7 +554,7 @@ export default function AdminAgents() {
             <div className="p-5 border-t border-[#C5D8E8]/10 flex flex-col sm:flex-row justify-between items-center gap-4 bg-white rounded-b-2xl">
               <div className="flex flex-wrap gap-2 w-full sm:w-auto justify-center sm:justify-start">
                 {viewAgent.phone && (
-                  <a href={`https:
+                  <a href={`https://wa.me/${viewAgent.phone.replace(/\\D/g, '')}`} target="_blank" rel="noopener noreferrer"
                     className="px-4 py-2 bg-[#25D366]/10 text-[#075E54] hover:bg-[#25D366]/20 font-bold text-sm rounded-xl transition-colors flex items-center gap-1.5 flex-1 sm:flex-none justify-center">
                     <span className="material-symbols-outlined text-[16px]">chat</span> {t('admin.agents.whatsapp')}
                   </a>

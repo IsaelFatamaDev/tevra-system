@@ -502,7 +502,7 @@ export default function AdminSettings() {
               className="w-full px-3 py-2 bg-[#EEF4ED]/30 border border-[#C5D8E8]/20 rounded-lg text-sm focus:ring-2 focus:ring-[#134074]/10 focus:border-[#8DA9C4] outline-none transition-all"
             />
             <p className="text-[10px] text-[#13315C] mt-1">
-              Esta URL se usa en correos de verificación de email y otros links automáticos del sistema. Ejemplo: <code className="bg-slate-100 px-1 rounded">https:
+              Esta URL se usa en correos de verificación de email y otros links automáticos del sistema. Ejemplo: <code className="bg-slate-100 px-1 rounded">https://tevra.com</code>
             </p>
           </div>
 

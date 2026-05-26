@@ -331,7 +331,7 @@ export default function AgentOrders() {
                 <span className="material-symbols-outlined text-[18px]">receipt_long</span> {t('agentDash.orders.generateBoleta')}
               </button>
               {viewOrder.customer?.phone && (
-                <a href={`https:
+                <a href={`https://wa.me/${viewOrder.customer.phone.replace(/\\D/g, '')}`} target="_blank" rel="noopener noreferrer"
                   className="px-4 py-2 text-sm font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 rounded-lg flex items-center gap-1.5 transition-colors">
                   <span className="material-symbols-outlined text-[18px]">chat</span> WhatsApp
                 </a>

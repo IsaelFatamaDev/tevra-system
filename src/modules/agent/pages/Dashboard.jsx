@@ -204,7 +204,7 @@ export default function AgentDashboard() {
               {t('agentDash.dashboard.createOrder')}
             </button>
             {/* BUG-09 FIX: WhatsApp support number comes from Admin > Configuración */}
-            <a href={`https:
+            <a href={`https://wa.me/${siteConfig?.whatsapp?.replace(/\\D/g, '') || ''}`} target="_blank" rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 px-6 py-3.5 bg-[#25d366]/20 text-[#25d366] hover:bg-[#25d366] hover:text-white rounded-2xl font-bold transition-all border border-[#25d366]/30">
               <span className="material-symbols-outlined text-[20px]">chat</span>
               {t('common.supportChat')}
