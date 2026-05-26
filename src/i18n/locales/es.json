@@ -216,7 +216,30 @@
       "addToCart": "Agregar al carrito",
       "added": "¡Agregado!",
       "savingsIn": "en Perú",
-      "saves": "Ahorras ~"
+      "saves": "Ahorras ",
+      "freeShipping": "Envío GRATIS",
+      "origin": "Original USA",
+      "refPrice": "Precio de lista"
+    },
+    "sidebar": {
+      "filters": "Filtros",
+      "clearAll": "Limpiar todo",
+      "categories": "Categorías",
+      "allCategories": "Cualquier Categoría",
+      "brands": "Marcas",
+      "price": "Precio (S/)",
+      "upTo": "Hasta",
+      "moreThan": "Más de",
+      "customRange": "Rango personalizado",
+      "go": "Ir",
+      "shipping": "Envío",
+      "freeShipping": "Envío gratis",
+      "arrivedUSA": "Disponible desde USA",
+      "sortBy": "Ordenar por:",
+      "of": "de más de",
+      "results": "resultados",
+      "viewResults": "Ver resultados",
+      "refPrice": "Precio de referencia"
     }
   },
   "cart": {
@@ -236,7 +259,24 @@
     "originalsGuarantee": "Todos los productos son 100% originales importados desde USA.",
     "chooseAgent": "Elegir un agente",
     "quoteWhatsApp": "Cotizar por WhatsApp",
-    "changeAgent": "Cambiar"
+    "changeAgent": "Cambiar",
+    "loginToContinue": "Inicia sesión para continuar",
+    "noAgentSelected": "Necesitas elegir un agente TeVra para cotizar tu pedido.",
+    "secureOrder": "Pedido Seguro",
+    "howItWorks": "¿Cómo funciona?",
+    "step1": "Agrega los productos que quieres",
+    "step2": "Elige tu agente TeVra de confianza",
+    "step3": "Tu agente te cotiza todo por WhatsApp",
+    "step4": "Lo compramos en USA y lo enviamos",
+    "badge1Label": "100% Originales",
+    "badge1Sub": "Productos de USA",
+    "badge2Label": "Envío Asegurado",
+    "badge2Sub": "5-10 días hábiles",
+    "badge3Label": "Pago Seguro",
+    "badge3Sub": "A través de tu agente",
+    "withoutShipping": "Sin envío incluido",
+    "quantity": "Cantidad",
+    "remove": "Eliminar"
   },
   "product": {
     "notFound": "Producto no encontrado",
@@ -264,7 +304,17 @@
     "signIn": "Iniciar sesión",
     "noReviews": "Aún no hay reseñas para este producto. ¡Sé el primero!",
     "relatedProducts": "También te puede interesar",
-    "savingsUpTo": "Ahorras hasta S/"
+    "savingsUpTo": "Ahorras hasta S/",
+    "detailTab": "Descripción",
+    "reviewError": "No se pudo enviar la reseña. Intenta de nuevo.",
+    "originalsDesc": "Comprado en tiendas oficiales de USA",
+    "payViaAgent": "Paga a tu agente de confianza",
+    "payViaAgentSub": "100% seguro sin intermediarios digitales",
+    "trustOriginal": "100% Original",
+    "trustUSA": "Desde USA",
+    "trustShipping": "Envío Asegurado",
+    "noReviews": "Aún no hay reseñas para este producto. ¡Sé el primero!",
+    "reviewLoginMsg": "Inicia sesión para dejar una reseña"
   },
   "agentes": {
     "hero": {

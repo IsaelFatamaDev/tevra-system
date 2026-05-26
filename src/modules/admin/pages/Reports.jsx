@@ -13,6 +13,7 @@ export default function AdminReports() {
   const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(true)
   const [period, setPeriod] = useState('30d')
+  const [exportingExcel, setExportingExcel] = useState(false)
 
   const fetchData = (p) => {
     setLoading(true)
@@ -36,16 +37,22 @@ export default function AdminReports() {
   useEffect(() => { fetchData(period) }, [period])
 
   const handleExportExcel = async () => {
+    setExportingExcel(true)
     try {
       const { excelService } = await import('../../../core/services/excel.service')
       await excelService.exportTemplate({
+        stats,
         topAgents,
         revenueByMonth,
-        categories
+        categories,
+        cities,
+        period,
       })
     } catch (err) {
-      console.error("Error generating Excel:", err);
-      alert('Error al generar el reporte Excel');
+      console.error("Error generating Excel:", err)
+      alert('Error al generar el reporte Excel')
+    } finally {
+      setExportingExcel(false)
     }
   }
 
@@ -99,9 +106,12 @@ export default function AdminReports() {
               </button>
             ))}
           </div>
-          <button onClick={handleExportExcel} className="flex items-center gap-2 bg-[#EEF4ED] hover:bg-[#C5D8E8] text-[#134074] px-4 py-2 rounded-lg transition-colors font-medium text-sm">
-            <span className="material-symbols-outlined text-[18px]">table_chart</span>
-            Excel
+          <button onClick={handleExportExcel} disabled={exportingExcel || loading} className="flex items-center gap-2 bg-[#EEF4ED] hover:bg-[#C5D8E8] text-[#134074] px-4 py-2 rounded-lg transition-colors font-medium text-sm disabled:opacity-60 disabled:cursor-not-allowed">
+            {exportingExcel
+              ? <span className="w-4 h-4 border-2 border-[#134074]/30 border-t-[#134074] rounded-full animate-spin" />
+              : <span className="material-symbols-outlined text-[18px]">table_chart</span>
+            }
+            {exportingExcel ? 'Generando...' : 'Excel'}
           </button>
           <button onClick={handleExportPDF} className="flex items-center gap-2 bg-[#134074] hover:bg-[#13315C] text-white px-4 py-2 rounded-lg transition-colors text-sm">
             <span className="material-symbols-outlined text-[18px]">picture_as_pdf</span>

@@ -190,7 +190,7 @@
     "badge": "Products from the USA",
     "title": "TeVra Catalog",
     "subtitle": "Choose any product, get a quote from your agent, and receive it in 5–10 business days. Guaranteed originals.",
-    "searchPlaceholder": "Search for your product (Nike, iPhone, Coach...)",
+    "searchPlaceholder": "Search your product (Nike, iPhone, Coach...)",
     "allCategories": "All",
     "noResults": "No results",
     "noResultsDesc": "Try another search term or send us the link of the product you are looking for.",
@@ -216,7 +216,30 @@
       "addToCart": "Add to cart",
       "added": "Added!",
       "savingsIn": "in Peru",
-      "saves": "You save ~"
+      "saves": "You save ",
+      "freeShipping": "FREE Shipping",
+      "origin": "USA Original",
+      "refPrice": "List price"
+    },
+    "sidebar": {
+      "filters": "Filters",
+      "clearAll": "Clear all",
+      "categories": "Categories",
+      "allCategories": "Any Category",
+      "brands": "Brands",
+      "price": "Price (S/)",
+      "upTo": "Under",
+      "moreThan": "Over",
+      "customRange": "Custom range",
+      "go": "Go",
+      "shipping": "Shipping",
+      "freeShipping": "Free shipping",
+      "arrivedUSA": "In stock from USA",
+      "sortBy": "Sort by:",
+      "of": "of more than",
+      "results": "results",
+      "viewResults": "View results",
+      "refPrice": "List price"
     }
   },
   "cart": {
@@ -236,7 +259,24 @@
     "originalsGuarantee": "All products are 100% original imported from the USA.",
     "chooseAgent": "Choose an agent",
     "quoteWhatsApp": "Quote via WhatsApp",
-    "changeAgent": "Change"
+    "changeAgent": "Change",
+    "loginToContinue": "Sign in to continue",
+    "noAgentSelected": "You need to choose a TeVra agent to quote your order.",
+    "secureOrder": "Secure Order",
+    "howItWorks": "How does it work?",
+    "step1": "Add the products you want",
+    "step2": "Choose your trusted TeVra agent",
+    "step3": "Your agent quotes everything via WhatsApp",
+    "step4": "We buy it in USA and ship it to you",
+    "badge1Label": "100% Originals",
+    "badge1Sub": "Products from the USA",
+    "badge2Label": "Insured Shipping",
+    "badge2Sub": "5-10 business days",
+    "badge3Label": "Secure Payment",
+    "badge3Sub": "Through your agent",
+    "withoutShipping": "Shipping not included",
+    "quantity": "Quantity",
+    "remove": "Remove"
   },
   "product": {
     "notFound": "Product not found",
@@ -264,7 +304,17 @@
     "signIn": "Sign In",
     "noReviews": "No reviews yet for this product. Be the first!",
     "relatedProducts": "You might also like",
-    "savingsUpTo": "You save up to S/"
+    "savingsUpTo": "You save up to S/",
+    "detailTab": "Description",
+    "reviewError": "Could not submit review. Please try again.",
+    "originalsDesc": "Purchased at official US stores",
+    "payViaAgent": "Pay your trusted agent",
+    "payViaAgentSub": "100% secure without digital intermediaries",
+    "trustOriginal": "100% Original",
+    "trustUSA": "From USA",
+    "trustShipping": "Insured Shipping",
+    "noReviews": "No reviews yet for this product. Be the first!",
+    "reviewLoginMsg": "Sign in to leave a review"
   },
   "agentes": {
     "hero": {
