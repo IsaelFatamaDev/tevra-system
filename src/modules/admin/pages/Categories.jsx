@@ -63,7 +63,8 @@ export default function AdminCategories() {
       setModal(null)
     } catch (err) {
       console.error(err)
-      addToast(t('admin.categories.processError'), 'error')
+      const errMsg = err.message || t('admin.categories.processError')
+      addToast(errMsg, 'error')
     }
     finally { setSaving(false) }
   }
