@@ -186,9 +186,13 @@ export default function ProductDetailPage() {
             {}
             <div className="space-y-2">
               <div className="flex items-baseline gap-3">
-                <span className="text-4xl font-black text-secondary">US$ {Number(product.priceUsd || 0).toFixed(0)}</span>
-                {product.priceRefLocal && (
-                  <span className="text-lg line-through text-text-muted/50">S/ {Number(product.priceRefLocal).toLocaleString()}</span>
+                {product.priceRefLocal ? (
+                  <>
+                    <span className="text-4xl font-black text-secondary">S/ {Number(product.priceRefLocal).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                    <span className="text-lg text-text-muted/70">US$ {Number(product.priceUsd || 0).toFixed(2)}</span>
+                  </>
+                ) : (
+                  <span className="text-4xl font-black text-secondary">US$ {Number(product.priceUsd || 0).toFixed(2)}</span>
                 )}
               </div>
               {savingsAmount && savingsAmount > 0 && (

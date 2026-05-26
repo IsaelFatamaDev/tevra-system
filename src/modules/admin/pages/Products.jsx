@@ -308,8 +308,8 @@ export default function AdminProducts() {
       {(modal === 'create' || modal === 'edit') && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-[#134074]/40 backdrop-blur-sm transition-opacity" onClick={() => setModal(null)} />
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-xl max-h-[85vh] flex flex-col relative z-10 transform transition-all animate-in fade-in zoom-in-95 duration-200">
-            <div className="px-6 py-5 border-b border-[#C5D8E8]/10 flex justify-between items-center bg-[#EEF4ED]/30/50 rounded-t-2xl">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-5xl max-h-[90vh] flex flex-col relative z-10 transform transition-all animate-in fade-in zoom-in-95 duration-200">
+            <div className="px-6 py-5 border-b border-[#C5D8E8]/10 flex justify-between items-center bg-[#EEF4ED]/30/50 rounded-t-2xl shrink-0">
               <div>
                 <h3 className="text-lg font-semibold text-[#134074]">{modal === 'create' ? t('admin.products.newProduct') : t('admin.products.editProduct')}</h3>
                 <p className="text-sm font-medium text-[#134074] mt-0.5">{t('admin.products.inventoryInfo')}</p>
@@ -319,179 +319,214 @@ export default function AdminProducts() {
               </button>
             </div>
 
-            <div className="p-6 overflow-y-auto space-y-5">
-              {}
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <label className="block text-[11px] font-bold text-[#134074] uppercase tracking-widest">{t('admin.products.mainImage')}</label>
-                  <button onClick={() => fileRef.current?.click()} className="text-[11px] font-bold text-tevra-coral hover:underline uppercase tracking-wide flex items-center gap-1">
-                    <span className="material-symbols-outlined text-[14px]">add_photo_alternate</span>
-                    Añadir Imagen
-                  </button>
-                  <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleAddImage} />
-                </div>
-                
-                {(!form.images || form.images.length === 0) ? (
-                  <div onClick={() => fileRef.current?.click()} className="w-full h-24 rounded-xl bg-[#EEF4ED]/30 border-2 border-dashed border-[#C5D8E8]/30 flex flex-col items-center justify-center cursor-pointer hover:border-tevra-coral hover:bg-tevra-coral/5 transition-all group">
-                    <span className="material-symbols-outlined text-[#13315C] group-hover:text-tevra-coral/70 transition-colors">add_photo_alternate</span>
-                    <span className="text-[10px] text-[#13315C] mt-1 font-medium">Click para añadir imagen</span>
-                  </div>
-                ) : (
-                  <div className="grid grid-cols-4 gap-3">
-                    {form.images.map((imgUrl, idx) => (
-                      <div key={idx} className="relative group rounded-xl overflow-hidden border border-[#C5D8E8]/20 bg-[#EEF4ED]/30 aspect-square">
-                        <img src={imgUrl.startsWith('data:') || imgUrl.startsWith('http') ? imgUrl : `${API_BASE}${imgUrl}`} alt={`Product ${idx}`} className="w-full h-full object-cover" />
-                        <button onClick={() => handleRemoveImage(idx)} className="absolute top-1 right-1 w-6 h-6 rounded-full bg-red-500/90 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600">
-                          <span className="material-symbols-outlined text-[14px]">close</span>
-                        </button>
-                        {idx === 0 && <span className="absolute bottom-1 left-1 bg-tevra-coral text-white text-[9px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider">Principal</span>}
+            <div className="flex-1 overflow-y-auto p-6 bg-gray-50/30">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                {/* Left Column: Images & Status */}
+                <div className="space-y-6">
+                  {/* Images Section */}
+                  <div className="bg-white p-5 rounded-2xl border border-[#C5D8E8]/20 shadow-sm space-y-4">
+                    <div className="flex items-center justify-between">
+                      <label className="block text-xs font-bold text-[#134074] uppercase tracking-widest flex items-center gap-2">
+                        <span className="material-symbols-outlined text-[16px]">imagesmode</span>
+                        {t('admin.products.mainImage')}
+                      </label>
+                      <button onClick={() => fileRef.current?.click()} className="text-[11px] font-bold text-tevra-coral hover:text-tevra-coral/80 uppercase tracking-wide flex items-center gap-1 transition-colors">
+                        <span className="material-symbols-outlined text-[14px]">add_photo_alternate</span> Añadir
+                      </button>
+                      <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleAddImage} />
+                    </div>
+                    
+                    {(!form.images || form.images.length === 0) ? (
+                      <div onClick={() => fileRef.current?.click()} className="w-full h-40 rounded-xl bg-[#EEF4ED]/30 border-2 border-dashed border-[#C5D8E8]/50 flex flex-col items-center justify-center cursor-pointer hover:border-tevra-coral hover:bg-tevra-coral/5 transition-all group">
+                        <span className="material-symbols-outlined text-[#13315C] text-3xl group-hover:text-tevra-coral/70 transition-colors mb-2">add_photo_alternate</span>
+                        <span className="text-xs text-[#13315C] font-medium">Click para añadir imagen</span>
                       </div>
-                    ))}
+                    ) : (
+                      <div className="grid grid-cols-2 gap-3">
+                        {form.images.map((imgUrl, idx) => (
+                          <div key={idx} className={`relative group rounded-xl overflow-hidden border border-[#C5D8E8]/20 bg-[#EEF4ED]/30 aspect-square ${idx === 0 ? 'col-span-2' : ''}`}>
+                            <img src={imgUrl.startsWith('data:') || imgUrl.startsWith('http') ? imgUrl : `${API_BASE}${imgUrl}`} alt={`Product ${idx}`} className="w-full h-full object-cover" />
+                            <button onClick={() => handleRemoveImage(idx)} className="absolute top-2 right-2 w-7 h-7 rounded-full bg-red-500/90 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600 shadow-md">
+                              <span className="material-symbols-outlined text-[16px]">close</span>
+                            </button>
+                            {idx === 0 && <span className="absolute bottom-2 left-2 bg-tevra-coral text-white text-[10px] px-2 py-1 rounded-md font-bold uppercase tracking-wider shadow-sm">Principal</span>}
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
-                )}
+
+                  {/* Settings Section */}
+                  <div className="bg-white p-5 rounded-2xl border border-[#C5D8E8]/20 shadow-sm space-y-4">
+                    <label className="block text-xs font-bold text-[#134074] uppercase tracking-widest flex items-center gap-2 mb-3">
+                      <span className="material-symbols-outlined text-[16px]">settings</span>
+                      Configuración
+                    </label>
+                    
+                    <div>
+                      <label className="block text-[11px] font-bold text-[#134074] uppercase tracking-widest mb-1.5 text-opacity-70">{t('admin.products.stockStatus')}</label>
+                      <div className="relative border border-[#C5D8E8]/20 rounded-xl focus-within:border-[#8DA9C4] focus-within:ring-2 focus-within:ring-[#C5D8E8]/15 transition-all">
+                        <select value={form.stockStatus} onChange={e => setForm({ ...form, stockStatus: e.target.value })}
+                          className="w-full px-4 py-2.5 bg-transparent text-sm appearance-none outline-none text-[#134074] font-medium">
+                          <option value="available">{t('admin.products.stockAvailable')}</option>
+                          <option value="low_stock">{t('admin.products.stockLow')}</option>
+                          <option value="out_of_stock">{t('admin.products.stockOut')}</option>
+                        </select>
+                        <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-[#13315C] pointer-events-none">expand_content</span>
+                      </div>
+                    </div>
+
+                    <label className="flex items-center gap-3 p-3 border border-[#C5D8E8]/20 rounded-xl cursor-pointer hover:bg-[#EEF4ED]/30 transition-colors mt-2">
+                      <input type="checkbox" checked={form.isFeatured} onChange={e => setForm({ ...form, isFeatured: e.target.checked })}
+                        className="w-5 h-5 rounded border-[#C5D8E8]/30 text-tevra-coral focus:ring-tevra-coral/20 transition-all cursor-pointer" />
+                      <div>
+                        <span className="text-sm font-bold text-[#134074] block">{t('admin.products.markFeatured')}</span>
+                        <span className="text-xs text-[#13315C] block">Mostrar destacado en inicio</span>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+
+                {/* Right Column: Form details */}
+                <div className="lg:col-span-2 space-y-6">
+                  {/* General Info */}
+                  <div className="bg-white p-6 rounded-2xl border border-[#C5D8E8]/20 shadow-sm space-y-5">
+                    <h4 className="text-sm font-bold text-[#134074] uppercase tracking-widest border-b border-[#C5D8E8]/10 pb-3 flex items-center gap-2">
+                      <span className="material-symbols-outlined text-[18px]">info</span> Información General
+                    </h4>
+                    
+                    <div>
+                      <label className="block text-[11px] font-bold text-[#134074] uppercase tracking-widest mb-1.5 opacity-80">{t('admin.products.commercialName')}</label>
+                      <div className={`relative flex items-center transition-all rounded-xl border ${formErrors.name ? 'border-red-300 ring-2 ring-red-100' : 'border-[#C5D8E8]/30 focus-within:border-tevra-coral/50 focus-within:ring-2 focus-within:ring-tevra-coral/10 bg-[#EEF4ED]/10'}`}>
+                        <input value={form.name} onChange={e => { setForm({ ...form, name: e.target.value }); setFormErrors({ ...formErrors, name: '' }) }}
+                          placeholder={t('admin.products.namePlaceholder')}
+                          className="w-full px-4 py-3 bg-transparent text-[15px] font-medium text-[#134074] outline-none placeholder:text-[#A5C0D8]" />
+                        {formErrors.name && <span className="material-symbols-outlined text-red-500 text-[18px] pr-3">error</span>}
+                      </div>
+                      {formErrors.name && <p className="text-xs text-red-500 font-medium mt-1.5 ml-1 flex items-center gap-1"><span className="material-symbols-outlined text-[14px]">info</span>{formErrors.name}</p>}
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-5">
+                      <div>
+                        <label className="block text-[11px] font-bold text-[#134074] uppercase tracking-widest mb-1.5 opacity-80">{t('admin.products.categoryLabel')}</label>
+                        <div className={`relative transition-all rounded-xl border ${formErrors.categoryId ? 'border-red-300 ring-2 ring-red-100' : 'border-[#C5D8E8]/30 focus-within:border-tevra-coral/50 focus-within:ring-2 focus-within:ring-tevra-coral/10 bg-[#EEF4ED]/10'}`}>
+                          <select value={form.categoryId} onChange={e => { setForm({ ...form, categoryId: e.target.value }); setFormErrors({ ...formErrors, categoryId: '' }) }}
+                            className="w-full px-4 py-3 bg-transparent text-[14px] appearance-none outline-none text-[#134074]">
+                            <option value="" disabled>{t('admin.products.selectOption')}</option>
+                            {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                          </select>
+                          <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-[#13315C] pointer-events-none text-[20px]">expand_more</span>
+                        </div>
+                        {formErrors.categoryId && <p className="text-xs text-red-500 font-medium mt-1.5 ml-1 flex items-center gap-1"><span className="material-symbols-outlined text-[14px]">info</span>{formErrors.categoryId}</p>}
+                      </div>
+                      <div>
+                        <label className="block text-[11px] font-bold text-[#134074] uppercase tracking-widest mb-1.5 opacity-80">{t('admin.products.brandLabel')}</label>
+                        <div className="relative border border-[#C5D8E8]/30 rounded-xl focus-within:border-tevra-coral/50 focus-within:ring-2 focus-within:ring-tevra-coral/10 bg-[#EEF4ED]/10 transition-all">
+                          <select value={form.brandId} onChange={e => setForm({ ...form, brandId: e.target.value })}
+                            className="w-full px-4 py-3 bg-transparent text-[14px] appearance-none outline-none text-[#134074]">
+                            <option value="">{t('admin.products.noBrand')}</option>
+                            {brands.map(b => <option key={b.id} value={b.id}>{b.name}</option>)}
+                          </select>
+                          <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-[#13315C] pointer-events-none text-[20px]">expand_more</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Pricing */}
+                  <div className="bg-white p-6 rounded-2xl border border-[#C5D8E8]/20 shadow-sm space-y-5">
+                    <h4 className="text-sm font-bold text-[#134074] uppercase tracking-widest border-b border-[#C5D8E8]/10 pb-3 flex items-center gap-2">
+                      <span className="material-symbols-outlined text-[18px]">payments</span> Precios y Costos
+                    </h4>
+                    
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                      <div className="md:col-span-2">
+                        <label className="block text-[11px] font-bold text-[#134074] uppercase tracking-widest mb-1.5 opacity-80">{t('admin.products.providerCostLabel')}</label>
+                        <div className="relative flex items-center border border-[#C5D8E8]/30 rounded-xl focus-within:border-emerald-500/50 focus-within:ring-2 focus-within:ring-emerald-500/10 bg-[#EEF4ED]/10 transition-all">
+                          <span className="pl-4 text-[#134074] font-semibold text-[15px]">$</span>
+                          <input
+                            type="number" step="0.01" value={form.providerCostUsd}
+                            onChange={e => {
+                              const cost = parseFloat(e.target.value) || 0
+                              const margin = parseFloat(form.marginPct) || DEFAULT_GROSS_MARGIN
+                              const autoPrice = cost > 0 ? (cost / (1 - margin / 100)).toFixed(2) : ''
+                              setForm({ ...form, providerCostUsd: e.target.value, priceUsd: autoPrice, priceRefLocal: autoPrice ? (Number(autoPrice) * (exchangeRateSell || 3.78)).toFixed(2) : '' })
+                              setFormErrors({ ...formErrors, priceUsd: '' })
+                            }}
+                            className="w-full pl-2 pr-4 py-3 bg-transparent text-[15px] font-bold text-[#134074] outline-none" placeholder="0.00"
+                          />
+                        </div>
+                      </div>
+                      
+                      <div className="md:col-span-2">
+                        <label className="block text-[11px] font-bold text-[#134074] uppercase tracking-widest mb-1.5 opacity-80">{t('admin.products.commissionPct')}</label>
+                        <div className="relative flex items-center border border-[#C5D8E8]/30 rounded-xl focus-within:border-[#8DA9C4] focus-within:ring-2 focus-within:ring-[#C5D8E8]/15 bg-[#EEF4ED]/10 transition-all">
+                          <input type="number" step="0.1" value={form.marginPct} onChange={e => {
+                            const margin = parseFloat(e.target.value) || DEFAULT_GROSS_MARGIN
+                            const cost = parseFloat(form.providerCostUsd) || 0
+                            const autoPrice = cost > 0 ? (cost / (1 - margin / 100)).toFixed(2) : form.priceUsd
+                            setForm({ ...form, marginPct: e.target.value, priceUsd: autoPrice })
+                          }}
+                            className="w-full pl-4 pr-8 py-3 bg-transparent text-[15px] font-bold text-[#134074] outline-none" placeholder="30" />
+                          <span className="absolute right-4 text-[#13315C] font-bold text-[15px]">%</span>
+                        </div>
+                      </div>
+
+                      <div className="md:col-span-2">
+                        <label className="block text-[11px] font-bold text-[#134074] uppercase tracking-widest mb-1.5 opacity-80">{t('admin.products.priceUsdLabel')}</label>
+                        <div className={`relative flex items-center transition-all rounded-xl border ${formErrors.priceUsd ? 'border-red-300 ring-2 ring-red-100 bg-red-50' : 'border-[#C5D8E8]/30 focus-within:border-tevra-coral/50 focus-within:ring-2 focus-within:ring-tevra-coral/10 bg-[#EEF4ED]/10'}`}>
+                          <span className="pl-4 text-tevra-coral font-bold text-[15px]">$</span>
+                          <input type="number" step="0.01" value={form.priceUsd} onChange={e => { setForm({ ...form, priceUsd: e.target.value, priceRefLocal: (Number(e.target.value) * (exchangeRateSell || 3.78)).toFixed(2) }); setFormErrors({ ...formErrors, priceUsd: '' }) }}
+                            className="w-full pl-2 pr-4 py-3 bg-transparent text-[16px] font-black text-tevra-coral outline-none" placeholder="0.00" />
+                        </div>
+                        {formErrors.priceUsd && <p className="text-xs text-red-500 font-medium mt-1.5 ml-1 flex items-center gap-1"><span className="material-symbols-outlined text-[14px]">info</span>{formErrors.priceUsd}</p>}
+                      </div>
+
+                      <div className="md:col-span-2">
+                        <label className="block text-[11px] font-bold text-[#134074] uppercase tracking-widest mb-1.5 opacity-80">{t('admin.products.priceLocal')}</label>
+                        <div className="relative flex items-center border border-[#C5D8E8]/30 rounded-xl focus-within:border-[#8DA9C4] focus-within:ring-2 focus-within:ring-[#C5D8E8]/15 bg-[#EEF4ED]/10 transition-all">
+                          <span className="pl-4 text-[#13315C] font-bold text-[15px]">S/</span>
+                          <input type="number" step="0.01" value={form.priceRefLocal} onChange={e => setForm({ ...form, priceRefLocal: e.target.value })}
+                            className="w-full pl-2 pr-4 py-3 bg-transparent text-[16px] font-black text-[#134074] outline-none" placeholder="0.00" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Descriptions */}
+                  <div className="bg-white p-6 rounded-2xl border border-[#C5D8E8]/20 shadow-sm space-y-5">
+                    <h4 className="text-sm font-bold text-[#134074] uppercase tracking-widest border-b border-[#C5D8E8]/10 pb-3 flex items-center gap-2">
+                      <span className="material-symbols-outlined text-[18px]">description</span> Características
+                    </h4>
+                    
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-[11px] font-bold text-[#134074] uppercase tracking-widest mb-1.5 opacity-80">{t('admin.products.description')} <span className="text-tevra-coral bg-tevra-coral/10 px-1.5 py-0.5 rounded text-[9px]">ES</span></label>
+                        <textarea value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} rows={6}
+                          placeholder={t('admin.products.descriptionPlaceholder')}
+                          className="w-full px-4 py-3 bg-[#EEF4ED]/10 border border-[#C5D8E8]/30 rounded-xl text-[14px] leading-relaxed text-[#134074] focus:ring-2 focus:ring-tevra-coral/10 focus:border-tevra-coral/50 outline-none transition-all resize-y placeholder:text-[#A5C0D8]" />
+                      </div>
+
+                      <div>
+                        <label className="block text-[11px] font-bold text-[#134074] uppercase tracking-widest mb-1.5 opacity-80">{t('admin.products.descriptionEn')} <span className="text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded text-[9px]">EN</span></label>
+                        <textarea value={form.descriptionEn} onChange={e => setForm({ ...form, descriptionEn: e.target.value })} rows={5}
+                          placeholder={t('admin.products.descriptionEnPlaceholder')}
+                          className="w-full px-4 py-3 bg-[#EEF4ED]/10 border border-[#C5D8E8]/30 rounded-xl text-[14px] leading-relaxed text-[#134074] focus:ring-2 focus:ring-blue-500/10 focus:border-blue-500/50 outline-none transition-all resize-y placeholder:text-[#A5C0D8]" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div className="col-span-2">
-                  <label className="block text-[11px] font-bold text-[#134074] uppercase tracking-widest mb-1.5">{t('admin.products.commercialName')}</label>
-                  <div className={`relative flex items-center transition-all rounded-xl border ${formErrors.name ? 'border-red-300 ring-2 ring-red-100' : 'border-[#C5D8E8]/20 focus-within:border-[#8DA9C4] focus-within:ring-2 focus-within:ring-[#C5D8E8]/15'}`}>
-                    <input value={form.name} onChange={e => { setForm({ ...form, name: e.target.value }); setFormErrors({ ...formErrors, name: '' }) }}
-                      placeholder={t('admin.products.namePlaceholder')}
-                      className="w-full px-4 py-2.5 bg-transparent text-sm text-[#134074] outline-none placeholder:text-[#A5C0D8]" />
-                    {formErrors.name && <span className="material-symbols-outlined text-red-500 text-[18px] pr-3">error</span>}
-                  </div>
-                  {formErrors.name && <p className="text-xs text-red-500 font-medium mt-1.5 ml-1 flex items-center gap-1"><span className="material-symbols-outlined text-[14px]">info</span>{formErrors.name}</p>}
-                </div>
-
-                <div>
-                  <label className="block text-[11px] font-bold text-[#134074] uppercase tracking-widest mb-1.5">{t('admin.products.description')} <span className="text-[#13315C] normal-case font-normal">(ES)</span></label>
-                  <textarea value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} rows={4}
-                    placeholder={t('admin.products.descriptionPlaceholder')}
-                    className="w-full px-4 py-2.5 bg-white border border-[#C5D8E8]/20 rounded-xl text-sm focus:ring-2 focus:ring-[#C5D8E8]/15 focus:border-[#8DA9C4] outline-none transition-all resize-none placeholder:text-[#A5C0D8]" />
-                </div>
-
-                <div>
-                  <label className="block text-[11px] font-bold text-[#134074] uppercase tracking-widest mb-1.5">{t('admin.products.descriptionEn')} <span className="text-[#13315C] normal-case font-normal">(EN)</span></label>
-                  <textarea value={form.descriptionEn} onChange={e => setForm({ ...form, descriptionEn: e.target.value })} rows={4}
-                    placeholder={t('admin.products.descriptionEnPlaceholder')}
-                    className="w-full px-4 py-2.5 bg-white border border-[#C5D8E8]/20 rounded-xl text-sm focus:ring-2 focus:ring-[#C5D8E8]/15 focus:border-[#8DA9C4] outline-none transition-all resize-none placeholder:text-[#A5C0D8]" />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-[11px] font-bold text-[#134074] uppercase tracking-widest mb-1.5">{t('admin.products.categoryLabel')}</label>
-                  <div className={`relative transition-all rounded-xl border ${formErrors.categoryId ? 'border-red-300 ring-2 ring-red-100' : 'border-[#C5D8E8]/20 focus-within:border-[#8DA9C4] focus-within:ring-2 focus-within:ring-[#C5D8E8]/15'}`}>
-                    <select value={form.categoryId} onChange={e => { setForm({ ...form, categoryId: e.target.value }); setFormErrors({ ...formErrors, categoryId: '' }) }}
-                      className="w-full px-4 py-2.5 bg-transparent text-sm appearance-none outline-none text-[#134074]">
-                      <option value="" disabled>{t('admin.products.selectOption')}</option>
-                      {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
-                    </select>
-                    <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-[#13315C] pointer-events-none">expand_content</span>
-                  </div>
-                  {formErrors.categoryId && <p className="text-xs text-red-500 font-medium mt-1.5 ml-1 flex items-center gap-1"><span className="material-symbols-outlined text-[14px]">info</span>{formErrors.categoryId}</p>}
-                </div>
-                <div>
-                  <label className="block text-[11px] font-bold text-[#134074] uppercase tracking-widest mb-1.5">{t('admin.products.brandLabel')}</label>
-                  <div className="relative border border-[#C5D8E8]/20 rounded-xl focus-within:border-[#8DA9C4] focus-within:ring-2 focus-within:ring-[#C5D8E8]/15 transition-all">
-                    <select value={form.brandId} onChange={e => setForm({ ...form, brandId: e.target.value })}
-                      className="w-full px-4 py-2.5 bg-transparent text-sm appearance-none outline-none text-[#134074]">
-                      <option value="">{t('admin.products.noBrand')}</option>
-                      {brands.map(b => <option key={b.id} value={b.id}>{b.name}</option>)}
-                    </select>
-                    <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-[#13315C] pointer-events-none">expand_content</span>
-                  </div>
-                </div>
-              </div>
-
-              {}
-              <div>
-                <label className="block text-[11px] font-bold text-[#134074] uppercase tracking-widest mb-1.5">{t('admin.products.providerCostLabel')}</label>
-                <div className="relative flex items-center border border-[#C5D8E8]/20 rounded-xl focus-within:border-[#8DA9C4] focus-within:ring-2 focus-within:ring-[#C5D8E8]/15 transition-all">
-                  <span className="pl-4 text-[#134074] font-semibold">$</span>
-                  <input
-                    type="number" step="0.01"
-                    value={form.providerCostUsd}
-                    onChange={e => {
-                      const cost = parseFloat(e.target.value) || 0
-                      const margin = parseFloat(form.marginPct) || DEFAULT_GROSS_MARGIN
-                      const autoPrice = cost > 0 ? (cost / (1 - margin / 100)).toFixed(2) : ''
-                      setForm({ ...form, providerCostUsd: e.target.value, priceUsd: autoPrice, priceRefLocal: autoPrice ? (Number(autoPrice) * (exchangeRateSell || 3.78)).toFixed(2) : '' })
-                      setFormErrors({ ...formErrors, priceUsd: '' })
-                    }}
-                    className="w-full pl-2 pr-4 py-2.5 bg-transparent text-sm font-semibold text-[#134074] outline-none" placeholder="0.00"
-                  />
-                </div>
-                <p className="text-[10px] text-[#13315C] mt-1">{t('admin.products.providerCostHint')}</p>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-[11px] font-bold text-[#134074] uppercase tracking-widest mb-1.5">{t('admin.products.priceUsdLabel')}</label>
-                  <div className={`relative flex items-center transition-all rounded-xl border ${formErrors.priceUsd ? 'border-red-300 ring-2 ring-red-100' : 'border-[#C5D8E8]/20 focus-within:border-[#8DA9C4] focus-within:ring-2 focus-within:ring-[#C5D8E8]/15'}`}>
-                    <span className="pl-4 text-[#134074] font-semibold">$</span>
-                    <input type="number" step="0.01" value={form.priceUsd} onChange={e => { setForm({ ...form, priceUsd: e.target.value, priceRefLocal: (Number(e.target.value) * (exchangeRateSell || 3.78)).toFixed(2) }); setFormErrors({ ...formErrors, priceUsd: '' }) }}
-                      className="w-full pl-2 pr-4 py-2.5 bg-transparent text-sm font-semibold text-[#134074] outline-none" placeholder="0.00" />
-                  </div>
-                  {formErrors.priceUsd && <p className="text-xs text-red-500 font-medium mt-1.5 ml-1 flex items-center gap-1"><span className="material-symbols-outlined text-[14px]">info</span>{formErrors.priceUsd}</p>}
-                </div>
-                <div>
-                  <label className="block text-[11px] font-bold text-[#134074] uppercase tracking-widest mb-1.5">{t('admin.products.priceLocal')}</label>
-                  <div className="relative flex items-center border border-[#C5D8E8]/20 rounded-xl focus-within:border-[#8DA9C4] focus-within:ring-2 focus-within:ring-[#C5D8E8]/15 transition-all">
-                    <span className="pl-4 text-[#13315C] font-semibold">S/</span>
-                    <input type="number" step="0.01" value={form.priceRefLocal} onChange={e => setForm({ ...form, priceRefLocal: e.target.value })}
-                      className="w-full pl-2 pr-4 py-2.5 bg-transparent text-sm font-semibold text-[#134074] outline-none" placeholder="0.00" />
-                  </div>
-                  <p className="text-[10px] text-[#13315C] mt-1">Tasa actual: S/ {(exchangeRateSell || 3.78).toFixed(2)} por USD · Calculado automáticamente</p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-[11px] font-bold text-[#134074] uppercase tracking-widest mb-1.5">{t('admin.products.commissionPct')}</label>
-                  <div className="relative flex items-center border border-[#C5D8E8]/20 rounded-xl focus-within:border-[#8DA9C4] focus-within:ring-2 focus-within:ring-[#C5D8E8]/15 transition-all">
-                    <input type="number" step="0.1" value={form.marginPct} onChange={e => {
-                      const margin = parseFloat(e.target.value) || DEFAULT_GROSS_MARGIN
-                      const cost = parseFloat(form.providerCostUsd) || 0
-                      const autoPrice = cost > 0 ? (cost / (1 - margin / 100)).toFixed(2) : form.priceUsd
-                      setForm({ ...form, marginPct: e.target.value, priceUsd: autoPrice })
-                    }}
-                      className="w-full pl-4 pr-8 py-2.5 bg-transparent text-sm font-semibold text-[#134074] outline-none" placeholder="30" />
-                    <span className="absolute right-4 text-[#13315C] font-bold">%</span>
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-[11px] font-bold text-[#134074] uppercase tracking-widest mb-1.5">{t('admin.products.stockStatus')}</label>
-                  <div className="relative border border-[#C5D8E8]/20 rounded-xl focus-within:border-[#8DA9C4] focus-within:ring-2 focus-within:ring-[#C5D8E8]/15 transition-all">
-                    <select value={form.stockStatus} onChange={e => setForm({ ...form, stockStatus: e.target.value })}
-                      className="w-full px-4 py-2.5 bg-transparent text-sm appearance-none outline-none text-[#134074] font-medium">
-                      <option value="available">{t('admin.products.stockAvailable')}</option>
-                      <option value="low_stock">{t('admin.products.stockLow')}</option>
-                      <option value="out_of_stock">{t('admin.products.stockOut')}</option>
-                    </select>
-                    <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-[#13315C] pointer-events-none">expand_content</span>
-                  </div>
-                </div>
-              </div>
-
-              <label className="flex items-center gap-3 p-4 border border-[#C5D8E8]/20 rounded-xl cursor-pointer hover:bg-[#EEF4ED]/30 transition-colors">
-                <input type="checkbox" checked={form.isFeatured} onChange={e => setForm({ ...form, isFeatured: e.target.checked })}
-                  className="w-5 h-5 rounded border-[#C5D8E8]/30 text-tevra-coral focus:ring-tevra-coral/20 transition-all cursor-pointer" />
-                <div>
-                  <span className="text-sm font-bold text-[#134074] block">{t('admin.products.markFeatured')}</span>
-                  <span className="text-xs text-[#134074] block">{t('admin.products.featuredHint')}</span>
-                </div>
-              </label>
             </div>
 
-            <div className="px-6 py-4 border-t border-[#C5D8E8]/10 flex justify-end gap-3 bg-[#EEF4ED]/30/50 rounded-b-2xl">
-              <button type="button" onClick={() => setModal(null)} className="px-5 py-2.5 bg-white border border-[#C5D8E8]/20 text-sm font-medium text-[#134074] hover:bg-[#EEF4ED]/30 hover:text-[#134074] rounded-xl transition-colors shadow-sm">{t('common.cancel')}</button>
+            <div className="px-6 py-4 border-t border-[#C5D8E8]/10 flex justify-end gap-3 bg-white rounded-b-2xl shrink-0">
+              <button type="button" onClick={() => setModal(null)} className="px-6 py-2.5 bg-gray-50 border border-gray-200 text-sm font-bold text-gray-600 hover:bg-gray-100 rounded-xl transition-colors">{t('common.cancel')}</button>
               <button type="submit" onClick={handleSave} disabled={saving}
-                className="px-6 py-2.5 bg-[#134074] hover:bg-[#13315C] focus:ring-4 focus:ring-[#134074]/20 disabled:opacity-50 disabled:hover:translate-y-0 text-[#EEF4ED] rounded-xl font-semibold text-sm transition-all shadow-md hover:-translate-y-0.5 flex items-center gap-2">
+                className="px-8 py-2.5 bg-[#134074] hover:bg-[#13315C] focus:ring-4 focus:ring-[#134074]/20 disabled:opacity-50 disabled:hover:translate-y-0 text-[#EEF4ED] rounded-xl font-bold text-[15px] transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 flex items-center gap-2">
                 {saving ? (
-                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                 ) : (
-                  <span className="material-symbols-outlined text-[18px]">save</span>
+                  <span className="material-symbols-outlined text-[20px]">save</span>
                 )}
                 {saving ? t('common.saving') : modal === 'create' ? t('admin.products.createProduct') : t('admin.users.saveChanges')}
               </button>
